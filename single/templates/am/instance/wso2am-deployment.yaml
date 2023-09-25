@@ -1,0 +1,220 @@
+# Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "am-single-node.fullname" . }}-am-deployment
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.wso2.deployment.replicas }}
+  strategy:
+    rollingUpdate:
+      maxSurge: {{ .Values.wso2.deployment.strategy.rollingUpdate.maxSurge }}
+      maxUnavailable: {{ .Values.wso2.deployment.strategy.rollingUpdate.maxUnavailable }}
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      deployment: {{ template "am-single-node.fullname" . }}-am
+      node: {{ template "am-single-node.fullname" . }}-am
+  template:
+    metadata:
+      annotations:
+        checksum.am.conf: {{ include (print $.Template.BasePath "/am/instance/wso2am-conf.yaml") . | sha256sum }}
+      labels:
+        deployment: {{ template "am-single-node.fullname" . }}-am
+        node: {{ template "am-single-node.fullname" . }}-am
+        product: apim
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: deployment
+                  operator: In
+                  values:
+                  - {{ template "am-single-node.fullname" . }}
+              topologyKey: "topology.kubernetes.io/zone"
+            weight: 100
+      {{- if and .Values.wso2.apim.secureVaultEnabled .Values.aws.enabled }}
+      serviceAccountName: {{ .Values.aws.serviceAccountName }}
+      {{- end }}
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: wso2am
+          {{- if .Values.azure.enabled }}
+          image: {{ .Values.azure.acr.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
+          {{- else if .Values.aws.enabled }}
+          image: {{ .Values.aws.ecr.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
+          {{- end }}
+          imagePullPolicy: {{ .Values.wso2.deployment.imagePullPolicy }}
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: JVM_MEM_OPTS
+              value: "-Xms{{ .Values.wso2.deployment.resources.jvm.memory.xms }} -Xmx{{ .Values.wso2.deployment.resources.jvm.memory.xmx }}"
+          startupProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - nc -z localhost 9443
+            initialDelaySeconds: {{ .Values.wso2.deployment.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.wso2.deployment.startupProbe.periodSeconds }}
+            failureThreshold: {{ .Values.wso2.deployment.startupProbe.failureThreshold }}         
+          livenessProbe:
+            httpGet:
+              path: /services/Version
+              port: 9763
+            initialDelaySeconds: {{ .Values.wso2.deployment.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.wso2.deployment.livenessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.wso2.deployment.livenessProbe.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: /services/Version
+              port: 9763
+            initialDelaySeconds: {{ .Values.wso2.deployment.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.wso2.deployment.readinessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.wso2.deployment.readinessProbe.failureThreshold }}
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - "sh"
+                  - "-c"
+                  - >
+                    echo "Pre stop hook triggered";
+                    sleep 10;
+                    echo "Shutdown APIM Server";
+                    ${WSO2_SERVER_HOME}/bin/api-manager.sh stop
+          resources:
+            requests:
+              memory: {{ .Values.wso2.deployment.resources.requests.memory }}
+              cpu: {{ .Values.wso2.deployment.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.wso2.deployment.resources.limits.memory }}
+              cpu: {{ .Values.wso2.deployment.resources.limits.cpu }}
+          securityContext:
+            runAsUser: {{ .Values.kubernetes.securityContext.runAsUser }}
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - all
+          ports:
+            - containerPort: 8280
+              protocol: "TCP"
+            - containerPort: 8243
+              protocol: "TCP"
+            - containerPort: 9763
+              protocol: "TCP"
+            - containerPort: 9443
+              protocol: "TCP"
+            - containerPort: 9711
+              protocol: "TCP"
+            - containerPort: 9611
+              protocol: "TCP"
+            - containerPort: 5672
+              protocol: "TCP"
+          volumeMounts:
+            - name: wso2am-conf
+              mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml
+              subPath: deployment.toml
+            - name: wso2am-entrypoint
+              mountPath: /home/wso2carbon/docker-entrypoint.sh
+              subPath: docker-entrypoint.sh
+            - name: wso2am-log4j2
+              mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/log4j2.properties
+              subPath: log4j2.properties
+            {{- if .Values.wso2.apim.secureVaultEnabled }}
+            - name: wso2am-secret-conf
+              mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/security/secret-conf.properties
+              subPath: secret-conf.properties
+            - name: wso2am-secret-store-csi
+              mountPath: /mnt/secrets-store
+              readOnly: true
+            {{- end }}
+            - name: wso2am-keystores
+              mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.truststore.name }}
+              subPath: {{ .Values.wso2.apim.configurations.security.truststore.name }}
+            {{- if .Values.wso2.apim.configurations.security.keystores.primary.enabled }}
+            - name: wso2am-keystores
+              mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.keystores.primary.name }}
+              subPath: {{ .Values.wso2.apim.configurations.security.keystores.primary.name }}
+            {{- end }}
+            {{- if .Values.wso2.apim.configurations.security.keystores.tls.enabled }}
+            - name: wso2am-keystores
+              mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.keystores.tls.name }}
+              subPath: {{ .Values.wso2.apim.configurations.security.keystores.tls.name }}
+            {{- end }}
+            {{- if .Values.wso2.apim.configurations.security.keystores.internal.enabled }}
+            - name: wso2am-keystores
+              mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.keystores.internal.name }}
+              subPath: {{ .Values.wso2.apim.configurations.security.keystores.internal.name }}
+            {{- end }}
+            {{ if .Values.wso2.deployment.persistence.solrIndexing.enabled }}
+            - name: wso2am-local-carbondb
+              mountPath: /home/wso2carbon/solr/database
+            - name: wso2am-solr
+              mountPath: /home/wso2carbon/solr/indexed-data
+            {{ end }}
+      volumes:
+        - name: wso2am-conf
+          configMap:
+            name: {{ template "am-single-node.fullname" . }}-am-conf
+            defaultMode: 0407
+        - name: wso2am-entrypoint
+          configMap:
+            name: {{ template "am-single-node.fullname" . }}-conf-entrypoint
+            defaultMode: 0407
+        - name: wso2am-log4j2
+          configMap:
+            name: {{ template "am-single-node.fullname" . }}-conf-log4j2
+            defaultMode: 0407
+          {{- if .Values.wso2.apim.secureVaultEnabled }}
+        - name: wso2am-secret-conf
+          configMap:
+            name: {{ template "am-single-node.fullname" . }}-conf-secret-conf
+            defaultMode: 0407
+        - name: wso2am-secret-store-csi
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            {{ if .Values.azure.enabled }}
+            volumeAttributes:
+              secretProviderClass: {{ .Values.azure.keyVault.secretProviderClass }}
+            nodePublishSecretRef:
+              name: {{ .Values.azure.keyVault.activeDirectory.servicePrincipal.credentialsSecretName }}
+            {{- else if .Values.aws.enabled }}
+            volumeAttributes:
+              secretProviderClass: {{ .Values.aws.secretsManager.secretProviderClass }}
+            {{- end }}
+          {{- end }}
+        - name: wso2am-keystores
+          secret:
+            secretName: {{ .Values.wso2.apim.configurations.security.jksSecretName }}
+        {{ if .Values.wso2.deployment.persistence.solrIndexing.enabled }}
+        - name: wso2am-local-carbondb
+          persistentVolumeClaim:
+            claimName: {{ template "am-single-node.fullname" . }}-am-local-carbon-database-volume-claim
+        - name: wso2am-solr
+          persistentVolumeClaim:
+            claimName: {{ template "am-single-node.fullname" . }}-am-solr-indexed-data-volume-claim
+        {{ end }}
