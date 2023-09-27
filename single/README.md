@@ -1,20 +1,25 @@
-# am-single-node
+# am-all-in-one
 
 ![Version: 4.2.0-1](https://img.shields.io/badge/Version-4.2.0--1-informational?style=flat-square) ![AppVersion: 4.2.0](https://img.shields.io/badge/AppVersion-4.2.0-informational?style=flat-square)
+
+A Helm chart for the deployment of WSO2 API Manager Single Node.
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| aws.ecr.registry | string | `""` | AWS Elastic Container Registry name |
+| aws.accessPoints | object | `{"carbonDb":"","solr":""}` | EFS Access Points for static provisioning |
+| aws.capacity | string | `""` | EFS capacity |
+| aws.directoryPerms | string | `"0777"` | EFS directory permissions |
+| aws.efs | string | `nil` |  |
 | aws.enabled | bool | `true` | If AWS is used as the cloud provider |
+| aws.fileSystemId | string | `""` | EFS file system ID for mounting the persistent volume |
 | aws.region | string | `""` | AWS region |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword | object | `{"secretKey":"","secretName":""}` | Internal keystore password identifier in secrets manager |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey | string | `""` | AWS Secrets Manager secret key |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretName | string | `""` | AWS Secrets Manager secret name |
 | aws.secretsManager.secretProviderClass | string | `"wso2am-am-secret-provider-class"` | AWS Secrets Manager secret provider class name |
 | aws.serviceAccountName | string | `""` |  |
-| azure.acr.registry | string | `""` | Azure container registry name |
 | azure.enabled | bool | `false` | If Azure is used as the cloud provider |
 | azure.keyVault.activeDirectory.servicePrincipal | object | `{"appId":"","clientSecretName":"","credentialsSecretName":""}` | Service Principal created for transacting with the target Azure Key Vault For advanced details refer to official documentation (https://github.com/Azure/secrets-store-csi-driver-provider-azure/blob/master/docs/service-principal-mode.md) |
 | azure.keyVault.activeDirectory.servicePrincipal.appId | string | `""` | Application ID of the service principal used in secret-store-csi |
@@ -31,6 +36,7 @@
 | azure.persistence.fileShare | string | `""` | Azure fileshare name |
 | azure.persistence.secretName | string | `""` | Azure file secret name |
 | azure.persistence.storageClass | string | `""` | Persistent volume storage class |
+| azure.serviceAccount | string | `"wso2am-all-in-one-svc-account"` |  |
 | kubernetes.ingress.gateway.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
 | kubernetes.ingress.gateway.enabled | bool | `true` |  |
 | kubernetes.ingress.gateway.hostname | string | `"gw.wso2.com"` | Ingress hostname for Gateway pass-through |
@@ -52,18 +58,18 @@
 | kubernetes.ingress.websub.hostname | string | `"websub.wso2.com"` | Ingress hostname for Websub |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
 | kubernetes.securityContext.runAsUser | int | `802` | User ID of the container |
-| kubernetes.serviceAccount | string | `"wso2am-single-node-svc-account"` |  |
 | wso2.apim.configurations.adminPassword | string | `"admin"` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `"admin"` | Super admin username |
 | wso2.apim.configurations.cache.gateway_token.enabled | bool | `true` | Gateway token cache enabled |
-| wso2.apim.configurations.cache.gateway_token.expiryTime | int | `15` | Gateway token cache expiration time in minutes |
+| wso2.apim.configurations.cache.gateway_token.expiryTime | string | `"15m"` | Gateway token cache expiration time |
 | wso2.apim.configurations.cache.jwt_claim.enabled | bool | `true` | Gateway JWT claim cache enabled |
+| wso2.apim.configurations.cache.jwt_claim.expiryTime | string | `"15m"` | Gateway JWT claim cache expiration time |
 | wso2.apim.configurations.cache.km_token.enabled | bool | `true` | Gateway KM token cache enabled |
 | wso2.apim.configurations.cache.km_token.expiryTime | string | `"15m"` | Gateway KM token cache expiration time |
 | wso2.apim.configurations.cache.publisher_roles.enabled | bool | `false` |  |
 | wso2.apim.configurations.cache.recent_apis.enabled | bool | `false` | Gateway recent APIs cache enabled |
 | wso2.apim.configurations.cache.resource.enabled | bool | `true` | Gateway resource cache enabled |
-| wso2.apim.configurations.cache.resource.expiryTime | int | `900` | Gateway resource cache expiration time in seconds |
+| wso2.apim.configurations.cache.resource.expiryTime | string | `"900s"` | Gateway resource cache expiration time |
 | wso2.apim.configurations.cache.scopes.enabled | bool | `false` |  |
 | wso2.apim.configurations.cache.tags.enabled | bool | `true` | Gateway tags cache enabled |
 | wso2.apim.configurations.cache.tags.expiryTime | string | `"2m"` |  |
@@ -109,7 +115,7 @@
 | wso2.apim.configurations.eventListeners[0].order | int | `1` |  |
 | wso2.apim.configurations.eventListeners[0].properties.notificationEndpoint | string | `"https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"` |  |
 | wso2.apim.configurations.eventListeners[0].type | string | `"org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"` |  |
-| wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","showAsTokenEndpointUrl":true,"type":"hybrid","websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
+| wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
 | wso2.apim.configurations.iskm.enabled | bool | `false` |  |
 | wso2.apim.configurations.iskm.revokeURL | string | `""` |  |
 | wso2.apim.configurations.iskm.serviceName | string | `""` |  |
@@ -132,7 +138,7 @@
 | wso2.apim.configurations.oauth_config.authHeader | string | `"Authorization"` | OAuth authorization header name |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
-| wso2.apim.configurations.oauth_config.removeoOutboundAuthHeader | bool | `true` | Remove auth header from outgoing requests |
+| wso2.apim.configurations.oauth_config.removeOutboundAuthHeader | bool | `true` | Remove auth header from outgoing requests |
 | wso2.apim.configurations.oauth_config.revokeEndpoint | string | `""` | OAuth revoke endpoint |
 | wso2.apim.configurations.publisher.supportedDocumentTypes | string | `""` | Supported document types in Publisher.  This should be used only if there are additional document types to be supported. |
 | wso2.apim.configurations.secureVaultEnabled | bool | `false` | Secure vauld enabled |
@@ -156,8 +162,8 @@
 | wso2.apim.configurations.security.truststore.password | string | `""` | Truststore password |
 | wso2.apim.configurations.serviceProvider.spNameRegex | string | `"^[\\sa-zA-Z0-9._-]*$"` |  |
 | wso2.apim.configurations.syncRuntimeArtifacts.gateway.labels | list | `["Default"]` | Gateway label used to filter out artifact retrieval |
-| wso2.apim.configurations.throttling.blacklistCondition.period | string | `""` |  |
-| wso2.apim.configurations.throttling.blacklistCondition.startDelay | string | `""` |  |
+| wso2.apim.configurations.throttling.blacklistCondition.period | string | `nil` |  |
+| wso2.apim.configurations.throttling.blacklistCondition.startDelay | string | `nil` |  |
 | wso2.apim.configurations.throttling.enableBlacklistCondition | bool | `true` |  |
 | wso2.apim.configurations.throttling.enableDataPublishing | bool | `true` |  |
 | wso2.apim.configurations.throttling.enableHeaderBasedThrottling | bool | `false` |  |
@@ -205,17 +211,15 @@
 | wso2.choreoAnalytics | object | `{"enabled":false,"endpoint":"","onpremKey":""}` | WSO2 Choreo Analytics Parameters If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/). |
 | wso2.choreoAnalytics.endpoint | string | `""` | Choreo Analytics cloud service endpoint |
 | wso2.choreoAnalytics.onpremKey | string | `""` | On-premise key for Choreo Analytics |
-| wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
-| wso2.deployment.image.repository | string | `""` | Azure ACR repository name consisting the image |
+| wso2.deployment.image.registry | string | `""` | Registry containing the image |
+| wso2.deployment.image.repository | string | `""` | Repository name consisting the image |
+| wso2.deployment.lifecycle.preStopHook.sleepSeconds | int | `10` | Time to wait until the apim is terminated gracefully |
 | wso2.deployment.livenessProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.livenessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before liveness probes are initiated |
 | wso2.deployment.livenessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
-| wso2.deployment.maxReplicas | int | `3` | Maximum replicas for HPA |
-| wso2.deployment.memoryUtilizationPercentage | int | `75` | Target memory utilization percentage for HPA |
 | wso2.deployment.minAvailable | string | `"50%"` | Minimum available pod counts for PDB |
-| wso2.deployment.minReplicas | int | `2` | Minimum replicas for HPA |
 | wso2.deployment.persistence.solrIndexing | object | `{"capacity":{"carbonDatabase":"50M","solrIndexedData":"50M"},"enabled":false}` | Persistent runtime artifacts for Apache Solr-based indexing |
 | wso2.deployment.persistence.solrIndexing.capacity.carbonDatabase | string | `"50M"` | For persisting the H2 based local Carbon database file |
 | wso2.deployment.persistence.solrIndexing.capacity.solrIndexedData | string | `"50M"` | For persisting the indexed solr data |
@@ -223,7 +227,6 @@
 | wso2.deployment.readinessProbe.failureThreshold | int | `5` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.readinessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before readiness probes are initiated |
 | wso2.deployment.readinessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
-| wso2.deployment.replicas | int | `1` |  |
 | wso2.deployment.resources.jvm.memory.xms | string | `"2048m"` | JVM heap memory Xms |
 | wso2.deployment.resources.jvm.memory.xmx | string | `"2048m"` | JVM heap memory Xmx |
 | wso2.deployment.resources.limits.cpu | string | `"2000m"` | CPU limit for API Manager |
@@ -233,8 +236,6 @@
 | wso2.deployment.startupProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.startupProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before startup probes are initiated |
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
-| wso2.deployment.strategy.rollingUpdate.maxSurge | int | `2` |  |
-| wso2.deployment.strategy.rollingUpdate.maxUnavailable | int | `0` |  |
 | wso2.secureVaultEnabled | bool | `false` | Secure vauld enabled |
 | wso2.version | string | `"4.2.0"` | APIM version |
 

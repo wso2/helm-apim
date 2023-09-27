@@ -13,7 +13,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ template "am-single-node.fullname" . }}-am-gateway-ingress
+  name: {{ template "am-all-in-one.fullname" . }}-am-gateway-ingress
   namespace : {{ .Release.Namespace }}
 {{- if .Values.kubernetes.ingress.gateway.annotations }}
   annotations:
@@ -33,7 +33,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: {{ template "am-single-node.fullname" . }}-am-service
+            name: {{ template "am-all-in-one.fullname" . }}-am-service
             port:
               number: 8243
 {{- end -}}

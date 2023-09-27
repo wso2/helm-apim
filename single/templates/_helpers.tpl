@@ -15,7 +15,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "am-single-node.name" -}}
+{{- define "am-all-in-one.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -24,7 +24,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "am-single-node.fullname" -}}
+{{- define "am-all-in-one.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -40,16 +40,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "am-single-node.chart" -}}
+{{- define "am-all-in-one.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "am-single-node.labels" -}}
-app.kubernetes.io/name: {{ include "am-single-node.name" . }}
-helm.sh/chart: {{ include "am-single-node.chart" . }}
+{{- define "am-all-in-one.labels" -}}
+app.kubernetes.io/name: {{ include "am-all-in-one.name" . }}
+helm.sh/chart: {{ include "am-all-in-one.chart" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -60,8 +60,8 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Common prefix prepended to Kubernetes resources of this chart
 */}}
-{{- define "am-single-node.resource.prefix" -}}
-{{- "wso2am-single-node" }}
+{{- define "am-all-in-one.resource.prefix" -}}
+{{- "wso2am-all-in-one" }}
 {{- end -}}
 
 {{- define "image" }}

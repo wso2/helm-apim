@@ -12,26 +12,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "am-single-node.fullname" . }}-am-deployment
+  name: {{ template "am-all-in-one.fullname" . }}-am-deployment
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: {{ .Values.wso2.deployment.replicas }}
+  replicas: 1
   strategy:
-    rollingUpdate:
-      maxSurge: {{ .Values.wso2.deployment.strategy.rollingUpdate.maxSurge }}
-      maxUnavailable: {{ .Values.wso2.deployment.strategy.rollingUpdate.maxUnavailable }}
-    type: RollingUpdate
+    type: Recreate
   selector:
     matchLabels:
-      deployment: {{ template "am-single-node.fullname" . }}-am
-      node: {{ template "am-single-node.fullname" . }}-am
+      deployment: {{ template "am-all-in-one.fullname" . }}-am
+      node: {{ template "am-all-in-one.fullname" . }}-am
   template:
     metadata:
       annotations:
         checksum.am.conf: {{ include (print $.Template.BasePath "/am/instance/wso2am-conf.yaml") . | sha256sum }}
+        checksum.am.conf.log4j2: {{ include (print $.Template.BasePath "/am/instance/wso2am-conf-log4j2.yaml") . | sha256sum }}
+        checksum.am.conf.secret-conf: {{ include (print $.Template.BasePath "/am/instance/wso2am-conf-secret-conf.yaml") . | sha256sum }}
       labels:
-        deployment: {{ template "am-single-node.fullname" . }}-am
-        node: {{ template "am-single-node.fullname" . }}-am
+        deployment: {{ template "am-all-in-one.fullname" . }}-am
+        node: {{ template "am-all-in-one.fullname" . }}-am
         product: apim
     spec:
       affinity:
@@ -43,7 +42,7 @@ spec:
                 - key: deployment
                   operator: In
                   values:
-                  - {{ template "am-single-node.fullname" . }}
+                  - {{ template "am-all-in-one.fullname" . }}
               topologyKey: "topology.kubernetes.io/zone"
             weight: 100
       {{- if and .Values.wso2.apim.secureVaultEnabled .Values.aws.enabled }}
@@ -54,11 +53,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: wso2am
-          {{- if .Values.azure.enabled }}
-          image: {{ .Values.azure.acr.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
-          {{- else if .Values.aws.enabled }}
-          image: {{ .Values.aws.ecr.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
-          {{- end }}
+          image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
           imagePullPolicy: {{ .Values.wso2.deployment.imagePullPolicy }}
           env:
             - name: NODE_IP
@@ -98,7 +93,7 @@ spec:
                   - "-c"
                   - >
                     echo "Pre stop hook triggered";
-                    sleep 10;
+                    sleep {{ .Values.wso2.deployment.lifecycle.preStopHook.sleepSeconds }}; 
                     echo "Shutdown APIM Server";
                     ${WSO2_SERVER_HOME}/bin/api-manager.sh stop
           resources:
@@ -175,20 +170,20 @@ spec:
       volumes:
         - name: wso2am-conf
           configMap:
-            name: {{ template "am-single-node.fullname" . }}-am-conf
+            name: {{ template "am-all-in-one.fullname" . }}-am-conf
             defaultMode: 0407
         - name: wso2am-entrypoint
           configMap:
-            name: {{ template "am-single-node.fullname" . }}-conf-entrypoint
+            name: {{ template "am-all-in-one.fullname" . }}-conf-entrypoint
             defaultMode: 0407
         - name: wso2am-log4j2
           configMap:
-            name: {{ template "am-single-node.fullname" . }}-conf-log4j2
+            name: {{ template "am-all-in-one.fullname" . }}-conf-log4j2
             defaultMode: 0407
           {{- if .Values.wso2.apim.secureVaultEnabled }}
         - name: wso2am-secret-conf
           configMap:
-            name: {{ template "am-single-node.fullname" . }}-conf-secret-conf
+            name: {{ template "am-all-in-one.fullname" . }}-conf-secret-conf
             defaultMode: 0407
         - name: wso2am-secret-store-csi
           csi:
@@ -210,8 +205,8 @@ spec:
         {{ if .Values.wso2.deployment.persistence.solrIndexing.enabled }}
         - name: wso2am-local-carbondb
           persistentVolumeClaim:
-            claimName: {{ template "am-single-node.fullname" . }}-am-local-carbon-database-volume-claim
+            claimName: {{ template "am-all-in-one.fullname" . }}-am-local-carbon-database-volume-claim
         - name: wso2am-solr
           persistentVolumeClaim:
-            claimName: {{ template "am-single-node.fullname" . }}-am-solr-indexed-data-volume-claim
+            claimName: {{ template "am-all-in-one.fullname" . }}-am-solr-indexed-data-volume-claim
         {{ end }}

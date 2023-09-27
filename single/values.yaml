@@ -12,9 +12,17 @@
 aws:
   # -- If AWS is used as the cloud provider
   enabled: true
-  ecr:
-    # -- AWS Elastic Container Registry name
-    registry: ""
+  efs:
+  # -- EFS capacity
+  capacity: ""
+  # -- EFS directory permissions
+  directoryPerms: "0777"
+  # -- EFS file system ID for mounting the persistent volume
+  fileSystemId: ""
+  # -- EFS Access Points for static provisioning
+  accessPoints:
+    carbonDb: ""
+    solr: ""
   # -- AWS region
   region: ""
   secretsManager:
@@ -27,14 +35,12 @@ aws:
         secretName: ""
         # -- AWS Secrets Manager secret key
         secretKey: ""
+  # Name of Kubernetes service account
   serviceAccountName: ""
 
 azure:
   # -- If Azure is used as the cloud provider
   enabled: false
-  acr:
-    # -- Azure container registry name
-    registry: ""
   keyVault:
     # -- Azure Key vault used for credential management
     name: ""
@@ -62,6 +68,7 @@ azure:
       subscriptionId: ""
       # -- Name of the Azure Resource Group to which the target Azure Key Vault belongs
       resourceGroup: ""
+  serviceAccount: "wso2am-all-in-one-svc-account"
   persistence:
     # Needed for persisting indexing related data
     # -- Persistent volume capacity
@@ -118,8 +125,6 @@ kubernetes:
       hostname: "websub.wso2.com"
       # -- Ingress annotations for Websub
       annotations:
-  # Name of Kubernetes service account
-  serviceAccount: "wso2am-single-node-svc-account"
   securityContext:
     # -- User ID of the container
     runAsUser: 802
@@ -269,6 +274,7 @@ wso2:
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
           serviceName: "wso2am-gateway-service"
+          servicePort: 9443
           wsHostname: "websocket.wso2.com"
           httpHostname: "gw.wso2.com"
           websubHostname: "websub.wso2.com"
@@ -484,12 +490,14 @@ wso2:
   deployment:
     # Container image configurations
     image:
-        # -- Azure ACR repository name consisting the image
-        repository: ""
-        # -- Docker image digest
-        digest: ""
-        # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
-        imagePullPolicy: Always
+      # -- Registry containing the image
+      registry: ""
+      # -- Repository name consisting the image
+      repository: ""
+      # -- Docker image digest
+      digest: ""
+      # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
+      imagePullPolicy: Always
 
     resources:
       # These are the resource recommendations for running WSO2 API Management product profiles with profile optimization
@@ -512,7 +520,6 @@ wso2:
           xmx: "2048m"
 
     # Kubernetes Probes     
-    # Indicates whether the container is running
     # Indicates whether the container starting
     startupProbe:
       # -- Number of seconds after the container has started before startup probes are initiated
@@ -537,28 +544,13 @@ wso2:
       periodSeconds: 10
       # -- Minimum consecutive successes for the probe to be considered successful after having failed
       failureThreshold: 5
+    lifecycle:
+      preStopHook:
+        # -- Time to wait until the apim is terminated gracefully
+        sleepSeconds: 10
 
-    # Number of deployment replicas
-    replicas: 1
-    # HPA configurations
-    # -- Minimum replicas for HPA
-    minReplicas: 2
-    # -- Maximum replicas for HPA
-    maxReplicas: 3
-    # -- Target CPU utilization percentage for HPA
-    cpuUtilizationPercentage: 75
-    # -- Target memory utilization percentage for HPA
-    memoryUtilizationPercentage: 75
     # -- Minimum available pod counts for PDB
     minAvailable: "50%"
-
-    # Kubernetes RollingUpdate strategy configurations
-    strategy:
-      rollingUpdate:
-        # The maximum number of pods that can be scheduled above the desired number of pods
-        maxSurge: 2
-        # The maximum number of pods that can be unavailable during the update
-        maxUnavailable: 0
 
     persistence:
       # -- Persistent runtime artifacts for Apache Solr-based indexing

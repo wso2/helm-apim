@@ -12,7 +12,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "am-single-node.fullname" . }}-conf-log4j2
+  name: {{ template "am-all-in-one.fullname" . }}-conf-log4j2
   namespace : {{ .Release.Namespace }}
 data:
   log4j2.properties: {{ tpl (.Files.Get "confs/log4j2.properties") . | quote }}
