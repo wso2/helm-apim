@@ -9,29 +9,32 @@
 #
 # --------------------------------------------------------------------------------------
 
-{{ if .Values.wso2.deployment.persistence.solrIndexing.enabled }}
+{{ if and .Values.wso2.deployment.persistence.solrIndexing.enabled .Values.aws.enabled }}
 
 ---
 
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ template "am-single-node.fullname" . }}-am-local-carbon-database-volume-claim
+  name: {{ template "am-all-in-one.fullname" . }}-local-carbon-database
   namespace : {{ .Release.Namespace }}
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: {{ .Values.wso2.deployment.persistence.solrIndexing.capacity.carbonDatabase }}
-  storageClassName: {{ .Values.azure.persistence.storageClass | default "" }}
+  selector:
+    matchLabels:
+      purpose: am-carbondb
+  storageClassName: {{ template "am-all-in-one.fullname" . }}-sc
 
 ---
 
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ template "am-single-node.fullname" . }}-am-solr-indexed-data-volume-claim
+  name: {{ template "am-all-in-one.fullname" . }}-solr-indexed-data
   namespace : {{ .Release.Namespace }}
 spec:
   accessModes:
@@ -41,7 +44,7 @@ spec:
       storage: {{ .Values.wso2.deployment.persistence.solrIndexing.capacity.solrIndexedData }}
   selector:
     matchLabels:
-      purpose: am-volume
-  storageClassName: {{ .Values.azure.persistence.storageClass | default "" }}
+      purpose: am-solr
+  storageClassName: {{ template "am-all-in-one.fullname" . }}-sc
 
-{{ end }}
+{{- end }}

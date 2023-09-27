@@ -8,12 +8,12 @@
 # WSO2 Commercial License available at https://wso2.com/licenses/eula/3.2
 #
 # --------------------------------------------------------------------------------------
-{{ if .Values.wso2.deployment.persistence.solrIndexing.enabled }}
+{{ if and .Values.wso2.deployment.persistence.solrIndexing.enabled .Values.azure.enabled }}
 
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ template "am-single-node.fullname" . }}
+  name: {{ template "am-all-in-one.fullname" . }}
   labels:
     purpose: am-volume
 spec:
