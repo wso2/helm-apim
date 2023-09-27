@@ -41,9 +41,13 @@ data:
     # copy any artifact changes mounted to artifact_volume
     test -d ${artifact_volume} && [[ "$(ls -A ${artifact_volume})" ]] && cp -RL ${artifact_volume}/* ${WSO2_SERVER_HOME}/
 
-    # copy internal keystore credentials to password-tmp file for cipher-tool usage
     {{- if .Values.wso2.apim.secureVaultEnabled }}
+    # copy internal keystore credentials to password-tmp file for cipher-tool usage
+    {{- if .Values.azure.enabled }}
     cp /mnt/secrets-store/{{ .Values.azure.keyVault.secretIdentifiers.internalKeystorePassword }} ${WSO2_SERVER_HOME}/password-tmp
+    {{- else if .Values.aws.enabled }}
+    cp /mnt/secrets-store/{{ .Values.aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey }} ${WSO2_SERVER_HOME}/password-tmp
+    {{- end }}
     {{- end }}
 
     # start WSO2 Carbon server
