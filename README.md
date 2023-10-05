@@ -11,6 +11,8 @@ This repo will be used to maintain APIM related helm charts
 
 - Ingress controller for routing traffic. The recommendation is to use [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/) suitable for your cloud environment. Some sample annotations that could be used with the ingress resources are as follows.
 
+  > The ingress class should be set to `nginx` in the ingress resource if you are using the NGINX Ingress Controller.
+
   ```
   nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
   nginx.ingress.kubernetes.io/affinity: "cookie"
@@ -22,7 +24,9 @@ This repo will be used to maintain APIM related helm charts
 
   However, if you are deploying the charts in AWS, you can use the [AWS ALB Ingress Controller](https://github.com/kubernetes-sigs/aws-load-balancer-controller/tree/main) as well. If you are using ACM to manage the certificates, using this controller over the nginx ingress controller would be more convenient.
 
-  > Note that the current tested version of the controller is 2.6.x
+  > Note that the current tested version of the controller is 2.6.x.
+  
+  > The ingress class should be set to `alb` in the ingress resource if you are using the AWS ALB Ingress Controller.
 
   If the controller is not already available in your cluster, you can [configure the relevent IAM service account](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.6/deploy/installation/#configure-iam) and [deploy the controller](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.6/deploy/installation/#add-controller-to-cluster) in the cluster by following the instructions in the respective documentation.
 
