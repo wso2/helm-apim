@@ -13,16 +13,16 @@ aws:
   # -- If AWS is used as the cloud provider
   enabled: true
   efs:
-  # -- EFS capacity
-  capacity: ""
-  # -- EFS directory permissions
-  directoryPerms: "0777"
-  # -- EFS file system ID for mounting the persistent volume
-  fileSystemId: ""
-  # -- EFS Access Points for static provisioning
-  accessPoints:
-    carbonDb: ""
-    solr: ""
+    # -- EFS capacity
+    capacity: ""
+    # -- EFS directory permissions
+    directoryPerms: "0777"
+    # -- EFS file system ID for mounting the persistent volume
+    fileSystemId: ""
+    # -- EFS Access Points for static provisioning
+    accessPoints:
+      carbonDb: ""
+      solr: ""
   # -- AWS region
   region: ""
   secretsManager:
