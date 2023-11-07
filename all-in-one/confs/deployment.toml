@@ -59,7 +59,7 @@ driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
 type = "JKS"
 file_name = "{{ .Values.wso2.apim.configurations.security.keystores.primary.name }}"
 alias = "{{ .Values.wso2.apim.configurations.security.keystores.primary.alias }}"
-{{- if .Values.wso2.apim.configurations.secureVaultEnabled }}}
+{{- if .Values.wso2.apim.configurations.secureVaultEnabled }}
 password = "$secret{keystore_password}"
 key_password = "$secret{keystore_key_password}"
 {{- else }}
