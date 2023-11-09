@@ -80,6 +80,45 @@ azure:
     # -- Azure fileshare name
     fileShare: ""
 
+# Google Cloud Platform (GCP) integration status
+gcp:
+  enabled: true
+  # File Store configuration parameters
+
+  fs:
+    # Storage capacity of the file system (in GB or other appropriate units)
+    capacity: ""
+    # File shares configuration for specific services
+    fileshares:
+      # File share for CarbonDB storage
+      carbonDB:
+        fileStoreName: ""
+        name: ""
+        ip: ""
+      # File share for Solr storage
+      solr:
+        fileStoreName: ""
+        name: ""
+        ip: ""
+    tier: ""
+    network: ""
+
+    # Region of the FileStore
+    location: ""
+
+  # Secrets Manager configuration parameters
+  secretsManager:
+    # Project ID
+    projectId: ""
+    # Secret provider class
+    secretProviderClass: ""
+    secret:
+      # Name of the secret
+      secretName: ""
+      # Version of the secret 
+      secretVersion: ""
+  serviceAccountName: ""
+
 kubernetes:
   # -- Ingress class to be used for the ingress resource
   ingressClass: "nginx"
