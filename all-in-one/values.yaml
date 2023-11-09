@@ -504,14 +504,14 @@ wso2:
       # Resource configurations defined here are applicable for all API Manager product profiles of this deployment
       requests:
         # -- Memory request for API Manager
-        memory: "1Gi"
+        memory: "2Gi"
         # -- CPU request for API Manager
-        cpu: "1000m"
+        cpu: "2000m"
       limits:
         # -- Memory limit for API Manager
-        memory: "2Gi"
+        memory: "3Gi"
         # -- CPU limit for API Manager
-        cpu: "2000m"
+        cpu: "3000m"
       jvm:
         memory:
           # -- JVM heap memory Xms
@@ -527,7 +527,7 @@ wso2:
       # -- How often (in seconds) to perform the probe
       periodSeconds: 10
       # -- Minimum consecutive successes for the probe to be considered successful after having failed
-      failureThreshold: 3       
+      failureThreshold: 5
     # Indicates whether the container is running
     livenessProbe:
       # -- Number of seconds after the container has started before liveness probes are initiated
@@ -535,7 +535,7 @@ wso2:
       # -- How often (in seconds) to perform the probe
       periodSeconds: 10
       # -- Minimum consecutive successes for the probe to be considered successful after having failed
-      failureThreshold: 3
+      failureThreshold: 5
     # Indicates whether the container is ready to service requests
     readinessProbe:
       # -- Number of seconds after the container has started before readiness probes are initiated
