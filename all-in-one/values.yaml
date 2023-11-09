@@ -82,41 +82,50 @@ azure:
 
 # Google Cloud Platform (GCP) integration status
 gcp:
+  # -- If GCP is used as the cloud provider
   enabled: true
-  # File Store configuration parameters
-
+  # -- File Store configuration parameters
   fs:
-    # Storage capacity of the file system (in GB or other appropriate units)
+    # -- Storage capacity of the file system (in GB or other appropriate units)
     capacity: ""
-    # File shares configuration for specific services
+    # -- FileStore configuration for specific services
     fileshares:
-      # File share for CarbonDB storage
+      # -- FileShare configs for CarbonDB persistent storage
       carbonDB:
+        # -- FileStore of the CarbonDB persistent storage
         fileStoreName: ""
+        # -- FileShare of the CarbonDB persistent storage
         fileShareName: ""
+        # -- IP of the CarbonDB persistent storage
         ip: ""
-      # File share for Solr storage
+      # -- FileShare configs for Solr persistent storage
       solr:
+        # -- FileStore of the Solr persistent storage
         fileStoreName: ""
+        # -- FileShare of the Solr persistent storage
         fileShareName: ""
+        # -- IP of the Solr persistent storage
         ip: ""
+    # -- Tier of the FileStore
     tier: ""
+    # -- Network of the FileStore
     network: ""
 
-    # Region of the FileStore
+    # -- Region of the FileStore
     location: ""
 
-  # Secrets Manager configuration parameters
+  # -- Secrets Manager configuration parameters
   secretsManager:
-    # Project ID
+    # -- Project ID
     projectId: ""
-    # Secret provider class
+    # -- Secret provider class
     secretProviderClass: ""
     secret:
-      # Name of the secret
+      # -- Name of the secret
       secretName: ""
-      # Version of the secret 
+      # -- Version of the secret 
       secretVersion: ""
+  # -- Service Account with access to read secrets
   serviceAccountName: ""
 
 kubernetes:
