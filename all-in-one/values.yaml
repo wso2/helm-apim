@@ -202,8 +202,6 @@ wso2:
       adminUsername: "admin"
       # -- Super admin password
       adminPassword: "admin"
-      # -- Secure vauld enabled
-      secureVaultEnabled: false
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
         type: ""
