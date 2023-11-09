@@ -90,7 +90,7 @@ A Helm chart for the deployment of WSO2 API Manager Single Node.
 | wso2.apim.configurations.databases.config_db.poolParameters | object | `{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
 | wso2.apim.configurations.databases.config_db.url | string | `""` | APIM SharedDB URL |
 | wso2.apim.configurations.databases.config_db.username | string | `""` | APIM SharedDB username |
-| wso2.apim.configurations.databases.jdbc.driver | string | `"${JDBC_DRIVER}"` | JDBC driver class name |
+| wso2.apim.configurations.databases.jdbc.driver | string | `""` | JDBC driver class name |
 | wso2.apim.configurations.databases.shared_db.password | string | `""` | APIM SharedDB password |
 | wso2.apim.configurations.databases.shared_db.poolParameters | object | `{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
 | wso2.apim.configurations.databases.shared_db.url | string | `""` | APIM SharedDB URL |

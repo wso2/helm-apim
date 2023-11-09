@@ -170,7 +170,7 @@ wso2:
         type: ""
         jdbc:
           # -- JDBC driver class name
-          driver: "${JDBC_DRIVER}"
+          driver: ""
         # -- APIM APIMDB configurations. This is required for gateway only in a multi-tenancy scenario
         apim_db:
           # -- APIM APIMDB URL
