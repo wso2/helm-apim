@@ -80,6 +80,54 @@ azure:
     # -- Azure fileshare name
     fileShare: ""
 
+# Google Cloud Platform (GCP) integration status
+gcp:
+  # -- If GCP is used as the cloud provider
+  enabled: true
+  # -- File Store configuration parameters
+  fs:
+    # -- Storage capacity of the file system (in GB or other appropriate units)
+    capacity: ""
+    # -- FileStore configuration for specific services
+    fileshares:
+      # -- FileShare configs for CarbonDB persistent storage
+      carbonDB:
+        # -- FileStore of the CarbonDB persistent storage
+        fileStoreName: ""
+        # -- FileShare of the CarbonDB persistent storage
+        fileShareName: ""
+        # -- IP of the CarbonDB persistent storage
+        ip: ""
+      # -- FileShare configs for Solr persistent storage
+      solr:
+        # -- FileStore of the Solr persistent storage
+        fileStoreName: ""
+        # -- FileShare of the Solr persistent storage
+        fileShareName: ""
+        # -- IP of the Solr persistent storage
+        ip: ""
+    # -- Tier of the FileStore
+    tier: ""
+    # -- Network of the FileStore
+    network: ""
+
+    # -- Region of the FileStore
+    location: ""
+
+  # -- Secrets Manager configuration parameters
+  secretsManager:
+    # -- Project ID
+    projectId: ""
+    # -- Secret provider class
+    secretProviderClass: ""
+    secret:
+      # -- Name of the secret
+      secretName: ""
+      # -- Version of the secret 
+      secretVersion: ""
+  # -- Service Account with access to read secrets
+  serviceAccountName: ""
+
 kubernetes:
   # -- Ingress class to be used for the ingress resource
   ingressClass: "nginx"
@@ -163,14 +211,12 @@ wso2:
       adminUsername: "admin"
       # -- Super admin password
       adminPassword: "admin"
-      # -- Secure vauld enabled
-      secureVaultEnabled: false
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
         type: ""
         jdbc:
           # -- JDBC driver class name
-          driver: "${JDBC_DRIVER}"
+          driver: ""
         # -- APIM APIMDB configurations. This is required for gateway only in a multi-tenancy scenario
         apim_db:
           # -- APIM APIMDB URL
@@ -223,7 +269,7 @@ wso2:
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
-        jksSecretName: "apim-keystore-secret"
+        jksSecretName: ""
         keystores:
           primary:
             # -- Primary keystore enabled

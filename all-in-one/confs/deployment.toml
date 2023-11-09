@@ -15,7 +15,7 @@ type = {{ .Values.wso2.apim.configurations.userStore.type | quote }}
 
 [super_admin]
 username = {{ .Values.wso2.apim.configurations.adminUsername | quote }}
-{{- if .Values.wso2.apim.configurations.secureVaultEnabled }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{admin_password}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
@@ -26,7 +26,7 @@ create_admin_account = true
 type = "{{ .Values.wso2.apim.configurations.databases.type }}"
 url = "{{ .Values.wso2.apim.configurations.databases.apim_db.url}}"
 username = "{{ .Values.wso2.apim.configurations.databases.apim_db.username }}"
-{{- if .Values.wso2.apim.configurations.secureVaultEnabled }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{apim_db_password}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote }}
@@ -42,7 +42,7 @@ driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
 type = "{{ .Values.wso2.apim.configurations.databases.type }}"
 url = "{{ .Values.wso2.apim.configurations.databases.shared_db.url}}"
 username = "{{ .Values.wso2.apim.configurations.databases.shared_db.username }}"
-{{- if .Values.wso2.apim.configurations.secureVaultEnabled }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{shared_db_password}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote }}
@@ -59,7 +59,7 @@ driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
 type = "JKS"
 file_name = "{{ .Values.wso2.apim.configurations.security.keystores.primary.name }}"
 alias = "{{ .Values.wso2.apim.configurations.security.keystores.primary.alias }}"
-{{- if .Values.wso2.apim.configurations.secureVaultEnabled }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{keystore_password}"
 key_password = "$secret{keystore_key_password}"
 {{- else }}
@@ -73,7 +73,7 @@ key_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.ke
 type = "JKS"
 file_name = "{{ .Values.wso2.apim.configurations.security.keystores.tls.name }}"
 alias = "{{ .Values.wso2.apim.configurations.security.keystores.tls.alias }}"
-{{- if .Values.wso2.apim.configurations.secureVaultEnabled }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{ssl_keystore_password}"
 key_password = "$secret{ssl_key_password}"
 {{- else }}
@@ -87,7 +87,7 @@ key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.keyPas
 type = "JKS"
 file_name = "{{ .Values.wso2.apim.configurations.security.keystores.internal.name }}"
 alias = "{{ .Values.wso2.apim.configurations.security.keystores.internal.alias }}"
-{{- if .Values.wso2.apim.configurations.secureVaultEnabled }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{internal_keystore_password}"
 key_password = "$secret{internal_keystore_key_password}"
 {{- else }}
@@ -99,7 +99,7 @@ key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.k
 [truststore]
 type = "JKS"
 file_name = "{{ .Values.wso2.apim.configurations.security.truststore.name }}"
-{{- if .Values.wso2.apim.configurations.secureVaultEnabled }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{truststore_password}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
@@ -406,7 +406,7 @@ location = "/home/wso2carbon/solr/indexed-data"
 url = "jdbc:h2:./repository/database/WSO2CARBON_DB;DB_CLOSE_ON_EXIT=FALSE"
 {{- end }}
 
-{{- if .Values.wso2.apim.configurations.secureVaultEnabled }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
 [secrets]
 admin_password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
 keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
@@ -416,6 +416,6 @@ ssl_key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.ke
 internal_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
 internal_keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.keyPassword | quote }}
 truststore_password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
-apim_db_password = {{ .Values.wso2.apim.configurations.databases.am_db.password | quote }}
+apim_db_password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote }}
 shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote}}
 {{- end}}

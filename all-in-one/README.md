@@ -8,12 +8,11 @@ A Helm chart for the deployment of WSO2 API Manager Single Node.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| aws.accessPoints | object | `{"carbonDb":"","solr":""}` | EFS Access Points for static provisioning |
-| aws.capacity | string | `""` | EFS capacity |
-| aws.directoryPerms | string | `"0777"` | EFS directory permissions |
-| aws.efs | string | `nil` |  |
+| aws.efs.accessPoints | object | `{"carbonDb":"","solr":""}` | EFS Access Points for static provisioning |
+| aws.efs.capacity | string | `""` | EFS capacity |
+| aws.efs.directoryPerms | string | `"0777"` | EFS directory permissions |
+| aws.efs.fileSystemId | string | `""` | EFS file system ID for mounting the persistent volume |
 | aws.enabled | bool | `true` | If AWS is used as the cloud provider |
-| aws.fileSystemId | string | `""` | EFS file system ID for mounting the persistent volume |
 | aws.region | string | `""` | AWS region |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword | object | `{"secretKey":"","secretName":""}` | Internal keystore password identifier in secrets manager |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey | string | `""` | AWS Secrets Manager secret key |
@@ -37,6 +36,27 @@ A Helm chart for the deployment of WSO2 API Manager Single Node.
 | azure.persistence.secretName | string | `""` | Azure file secret name |
 | azure.persistence.storageClass | string | `""` | Persistent volume storage class |
 | azure.serviceAccount | string | `"wso2am-all-in-one-svc-account"` |  |
+| gcp.enabled | bool | `true` | If GCP is used as the cloud provider |
+| gcp.fs | object | `{"capacity":"","fileshares":{"carbonDB":{"fileShareName":"","fileStoreName":"","ip":""},"solr":{"fileShareName":"","fileStoreName":"","ip":""}},"location":"","network":"","tier":""}` | File Store configuration parameters |
+| gcp.fs.capacity | string | `""` | Storage capacity of the file system (in GB or other appropriate units) |
+| gcp.fs.fileshares | object | `{"carbonDB":{"fileShareName":"","fileStoreName":"","ip":""},"solr":{"fileShareName":"","fileStoreName":"","ip":""}}` | FileStore configuration for specific services |
+| gcp.fs.fileshares.carbonDB | object | `{"fileShareName":"","fileStoreName":"","ip":""}` | FileShare configs for CarbonDB persistent storage |
+| gcp.fs.fileshares.carbonDB.fileShareName | string | `""` | FileShare of the CarbonDB persistent storage |
+| gcp.fs.fileshares.carbonDB.fileStoreName | string | `""` | FileStore of the CarbonDB persistent storage |
+| gcp.fs.fileshares.carbonDB.ip | string | `""` | IP of the CarbonDB persistent storage |
+| gcp.fs.fileshares.solr | object | `{"fileShareName":"","fileStoreName":"","ip":""}` | FileShare configs for Solr persistent storage |
+| gcp.fs.fileshares.solr.fileShareName | string | `""` | FileShare of the Solr persistent storage |
+| gcp.fs.fileshares.solr.fileStoreName | string | `""` | FileStore of the Solr persistent storage |
+| gcp.fs.fileshares.solr.ip | string | `""` | IP of the Solr persistent storage |
+| gcp.fs.location | string | `""` | Region of the FileStore |
+| gcp.fs.network | string | `""` | Network of the FileStore |
+| gcp.fs.tier | string | `""` | Tier of the FileStore |
+| gcp.secretsManager | object | `{"projectId":"","secret":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
+| gcp.secretsManager.projectId | string | `""` | Project ID |
+| gcp.secretsManager.secret.secretName | string | `""` | Name of the secret |
+| gcp.secretsManager.secret.secretVersion | string | `""` | Version of the secret  |
+| gcp.secretsManager.secretProviderClass | string | `""` | Secret provider class |
+| gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
 | kubernetes.ingress.gateway.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
 | kubernetes.ingress.gateway.enabled | bool | `true` |  |
 | kubernetes.ingress.gateway.hostname | string | `"gw.wso2.com"` | Ingress hostname for Gateway pass-through |
@@ -57,6 +77,7 @@ A Helm chart for the deployment of WSO2 API Manager Single Node.
 | kubernetes.ingress.websub.enabled | bool | `true` |  |
 | kubernetes.ingress.websub.hostname | string | `"websub.wso2.com"` | Ingress hostname for Websub |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
+| kubernetes.securityContext.runAsGroup | int | `802` |  |
 | kubernetes.securityContext.runAsUser | int | `802` | User ID of the container |
 | wso2.apim.configurations.adminPassword | string | `"admin"` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `"admin"` | Super admin username |
@@ -88,7 +109,7 @@ A Helm chart for the deployment of WSO2 API Manager Single Node.
 | wso2.apim.configurations.databases.config_db.poolParameters | object | `{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
 | wso2.apim.configurations.databases.config_db.url | string | `""` | APIM SharedDB URL |
 | wso2.apim.configurations.databases.config_db.username | string | `""` | APIM SharedDB username |
-| wso2.apim.configurations.databases.jdbc.driver | string | `"${JDBC_DRIVER}"` | JDBC driver class name |
+| wso2.apim.configurations.databases.jdbc.driver | string | `""` | JDBC driver class name |
 | wso2.apim.configurations.databases.shared_db.password | string | `""` | APIM SharedDB password |
 | wso2.apim.configurations.databases.shared_db.poolParameters | object | `{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
 | wso2.apim.configurations.databases.shared_db.url | string | `""` | APIM SharedDB URL |
@@ -141,8 +162,7 @@ A Helm chart for the deployment of WSO2 API Manager Single Node.
 | wso2.apim.configurations.oauth_config.removeOutboundAuthHeader | bool | `true` | Remove auth header from outgoing requests |
 | wso2.apim.configurations.oauth_config.revokeEndpoint | string | `""` | OAuth revoke endpoint |
 | wso2.apim.configurations.publisher.supportedDocumentTypes | string | `""` | Supported document types in Publisher.  This should be used only if there are additional document types to be supported. |
-| wso2.apim.configurations.secureVaultEnabled | bool | `false` | Secure vauld enabled |
-| wso2.apim.configurations.security.jksSecretName | string | `"apim-keystore-secret"` | Kubernetes secret containing the keystores and truststore |
+| wso2.apim.configurations.security.jksSecretName | string | `""` | Kubernetes secret containing the keystores and truststore |
 | wso2.apim.configurations.security.keystores.internal.alias | string | `"wso2carbon"` | Internal keystore alias |
 | wso2.apim.configurations.security.keystores.internal.enabled | bool | `false` | Internal keystore enabled |
 | wso2.apim.configurations.security.keystores.internal.keyPassword | string | `""` | Internal keystore key password |
@@ -208,6 +228,8 @@ A Helm chart for the deployment of WSO2 API Manager Single Node.
 | wso2.apim.configurations.workflow.serviceUrl | string | `""` |  |
 | wso2.apim.configurations.workflow.tokenEndpoint | string | `""` |  |
 | wso2.apim.log4j2.loggers | string | `""` | Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE |
+| wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
+| wso2.apim.version | string | `"4.2.0"` | APIM version |
 | wso2.choreoAnalytics | object | `{"enabled":false,"endpoint":"","onpremKey":""}` | WSO2 Choreo Analytics Parameters If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/). |
 | wso2.choreoAnalytics.endpoint | string | `""` | Choreo Analytics cloud service endpoint |
 | wso2.choreoAnalytics.onpremKey | string | `""` | On-premise key for Choreo Analytics |
@@ -236,8 +258,6 @@ A Helm chart for the deployment of WSO2 API Manager Single Node.
 | wso2.deployment.startupProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.startupProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before startup probes are initiated |
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
-| wso2.secureVaultEnabled | bool | `false` | Secure vauld enabled |
-| wso2.version | string | `"4.2.0"` | APIM version |
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.11.2](https://github.com/norwoodj/helm-docs/releases/v1.11.2)
