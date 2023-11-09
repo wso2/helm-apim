@@ -93,12 +93,12 @@ gcp:
       # File share for CarbonDB storage
       carbonDB:
         fileStoreName: ""
-        name: ""
+        fileShareName: ""
         ip: ""
       # File share for Solr storage
       solr:
         fileStoreName: ""
-        name: ""
+        fileShareName: ""
         ip: ""
     tier: ""
     network: ""

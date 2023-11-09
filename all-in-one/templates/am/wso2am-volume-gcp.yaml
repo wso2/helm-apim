@@ -26,10 +26,10 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   csi:
     driver: filestore.csi.storage.gke.io
-    volumeHandle: "modeInstance/{{ .Values.gcp.fs.location }}/{{ .Values.gcp.fs.fileshares.carbonDB.fileStoreName }}/{{ .Values.gcp.fs.fileshares.carbonDB.name }}"
+    volumeHandle: "modeInstance/{{ .Values.gcp.fs.location }}/{{ .Values.gcp.fs.fileshares.carbonDB.fileStoreName }}/{{ .Values.gcp.fs.fileshares.carbonDB.fileShareName }}"
     volumeAttributes:
       ip: {{ .Values.gcp.fs.fileshares.carbonDB.ip }}
-      volume: {{ .Values.gcp.fs.fileshares.carbonDB.name }}
+      volume: {{ .Values.gcp.fs.fileshares.carbonDB.fileShareName }}
 
 ---
 
@@ -49,9 +49,9 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   csi:
     driver: filestore.csi.storage.gke.io
-    volumeHandle: "modeInstance/{{ .Values.gcp.fs.location }}/{{ .Values.gcp.fs.fileshares.solr.fileStoreName }}/{{ .Values.gcp.fs.fileshares.solr.name }}"
+    volumeHandle: "modeInstance/{{ .Values.gcp.fs.location }}/{{ .Values.gcp.fs.fileshares.solr.fileStoreName }}/{{ .Values.gcp.fs.fileshares.solr.fileShareName }}"
     volumeAttributes:
       ip: {{ .Values.gcp.fs.fileshares.solr.ip }}
-      volume: {{ .Values.gcp.fs.fileshares.solr.name }}
+      volume: {{ .Values.gcp.fs.fileshares.solr.fileShareName }}
 
 {{ end }}
