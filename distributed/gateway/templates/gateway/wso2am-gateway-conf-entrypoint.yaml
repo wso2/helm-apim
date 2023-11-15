@@ -47,6 +47,8 @@ data:
     cp /mnt/secrets-store/{{ .Values.azure.keyVault.secretIdentifiers.internalKeystorePassword }} ${WSO2_SERVER_HOME}/password-tmp
     {{- else if .Values.aws.enabled }}
     cp /mnt/secrets-store/{{ .Values.aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey }} ${WSO2_SERVER_HOME}/password-tmp
+    {{- else if .Values.gcp.enabled }}
+    cp /mnt/secrets-store/{{ .Values.gcp.secretsManager.secret.secretName }} ${WSO2_SERVER_HOME}/password-tmp
     {{- end }}
     {{- end }}
 
