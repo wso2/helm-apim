@@ -35,6 +35,35 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | azure.persistence.fileShare | string | `""` | Azure fileshare name |
 | azure.persistence.secretName | string | `""` | Azure file secret name |
 | azure.persistence.storageClass | string | `""` | Persistent volume storage class |
+| gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
+| gcp.fs | object | `{"capacity":"","fileshares":{"carbonDB1":{"fileShareName":"","fileStoreName":"","ip":""},"carbonDB2":{"fileShareName":"","fileStoreName":"","ip":""},"solr1":{"fileShareName":"","fileStoreName":"","ip":""},"solr2":{"fileShareName":"","fileStoreName":"","ip":""}},"location":"","network":"","tier":""}` | File Store configuration parameters |
+| gcp.fs.capacity | string | `""` | Storage capacity of the file system (in GB or other appropriate units) |
+| gcp.fs.fileshares | object | `{"carbonDB1":{"fileShareName":"","fileStoreName":"","ip":""},"carbonDB2":{"fileShareName":"","fileStoreName":"","ip":""},"solr1":{"fileShareName":"","fileStoreName":"","ip":""},"solr2":{"fileShareName":"","fileStoreName":"","ip":""}}` | FileStore configuration for specific services |
+| gcp.fs.fileshares.carbonDB1 | object | `{"fileShareName":"","fileStoreName":"","ip":""}` | FileShare configs for CarbonDB persistent storage for instance 1 |
+| gcp.fs.fileshares.carbonDB1.fileShareName | string | `""` | FileShare of the CarbonDB persistent storage for instance 1 |
+| gcp.fs.fileshares.carbonDB1.fileStoreName | string | `""` | FileStore of the CarbonDB persistent storage for instance 1 |
+| gcp.fs.fileshares.carbonDB1.ip | string | `""` | IP of the CarbonDB persistent storage for instance 1 |
+| gcp.fs.fileshares.carbonDB2 | object | `{"fileShareName":"","fileStoreName":"","ip":""}` | FileShare configs for CarbonDB2 persistent storage for instance 2 |
+| gcp.fs.fileshares.carbonDB2.fileShareName | string | `""` | FileShare of the CarbonDB persistent storage for instance 2 |
+| gcp.fs.fileshares.carbonDB2.fileStoreName | string | `""` | FileStore of the CarbonDB persistent storage for instance 2 |
+| gcp.fs.fileshares.carbonDB2.ip | string | `""` | IP of the CarbonDB persistent storage for instance 2 |
+| gcp.fs.fileshares.solr1 | object | `{"fileShareName":"","fileStoreName":"","ip":""}` | FileShare configs for Solr persistent storage for instance 1 |
+| gcp.fs.fileshares.solr1.fileShareName | string | `""` | FileShare of the Solr persistent storage for instance 1 |
+| gcp.fs.fileshares.solr1.fileStoreName | string | `""` | FileStore of the Solr persistent storage for instance 1 |
+| gcp.fs.fileshares.solr1.ip | string | `""` | IP of the Solr persistent storage for instance 1 |
+| gcp.fs.fileshares.solr2 | object | `{"fileShareName":"","fileStoreName":"","ip":""}` | FileShare configs for Solr persistent storage for instance 2 |
+| gcp.fs.fileshares.solr2.fileShareName | string | `""` | FileShare of the Solr persistent storage for instance 2 |
+| gcp.fs.fileshares.solr2.fileStoreName | string | `""` | FileStore of the Solr persistent storage for instance 2 |
+| gcp.fs.fileshares.solr2.ip | string | `""` | IP of the Solr persistent storage for instance 2 |
+| gcp.fs.location | string | `""` | Region of the FileStore |
+| gcp.fs.network | string | `""` | Network of the FileStore |
+| gcp.fs.tier | string | `""` | Tier of the FileStore |
+| gcp.secretsManager | object | `{"projectId":"","secret":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
+| gcp.secretsManager.projectId | string | `""` | Project ID |
+| gcp.secretsManager.secret.secretName | string | `""` | Name of the secret |
+| gcp.secretsManager.secret.secretVersion | string | `""` | Version of the secret  |
+| gcp.secretsManager.secretProviderClass | string | `""` | Secret provider class |
+| gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
 | kubernetes.ingress.controlPlane.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations |
 | kubernetes.ingress.controlPlane.hostname | string | `"am.wso2.com"` | Ingress hostname |
@@ -43,7 +72,7 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | kubernetes.ingress.ratelimit.zoneName | string | `""` | Ingress ratelimit zone name |
 | kubernetes.ingress.tlsSecret | string | `""` | Kubernetes secret created for Ingress TLS |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
-| kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
+| kubernetes.securityContext.runAsUser | int | `802` | User ID of the container |
 | wso2.apim.configurations.adminPassword | string | `""` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `""` | Super admin username |
 | wso2.apim.configurations.databases.apim_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM AM_DB configurations. |
@@ -129,10 +158,10 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | wso2.deployment.replicas | int | `1` |  |
 | wso2.deployment.resources.jvm.memory.xms | string | `"2048m"` | JVM heap memory Xms |
 | wso2.deployment.resources.jvm.memory.xmx | string | `"2048m"` | JVM heap memory Xmx |
-| wso2.deployment.resources.limits.cpu | string | `"2000m"` | CPU limit for API Manager |
-| wso2.deployment.resources.limits.memory | string | `"2Gi"` | Memory limit for API Manager |
-| wso2.deployment.resources.requests.cpu | string | `"1000m"` | CPU request for API Manager |
-| wso2.deployment.resources.requests.memory | string | `"1Gi"` | Memory request for API Manager |
+| wso2.deployment.resources.limits.cpu | string | `"3000m"` | CPU limit for API Manager |
+| wso2.deployment.resources.limits.memory | string | `"3Gi"` | Memory limit for API Manager |
+| wso2.deployment.resources.requests.cpu | string | `"2000m"` | CPU request for API Manager |
+| wso2.deployment.resources.requests.memory | string | `"2Gi"` | Memory request for API Manager |
 | wso2.deployment.startupProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.startupProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before startup probes are initiated |
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |

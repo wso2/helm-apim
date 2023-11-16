@@ -29,8 +29,15 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | azure.keyVault.secretIdentifiers.internalKeystoreKeyPassword | string | `""` | Internal keystore key password identifier in keyvault |
 | azure.keyVault.secretIdentifiers.internalKeystorePassword | string | `""` | Internal keystore password identifier in keyvault |
 | azure.keyVault.secretProviderClass | string | `"wso2am-tm-secret-provider-class"` | Azure Key vault secret provider class name |
+| gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
+| gcp.secretsManager | object | `{"projectId":"","secret":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
+| gcp.secretsManager.projectId | string | `""` | Project ID |
+| gcp.secretsManager.secret.secretName | string | `""` | Name of the secret |
+| gcp.secretsManager.secret.secretVersion | string | `""` | Version of the secret  |
+| gcp.secretsManager.secretProviderClass | string | `""` | Secret provider class |
+| gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
-| kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
+| kubernetes.securityContext.runAsUser | int | `802` | User ID of the container |
 | wso2.apim.configurations.adminPassword | string | `""` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `""` | Super admin username |
 | wso2.apim.configurations.databases.apim_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM AM_DB configurations. |
@@ -103,10 +110,10 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | wso2.deployment.replicas | int | `1` |  |
 | wso2.deployment.resources.jvm.memory.xms | string | `"2048m"` | JVM heap memory Xms |
 | wso2.deployment.resources.jvm.memory.xmx | string | `"2048m"` | JVM heap memory Xmx |
-| wso2.deployment.resources.limits.cpu | string | `"2000m"` | CPU limit for API Manager |
-| wso2.deployment.resources.limits.memory | string | `"2Gi"` | Memory limit for API Manager |
-| wso2.deployment.resources.requests.cpu | string | `"1000m"` | CPU request for API Manager |
-| wso2.deployment.resources.requests.memory | string | `"1Gi"` | Memory request for API Manager |
+| wso2.deployment.resources.limits.cpu | string | `"3000m"` | CPU limit for API Manager |
+| wso2.deployment.resources.limits.memory | string | `"3Gi"` | Memory limit for API Manager |
+| wso2.deployment.resources.requests.cpu | string | `"2000m"` | CPU request for API Manager |
+| wso2.deployment.resources.requests.memory | string | `"2Gi"` | Memory request for API Manager |
 | wso2.deployment.startupProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.startupProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before startup probes are initiated |
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |

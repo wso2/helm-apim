@@ -27,6 +27,13 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | azure.keyVault.secretIdentifiers.internalKeystoreKeyPassword | string | `""` | Internal keystore key password identifier in keyvault |
 | azure.keyVault.secretIdentifiers.internalKeystorePassword | string | `""` | Internal keystore password identifier in keyvault |
 | azure.keyVault.secretProviderClass | string | `"wso2am-gw-secret-provider-class"` | Azure Key vault secret provider class name |
+| gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
+| gcp.secretsManager | object | `{"projectId":"","secret":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
+| gcp.secretsManager.projectId | string | `""` | Project ID |
+| gcp.secretsManager.secret.secretName | string | `""` | Name of the secret |
+| gcp.secretsManager.secret.secretVersion | string | `""` | Version of the secret  |
+| gcp.secretsManager.secretProviderClass | string | `""` | Secret provider class |
+| gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
 | kubernetes.ingress.gateway.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
 | kubernetes.ingress.gateway.hostname | string | `"gw.wso2.com"` | Ingress hostname for Gateway pass-through |
@@ -39,7 +46,7 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | kubernetes.ingress.websub.annotations | string | `nil` | Ingress annotations for Websub |
 | kubernetes.ingress.websub.hostname | string | `"websub.wso2.com"` | Ingress hostname for Websub |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
-| kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
+| kubernetes.securityContext.runAsUser | int | `802` | User ID of the container |
 | wso2.apim.configurations.adminPassword | string | `""` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `""` | Super admin username |
 | wso2.apim.configurations.cache.gateway_token.enabled | bool | `true` | Gateway token cache enabled |
@@ -140,10 +147,10 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | wso2.deployment.replicas | int | `2` |  |
 | wso2.deployment.resources.jvm.memory.xms | string | `"2048m"` | JVM heap memory Xms |
 | wso2.deployment.resources.jvm.memory.xmx | string | `"2048m"` | JVM heap memory Xmx |
-| wso2.deployment.resources.limits.cpu | string | `"2000m"` | CPU limit for API Manager |
-| wso2.deployment.resources.limits.memory | string | `"2Gi"` | Memory limit for API Manager |
-| wso2.deployment.resources.requests.cpu | string | `"1000m"` | CPU request for API Manager |
-| wso2.deployment.resources.requests.memory | string | `"1Gi"` | Memory request for API Manager |
+| wso2.deployment.resources.limits.cpu | string | `"3000m"` | CPU limit for API Manager |
+| wso2.deployment.resources.limits.memory | string | `"3Gi"` | Memory limit for API Manager |
+| wso2.deployment.resources.requests.cpu | string | `"2000m"` | CPU request for API Manager |
+| wso2.deployment.resources.requests.memory | string | `"2Gi"` | Memory request for API Manager |
 | wso2.deployment.startupProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.startupProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before startup probes are initiated |
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |

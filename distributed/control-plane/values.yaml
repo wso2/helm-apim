@@ -79,6 +79,69 @@ azure:
     # -- Azure fileshare name
     fileShare: ""
 
+# Google Cloud Platform (GCP) integration status
+gcp:
+  # -- If GCP is used as the cloud provider
+  enabled: false
+  # -- File Store configuration parameters
+  fs:
+    # -- Storage capacity of the file system (in GB or other appropriate units)
+    capacity: ""
+    # -- FileStore configuration for specific services
+    fileshares:
+      # -- FileShare configs for CarbonDB persistent storage for instance 1
+      carbonDB1:
+        # -- FileStore of the CarbonDB persistent storage for instance 1
+        fileStoreName: ""
+        # -- FileShare of the CarbonDB persistent storage for instance 1
+        fileShareName: ""
+        # -- IP of the CarbonDB persistent storage for instance 1
+        ip: ""
+      # -- FileShare configs for Solr persistent storage for instance 1
+      solr1:
+        # -- FileStore of the Solr persistent storage for instance 1
+        fileStoreName: ""
+        # -- FileShare of the Solr persistent storage for instance 1
+        fileShareName: ""
+        # -- IP of the Solr persistent storage for instance 1
+        ip: ""
+      # -- FileShare configs for CarbonDB2 persistent storage for instance 2
+      carbonDB2:
+        # -- FileStore of the CarbonDB persistent storage for instance 2
+        fileStoreName: ""
+        # -- FileShare of the CarbonDB persistent storage for instance 2
+        fileShareName: ""
+        # -- IP of the CarbonDB persistent storage for instance 2
+        ip: ""
+      # -- FileShare configs for Solr persistent storage for instance 2
+      solr2:
+        # -- FileStore of the Solr persistent storage for instance 2
+        fileStoreName: ""
+        # -- FileShare of the Solr persistent storage for instance 2
+        fileShareName: ""
+        # -- IP of the Solr persistent storage for instance 2
+        ip: ""
+    # -- Tier of the FileStore
+    tier: ""
+    # -- Network of the FileStore
+    network: ""
+    # -- Region of the FileStore
+    location: ""
+
+  # -- Secrets Manager configuration parameters
+  secretsManager:
+    # -- Project ID
+    projectId: ""
+    # -- Secret provider class
+    secretProviderClass: ""
+    secret:
+      # -- Name of the secret
+      secretName: ""
+      # -- Version of the secret 
+      secretVersion: ""
+  # -- Service Account with access to read secrets
+  serviceAccountName: ""
+
 kubernetes:
   # -- Ingress class to be used for the ingress resource
   ingressClass: "nginx"
@@ -103,7 +166,7 @@ kubernetes:
 
   securityContext:
     # -- User ID of the container
-    runAsUser: 10001
+    runAsUser: 802
   # -- Enable AppArmor profiles for the deployment
   enableAppArmor: false
 
@@ -303,14 +366,14 @@ wso2:
       # Resource configurations defined here are applicable for all API Manager product profiles of this deployment
       requests:
         # -- Memory request for API Manager
-        memory: "1Gi"
+        memory: "2Gi"
         # -- CPU request for API Manager
-        cpu: "1000m"
+        cpu: "2000m"
       limits:
         # -- Memory limit for API Manager
-        memory: "2Gi"
+        memory: "3Gi"
         # -- CPU limit for API Manager
-        cpu: "2000m"
+        cpu: "3000m"
       jvm:
         memory:
           # -- JVM heap memory Xms
@@ -326,7 +389,7 @@ wso2:
       # -- How often (in seconds) to perform the probe
       periodSeconds: 10
       # -- Minimum consecutive successes for the probe to be considered successful after having failed
-      failureThreshold: 3       
+      failureThreshold: 3
     # Indicates whether the container is running
     livenessProbe:
       # -- Number of seconds after the container has started before liveness probes are initiated

@@ -49,9 +49,9 @@ spec:
       {{- if .Values.aws.enabled }}
       serviceAccount: {{ .Values.aws.serviceAccountName }}
       {{- else if .Values.gcp.enabled }}
-      serviceAccountName: {{ .Values.gcp.serviceAccountName }}
+      serviceAccount: {{ .Values.gcp.serviceAccountName }}
       {{- else if .Values.azure.enabled }}
-      serviceAccountName: {{ .Values.azure.serviceAccountName }}
+      serviceAccount: {{ .Values.azure.serviceAccountName }}
       {{- end }}
       {{- end }}
       securityContext:

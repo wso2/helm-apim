@@ -56,6 +56,24 @@ azure:
       # -- Name of the Azure Resource Group to which the target Azure Key Vault belongs
       resourceGroup: ""
 
+# Google Cloud Platform (GCP) integration status
+gcp:
+  # -- If GCP is used as the cloud provider
+  enabled: false
+  # -- Secrets Manager configuration parameters
+  secretsManager:
+    # -- Project ID
+    projectId: ""
+    # -- Secret provider class
+    secretProviderClass: ""
+    secret:
+      # -- Name of the secret
+      secretName: ""
+      # -- Version of the secret 
+      secretVersion: ""
+  # -- Service Account with access to read secrets
+  serviceAccountName: ""
+
 kubernetes:
   # -- Ingress class to be used for the ingress resource
   ingressClass: "nginx"
@@ -91,7 +109,7 @@ kubernetes:
 
   securityContext:
     # -- User ID of the container
-    runAsUser: 10001
+    runAsUser: 802
   # -- Enable AppArmor profiles for the deployment
   enableAppArmor: false
 
@@ -347,14 +365,14 @@ wso2:
       # Resource configurations defined here are applicable for all API Manager product profiles of this deployment
       requests:
         # -- Memory request for API Manager
-        memory: "1Gi"
+        memory: "2Gi"
         # -- CPU request for API Manager
-        cpu: "1000m"
+        cpu: "2000m"
       limits:
         # -- Memory limit for API Manager
-        memory: "2Gi"
+        memory: "3Gi"
         # -- CPU limit for API Manager
-        cpu: "2000m"
+        cpu: "3000m"
       jvm:
         memory:
           # -- JVM heap memory Xms

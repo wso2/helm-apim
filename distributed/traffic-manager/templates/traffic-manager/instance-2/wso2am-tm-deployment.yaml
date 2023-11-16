@@ -52,8 +52,14 @@ spec:
                   - {{ template "apim-helm-tm.fullname" . }}
               topologyKey: "topology.kubernetes.io/zone"
             weight: 100
-      {{- if and .Values.wso2.apim.secureVaultEnabled .Values.aws.enabled }}
-      serviceAccountName: {{ .Values.aws.serviceAccountName }}
+      {{- if .Values.wso2.apim.secureVaultEnabled }} 
+      {{- if .Values.aws.enabled }}
+      serviceAccount: {{ .Values.aws.serviceAccountName }}
+      {{- else if .Values.gcp.enabled }}
+      serviceAccount: {{ .Values.gcp.serviceAccountName }}
+      {{- else if .Values.azure.enabled }}
+      serviceAccount: {{ .Values.azure.serviceAccountName }}
+      {{- end }}
       {{- end }}
       securityContext:
         seccompProfile:
@@ -196,6 +202,9 @@ spec:
           {{- else if .Values.aws.enabled }}
           volumeAttributes:
             secretProviderClass: {{ .Values.aws.secretsManager.secretProviderClass }}
+          {{- else if .Values.gcp.enabled }}
+          volumeAttributes:
+            secretProviderClass: {{ .Values.gcp.secretsManager.secretProviderClass }}
           {{- end }}
       {{- end }}
       - name: wso2am-traffic-manager-keystores
