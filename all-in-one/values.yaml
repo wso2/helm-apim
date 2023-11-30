@@ -250,22 +250,6 @@ wso2:
             maxActive: 100
             maxWait: 60000
             minIdle: 5
-        config_db:
-          # -- APIM SharedDB URL
-          url: ""
-          # -- APIM SharedDB username
-          username: ""
-          # -- APIM SharedDB password
-          password: ""
-          # -- APIM database JDBC pool parameters
-          poolParameters:
-            defaultAutoCommit: false
-            testOnBorrow: true
-            testWhileIdle: true
-            validationInterval: 30000
-            maxActive: 100
-            maxWait: 60000
-            minIdle: 5
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
