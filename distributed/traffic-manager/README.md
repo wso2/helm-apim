@@ -100,14 +100,11 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | wso2.deployment.livenessProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.livenessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before liveness probes are initiated |
 | wso2.deployment.livenessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
-| wso2.deployment.maxReplicas | int | `3` | Maximum replicas for HPA |
 | wso2.deployment.memoryUtilizationPercentage | int | `75` | Target memory utilization percentage for HPA |
 | wso2.deployment.minAvailable | string | `"50%"` | Minimum available pod counts for PDB |
-| wso2.deployment.minReplicas | int | `2` | Minimum replicas for HPA |
 | wso2.deployment.readinessProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.readinessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before readiness probes are initiated |
 | wso2.deployment.readinessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
-| wso2.deployment.replicas | int | `1` |  |
 | wso2.deployment.resources.jvm.memory.xms | string | `"2048m"` | JVM heap memory Xms |
 | wso2.deployment.resources.jvm.memory.xmx | string | `"2048m"` | JVM heap memory Xmx |
 | wso2.deployment.resources.limits.cpu | string | `"3000m"` | CPU limit for API Manager |
