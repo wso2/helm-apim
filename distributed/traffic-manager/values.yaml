@@ -304,14 +304,6 @@ wso2:
       preStopHook:
         # -- Number of seconds to sleep before sending SIGTERM to the pod
         sleepSeconds: 10
-
-    # Number of deployment replicas
-    replicas: 1
-    # HPA configurations
-    # -- Minimum replicas for HPA
-    minReplicas: 2
-    # -- Maximum replicas for HPA
-    maxReplicas: 3
     # -- Target CPU utilization percentage for HPA
     cpuUtilizationPercentage: 75
     # -- Target memory utilization percentage for HPA
