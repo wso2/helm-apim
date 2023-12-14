@@ -180,6 +180,8 @@ wso2:
     log4j2:
         # -- Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE
         loggers: ""
+    startupArgs: ""
+    portOffset: 0
     # TOML configurations
     configurations:
       userStore:
@@ -287,6 +289,7 @@ wso2:
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
           serviceName: "wso2am-gateway-service"
+          servicePort: 9443
           wsHostname: "websocket.wso2.com"
           httpHostname: "gw.wso2.com"
           websubHostname: "websub.wso2.com"
@@ -296,6 +299,7 @@ wso2:
         enabled: false
         # Kubernetes service name exposing Identity Server
         serviceName: ""
+        servicePort: 9443
 
       publisher:
         # -- Supported document types in Publisher. 

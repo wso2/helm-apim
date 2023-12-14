@@ -22,25 +22,25 @@ spec:
     # ports that this service should serve on
     - name: pass-through-http
       protocol: TCP
-      port: 8280
+      port: {{ add 8280 .Values.wso2.apim.portOffset }}
     - name: pass-through-https
       protocol: TCP
-      port: 8243
+      port: {{ add 8243 .Values.wso2.apim.portOffset }}
     - name: servlet-http
       protocol: TCP
-      port: 9763
+      port: {{ add 9763 .Values.wso2.apim.portOffset }}
     - name: servlet-https
       protocol: TCP
-      port: 9443
+      port: {{ add 9443 .Values.wso2.apim.portOffset }}
     - name: ws
       protocol: TCP
-      port: 9099
+      port: {{ add 9099 .Values.wso2.apim.portOffset }}
     - name: wss
       protocol: TCP
-      port: 8099
+      port: {{ add 8099 .Values.wso2.apim.portOffset }}
     - name: websub
       protocol: TCP
-      port: 9021
+      port: {{ add 9021 .Values.wso2.apim.portOffset }}
     - name: websub-secure
       protocol: TCP
-      port: 8021
+      port: {{ add 8021 .Values.wso2.apim.portOffset }}

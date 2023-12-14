@@ -80,21 +80,21 @@ spec:
             command:
               - /bin/sh
               - -c
-              - nc -z localhost 9443
+              - nc -z localhost {{ add 9443 .Values.wso2.apim.portOffset }}
           initialDelaySeconds: {{ .Values.wso2.deployment.startupProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.wso2.deployment.startupProbe.periodSeconds }}
           failureThreshold: {{ .Values.wso2.deployment.startupProbe.failureThreshold }}
         livenessProbe:
           httpGet:
               path: /services/Version
-              port: 9763
+              port: {{ add 9763 .Values.wso2.apim.portOffset }}
           initialDelaySeconds: {{ .Values.wso2.deployment.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.wso2.deployment.livenessProbe.periodSeconds }}
           failureThreshold: {{ .Values.wso2.deployment.livenessProbe.failureThreshold }}
         readinessProbe:
           httpGet:
               path: /services/Version
-              port: 9763
+              port: {{ add 9763 .Values.wso2.apim.portOffset }}
           initialDelaySeconds: {{ .Values.wso2.deployment.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.wso2.deployment.readinessProbe.periodSeconds }}
           failureThreshold: {{ .Values.wso2.deployment.readinessProbe.failureThreshold }}
@@ -124,21 +124,21 @@ spec:
             drop:
               - all
         ports:
-        - containerPort: 8280
+        - containerPort: {{ add 8280 .Values.wso2.apim.portOffset }}
           protocol: TCP
-        - containerPort: 8243
+        - containerPort: {{ add 8243 .Values.wso2.apim.portOffset }}
           protocol: TCP
-        - containerPort: 9763
+        - containerPort: {{ add 9763 .Values.wso2.apim.portOffset }}
           protocol: TCP
-        - containerPort: 9443
+        - containerPort: {{ add 9443 .Values.wso2.apim.portOffset }}
           protocol: TCP
-        - containerPort: 9099
+        - containerPort: {{ add 9099 .Values.wso2.apim.portOffset }}
           protocol: TCP
-        - containerPort: 8099
+        - containerPort: {{ add 8099 .Values.wso2.apim.portOffset }}
           protocol: TCP
-        - containerPort: 9021
+        - containerPort: {{ add 9021 .Values.wso2.apim.portOffset }}
           protocol: TCP
-        - containerPort: 8021
+        - containerPort: {{ add 8021 .Values.wso2.apim.portOffset }}
           protocol: TCP
         volumeMounts:
         - name: wso2am-gateway-conf
