@@ -64,8 +64,8 @@ data:
     if [[ -z "${PROFILE_NAME}" ]]
     then
       # start the server with the provided startup arguments
-      sh ${WSO2_SERVER_HOME}/bin/api-manager.sh "$@"
+      sh ${WSO2_SERVER_HOME}/bin/api-manager.sh "$@" {{ .Values.wso2.apim.startupArgs }}
     else
       # start the server with the specified profile and provided startup arguments
-      sh ${WSO2_SERVER_HOME}/bin/api-manager.sh -Dprofile=${PROFILE_NAME} "$@"
+      sh ${WSO2_SERVER_HOME}/bin/api-manager.sh -Dprofile=${PROFILE_NAME} "$@" {{ .Values.wso2.apim.startupArgs }}
     fi

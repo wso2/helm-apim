@@ -180,6 +180,10 @@ wso2:
     log4j2:
         # -- Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE
         loggers: ""
+    # -- Startup arguments for APIM
+    startupArgs: ""
+    # -- Port Offset for APIM deployment
+    portOffset: 0
     # TOML configurations
     configurations:
       userStore:
@@ -287,15 +291,18 @@ wso2:
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
           serviceName: "wso2am-gateway-service"
+          servicePort: 9443
           wsHostname: "websocket.wso2.com"
           httpHostname: "gw.wso2.com"
           websubHostname: "websub.wso2.com"
 
       iskm:
-        # If Identity Server is used as the Resident KM
+        # -- If Identity Server is used as the Resident KM
         enabled: false
-        # Kubernetes service name exposing Identity Server
+        # -- Kubernetes service name exposing Identity Server
         serviceName: ""
+        # -- Kubernetes service port exposing Identity Serve
+        servicePort: 9443
 
       publisher:
         # -- Supported document types in Publisher. 

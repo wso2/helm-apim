@@ -44,4 +44,4 @@ spec:
           service: 
             name: {{ template "apim-helm-cp.fullname" . }}-service
             port: 
-              number: 9443
+              number: {{ add 9443 .Values.wso2.config.portOffset }}

@@ -1,7 +1,7 @@
 [server]
 hostname = "{{ .Values.kubernetes.ingress.controlPlane.hostname }}"
 node_ip = "$env{NODE_IP}"
-#offset=0
+offset = {{ .Values.wso2.apim.portOffset }}
 base_path = "${carbon.protocol}://${carbon.host}:${carbon.management.port}"
 #discard_empty_caches = false
 server_role = "control-plane"
@@ -112,7 +112,7 @@ provider = {{ $env.provider | quote }}
 display_in_api_console = {{ $env.displayInApiConsole }}
 description = {{ $env.description | quote }}
 show_as_token_endpoint_url = {{ $env.showAsTokenEndpointUrl }}
-service_url = "https://{{ $env.serviceName }}:9443/services/"
+service_url = "https://{{ $env.serviceName }}:{{ $env.servicePort }}/services/"
 username= "${admin.username}"
 password= "${admin.password}"
 ws_endpoint = "ws://{{ $env.wsHostname }}"
@@ -127,9 +127,9 @@ websub_event_receiver_https_endpoint = "https://{{ $env.websubHostname }}"
 [apim.key_manager]
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
 type = "WSO2-IS"
-service_url = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:9443/services/"
+service_url = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:{{ .Values.wso2.apim.configurations.iskm.servicePort }}/services/"
 {{- else }}
-service_url = "https://{{ template "apim-helm-cp.fullname" . }}-service:9443/services/"
+service_url = "https://{{ template "apim-helm-cp.fullname" . }}-service:{{ add 9443 .Values.wso2.config.portOffset }}/services/"
 {{- end }}
 username= "$ref{super_admin.username}"
 password= "$ref{super_admin.password}"
@@ -192,27 +192,27 @@ enable_key_provisioning = {{ .Values.wso2.apim.configurations.devportal.enableKe
 enable = true
 username = "$ref{super_admin.username}"
 password = "$ref{super_admin.password}"
-service_url = "https://{{ template "apim-helm-cp.fullname" . }}-service:9443/services/"
-event_listening_endpoints = ["tcp://localhost:5672"]
+service_url = "https://{{ template "apim-helm-cp.fullname" . }}-service:{{ add 9443 .Values.wso2.config.portOffset }}/services/"
+event_listening_endpoints = ["tcp://localhost:{{ add 5672 .Values.wso2.config.portOffset }}"]
 {{- if .Values.wso2.deployment.highAvailability }}
-event_duplicate_url = ["tcp://{{ template "apim-helm-cp.fullname" . }}-2-service:5672"]
+event_duplicate_url = ["tcp://{{ template "apim-helm-cp.fullname" . }}-2-service:{{ add 5672 .Values.wso2.config.portOffset }}"]
 {{- end }}
 
 [[apim.event_hub.publish.url_group]]
-urls = ["tcp://{{ template "apim-helm-cp.fullname" . }}-1-service:9611"]
-auth_urls = ["ssl://{{ template "apim-helm-cp.fullname" . }}-1-service:9711"]
+urls = ["tcp://{{ template "apim-helm-cp.fullname" . }}-1-service:{{ add 9611 .Values.wso2.config.portOffset }}"]
+auth_urls = ["ssl://{{ template "apim-helm-cp.fullname" . }}-1-service:{{ add 9711 .Values.wso2.config.portOffset }}"]
 
 {{- if .Values.wso2.deployment.highAvailability }}
 [[apim.event_hub.publish.url_group]]
-urls = ["tcp://{{ template "apim-helm-cp.fullname" . }}-2-service:9611"]
-auth_urls = ["ssl://{{ template "apim-helm-cp.fullname" . }}-2-service:9711"]
+urls = ["tcp://{{ template "apim-helm-cp.fullname" . }}-2-service:{{ add 9611 .Values.wso2.config.portOffset }}"]
+auth_urls = ["ssl://{{ template "apim-helm-cp.fullname" . }}-2-service:{{ add 9711 .Values.wso2.config.portOffset }}"]
 {{- end }}
 
 [apim.oauth_config]
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
-revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:9443/oauth2/revoke"
+revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:{{ .Values.wso2.apim.configurations.iskm.servicePort }}/oauth2/revoke"
 {{- else }}
-revoke_endpoint = "https://{{ template "apim-helm-cp.fullname" . }}-service:9443/oauth2/revoke"
+revoke_endpoint = "https://{{ template "apim-helm-cp.fullname" . }}-service:{{ add 9443 .Values.wso2.config.portOffset }}/oauth2/revoke"
 {{- end }}
 enable_token_encryption = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenEncryption }}
 enable_token_hashing = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenHashing }}

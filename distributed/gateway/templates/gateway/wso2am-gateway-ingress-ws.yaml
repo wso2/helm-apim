@@ -34,4 +34,4 @@ spec:
           service: 
             name: {{ template "apim-helm-gw.fullname" . }}-service
             port: 
-              number: 8099
+              number: {{ add 8099 .Values.wso2.apim.portOffset }}
