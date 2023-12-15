@@ -47,6 +47,7 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | kubernetes.ingress.websub.hostname | string | `"websub.wso2.com"` | Ingress hostname for Websub |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
 | kubernetes.securityContext.runAsUser | int | `802` | User ID of the container |
+| wso2.ELKAnalytics | object | `{"enabled":false}` | ELK Analytics Parameters |
 | wso2.apim.configurations.adminPassword | string | `""` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `""` | Super admin username |
 | wso2.apim.configurations.cache.gateway_token.enabled | bool | `true` | Gateway token cache enabled |
@@ -124,6 +125,7 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | wso2.apim.configurations.transport.passthru_https.sender.parameters.hostnameVerifier | string | `"AllowAll"` | Hostname verifier. https://apim.docs.wso2.com/en/latest/install-and-setup/setup/security/enabling-hostname-verification/#configuring-hostname-verification |
 | wso2.apim.configurations.userStore.properties | object | `{"key":"value"}` | User store properties |
 | wso2.apim.configurations.userStore.type | string | `"database_unique_id"` | User store type.  https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/ |
+| wso2.apim.log4j2.appenders | string | `""` | Appenders |
 | wso2.apim.log4j2.loggers | string | `""` | Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE |
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |

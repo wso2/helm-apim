@@ -79,6 +79,7 @@ A Helm chart for the deployment of WSO2 API Manager Single Node.
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
 | kubernetes.securityContext.runAsGroup | int | `802` |  |
 | kubernetes.securityContext.runAsUser | int | `802` | User ID of the container |
+| wso2.ELKAnalytics | object | `{"enabled":false}` | ELK Analytics Parameters |
 | wso2.apim.configurations.adminPassword | string | `"admin"` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `"admin"` | Super admin username |
 | wso2.apim.configurations.cache.gateway_token.enabled | bool | `true` | Gateway token cache enabled |
@@ -223,6 +224,7 @@ A Helm chart for the deployment of WSO2 API Manager Single Node.
 | wso2.apim.configurations.workflow.enable | bool | `false` |  |
 | wso2.apim.configurations.workflow.serviceUrl | string | `""` |  |
 | wso2.apim.configurations.workflow.tokenEndpoint | string | `""` |  |
+| wso2.apim.log4j2.appenders | string | `""` | Appenders |
 | wso2.apim.log4j2.loggers | string | `""` | Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
 | wso2.apim.version | string | `"4.2.0"` | APIM version |
@@ -234,7 +236,7 @@ A Helm chart for the deployment of WSO2 API Manager Single Node.
 | wso2.deployment.image.registry | string | `""` | Registry containing the image |
 | wso2.deployment.image.repository | string | `""` | Repository name consisting the image |
 | wso2.deployment.lifecycle.preStopHook.sleepSeconds | int | `10` | Time to wait until the apim is terminated gracefully |
-| wso2.deployment.livenessProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
+| wso2.deployment.livenessProbe.failureThreshold | int | `5` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.livenessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before liveness probes are initiated |
 | wso2.deployment.livenessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
 | wso2.deployment.minAvailable | string | `"50%"` | Minimum available pod counts for PDB |
@@ -247,11 +249,11 @@ A Helm chart for the deployment of WSO2 API Manager Single Node.
 | wso2.deployment.readinessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
 | wso2.deployment.resources.jvm.memory.xms | string | `"2048m"` | JVM heap memory Xms |
 | wso2.deployment.resources.jvm.memory.xmx | string | `"2048m"` | JVM heap memory Xmx |
-| wso2.deployment.resources.limits.cpu | string | `"2000m"` | CPU limit for API Manager |
-| wso2.deployment.resources.limits.memory | string | `"2Gi"` | Memory limit for API Manager |
-| wso2.deployment.resources.requests.cpu | string | `"1000m"` | CPU request for API Manager |
-| wso2.deployment.resources.requests.memory | string | `"1Gi"` | Memory request for API Manager |
-| wso2.deployment.startupProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
+| wso2.deployment.resources.limits.cpu | string | `"3000m"` | CPU limit for API Manager |
+| wso2.deployment.resources.limits.memory | string | `"3Gi"` | Memory limit for API Manager |
+| wso2.deployment.resources.requests.cpu | string | `"2000m"` | CPU request for API Manager |
+| wso2.deployment.resources.requests.memory | string | `"2Gi"` | Memory request for API Manager |
+| wso2.deployment.startupProbe.failureThreshold | int | `5` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.startupProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before startup probes are initiated |
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
 

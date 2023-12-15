@@ -162,6 +162,9 @@ event_listening_endpoints = [{{ range $index, $element := .Values.wso2.apim.conf
 enable = true
 config_endpoint = "{{ .Values.wso2.choreoAnalytics.endpoint }}"
 auth_token = "{{ .Values.wso2.choreoAnalytics.onpremKey }}"
+{{- else if .Values.wso2.ELKAnalytics.enabled}}
+enable = true
+type = "elk"
 {{- else }}
 enable = false
 {{- end }}
