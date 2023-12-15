@@ -69,6 +69,7 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | wso2.apim.configurations.databases.shared_db.username | string | `""` | APIM SharedDB username |
 | wso2.apim.configurations.databases.type | string | `""` | Database type. eg: mysql, oracle, mssql, postgres |
 | wso2.apim.configurations.eventhub.enabled | bool | `false` | Event hub (control plane) enabled. This should be enabled if the traffic manager is separated from the control-plane. |
+| wso2.apim.configurations.eventhub.servicePort | int | `9443` | Event hub (control plane) service port |
 | wso2.apim.configurations.eventhub.serviceUrl | string | `"wso2am-cp-service"` | Event hub (control plane) loadbalancer service url |
 | wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
 | wso2.apim.configurations.iskm.enabled | bool | `false` |  |
@@ -115,6 +116,7 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | wso2.apim.configurations.sync_runtime_artifacts.gateway.labels | list | `["Default"]` | Gateway label used to filter out artifact retrieval |
 | wso2.apim.configurations.throttling.headerBasedThrottling | bool | `false` | Enable header based throttling |
 | wso2.apim.configurations.throttling.jwtClaimBasedThrottling | bool | `false` | Enable JWT claim based throttling |
+| wso2.apim.configurations.throttling.portOffset | int | `0` |  |
 | wso2.apim.configurations.throttling.queryParamBasedThrottling | bool | `false` | Enable query param based throttling |
 | wso2.apim.configurations.throttling.serviceUrl | string | `"wso2am-cp-service"` | Traffic manager loadbalancer service url for throttling. If the traffic manager is separated from control-plane, all urls should be pointed to traffic-manager ones. |
 | wso2.apim.configurations.throttling.unlimitedTier | bool | `true` | Enable unlimited throttling tier |
@@ -123,7 +125,9 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | wso2.apim.configurations.userStore.properties | object | `{"key":"value"}` | User store properties |
 | wso2.apim.configurations.userStore.type | string | `"database_unique_id"` | User store type.  https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/ |
 | wso2.apim.log4j2.loggers | string | `""` | Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE |
+| wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
+| wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
 | wso2.apim.version | string | `"4.2.0"` | APIM version |
 | wso2.choreoAnalytics | object | `{"enabled":false,"endpoint":"","onpremKey":""}` | WSO2 Choreo Analytics Parameters If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/). |
 | wso2.choreoAnalytics.endpoint | string | `""` | Choreo Analytics cloud service endpoint |

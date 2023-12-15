@@ -100,9 +100,10 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | wso2.apim.configurations.devportal.enableKeyProvisioning | string | `nil` |  |
 | wso2.apim.configurations.devportal.enableRatings | string | `nil` |  |
 | wso2.apim.configurations.devportal.loginUsernameCaseInsensitive | string | `nil` |  |
-| wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","showAsTokenEndpointUrl":true,"type":"hybrid","websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
-| wso2.apim.configurations.iskm.enabled | bool | `false` |  |
-| wso2.apim.configurations.iskm.serviceName | string | `""` |  |
+| wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
+| wso2.apim.configurations.iskm.enabled | bool | `false` | If Identity Server is used as the Resident KM |
+| wso2.apim.configurations.iskm.serviceName | string | `""` | Kubernetes service name exposing Identity Server |
+| wso2.apim.configurations.iskm.servicePort | int | `9443` | Kubernetes service port exposing Identity Serve |
 | wso2.apim.configurations.oauth_config.allowedScopes | list | `["^device_.*,openid"]` | List of allow-listed scopes |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
@@ -136,7 +137,9 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | wso2.apim.configurations.userStore.properties | object | `{"key":"value"}` | User store properties |
 | wso2.apim.configurations.userStore.type | string | `"database_unique_id"` | User store type.  https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/ |
 | wso2.apim.log4j2.loggers | string | `""` | Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE |
+| wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
+| wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
 | wso2.apim.version | string | `"4.2.0"` | APIM version |
 | wso2.deployment.highAvailability | bool | `true` | Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed. This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM. |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
