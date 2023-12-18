@@ -189,6 +189,10 @@ wso2:
     # -- On-premise key for Choreo Analytics
     onpremKey: ""
 
+  # -- ELK Analytics Parameters
+  ELKAnalytics:
+    enabled: false
+
   # TOML configurations
   apim:
     # -- APIM version
@@ -199,6 +203,8 @@ wso2:
     log4j2:
       # -- Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE
       loggers: ""
+      # -- Appenders
+      appenders: ""
     configurations:
       userStore:
         # -- User store type. 
