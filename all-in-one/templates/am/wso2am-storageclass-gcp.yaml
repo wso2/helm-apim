@@ -13,7 +13,7 @@
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: {{ template "am-all-in-one.fullname" . }}-sc
+  name: {{ template "am-all-in-one.fullname" . }}-am-sc
 provisioner: filestore.csi.storage.gke.io
 parameters:
   tier: {{ .Values.gcp.fs.tier | quote }}

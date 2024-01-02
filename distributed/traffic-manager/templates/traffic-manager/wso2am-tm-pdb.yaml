@@ -12,9 +12,9 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ template "apim-helm-tm.fullname" . }}-pdb
+  name: {{ template "apim-helm-tm.resource.prefix" . }}-pdb
 spec:
-  minAvailable: {{ .Values.wso2.deployment.minAvailable | quote }}
+  minAvailable: {{ .Values.wso2.deployment.am.minAvailable }}
   selector:
     matchLabels:
-      deployment: {{ template "apim-helm-tm.fullname" . }}-deployment
+      deployment: {{ template "apim-helm-tm.resource.prefix" . }}

@@ -1,4 +1,3 @@
-{{ if and .Values.wso2.deployment.persistence.solrIndexing.enabled .Values.aws.enabled }}
 # -------------------------------------------------------------------------------------
 #
 # Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
@@ -10,10 +9,11 @@
 #
 # --------------------------------------------------------------------------------------
 
+{{ if and .Values.wso2.deployment.persistence.solrIndexing.enabled .Values.aws.enabled }}
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: {{ template "apim-helm-cp.fullname" . }}-sc
+  name: {{ template "apim-helm-cp.resource.prefix" . }}-sc
 provisioner: efs.csi.aws.com
 parameters:
   provisioningMode: efs-ap

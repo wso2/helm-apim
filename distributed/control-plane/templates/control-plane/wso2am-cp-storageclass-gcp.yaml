@@ -13,7 +13,7 @@
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: {{ template "apim-helm-cp.fullname" . }}-sc
+  name: {{ template "apim-helm-cp.resource.prefix" . }}-sc
 provisioner: filestore.csi.storage.gke.io
 parameters:
   tier: {{ .Values.gcp.fs.tier | quote }}

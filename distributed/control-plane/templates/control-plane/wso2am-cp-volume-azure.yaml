@@ -1,4 +1,3 @@
-{{ if and .Values.wso2.deployment.persistence.solrIndexing.enabled .Values.azure.enabled }}
 # -------------------------------------------------------------------------------------
 #
 # Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
@@ -10,13 +9,16 @@
 #
 # --------------------------------------------------------------------------------------
 
+{{ if and .Values.wso2.deployment.persistence.solrIndexing.enabled .Values.azure.enabled}}
+
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ template "apim-helm-cp.fullname" . }}
+  name: {{ template "apim-helm-cp.fullname" . }}-solr-indexed-data-1
   labels:
-    purpose: cp-volume
+    purpose: cp-solr-1
 spec:
+  storageClassName: {{ template "apim-helm-cp.resource.prefix" . }}-sc
   accessModes:
     - ReadWriteMany
   capacity:
@@ -26,11 +28,96 @@ spec:
   azureFile:
     secretName: {{ .Values.azure.persistence.secretName }}
     secretNamespace: {{ .Release.Namespace }}
-    shareName: {{ .Values.azure.persistence.fileShare }}
+    shareName: {{ .Values.azure.persistence.fileShares.solr1 }}
   mountOptions:
     - dir_mode=0777
     - file_mode=0777
-    - uid=10001
-    - gid=10001
+    - uid=802
+    - gid=802
     - cache=strict
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "apim-helm-cp.fullname" . }}-carbon-database-1
+  labels:
+    purpose: cp-carbondb-1
+spec:
+  storageClassName: {{ template "apim-helm-cp.resource.prefix" . }}-sc
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: {{ .Values.azure.persistence.capacity }}
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  azureFile:
+    secretName: {{ .Values.azure.persistence.secretName }}
+    secretNamespace: {{ .Release.Namespace }}
+    shareName: {{ .Values.azure.persistence.fileShares.carbondb1 }}
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=802
+    - gid=802
+    - cache=strict
+
+  {{ if .Values.wso2.deployment.highAvailability }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "apim-helm-cp.fullname" . }}-solr-indexed-data-2
+  labels:
+    purpose: cp-solr-2
+spec:
+  storageClassName: {{ template "apim-helm-cp.resource.prefix" . }}-sc
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: {{ .Values.azure.persistence.capacity }}
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  azureFile:
+    secretName: {{ .Values.azure.persistence.secretName }}
+    secretNamespace: {{ .Release.Namespace }}
+    shareName: {{ .Values.azure.persistence.fileShares.solr2 }}
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=802
+    - gid=802
+    - cache=strict
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "apim-helm-cp.fullname" . }}-carbon-database-2
+  labels:
+    purpose: cp-carbondb-2
+spec:
+  storageClassName: {{ template "apim-helm-cp.resource.prefix" . }}-sc
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: {{ .Values.azure.persistence.capacity }}
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  azureFile:
+    secretName: {{ .Values.azure.persistence.secretName }}
+    secretNamespace: {{ .Release.Namespace }}
+    shareName: {{ .Values.azure.persistence.fileShares.carbondb2 }}
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=802
+    - gid=802
+    - cache=strict
+
+  {{ end }}
 {{- end }}

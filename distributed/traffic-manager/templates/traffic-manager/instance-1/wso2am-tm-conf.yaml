@@ -12,7 +12,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "apim-helm-tm.fullname" . }}-conf-1
+  name: {{ template "apim-helm-tm.resource.prefix" . }}-1-conf
   namespace : {{ .Release.Namespace }}
 data:
-  deployment.toml: {{ tpl (.Files.Get "confs/instance-1/deployment.toml") . | quote }}
+  deployment.toml: {{ tpl (.Files.Get "confs/apim/tm/instance-1/deployment.toml") . | quote }}

@@ -20,18 +20,16 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      deployment: {{ template "am-all-in-one.fullname" . }}-am
-      node: {{ template "am-all-in-one.fullname" . }}-am
+      deployment: {{ template "am-all-in-one.fullname" . }}
+      node: {{ template "am-all-in-one.fullname" . }}
   template:
     metadata:
       annotations:
         checksum.am.conf: {{ include (print $.Template.BasePath "/am/wso2am-conf.yaml") . | sha256sum }}
         checksum.am.conf.log4j2: {{ include (print $.Template.BasePath "/am/wso2am-conf-log4j2.yaml") . | sha256sum }}
-        checksum.am.conf.secret-conf: {{ include (print $.Template.BasePath "/am/wso2am-conf-secret-conf.yaml") . | sha256sum }}
       labels:
-        deployment: {{ template "am-all-in-one.fullname" . }}-am
-        node: {{ template "am-all-in-one.fullname" . }}-am
-        product: apim
+        deployment: {{ template "am-all-in-one.fullname" . }}
+        node: {{ template "am-all-in-one.fullname" . }}
     spec:
       affinity:
         podAntiAffinity:
@@ -47,11 +45,9 @@ spec:
             weight: 100
       {{- if .Values.wso2.apim.secureVaultEnabled }} 
       {{- if .Values.aws.enabled }}
-      serviceAccount: {{ .Values.aws.serviceAccountName }}
+      serviceAccount: {{ .Values.aws.secretsManager.serviceAccountName }}
       {{- else if .Values.gcp.enabled }}
-      serviceAccount: {{ .Values.gcp.serviceAccountName }}
-      {{- else if .Values.azure.enabled }}
-      serviceAccount: {{ .Values.azure.serviceAccountName }}
+      serviceAccount: {{ .Values.gcp.secretsManager.serviceAccountName }}
       {{- end }}
       {{- end }}
       securityContext:
@@ -59,38 +55,26 @@ spec:
           type: RuntimeDefault
       containers:
         - name: wso2am
-          image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
-          imagePullPolicy: {{ .Values.wso2.deployment.imagePullPolicy }}
-          env:
-            - name: NODE_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-            - name: JVM_MEM_OPTS
-              value: "-Xms{{ .Values.wso2.deployment.resources.jvm.memory.xms }} -Xmx{{ .Values.wso2.deployment.resources.jvm.memory.xmx }}"
-          startupProbe:
+          image: {{ .Values.wso2.deployment.am.image.registry }}/{{ .Values.wso2.deployment.am.image.repository }}@{{ .Values.wso2.deployment.am.image.digest }}
+          imagePullPolicy: {{ .Values.wso2.deployment.am.image.imagePullPolicy }}
+          livenessProbe:
             exec:
               command:
                 - /bin/sh
                 - -c
-                - nc -z localhost 9443
-            initialDelaySeconds: {{ .Values.wso2.deployment.startupProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.wso2.deployment.startupProbe.periodSeconds }}
-            failureThreshold: {{ .Values.wso2.deployment.startupProbe.failureThreshold }}         
-          livenessProbe:
-            httpGet:
-              path: /services/Version
-              port: 9763
-            initialDelaySeconds: {{ .Values.wso2.deployment.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.wso2.deployment.livenessProbe.periodSeconds }}
-            failureThreshold: {{ .Values.wso2.deployment.livenessProbe.failureThreshold }}
+                - nc -z localhost {{ add 9443 .Values.wso2.apim.portOffset }}
+            initialDelaySeconds: {{ .Values.wso2.deployment.am.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.wso2.deployment.am.livenessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.wso2.deployment.am.livenessProbe.failureThreshold }}
           readinessProbe:
-            httpGet:
-              path: /services/Version
-              port: 9763
-            initialDelaySeconds: {{ .Values.wso2.deployment.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.wso2.deployment.readinessProbe.periodSeconds }}
-            failureThreshold: {{ .Values.wso2.deployment.readinessProbe.failureThreshold }}
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - nc -z localhost {{ add 9443 .Values.wso2.apim.portOffset }}
+            initialDelaySeconds: {{ .Values.wso2.deployment.am.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.wso2.deployment.am.readinessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.wso2.deployment.am.readinessProbe.failureThreshold }}
           lifecycle:
             preStop:
               exec:
@@ -99,100 +83,98 @@ spec:
                   - "-c"
                   - >
                     echo "Pre stop hook triggered";
-                    sleep {{ .Values.wso2.deployment.lifecycle.preStopHook.sleepSeconds }}; 
+                    sleep 10;
                     echo "Shutdown APIM Server";
-                    ${WSO2_SERVER_HOME}/bin/api-manager.sh stop
+                    ${WSO2_SERVER_HOME}/bin/wso2server.sh stop
           resources:
             requests:
-              memory: {{ .Values.wso2.deployment.resources.requests.memory }}
-              cpu: {{ .Values.wso2.deployment.resources.requests.cpu }}
+              memory: {{ .Values.wso2.deployment.am.resources.requests.memory }}
+              cpu: {{ .Values.wso2.deployment.am.resources.requests.cpu }}
             limits:
-              memory: {{ .Values.wso2.deployment.resources.limits.memory }}
-              cpu: {{ .Values.wso2.deployment.resources.limits.cpu }}
+              memory: {{ .Values.wso2.deployment.am.resources.limits.memory }}
+              cpu: {{ .Values.wso2.deployment.am.resources.limits.cpu }}
           securityContext:
             runAsUser: {{ .Values.kubernetes.securityContext.runAsUser }}
-            runAsGroup: {{ .Values.kubernetes.securityContext.runAsGroup }}
             allowPrivilegeEscalation: false
             runAsNonRoot: true
             capabilities:
               drop:
                 - all
           ports:
-            - containerPort: 8280
+            - containerPort: {{ add 9763 .Values.wso2.apim.portOffset }}
               protocol: "TCP"
-            - containerPort: 8243
+            - containerPort: {{ add 9443 .Values.wso2.apim.portOffset }}
               protocol: "TCP"
-            - containerPort: 9763
+            - containerPort: {{ add 9711 .Values.wso2.apim.portOffset }}
               protocol: "TCP"
-            - containerPort: 9443
+            - containerPort: {{ add 9611 .Values.wso2.apim.portOffset }}
               protocol: "TCP"
-            - containerPort: 9711
+            - containerPort: {{ add 5672 .Values.wso2.apim.portOffset }}
               protocol: "TCP"
-            - containerPort: 9611
-              protocol: "TCP"
-            - containerPort: 5672
-              protocol: "TCP"
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: JAVA_MEM_OPTS
+              value: "-Xms{{ .Values.wso2.deployment.am.resources.jvm.memory.xms }} -Xmx{{ .Values.wso2.deployment.am.resources.jvm.memory.xmx }}"
           volumeMounts:
             - name: wso2am-conf
               mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml
               subPath: deployment.toml
-            - name: wso2am-entrypoint
-              mountPath: /home/wso2carbon/docker-entrypoint.sh
-              subPath: docker-entrypoint.sh
-            - name: wso2am-log4j2
-              mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/log4j2.properties
-              subPath: log4j2.properties
-            {{- if .Values.wso2.apim.secureVaultEnabled }}
-            - name: wso2am-secret-conf
-              mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/security/secret-conf.properties
-              subPath: secret-conf.properties
-            - name: wso2am-secret-store-csi
-              mountPath: /mnt/secrets-store
-              readOnly: true
-            {{- end }}
-            - name: wso2am-keystores
-              mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.truststore.name }}
-              subPath: {{ .Values.wso2.apim.configurations.security.truststore.name }}
-            {{- if .Values.wso2.apim.configurations.security.keystores.primary.enabled }}
-            - name: wso2am-keystores
-              mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.keystores.primary.name }}
-              subPath: {{ .Values.wso2.apim.configurations.security.keystores.primary.name }}
-            {{- end }}
-            {{- if .Values.wso2.apim.configurations.security.keystores.tls.enabled }}
-            - name: wso2am-keystores
-              mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.keystores.tls.name }}
-              subPath: {{ .Values.wso2.apim.configurations.security.keystores.tls.name }}
-            {{- end }}
-            {{- if .Values.wso2.apim.configurations.security.keystores.internal.enabled }}
-            - name: wso2am-keystores
-              mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.keystores.internal.name }}
-              subPath: {{ .Values.wso2.apim.configurations.security.keystores.internal.name }}
-            {{- end }}
             {{ if .Values.wso2.deployment.persistence.solrIndexing.enabled }}
-            - name: wso2am-local-carbondb
+            - name: wso2am-local-carbon-database-storage
               mountPath: /home/wso2carbon/solr/database
-            - name: wso2am-solr
+            - name: wso2am-solr-indexed-data-storage
               mountPath: /home/wso2carbon/solr/indexed-data
             {{ end }}
+            - name: wso2am-conf-entrypoint
+              mountPath: /home/wso2carbon/docker-entrypoint.sh
+              subPath: docker-entrypoint.sh
+            {{- if .Values.wso2.apim.secureVaultEnabled }}
+            - name: apim-secrets-volume
+              mountPath: /mnt/secrets-store
+              readOnly: true
+            {{ end }}
+            - name: apim-jks-volume
+              mountPath: /home/wso2carbon/wso2-artifact-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.keystores.internal.name }}
+              subPath: {{ .Values.wso2.apim.configurations.security.keystores.internal.name }}
+            - name: apim-jks-volume
+              mountPath: /home/wso2carbon/wso2-artifact-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.keystores.primary.name}}
+              subPath: {{ .Values.wso2.apim.configurations.security.keystores.primary.name }}
+            - name: apim-jks-volume
+              mountPath: /home/wso2carbon/wso2-artifact-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.keystores.tls.name}}
+              subPath: {{ .Values.wso2.apim.configurations.security.keystores.tls.name }}
+            - name: apim-jks-volume
+              mountPath: /home/wso2carbon/wso2-artifact-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.truststore.name}}
+              subPath: {{ .Values.wso2.apim.configurations.security.truststore.name }}
+            - name: apim-secret-conf
+              mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/security/secret-conf.properties
+              subPath: secret-conf.properties
+            - name: apim-log4j2-conf
+              mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/log4j2.properties
+              subPath: log4j2.properties
+            - name: apim-startup-conf
+              mountPath: /home/wso2carbon/wso2-config-volume/bin/wso2server.sh
+              subPath: wso2server.sh
       volumes:
         - name: wso2am-conf
           configMap:
             name: {{ template "am-all-in-one.fullname" . }}-am-conf
-            defaultMode: 0407
-        - name: wso2am-entrypoint
+        {{ if .Values.wso2.deployment.persistence.solrIndexing.enabled }}
+        - name: wso2am-local-carbon-database-storage
+          persistentVolumeClaim:
+            claimName: {{ template "am-all-in-one.fullname" . }}-am-carbon-database
+        - name: wso2am-solr-indexed-data-storage
+          persistentVolumeClaim:
+            claimName: {{ template "am-all-in-one.fullname" . }}-solr-indexed-data
+        {{ end }}
+        - name: wso2am-conf-entrypoint
           configMap:
-            name: {{ template "am-all-in-one.fullname" . }}-conf-entrypoint
+            name: {{ template "am-all-in-one.fullname" . }}-am-conf-entrypoint
             defaultMode: 0407
-        - name: wso2am-log4j2
-          configMap:
-            name: {{ template "am-all-in-one.fullname" . }}-conf-log4j2
-            defaultMode: 0407
-          {{- if .Values.wso2.apim.secureVaultEnabled }}
-        - name: wso2am-secret-conf
-          configMap:
-            name: {{ template "am-all-in-one.fullname" . }}-conf-secret-conf
-            defaultMode: 0407
-        - name: wso2am-secret-store-csi
+        {{- if .Values.wso2.apim.secureVaultEnabled }}
+        - name: apim-secrets-volume
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true
@@ -200,7 +182,7 @@ spec:
             volumeAttributes:
               secretProviderClass: {{ .Values.azure.keyVault.secretProviderClass }}
             nodePublishSecretRef:
-              name: {{ .Values.azure.keyVault.activeDirectory.servicePrincipal.credentialsSecretName }}
+              name: {{ template "am-all-in-one.fullname" . }}-am-secret-store-csi 
             {{- else if .Values.aws.enabled }}
             volumeAttributes:
               secretProviderClass: {{ .Values.aws.secretsManager.secretProviderClass }}
@@ -208,15 +190,19 @@ spec:
             volumeAttributes:
               secretProviderClass: {{ .Values.gcp.secretsManager.secretProviderClass }}
             {{- end }}
-          {{- end }}
-        - name: wso2am-keystores
+        {{ end }}
+        - name: apim-jks-volume
           secret:
             secretName: {{ .Values.wso2.apim.configurations.security.jksSecretName }}
-        {{ if .Values.wso2.deployment.persistence.solrIndexing.enabled }}
-        - name: wso2am-local-carbondb
-          persistentVolumeClaim:
-            claimName: {{ template "am-all-in-one.fullname" . }}-am-local-carbon-database-volume-claim
-        - name: wso2am-solr
-          persistentVolumeClaim:
-            claimName: {{ template "am-all-in-one.fullname" . }}-am-solr-indexed-data-volume-claim
-        {{ end }}
+        - name: apim-secret-conf
+          configMap:
+            name: {{ template "am-all-in-one.fullname" . }}-am-secret-conf
+            defaultMode: 0407
+        - name: apim-log4j2-conf
+          configMap:
+            name: {{ template "am-all-in-one.fullname" . }}-am-conf-log4j2
+            defaultMode: 0407
+        - name: apim-startup-conf
+          configMap:
+            name: {{ template "am-all-in-one.fullname" . }}-am-conf-startup
+            defaultMode: 0407

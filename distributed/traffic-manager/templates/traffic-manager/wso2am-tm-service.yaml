@@ -12,17 +12,24 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "apim-helm-tm.fullname" . }}-service
-  namespace : {{ .Release.Namespace }}
+  name: {{ template "apim-helm-tm.resource.prefix" . }}-service
+  namespace: {{ .Release.Namespace }}
 spec:
   # label keys and values that must match in order to receive traffic for this service
   selector:
-    deployment: {{ template "apim-helm-tm.fullname" . }}
+    deployment: {{ template "apim-helm-tm.resource.prefix" . }}
   ports:
     # ports that this service should serve on
-    - name: servlet-http
+    - name: service
+      port: {{ add 9443 .Values.wso2.apim.portOffset }}
       protocol: TCP
-      port: 9763
-    - name: servlet-https
+    - name: binary
+      port: {{ add 9611 .Values.wso2.apim.portOffset }}
       protocol: TCP
-      port: 9443
+    - name: binary-secure
+      port: {{ add 9711 .Values.wso2.apim.portOffset }}
+      protocol: TCP
+    - name: jms-tcp
+      port: {{ add 5672 .Values.wso2.apim.portOffset }}
+      protocol: TCP
+
