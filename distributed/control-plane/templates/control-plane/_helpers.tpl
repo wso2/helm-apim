@@ -61,9 +61,27 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Common prefix prepended to Kubernetes resources of this chart
 */}}
 {{- define "apim-helm-cp.resource.prefix" -}}
-{{- if eq .Values.kubernetes.resourceSuffix "${RESOURCE_SUFFIX}" }}
 {{- "wso2am-cp" }}
-{{- else }}
-{{- "wso2am-cp-" }}{{ .Values.kubernetes.resourceSuffix }}
 {{- end -}}
+
+{{/*
+Common prefix prepended to Kubernetes resources of TM chart
+*/}}
+{{- define "apim-helm-tm.resource.prefix" -}}
+{{- "wso2am-tm" }}
 {{- end -}}
+
+{{/*
+Common prefix prepended to Kubernetes resources of this chart
+*/}}
+{{- define "apim-helm-gw.resource.prefix" -}}
+{{- "wso2am-gw" }}
+{{- end -}}
+
+{{/*
+Common prefix prepended to Kubernetes resources of this chart
+*/}}
+{{- define "apim-helm-gw-ext.resource.prefix" -}}
+{{- "wso2am-gw-ext" }}
+{{- end -}}
+

@@ -1,4 +1,3 @@
-{{- if .Values.wso2.deployment.highAvailability}}
 # -------------------------------------------------------------------------------------
 #
 # Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
@@ -13,25 +12,21 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "apim-helm-tm.fullname" . }}-2-service
-  namespace : {{ .Release.Namespace }}
+  name: {{ template "apim-helm-tm.resource.prefix" . }}-2-service
+  namespace: {{ .Release.Namespace }}
 spec:
   # label keys and values that must match in order to receive traffic for this service
   selector:
-    deployment: {{ template "apim-helm-tm.fullname" . }}
-    node: {{ template "apim-helm-tm.fullname" . }}-2
+    deployment: {{ template "apim-helm-tm.resource.prefix" . }}
+    node: {{ template "apim-helm-tm.resource.prefix" . }}-2
   ports:
     # ports that this service should serve on
     - name: binary
+      port: {{ add 9611 .Values.wso2.apim.portOffset }}
       protocol: TCP
-      port: 9611
     - name: binary-secure
+      port: {{ add 9711 .Values.wso2.apim.portOffset }}
       protocol: TCP
-      port: 9711
     - name: jms-tcp
+      port: {{ add 5672 .Values.wso2.apim.portOffset }}
       protocol: TCP
-      port: 5672
-    - name: servlet-https
-      protocol: TCP
-      port: 9443
-{{- end }}

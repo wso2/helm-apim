@@ -13,7 +13,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ template "am-all-in-one.fullname" . }}-local-carbon-database
+  name: {{ template "am-all-in-one.fullname" . }}-am-carbon-database
   labels:
     purpose: am-carbondb
 spec:
@@ -22,7 +22,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany
-  storageClassName: {{ template "am-all-in-one.fullname" . }}-sc
+  storageClassName: {{ template "am-all-in-one.fullname" . }}-am-sc
   persistentVolumeReclaimPolicy: Retain
   csi:
     driver: efs.csi.aws.com
@@ -42,7 +42,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany
-  storageClassName: {{ template "am-all-in-one.fullname" . }}-sc
+  storageClassName: {{ template "am-all-in-one.fullname" . }}-am-sc
   persistentVolumeReclaimPolicy: Retain
   csi:
     driver: efs.csi.aws.com

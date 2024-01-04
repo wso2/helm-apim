@@ -1,0 +1,167 @@
+[server]
+hostname = "{{ template "apim-helm-tm.resource.prefix" . }}"
+node_ip = "$env{NODE_IP}"
+server_role = "traffic-manager"
+offset = {{ .Values.wso2.apim.portOffset }}
+
+[user_store]
+type = {{ .Values.wso2.apim.configurations.userStore.type | quote }}
+{{- range $key, $value := .Values.wso2.apim.configurations.userStore.properties }}
+{{ $key }} = {{ $value | quote }}
+{{- end }}
+
+[super_admin]
+username = {{ .Values.wso2.apim.configurations.adminUsername | quote }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{admin_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
+{{- end }}
+create_admin_account = true
+
+[database.apim_db]
+type = {{ .Values.wso2.apim.configurations.databases.type | quote }}
+url = {{ .Values.wso2.apim.configurations.databases.apimDB.url | quote }}
+username = {{ .Values.wso2.apim.configurations.databases.apimDB.username | quote }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{apim_db_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.databases.apimDB.password | quote }}
+{{- end }}
+driver = {{ .Values.wso2.apim.configurations.databases.jdbc.driver | quote }}
+
+[database.apim_db.pool_options]
+{{- range $key, $value := .Values.wso2.apim.configurations.databases.apimDB.poolParameters }}
+{{ $key }} = "{{ $value }}"
+{{- end }}
+
+[database.shared_db]
+type = {{ .Values.wso2.apim.configurations.databases.type | quote }}
+url = {{ .Values.wso2.apim.configurations.databases.sharedDB.url | quote }}
+username = {{ .Values.wso2.apim.configurations.databases.sharedDB.username | quote }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{shared_db_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.databases.sharedDB.password | quote }}
+{{- end }}
+driver = {{ .Values.wso2.apim.configurations.databases.jdbc.driver | quote }}
+
+[database.shared_db.pool_options]
+{{- range $key, $value := .Values.wso2.apim.configurations.databases.sharedDB.poolParameters }}
+{{ $key }} = "{{ $value }}"
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.security.keystores.primary.enabled }}
+[keystore.primary]
+type = "JKS"
+file_name = {{ .Values.wso2.apim.configurations.security.keystores.primary.name | quote }}
+alias = {{ .Values.wso2.apim.configurations.security.keystores.primary.alias | quote }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{keystore_password}"
+key_password = "$secret{keystore_key_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
+key_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.keyPassword | quote }}
+{{- end }}
+{{- end }}
+{{- println }}
+
+{{- if .Values.wso2.apim.configurations.security.keystores.tls.enabled }}
+[keystore.tls]
+type = "JKS"
+file_name = {{ .Values.wso2.apim.configurations.security.keystores.tls.name | quote }}
+alias = {{ .Values.wso2.apim.configurations.security.keystores.tls.alias | quote }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{ssl_keystore_password}"
+key_password = "$secret{ssl_keystore_key_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.tls.password | quote }}
+key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.keyPassword | quote }}
+{{- end }}
+{{- end }}
+{{- println }}
+
+{{- if .Values.wso2.apim.configurations.security.keystores.internal.enabled }}
+[keystore.internal]  
+type = "JKS"
+file_name = {{ .Values.wso2.apim.configurations.security.keystores.internal.name | quote }}
+alias = {{ .Values.wso2.apim.configurations.security.keystores.internal.alias | quote }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{internal_keystore_password}"
+key_password = "$secret{internal_keystore_key_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
+key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.keyPassword | quote }}
+{{- end }}
+{{- end }}
+{{- println }}
+
+[truststore]
+type = "JKS"
+file_name = {{ .Values.wso2.apim.configurations.security.truststore.name | quote }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{truststore_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
+{{- end }}
+
+{{ range $index, $url := .Values.wso2.apim.configurations.resourceAccessControl }}
+[[resource.access_control]]
+context = {{ .context | quote }}
+secure = {{ .secure }}
+http_method = {{ .httpMethod | quote }}
+{{- if .permissions }}
+permissions = {{ .permissions | quote }}
+{{ end }}
+{{ end }}
+
+[session_data.cleanup]
+enable_expired_data_cleanup = {{ .Values.wso2.apim.configurations.sessionData.cleanUp.expiredData }}
+clean_logged_out_sessions_at_immediate_cycle = {{ .Values.wso2.apim.configurations.sessionData.cleanUp.loggedOutSessions }}
+enable_pre_session_data_cleanup = {{ .Values.wso2.apim.configurations.sessionData.cleanUp.preSessionData }}
+
+[oauth.token_cleanup]
+enable = {{ .Values.wso2.apim.configurations.oauth.tokenCleanup.enable }}
+
+{{- range .Values.wso2.apim.configurations.eventHandlers }}
+[[event_handler]]
+name = "{{ .name }}"
+{{- $len := add (len .subscriptions) -1 }}
+subscriptions = [{{ range $index, $element := .subscriptions }}"{{ $element }}"{{ if ne $index $len }},{{ end }}{{ end}}]
+{{- end }}
+
+[service_provider]
+sp_name_regex = {{ .Values.wso2.apim.configurations.serviceProvider.spNameRegex | quote }}
+
+[apim.key_manager]
+{{- if .Values.wso2.apim.configurations.iskm.enabled }}
+type = "WSO2-IS"
+service_url = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:{{ .Values.wso2.apim.configurations.iskm.servicePort }}/services/"
+{{- else }}
+service_url = "https://{{ .Values.wso2.apim.configurations.km.serviceUrl }}:{{ .Values.wso2.apim.configurations.km.servicePort }}/services/"
+{{- end }}
+username= "$ref{super_admin.username}"
+password= "$ref{super_admin.password}"
+
+[apim.throttling]
+event_duplicate_url = ["tcp://{{ template "apim-helm-tm.resource.prefix" . }}-1-service:{{ add 5672 .Values.wso2.apim.portOffset }}"]
+
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+[secrets]
+admin_password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
+{{- if .Values.wso2.apim.configurations.security.keystores.primary.enabled }}
+keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
+keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.keyPassword | quote }}
+{{ end }}
+{{- if .Values.wso2.apim.configurations.security.keystores.tls.enabled }}
+ssl_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.password | quote }}
+ssl_keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.keyPassword | quote }}
+{{ end }}
+{{- if .Values.wso2.apim.configurations.security.keystores.internal.enabled }}
+internal_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
+internal_keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.keyPassword | quote }}
+{{ end }}
+truststore_password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
+apim_db_password = {{ .Values.wso2.apim.configurations.databases.apimDB.password | quote }}
+shared_db_password = {{ .Values.wso2.apim.configurations.databases.sharedDB.password | quote }}
+{{ end }}

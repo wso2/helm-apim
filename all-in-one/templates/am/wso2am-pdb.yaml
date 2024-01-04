@@ -12,9 +12,9 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ template "am-all-in-one.fullname" . }}-pdb
+  name: {{ template "am-all-in-one.fullname" . }}-am-pdb
 spec:
-  minAvailable: {{ .Values.wso2.deployment.minAvailable | quote }}
+  minAvailable: {{ .Values.wso2.deployment.am.minAvailable }}
   selector:
     matchLabels:
-      deployment: {{ template "am-all-in-one.fullname" . }}-am
+      deployment: {{ template "am-all-in-one.fullname" . }}
