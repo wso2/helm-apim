@@ -150,6 +150,9 @@ spec:
         - name: wso2am-gateway-log4j2
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/log4j2.properties
           subPath: log4j2.properties
+        - name: wso2am-sh-conf
+          mountPath: /home/wso2carbon/wso2-config-volume/bin/api-manager.sh
+          subPath: api-manager.sh
         {{- if .Values.wso2.apim.secureVaultEnabled }}
         - name: wso2am-gateway-secret-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/security/secret-conf.properties
@@ -188,6 +191,10 @@ spec:
       - name: wso2am-gateway-log4j2
         configMap:
           name: {{ template "apim-helm-gw.fullname" . }}-conf-log4j2
+          defaultMode: 0407
+      - name: wso2am-sh-conf
+        configMap:
+          name: {{ template "apim-helm-gw.fullname" . }}-conf-sh
           defaultMode: 0407
       {{- if .Values.wso2.apim.secureVaultEnabled }}
       - name: wso2am-gateway-secret-conf

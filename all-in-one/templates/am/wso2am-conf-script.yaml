@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-conf-sh
+  namespace : {{ .Release.Namespace }}
+data:
+  api-manager.sh: {{ tpl (.Files.Get "confs/api-manager.sh") . | quote}}

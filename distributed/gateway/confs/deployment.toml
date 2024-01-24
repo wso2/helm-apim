@@ -134,7 +134,7 @@ username= "$ref{super_admin.username}"
 password= "$ref{super_admin.password}"
 service_url = "https://{{ .Values.wso2.apim.configurations.throttling.serviceUrl }}:{{ .Values.wso2.apim.configurations.throttling.servicePort }}/services/"
 {{- $len := add (len .Values.wso2.apim.configurations.throttling.urls) -1 }}
-throttle_decision_endpoints = [{{ range $index, $element := .Values.wso2.apim.configurations.throttling.urls }}"tcp://{{ $element }}:{{ add 5672 .Values.wso2.apim.configurations.throttling.portOffset }}"{{ if ne $index $len }},{{ end }}{{ end}}]
+throttle_decision_endpoints = [{{ range $index, $element := .Values.wso2.apim.configurations.throttling.urls }}"tcp://{{ $element }}:{{ add 5672 $.Values.wso2.apim.configurations.throttling.portOffset }}"{{ if ne $index $len }},{{ end }}{{ end}}]
 enable_unlimited_tier = {{ .Values.wso2.apim.configurations.throttling.unlimitedTier }}
 enable_header_based_throttling = {{ .Values.wso2.apim.configurations.throttling.headerBasedThrottling }}
 enable_jwt_claim_based_throttling = {{ .Values.wso2.apim.configurations.throttling.jwtClaimBasedThrottling }}
@@ -142,8 +142,8 @@ enable_query_param_based_throttling = {{ .Values.wso2.apim.configurations.thrott
 
 {{ range $index, $url := .Values.wso2.apim.configurations.throttling.urls }}
 [[apim.throttling.url_group]]
-traffic_manager_urls = ["tcp://{{ $url }}:{{ add 9611 .Values.wso2.apim.configurations.throttling.portOffset }}"]
-traffic_manager_auth_urls = ["ssl://{{ $url }}:{{ add 9711 .Values.wso2.apim.configurations.throttling.portOffset }}"]
+traffic_manager_urls = ["tcp://{{ $url }}:{{ add 9611 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+traffic_manager_auth_urls = ["ssl://{{ $url }}:{{ add 9711 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
 type = "loadbalance"
 {{ end }}
 

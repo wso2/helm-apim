@@ -79,21 +79,21 @@ spec:
             command:
               - /bin/sh
               - -c
-              - nc -z localhost {{ add 9443 .Values.wso2.config.portOffset }}
+              - nc -z localhost {{ add 9443 .Values.wso2.apim.portOffset }}
           initialDelaySeconds: {{ .Values.wso2.deployment.startupProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.wso2.deployment.startupProbe.periodSeconds }}
           failureThreshold: {{ .Values.wso2.deployment.startupProbe.failureThreshold }}
         livenessProbe:
           httpGet:
               path: /services/Version
-              port: {{ add 9763 .Values.wso2.config.portOffset }}
+              port: {{ add 9763 .Values.wso2.apim.portOffset }}
           initialDelaySeconds: {{ .Values.wso2.deployment.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.wso2.deployment.livenessProbe.periodSeconds }}
           failureThreshold: {{ .Values.wso2.deployment.livenessProbe.failureThreshold }}
         readinessProbe:
           httpGet:
               path: /services/Version
-              port: {{ add 9763 .Values.wso2.config.portOffset }}
+              port: {{ add 9763 .Values.wso2.apim.portOffset }}
           initialDelaySeconds: {{ .Values.wso2.deployment.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.wso2.deployment.readinessProbe.periodSeconds }}
           failureThreshold: {{ .Values.wso2.deployment.readinessProbe.failureThreshold }}
@@ -123,15 +123,15 @@ spec:
             drop:
               - all
         ports:
-          - containerPort: {{ add 9763 .Values.wso2.config.portOffset }}
+          - containerPort: {{ add 9763 .Values.wso2.apim.portOffset }}
             protocol: "TCP"
-          - containerPort: {{ add 9443 .Values.wso2.config.portOffset }}
+          - containerPort: {{ add 9443 .Values.wso2.apim.portOffset }}
             protocol: "TCP"
-          - containerPort: {{ add 9711 .Values.wso2.config.portOffset }}
+          - containerPort: {{ add 9711 .Values.wso2.apim.portOffset }}
             protocol: "TCP"
-          - containerPort: {{ add 9611 .Values.wso2.config.portOffset }}
+          - containerPort: {{ add 9611 .Values.wso2.apim.portOffset }}
             protocol: "TCP"
-          - containerPort: {{ add 5672 .Values.wso2.config.portOffset }}
+          - containerPort: {{ add 5672 .Values.wso2.apim.portOffset }}
             protocol: "TCP"
         volumeMounts:
         - name: wso2am-control-plane-conf
@@ -143,6 +143,9 @@ spec:
         - name: wso2am-control-plane-log4j2
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/log4j2.properties
           subPath: log4j2.properties
+        - name: wso2am-sh-conf
+          mountPath: /home/wso2carbon/wso2-config-volume/bin/api-manager.sh
+          subPath: api-manager.sh
         {{- if .Values.wso2.apim.secureVaultEnabled }}
         - name: wso2am-control-plane-secret-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/security/secret-conf.properties
@@ -187,6 +190,10 @@ spec:
       - name: wso2am-control-plane-log4j2
         configMap:
           name: {{ template "apim-helm-cp.fullname" . }}-conf-log4j2
+          defaultMode: 0407
+      - name: wso2am-sh-conf
+        configMap:
+          name: {{ template "apim-helm-cp.fullname" . }}-conf-sh
           defaultMode: 0407
       {{- if .Values.wso2.apim.secureVaultEnabled }}
       - name: wso2am-control-plane-secret-conf

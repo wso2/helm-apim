@@ -24,14 +24,14 @@ spec:
     # ports that this service should serve on
     - name: binary
       protocol: TCP
-      port: {{ add 9611 .Values.wso2.config.portOffset }}
+      port: {{ add 9611 .Values.wso2.apim.portOffset }}
     - name: binary-secure
       protocol: TCP
-      port: {{ add 9711 .Values.wso2.config.portOffset }}
+      port: {{ add 9711 .Values.wso2.apim.portOffset }}
     - name: jms-tcp
       protocol: TCP
-      port: {{ add 5672 .Values.wso2.config.portOffset }}
+      port: {{ add 5672 .Values.wso2.apim.portOffset }}
     - name: servlet-https
       protocol: TCP
-      port: {{ add 9443 .Values.wso2.config.portOffset }}
+      port: {{ add 9443 .Values.wso2.apim.portOffset }}
 {{- end }}
