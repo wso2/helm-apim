@@ -22,7 +22,7 @@ spec:
     # ports that this service should serve on
     - name: servlet-http
       protocol: TCP
-      port: {{ add 9763 .Values.wso2.config.portOffset }}
+      port: {{ add 9763 .Values.wso2.apim.portOffset }}
     - name: servlet-https
       protocol: TCP
-      port: {{ add 9443 .Values.wso2.config.portOffset }}
+      port: {{ add 9443 .Values.wso2.apim.portOffset }}

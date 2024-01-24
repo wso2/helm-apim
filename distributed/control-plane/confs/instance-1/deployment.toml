@@ -129,7 +129,7 @@ websub_event_receiver_https_endpoint = "https://{{ $env.websubHostname }}"
 type = "WSO2-IS"
 service_url = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:{{ .Values.wso2.apim.configurations.iskm.servicePort }}/services/"
 {{- else }}
-service_url = "https://{{ template "apim-helm-cp.fullname" . }}-service:{{ add 9443 .Values.wso2.config.portOffset }}/services/"
+service_url = "https://{{ template "apim-helm-cp.fullname" . }}-service:{{ add 9443 .Values.wso2.apim.portOffset }}/services/"
 {{- end }}
 username= "$ref{super_admin.username}"
 password= "$ref{super_admin.password}"
@@ -192,27 +192,27 @@ enable_key_provisioning = {{ .Values.wso2.apim.configurations.devportal.enableKe
 enable = true
 username = "$ref{super_admin.username}"
 password = "$ref{super_admin.password}"
-service_url = "https://{{ template "apim-helm-cp.fullname" . }}-service:{{ add 9443 .Values.wso2.config.portOffset }}/services/"
-event_listening_endpoints = ["tcp://localhost:{{ add 5672 .Values.wso2.config.portOffset }}"]
+service_url = "https://{{ template "apim-helm-cp.fullname" . }}-service:{{ add 9443 .Values.wso2.apim.portOffset }}/services/"
+event_listening_endpoints = ["tcp://localhost:{{ add 5672 .Values.wso2.apim.portOffset }}"]
 {{- if .Values.wso2.deployment.highAvailability }}
-event_duplicate_url = ["tcp://{{ template "apim-helm-cp.fullname" . }}-2-service:{{ add 5672 .Values.wso2.config.portOffset }}"]
+event_duplicate_url = ["tcp://{{ template "apim-helm-cp.fullname" . }}-2-service:{{ add 5672 .Values.wso2.apim.portOffset }}"]
 {{- end }}
 
 [[apim.event_hub.publish.url_group]]
-urls = ["tcp://{{ template "apim-helm-cp.fullname" . }}-1-service:{{ add 9611 .Values.wso2.config.portOffset }}"]
-auth_urls = ["ssl://{{ template "apim-helm-cp.fullname" . }}-1-service:{{ add 9711 .Values.wso2.config.portOffset }}"]
+urls = ["tcp://{{ template "apim-helm-cp.fullname" . }}-1-service:{{ add 9611 .Values.wso2.apim.portOffset }}"]
+auth_urls = ["ssl://{{ template "apim-helm-cp.fullname" . }}-1-service:{{ add 9711 .Values.wso2.apim.portOffset }}"]
 
 {{- if .Values.wso2.deployment.highAvailability }}
 [[apim.event_hub.publish.url_group]]
-urls = ["tcp://{{ template "apim-helm-cp.fullname" . }}-2-service:{{ add 9611 .Values.wso2.config.portOffset }}"]
-auth_urls = ["ssl://{{ template "apim-helm-cp.fullname" . }}-2-service:{{ add 9711 .Values.wso2.config.portOffset }}"]
+urls = ["tcp://{{ template "apim-helm-cp.fullname" . }}-2-service:{{ add 9611 .Values.wso2.apim.portOffset }}"]
+auth_urls = ["ssl://{{ template "apim-helm-cp.fullname" . }}-2-service:{{ add 9711 .Values.wso2.apim.portOffset }}"]
 {{- end }}
 
 [apim.oauth_config]
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
 revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:{{ .Values.wso2.apim.configurations.iskm.servicePort }}/oauth2/revoke"
 {{- else }}
-revoke_endpoint = "https://{{ template "apim-helm-cp.fullname" . }}-service:{{ add 9443 .Values.wso2.config.portOffset }}/oauth2/revoke"
+revoke_endpoint = "https://{{ template "apim-helm-cp.fullname" . }}-service:{{ add 9443 .Values.wso2.apim.portOffset }}/oauth2/revoke"
 {{- end }}
 enable_token_encryption = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenEncryption }}
 enable_token_hashing = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenHashing }}
