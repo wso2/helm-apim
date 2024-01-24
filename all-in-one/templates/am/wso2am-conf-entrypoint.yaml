@@ -53,4 +53,4 @@ data:
     {{- end }}
 
     # start WSO2 Carbon server
-    sh ${WSO2_SERVER_HOME}/bin/api-manager.sh "$@"
+    sh ${WSO2_SERVER_HOME}/bin/api-manager.sh "$@" {{ .Values.wso2.apim.startupArgs }}

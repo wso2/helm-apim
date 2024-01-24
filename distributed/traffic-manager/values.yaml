@@ -99,6 +99,8 @@ wso2:
         loggers: ""
         # -- Appenders
         appenders: ""
+    # -- Startup arguments for APIM
+    startupArgs: ""
     # TOML configurations
     configurations:
       userStore:
