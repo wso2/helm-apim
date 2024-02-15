@@ -261,6 +261,8 @@ wso2:
         # If the traffic manager is separated from control-plane, all urls should be pointed to traffic-manager ones.
         serviceUrl: "wso2am-cp-service"
         portOffset: 0
+        # -- Port of the service URL
+        servicePort: 9443
         # -- Traffic manager service urls. You only need to define one if the TM is not in HA.
         urls:
           - "wso2am-cp-1-service"
