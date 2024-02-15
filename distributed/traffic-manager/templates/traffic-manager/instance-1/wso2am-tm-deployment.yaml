@@ -175,6 +175,10 @@ spec:
           mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.keystores.internal.name }}
           subPath: {{ .Values.wso2.apim.configurations.security.keystores.internal.name }}
         {{- end }}
+      {{- if .Values.wso2.deployment.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.wso2.deployment.nodeSelector | nindent 8 }}
+      {{- end }}
       volumes:
       - name: wso2am-traffic-manager-conf
         configMap:
