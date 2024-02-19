@@ -591,6 +591,9 @@ wso2:
     # -- Minimum available pod counts for PDB
     minAvailable: "50%"
 
+    # -- Node selector to deploy pod in selected node. Add label to the node and specify the label here.
+    nodeSelector:
+
     persistence:
       # -- Persistent runtime artifacts for Apache Solr-based indexing
       solrIndexing:

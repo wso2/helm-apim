@@ -177,6 +177,10 @@ spec:
             - name: wso2am-solr
               mountPath: /home/wso2carbon/solr/indexed-data
             {{ end }}
+      {{- if .Values.wso2.deployment.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.wso2.deployment.nodeSelector | nindent 8 }}
+      {{- end }}
       volumes:
         - name: wso2am-conf
           configMap:
