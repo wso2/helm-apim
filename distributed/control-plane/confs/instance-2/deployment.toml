@@ -53,6 +53,9 @@ driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
 {{ $key }} = "{{ $value }}"
 {{- end }}
 
+[apim]
+gateway_type = "{{ .Values.wso2.apim.configurations.gatewayType }}"
+
 {{- if .Values.wso2.apim.configurations.security.keystores.primary.enabled }}
 [keystore.primary]
 type = "JKS"
@@ -99,6 +102,7 @@ key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.k
 [[apim.gateway.environment]]
 name = {{ $env.name | quote }}
 type = {{ $env.type | quote }}
+gateway_type = {{ $env.gatewayType | quote }}
 provider = {{ $env.provider | quote }}
 display_in_api_console = {{ $env.displayInApiConsole }}
 description = {{ $env.description | quote }}
@@ -130,6 +134,11 @@ password= "$ref{super_admin.password}"
 enable = false
 allow_refresh_tokens = true
 iat_validity_period = "1h"
+{{- end }}
+
+[apim.publisher]
+{{- if .Values.wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode }}
+enable_portal_configuration_only_mode = {{ .Values.wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode }}
 {{- end }}
 
 [apim.devportal]

@@ -48,6 +48,9 @@ password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | qu
 {{- end }}
 driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
 
+[apim]
+gateway_type = "{{ .Values.wso2.apim.configurations.gatewayType }}"
+
 [database.shared_db.pool_options]
 {{- range $key, $value := .Values.wso2.apim.configurations.databases.shared_db.poolParameters }}
 {{ $key }} = "{{ $value }}"
@@ -108,6 +111,7 @@ password = {{ .Values.wso2.apim.configurations.security.truststore.password | qu
 [[apim.gateway.environment]]
 name = {{ $env.name | quote }}
 type = {{ $env.type | quote }}
+gateway_type = {{ $env.gatewayType | quote }}
 provider = {{ $env.provider | quote }}
 display_in_api_console = {{ $env.displayInApiConsole }}
 description = {{ $env.description | quote }}
@@ -144,6 +148,9 @@ iat_validity_period = "1h"
 [apim.publisher]
 {{- if .Values.wso2.apim.configurations.publisher.supportedDocumentTypes }}
 supported_document_types = {{ toJson .Values.wso2.apim.configurations.publisher.supportedDocumentTypes }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode }}
+enable_portal_configuration_only_mode = {{ .Values.wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode }}
 {{- end }}
 
 [apim.devportal]

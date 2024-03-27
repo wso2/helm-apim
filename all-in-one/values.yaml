@@ -209,6 +209,7 @@ wso2:
     startupArgs: ""
     # TOML configurations
     configurations:
+      gatewayType: "Regular"
       userStore:
         # -- User store type. 
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
@@ -308,6 +309,7 @@ wso2:
         environments:
         - name: "Default"
           type: "hybrid"
+          gatewayType: "Regular"
           provider: "wso2"
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
@@ -424,6 +426,7 @@ wso2:
         # -- Supported document types in Publisher. 
         # This should be used only if there are additional document types to be supported.
         supportedDocumentTypes: ""
+        enablePortalConfigurationOnlyMode: false
 
       # APIM CORS configurations
       cors:
