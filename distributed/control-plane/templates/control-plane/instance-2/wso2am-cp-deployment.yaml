@@ -155,6 +155,7 @@ spec:
           mountPath: /mnt/secrets-store
           readOnly: true
         {{- end }}
+        {{- if .Values.wso2.apim.configurations.security.jksSecretName }}
         - name: wso2am-control-plane-keystores
           mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.truststore.name }}
           subPath: {{ .Values.wso2.apim.configurations.security.truststore.name }}
@@ -172,6 +173,7 @@ spec:
         - name: wso2am-control-plane-keystores
           mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.keystores.internal.name }}
           subPath: {{ .Values.wso2.apim.configurations.security.keystores.internal.name }}
+        {{- end }}
         {{- end }}
         {{ if .Values.wso2.deployment.persistence.solrIndexing.enabled }}
         - name: wso2am-control-plane-local-carbondb
@@ -221,9 +223,11 @@ spec:
             secretProviderClass: {{ .Values.gcp.secretsManager.secretProviderClass }}
           {{- end }}
       {{- end }}
+      {{- if .Values.wso2.apim.configurations.security.jksSecretName }}
       - name: wso2am-control-plane-keystores
         secret:
           secretName: {{ .Values.wso2.apim.configurations.security.jksSecretName }}
+      {{- end }}
       {{ if .Values.wso2.deployment.persistence.solrIndexing.enabled }}
       - name: wso2am-control-plane-local-carbondb
         persistentVolumeClaim:
