@@ -397,6 +397,7 @@ wso2:
         enableTokenEncryption: false
         # -- Enable token hashing
         enableTokenHashing: false
+        oauth2JWKSUrl: ""
 
       # APIM Devportal configurations
       devportal:
@@ -427,6 +428,7 @@ wso2:
         # This should be used only if there are additional document types to be supported.
         supportedDocumentTypes: ""
         enablePortalConfigurationOnlyMode: false
+        internalKeyIssuer: ""
 
       # APIM CORS configurations
       cors:
