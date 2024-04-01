@@ -201,6 +201,11 @@ enable = true
 allow_refresh_tokens = true
 iat_validity_period = "1h"
 
+[oauth.endpoints]
+{{- if .Values.wso2.apim.configurations.oauth_config }}
+oauth2_jwks_url = {{ .Values.wso2.apim.configurations.oauth_config.oauth2JWKSUrl }}
+{{- end }}
+
 #[apim.idp]
 #server_url = "https://localhost:${mgt.transport.https.port}"
 #authorize_endpoint = "https://localhost:${mgt.transport.https.port}/oauth2/authorize"
@@ -275,6 +280,9 @@ supported_document_types = {{ toJson .Values.wso2.apim.configurations.publisher.
 {{- end }}
 {{- if .Values.wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode }}
 enable_portal_configuration_only_mode = {{ .Values.wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.publisher.internalKeyIssuer }}
+internal_key_issuer = {{ .Values.wso2.apim.configurations.publisher.internalKeyIssuer }}
 {{- end }}
 
 [apim.cors]
