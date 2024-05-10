@@ -242,6 +242,12 @@ wso2:
             maxWait: 60000
             minIdle: 5
 
+      # -- APIM AI related configurations
+      ai:
+        enabled: false
+        token: ""
+        endpoint: ""
+
       security:
         # -- Kubernetes secret containing the keystores and truststore
         jksSecretName: "apim-keystore-secret"
