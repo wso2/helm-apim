@@ -1,6 +1,6 @@
 # wso2am-gateway
 
-![Version: 4.2.0-0](https://img.shields.io/badge/Version-4.2.0--0-informational?style=flat-square) ![AppVersion: 4.2.0](https://img.shields.io/badge/AppVersion-4.2.0-informational?style=flat-square)
+![Version: 4.3.0-1](https://img.shields.io/badge/Version-4.3.0--1-informational?style=flat-square) ![AppVersion: 4.3.0](https://img.shields.io/badge/AppVersion-4.3.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management Gateway profile
 
@@ -50,6 +50,7 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | wso2.ELKAnalytics | object | `{"enabled":false}` | ELK Analytics Parameters |
 | wso2.apim.configurations.adminPassword | string | `""` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `""` | Super admin username |
+| wso2.apim.configurations.ai | object | `{"enabled":false,"endpoint":"","token":""}` | APIM AI related configurations |
 | wso2.apim.configurations.cache.gateway_token.enabled | bool | `true` | Gateway token cache enabled |
 | wso2.apim.configurations.cache.gateway_token.expiryTime | int | `15` | Gateway token cache expiration time in minutes |
 | wso2.apim.configurations.cache.jwt_claim.enabled | bool | `true` | Gateway JWT claim cache enabled |
@@ -131,7 +132,7 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
-| wso2.apim.version | string | `"4.2.0"` | APIM version |
+| wso2.apim.version | string | `"4.3.0"` | APIM version |
 | wso2.choreoAnalytics | object | `{"enabled":false,"endpoint":"","onpremKey":""}` | WSO2 Choreo Analytics Parameters If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/). |
 | wso2.choreoAnalytics.endpoint | string | `""` | Choreo Analytics cloud service endpoint |
 | wso2.choreoAnalytics.onpremKey | string | `""` | On-premise key for Choreo Analytics |

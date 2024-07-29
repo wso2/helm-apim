@@ -174,7 +174,7 @@ kubernetes:
 wso2:  
   apim:
     # -- APIM version
-    version: "4.2.0"
+    version: "4.3.0"
     # -- Secure vauld enabled
     secureVaultEnabled: false
     # Logging related configurations
@@ -241,6 +241,12 @@ wso2:
             maxActive: 100
             maxWait: 60000
             minIdle: 5
+
+      # -- APIM AI related configurations
+      ai:
+        enabled: false
+        token: ""
+        endpoint: ""
 
       security:
         # -- Kubernetes secret containing the keystores and truststore

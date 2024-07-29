@@ -249,6 +249,15 @@ remote_tracer.hostname = {{ .Values.wso2.apim.configurations.openTelemetry.hostn
 remote_tracer.port = {{ .Values.wso2.apim.configurations.openTelemetry.port | quote }}
 {{- end }}
 
+[apim.ai]
+{{-if .Values.wso2.apim.configurations.ai.enabled }}
+enable = true
+token = {{ .Values.wso2.apim.configurations.ai.token | quote }}
+endpoint = {{ .Values.wso2.apim.configurations.ai.endpoint | quote }}
+{{- else }}
+enable = false
+{{- end }}
+
 [transport.https.properties]
 proxyPort = 443
 

@@ -1,7 +1,7 @@
 [server]
 hostname = "{{ .Values.kubernetes.ingress.management.hostname }}"
 node_ip = "$env{NODE_IP}"
-#offset=0
+offset = {{ .Values.wso2.apim.portOffset }}
 mode = "single" #single or ha
 base_path = "${carbon.protocol}://${carbon.host}:${carbon.management.port}"
 #discard_empty_caches = false
@@ -169,6 +169,15 @@ auth_token = "{{ .Values.wso2.choreoAnalytics.onpremKey }}"
 {{- else if .Values.wso2.ELKAnalytics.enabled}}
 enable = true
 type = "elk"
+{{- else }}
+enable = false
+{{- end }}
+
+[apim.ai]
+{{-if .Values.wso2.apim.configurations.ai.enabled }}
+enable = true
+token = {{ .Values.wso2.apim.configurations.ai.token | quote }}
+endpoint = {{ .Values.wso2.apim.configurations.ai.endpoint | quote }}
 {{- else }}
 enable = false
 {{- end }}
