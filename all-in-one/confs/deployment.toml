@@ -1,7 +1,7 @@
 [server]
 hostname = "{{ .Values.kubernetes.ingress.management.hostname }}"
 node_ip = "$env{NODE_IP}"
-#offset=0
+offset = {{ .Values.wso2.apim.portOffset }}
 mode = "single" #single or ha
 base_path = "${carbon.protocol}://${carbon.host}:${carbon.management.port}"
 #discard_empty_caches = false
