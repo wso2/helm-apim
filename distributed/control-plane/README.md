@@ -146,7 +146,7 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
-| wso2.apim.version | string | `"4.2.0"` | APIM version |
+| wso2.apim.version | string | `"4.3.0"` | APIM version |
 | wso2.deployment.highAvailability | bool | `true` | Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed. This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM. |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |

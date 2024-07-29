@@ -91,7 +91,7 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | wso2.apim.log4j2.loggers | string | `""` | Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
-| wso2.apim.version | string | `"4.2.0"` | APIM version |
+| wso2.apim.version | string | `"4.3.0"` | APIM version |
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
 | wso2.deployment.highAvailability | bool | `true` | Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed. This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM. |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
