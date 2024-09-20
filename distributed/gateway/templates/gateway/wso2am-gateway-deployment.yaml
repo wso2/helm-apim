@@ -93,8 +93,9 @@ spec:
           failureThreshold: {{ .Values.wso2.deployment.livenessProbe.failureThreshold }}
         readinessProbe:
           httpGet:
-              path: /services/Version
-              port: {{ add 9763 .Values.wso2.apim.portOffset }}
+            path: /api/am/gateway/v2/server-startup-healthcheck
+            port: {{ add 9443 .Values.wso2.apim.portOffset }}
+            scheme: HTTPS
           initialDelaySeconds: {{ .Values.wso2.deployment.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.wso2.deployment.readinessProbe.periodSeconds }}
           failureThreshold: {{ .Values.wso2.deployment.readinessProbe.failureThreshold }}
@@ -150,9 +151,11 @@ spec:
         - name: wso2am-gateway-log4j2
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/log4j2.properties
           subPath: log4j2.properties
+        {{- if .Values.wso2.apim.mountStartupScript }}
         - name: wso2am-sh-conf
           mountPath: /home/wso2carbon/wso2-config-volume/bin/api-manager.sh
           subPath: api-manager.sh
+        {{- end }}
         {{- if .Values.wso2.apim.secureVaultEnabled }}
         - name: wso2am-gateway-secret-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/security/secret-conf.properties
@@ -196,10 +199,12 @@ spec:
         configMap:
           name: {{ template "apim-helm-gw.fullname" . }}-conf-log4j2
           defaultMode: 0407
+      {{- if .Values.wso2.apim.mountStartupScript }}
       - name: wso2am-sh-conf
         configMap:
           name: {{ template "apim-helm-gw.fullname" . }}-conf-sh
           defaultMode: 0407
+      {{- end }}
       {{- if .Values.wso2.apim.secureVaultEnabled }}
       - name: wso2am-gateway-secret-conf
         configMap:

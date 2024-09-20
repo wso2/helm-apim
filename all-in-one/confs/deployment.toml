@@ -174,7 +174,7 @@ enable = false
 {{- end }}
 
 [apim.ai]
-{{-if .Values.wso2.apim.configurations.ai.enabled }}
+{{- if .Values.wso2.apim.configurations.ai.enabled }}
 enable = true
 token = {{ .Values.wso2.apim.configurations.ai.token | quote }}
 endpoint = {{ .Values.wso2.apim.configurations.ai.endpoint | quote }}

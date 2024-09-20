@@ -143,6 +143,8 @@ wso2:
     portOffset: 0
     # -- Startup arguments for APIM
     startupArgs: ""
+    # -- Startup script mount status
+    mountStartupScript: false
     # TOML configurations
     configurations:
       userStore:
