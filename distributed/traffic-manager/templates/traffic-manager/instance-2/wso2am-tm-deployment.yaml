@@ -147,9 +147,11 @@ spec:
         - name: wso2am-traffic-manager-log4j2
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/log4j2.properties
           subPath: log4j2.properties
+        {{- if .Values.wso2.apim.mountStartupScript }}
         - name: wso2am-sh-conf
           mountPath: /home/wso2carbon/wso2-config-volume/bin/api-manager.sh
           subPath: api-manager.sh
+        {{- end }}
         {{- if .Values.wso2.apim.secureVaultEnabled }}
         - name: wso2am-traffic-manager-secret-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/security/secret-conf.properties
@@ -193,10 +195,12 @@ spec:
         configMap:
           name: {{ template "apim-helm-tm.fullname" . }}-conf-log4j2
           defaultMode: 0407
+      {{- if .Values.wso2.apim.mountStartupScript }}
       - name: wso2am-sh-conf
         configMap:
           name: {{ template "apim-helm-tm.fullname" . }}-conf-sh
           defaultMode: 0407
+      {{- end }}
       {{- if .Values.wso2.apim.secureVaultEnabled }}
       - name: wso2am-traffic-manager-secret-conf
         configMap:
