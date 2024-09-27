@@ -408,6 +408,8 @@ wso2:
         # -- Enable token hashing
         enableTokenHashing: false
         oauth2JWKSUrl: ""
+        appAccessTokenValidity: 3600
+        timestampSkew: 0
 
       # APIM Devportal configurations
       devportal:
@@ -503,7 +505,34 @@ wso2:
           ciphers:
             - "SSL_RSA_WITH_RC4_128_MD5"
             - "SSL_RSA_WITH_RC4_128_SHA"
-            
+        passthruHttps:
+          sender:
+            sslProfile:
+              interval:
+
+      # -- Synapse properties
+      synapseProperties:
+        # key: value
+
+      redisConfiguration:
+        # key: value
+
+      # -- JMX Moniting configurations
+      jmxMonitoring:
+        # -- JMX monitoring enabled
+        enabled: false
+        # -- JMX monitoring RMI registry port
+        rmiRegistryPort: 9999
+        # -- JMX monitoring RMI server port
+        rmiServerPort: 11111
+
+      # -- Monetization configurations
+      monetization:
+        enabled: false
+        impl: ""
+        additionalAttributes:
+          # key: value
+
       token:
         revocation:
           NotifierImpl: "org.wso2.carbon.apimgt.keymgt.events.TokenRevocationNotifierImpl"
@@ -516,6 +545,16 @@ wso2:
           PersistentNotifierPassword: "root"
 
       notification:
+        fromAddress: 
+        username: 
+        password: 
+        signature: 
+        hostname: 
+        port: 25
+        enableStartTls: false
+        enableAuthentication: false
+
+      outputAdapterEmail:
         fromAddress: 
         username: 
         password: 
@@ -540,6 +579,16 @@ wso2:
           order: 1
           properties:
             notificationEndpoint: "https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"
+
+      securityAudit:
+        # -- Security audit enabled
+        enabled: false
+        # -- Security audit properties
+        properties:
+          apiToken: ""
+          collectionId: ""
+          global: true
+          baseURL: ""
 
   deployment:
     # Container image configurations

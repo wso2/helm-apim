@@ -32,6 +32,9 @@ password = "$secret{apim_db_password}"
 password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote }}
 {{- end }}
 driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
+{{- if .Values.wso2.apim.configurations.jmxMonitoring.enabled }}
+jmx_enable = "true"
+{{- end }}
 
 [database.apim_db.pool_options]
 {{- range $key, $value := .Values.wso2.apim.configurations.databases.apim_db.poolParameters }}
@@ -48,6 +51,9 @@ password = "$secret{shared_db_password}"
 password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote }}
 {{- end }}
 driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
+{{- if .Values.wso2.apim.configurations.jmxMonitoring.enabled }}
+jmx_enable = "true"
+{{- end }}
 
 [database.shared_db.pool_options]
 {{- range $key, $value := .Values.wso2.apim.configurations.databases.shared_db.poolParameters }}
@@ -190,6 +196,47 @@ properties.proxyPort = 80
 properties.port = 9443
 properties.proxyPort = 443
 
+{{- if .Values.wso2.apim.configurations.transport.passthruHttps.sender.sslProfile.interval }}
+[transport.passthru_https.sender.ssl_profile]
+interval = {{ .Values.wso2.apim.configurations.transport.passthruHttps.sender.sslProfile.interval }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.synapseProperties }}
+[synapse_properties]
+{{- range $key, $value := .Values.wso2.apim.configurations.synapseProperties }}
+{{ $key }} = {{ $value | quote }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.redisConfiguration }}
+[apim.redis_config]
+{{- range $key, $value := .Values.wso2.apim.configurations.redisConfiguration }}
+{{ $key }} = {{ $value | quote }}
+{{- end }}
+{{- end }}
+
+[monitoring.jmx]
+{{- if .Values.wso2.apim.configurations.jmxMonitoring.enabled }}
+rmi_server_start=true
+rmi_registry_port = {{ .Values.wso2.apim.configurations.jmxMonitoring.rmiRegistryPort }}
+rmi_server_port = {{ .Values.wso2.apim.configurations.jmxMonitoring.rmiServerPort }}
+{{- else }}
+rmi_server_start=false
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.monetization.enabled }}
+[apim.monetization]
+monetization_impl = {{ .Values.wso2.apim.configurations.monetization.impl | quote }}
+
+{{- if .Values.wso2.apim.configurations.monetization.additionalAttributes }}
+[[apim.monetization.additional_attributes]]
+{{- range $key, $value := .Values.wso2.apim.configurations.monetization.additionalAttributes }}
+{{ $key }} = {{ $value | quote }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.analytics }}
 # key manager implementation
 [apim.key_manager]
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
@@ -200,6 +247,14 @@ service_url = "https://{{ template "am-all-in-one.fullname" . }}-am-service:${mg
 {{- end }}
 username= "$ref{super_admin.username}"
 password= "$ref{super_admin.password}"
+
+[oauth]
+{{- if .Values.wso2.apim.configurations.oauth_config.appAccessTokenValidity }}
+token_validation.app_access_token_validity = {{ .Values.wso2.apim.configurations.oauth_config.appAccessTokenValidity }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.oauth_config.timestampSkew }}
+timestamp_skew = {{ .Values.wso2.apim.configurations.oauth_config.timestampSkew }}
+{{- end }}
 
 [oauth.grant_type.token_exchange]
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
@@ -281,6 +336,9 @@ login_username_case_insensitive = {{ .Values.wso2.apim.configurations.devportal.
 {{- end }}
 {{- if .Values.wso2.apim.configurations.devportal.enableKeyProvisioning }}
 enable_key_provisioning = {{ .Values.wso2.apim.configurations.devportal.enableKeyProvisioning }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.devportal.apiKeyAlias }}
+api_key_alias = {{ .Values.wso2.apim.configurations.devportal.apiKeyAlias | quote }}
 {{- end }}
 
 [apim.publisher]
@@ -387,6 +445,18 @@ enable_start_tls = {{ .Values.wso2.apim.configurations.notification.enableStartT
 enable_authentication = {{ .Values.wso2.apim.configurations.notification.enableAuthentication }}
 {{- end }}
 
+{{- if .Values.wso2.apim.configurations.outputAdapterEmail.hostname }}
+[output_adapter.email]
+from_address = "{{ .Values.wso2.apim.configurations.outputAdapterEmail.fromAddress }}"
+username = "{{ .Values.wso2.apim.configurations.outputAdapterEmail.username }}"
+password = "{{ .Values.wso2.apim.configurations.outputAdapterEmail.password }}"
+signature = "{{ .Values.wso2.apim.configurations.outputAdapterEmail.signature }}"
+hostname = "{{ .Values.wso2.apim.configurations.outputAdapterEmail.hostname }}"
+port = {{ .Values.wso2.apim.configurations.outputAdapterEmail.port }}
+enable_start_tls = {{ .Values.wso2.apim.configurations.outputAdapterEmail.enableStartTls }}
+enable_authentication = {{ .Values.wso2.apim.configurations.outputAdapterEmail.enableAuthentication }}
+{{- end }}
+
 # [apim.token.revocation]
 # notifier_impl = "{{ .Values.wso2.apim.configurations.token.revocation.NotifierImpl }}"
 # enable_realtime_notifier = {{ .Values.wso2.apim.configurations.token.revocation.EnableRealtimeNotifier }}
@@ -431,6 +501,14 @@ location = "/home/wso2carbon/solr/indexed-data"
 {{- else }}
 [database.local]
 url = "jdbc:h2:./repository/database/WSO2CARBON_DB;DB_CLOSE_ON_EXIT=FALSE"
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.securityAudit.enabled }}
+[security_audit]
+api_token = {{ .Values.wso2.apim.configurations.securityAudit.properties.apiToken | quote }}
+collection_id = {{ .Values.wso2.apim.configurations.securityAudit.properties.collectionId | quote }}
+global={{ .Values.wso2.apim.configurations.securityAudit.properties.global }}
+base_url = {{ .Values.wso2.apim.configurations.securityAudit.properties.baseUrl | quote }}
 {{- end }}
 
 {{- if .Values.wso2.apim.secureVaultEnabled }}
