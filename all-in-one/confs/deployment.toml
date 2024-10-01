@@ -200,6 +200,24 @@ service_url = "https://{{ template "am-all-in-one.fullname" . }}-am-service:${mg
 {{- end }}
 username= "$ref{super_admin.username}"
 password= "$ref{super_admin.password}"
+{{- if .Values.wso2.apim.configurations.keyManager.enableLightweightAPIKeyGeneration }}
+enable_lightweight_apikey_generation = true
+{{- else }}
+enable_lightweight_apikey_generation = false
+{{- end }}
+{{- if .Values.wso2.apim.configurations.keyManager.allowSubscriptionValidationDisabling }}
+allow_subscription_validation_disabling = true
+{{- else }}
+allow_subscription_validation_disabling = false
+{{- end }}
+
+[apim.transaction_counter]
+{{- if .Values.wso2.apim.configurations.transactionCounter.enabled }}
+enable = true
+{{- else }}
+enable = false
+{{- end }}
+server_id = "{{ .Values.wso2.apim.configurations.transactionCounter.serverId }}"
 
 [oauth.grant_type.token_exchange]
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}

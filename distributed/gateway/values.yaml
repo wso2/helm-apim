@@ -372,6 +372,10 @@ wso2:
               # https://apim.docs.wso2.com/en/latest/install-and-setup/setup/security/enabling-hostname-verification/#configuring-hostname-verification
               hostnameVerifier: "AllowAll"
 
+      transactionCounter:
+        enabled: false
+        serverId: "Gateway1"
+
   deployment:
     # Container image configurations
     image:
