@@ -114,6 +114,14 @@ service_url = "https://{{ .Values.wso2.apim.configurations.km.serviceUrl }}:{{ .
 username= "$ref{super_admin.username}"
 password= "$ref{super_admin.password}"
 
+[apim.transaction_counter]
+{{- if .Values.wso2.apim.configurations.transactionCounter.enabled }}
+enable = true
+{{- else }}
+enable = false
+{{- end }}
+server_id = "{{ .Values.wso2.apim.configurations.transactionCounter.serverId }}"
+
 {{ if .Values.wso2.apim.configurations.iskm.enabled }}
 [oauth.grant_type.token_exchange]
 enable = false

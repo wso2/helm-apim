@@ -372,6 +372,10 @@ wso2:
         # -- Remote tracer port
         port: ""
 
+      keyManager:
+        enableLightweightAPIKeyGeneration: true
+        allowSubscriptionValidationDisabling: true
+
   deployment:
     # Container image configurations
     image:

@@ -541,6 +541,14 @@ wso2:
           properties:
             notificationEndpoint: "https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"
 
+      keyManager:
+        enableLightweightAPIKeyGeneration: true
+        allowSubscriptionValidationDisabling: true
+
+      transactionCounter:
+        enabled: false
+        serverId: "Gateway"
+
   deployment:
     # Container image configurations
     image:
