@@ -196,7 +196,7 @@ wso2:
   # TOML configurations
   apim:
     # -- APIM version
-    version: "4.3.0"
+    version: "4.4.0"
     # -- Secure vauld enabled
     secureVaultEnabled: false
     # Logging related configurations
