@@ -46,7 +46,7 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | kubernetes.ingress.websub.annotations | string | `nil` | Ingress annotations for Websub |
 | kubernetes.ingress.websub.hostname | string | `"websub.wso2.com"` | Ingress hostname for Websub |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
-| kubernetes.securityContext.runAsUser | int | `802` | User ID of the container |
+| kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
 | wso2.ELKAnalytics | object | `{"enabled":false}` | ELK Analytics Parameters |
 | wso2.apim.configurations.adminPassword | string | `""` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `""` | Super admin username |

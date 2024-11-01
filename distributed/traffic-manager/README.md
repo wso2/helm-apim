@@ -37,7 +37,7 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | gcp.secretsManager.secretProviderClass | string | `""` | Secret provider class |
 | gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
-| kubernetes.securityContext.runAsUser | int | `802` | User ID of the container |
+| kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
 | wso2.apim.configurations.adminPassword | string | `""` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `""` | Super admin username |
 | wso2.apim.configurations.databases.apim_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM AM_DB configurations. |

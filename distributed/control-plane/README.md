@@ -72,7 +72,7 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | kubernetes.ingress.ratelimit.zoneName | string | `""` | Ingress ratelimit zone name |
 | kubernetes.ingress.tlsSecret | string | `""` | Kubernetes secret created for Ingress TLS |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
-| kubernetes.securityContext.runAsUser | int | `802` | User ID of the container |
+| kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
 | wso2.apim.configurations.adminPassword | string | `""` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `""` | Super admin username |
 | wso2.apim.configurations.ai | object | `{"enabled":false,"endpoint":"","token":""}` | APIM AI related configurations |
