@@ -121,6 +121,8 @@ wso2:
         appenders: ""
     # -- Startup arguments for APIM
     startupArgs: ""
+    # -- Port Offset for APIM deployment
+    portOffset: 0
     # -- Startup script mount status
     mountStartupScript: false
     # TOML configurations

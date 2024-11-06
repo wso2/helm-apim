@@ -314,7 +314,14 @@ wso2:
         enabled: false
         # -- Kubernetes service name exposing Identity Server
         serviceName: ""
-        # -- Kubernetes service port exposing Identity Serve
+        # -- Kubernetes service port exposing Identity Server
+        servicePort: 9443
+      km:
+        # -- If Key Manager profile is separated
+        enabled: false
+        # -- Kubernetes service name exposing Key Manager
+        serviceName: "wso2am-km-service"
+        # -- Kubernetes service port exposing Key Manager
         servicePort: 9443
 
       publisher:

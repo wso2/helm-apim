@@ -123,6 +123,8 @@ websub_event_receiver_https_endpoint = "https://{{ $env.websubHostname }}"
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
 type = "WSO2-IS"
 service_url = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:{{ .Values.wso2.apim.configurations.iskm.servicePort }}/services/"
+{{- else if .Values.wso2.apim.configurations.km.enabled }}
+service_url = "https://{{ .Values.wso2.apim.configurations.km.serviceName }}:{{ .Values.wso2.apim.configurations.km.servicePort }}/services/"
 {{- else }}
 service_url = "https://{{ template "apim-helm-cp.fullname" . }}-service:{{ add 9443 .Values.wso2.apim.portOffset }}/services/"
 {{- end }}
