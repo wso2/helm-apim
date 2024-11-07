@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+# Copyright (c) 2024, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
 #
 # This software is the property of WSO2 LLC. and its suppliers, if any.
 # Dissemination of any information or reproduction of any material contained 
@@ -8,10 +8,12 @@
 # WSO2 Commercial License available at https://wso2.com/licenses/eula/3.2
 #
 # --------------------------------------------------------------------------------------
-
+{{- if .Values.wso2.apim.mountStartupScript }}
 apiVersion: v1
-appVersion: "4.4.0"
-description: A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
-name: wso2am-all-in-one
-version: 4.4.0-1
-icon: https://wso2.cachefly.net/wso2/sites/all/images/wso2logo.svg
+kind: ConfigMap
+metadata:
+  name: {{ template "apim-helm-km.fullname" . }}-conf-sh
+  namespace : {{ .Release.Namespace }}
+data:
+  api-manager.sh: {{ tpl (.Files.Get "confs/api-manager.sh") . | quote}}
+{{- end }}
