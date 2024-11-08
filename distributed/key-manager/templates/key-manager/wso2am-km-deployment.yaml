@@ -34,9 +34,9 @@ spec:
         {{- if .Values.kubernetes.enableAppArmor }}
         container.apparmor.security.beta.kubernetes.io/wso2am-km: runtime/default
         {{- end }}
-        checksum.am.km.conf: {{ include (print $.Template.BasePath "/km/wso2am-km-conf.yaml") . | sha256sum }}
-        checksum.am.km.conf.log4j2: {{ include (print $.Template.BasePath "/km/wso2am-km-conf-log4j2.yaml") . | sha256sum }}
-        checksum.am.km.conf.secret: {{ include (print $.Template.BasePath "/km/wso2am-km-conf-secret-conf.yaml") . | sha256sum }}
+        checksum.am.km.conf: {{ include (print $.Template.BasePath "/key-manager/wso2am-km-conf.yaml") . | sha256sum }}
+        checksum.am.km.conf.log4j2: {{ include (print $.Template.BasePath "/key-manager/wso2am-km-conf-log4j2.yaml") . | sha256sum }}
+        checksum.am.km.conf.secret: {{ include (print $.Template.BasePath "/key-manager/wso2am-km-conf-secret-conf.yaml") . | sha256sum }}
       labels:
         deployment: {{ template "apim-helm-km.fullname" . }}
         product: apim
