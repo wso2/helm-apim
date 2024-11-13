@@ -53,6 +53,14 @@ driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
 {{ $key }} = "{{ $value }}"
 {{- end }}
 
+[transport.http]
+properties.port = 9763
+properties.proxyPort = 80
+
+[transport.https]
+properties.port = 9443
+properties.proxyPort = 443
+
 {{- if .Values.wso2.apim.configurations.security.keystores.primary.enabled }}
 [keystore.primary]
 type = "JKS"

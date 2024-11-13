@@ -147,11 +147,12 @@ allow_refresh_tokens = true
 iat_validity_period = "1h"
 {{- end }}
 
+{{- if .Values.wso2.apim.configurations.oauth_config.oauth2JWKSUrl }}
 [oauth.endpoints]
-{{- if .Values.wso2.apim.configurations.oauth_config }}
 oauth2_jwks_url = "{{ .Values.wso2.apim.configurations.oauth_config.oauth2JWKSUrl }}"
 {{- end }}
 
+{{- if .Values.wso2.apim.configurations.publisher }}
 [apim.publisher]
 {{- if .Values.wso2.apim.configurations.publisher.supportedDocumentTypes }}
 supported_document_types = {{ toJson .Values.wso2.apim.configurations.publisher.supportedDocumentTypes }}
@@ -161,6 +162,7 @@ enable_portal_configuration_only_mode = {{ .Values.wso2.apim.configurations.publ
 {{- end }}
 {{- if .Values.wso2.apim.configurations.publisher.internalKeyIssuer }}
 internal_key_issuer = "{{ .Values.wso2.apim.configurations.publisher.internalKeyIssuer }}"
+{{- end }}
 {{- end }}
 
 [apim.devportal]
@@ -252,7 +254,7 @@ remote_tracer.port = {{ .Values.wso2.apim.configurations.openTelemetry.port | qu
 {{- end }}
 
 [apim.ai]
-{{-if .Values.wso2.apim.configurations.ai.enabled }}
+{{- if .Values.wso2.apim.configurations.ai.enabled }}
 enable = true
 token = {{ .Values.wso2.apim.configurations.ai.token | quote }}
 endpoint = {{ .Values.wso2.apim.configurations.ai.endpoint | quote }}
@@ -260,8 +262,13 @@ endpoint = {{ .Values.wso2.apim.configurations.ai.endpoint | quote }}
 enable = false
 {{- end }}
 
-[transport.https.properties]
-proxyPort = 443
+[transport.http]
+properties.port = 9763
+properties.proxyPort = 80
+
+[transport.https]
+properties.port = 9443
+properties.proxyPort = 443
 
 [[event_handler]]
 name="userPostSelfRegistration"
