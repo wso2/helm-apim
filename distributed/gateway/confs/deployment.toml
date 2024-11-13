@@ -87,7 +87,7 @@ password = {{ .Values.wso2.apim.configurations.security.truststore.password | qu
 {{- end }}
 
 [apim.ai]
-{{-if .Values.wso2.apim.configurations.ai.enabled }}
+{{- if .Values.wso2.apim.configurations.ai.enabled }}
 enable = true
 token = {{ .Values.wso2.apim.configurations.ai.token | quote }}
 endpoint = {{ .Values.wso2.apim.configurations.ai.endpoint | quote }}
@@ -163,7 +163,7 @@ username = "$ref{super_admin.username}"
 password = "$ref{super_admin.password}"
 service_url = "https://{{ .Values.wso2.apim.configurations.eventhub.serviceUrl }}:{{ .Values.wso2.apim.configurations.eventhub.servicePort }}/services/"
 {{- $len := add (len .Values.wso2.apim.configurations.eventhub.urls) -1 }}
-event_listening_endpoints = [{{ range $index, $element := .Values.wso2.apim.configurations.eventhub.urls }}"tcp://{{ $element }}:{{ add 5672 .Values.wso2.apim.configurations.throttling.portOffset }}"{{ if ne $index $len }},{{ end }}{{ end}}]
+event_listening_endpoints = [{{ range $index, $element := .Values.wso2.apim.configurations.eventhub.urls }}"tcp://{{ $element }}:{{ add 5672 $.Values.wso2.apim.configurations.throttling.portOffset }}"{{ if ne $index $len }},{{ end }}{{ end}}]
 {{- end }}
 
 [apim.analytics]
