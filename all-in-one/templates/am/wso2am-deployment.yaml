@@ -86,8 +86,9 @@ spec:
             failureThreshold: {{ .Values.wso2.deployment.livenessProbe.failureThreshold }}
           readinessProbe:
             httpGet:
-              path: /services/Version
-              port: 9763
+              path: /api/am/gateway/v2/server-startup-healthcheck
+              port: 9443
+              scheme: HTTPS
             initialDelaySeconds: {{ .Values.wso2.deployment.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.wso2.deployment.readinessProbe.periodSeconds }}
             failureThreshold: {{ .Values.wso2.deployment.readinessProbe.failureThreshold }}
