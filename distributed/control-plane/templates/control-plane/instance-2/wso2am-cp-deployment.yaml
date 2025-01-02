@@ -80,7 +80,7 @@ spec:
             command:
               - /bin/sh
               - -c
-              - nc -z localhost {{ add 9443 .Values.wso2.apim.portOffset }}
+              - timeout 1 bash -c "</dev/tcp/localhost/{{ add 9443 .Values.wso2.apim.portOffset }}"
           initialDelaySeconds: {{ .Values.wso2.deployment.startupProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.wso2.deployment.startupProbe.periodSeconds }}
           failureThreshold: {{ .Values.wso2.deployment.startupProbe.failureThreshold }}
