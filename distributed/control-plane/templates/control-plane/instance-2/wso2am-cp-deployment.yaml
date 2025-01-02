@@ -80,7 +80,7 @@ spec:
             command:
               - /bin/sh
               - -c
-              - nc -z localhost 9443
+              - timeout 1 bash -c "</dev/tcp/localhost/9443"
           initialDelaySeconds: {{ .Values.wso2.deployment.startupProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.wso2.deployment.startupProbe.periodSeconds }}
           failureThreshold: {{ .Values.wso2.deployment.startupProbe.failureThreshold }}
