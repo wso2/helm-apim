@@ -54,11 +54,4 @@ data:
 
     # start WSO2 Carbon server
     echo "Start WSO2 Carbon server" >&2
-    if [[ -z "${PROFILE_NAME}" ]]
-    then
-      # start the server with the provided startup arguments
-      sh ${WSO2_SERVER_HOME}/bin/key-manager.sh "$@" {{ .Values.wso2.apim.startupArgs }}
-    else
-      # start the server with the specified profile and provided startup arguments
-      sh ${WSO2_SERVER_HOME}/bin/key-manager.sh -Dprofile=${PROFILE_NAME} "$@" {{ .Values.wso2.apim.startupArgs }}
-    fi
+    sh ${WSO2_SERVER_HOME}/bin/key-manager.sh "$@" {{ .Values.wso2.apim.startupArgs }}
