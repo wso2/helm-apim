@@ -164,20 +164,6 @@ do
           echo "Passed skipConfigOptimization Option: $passedSkipConfigOptimizationOption"
         fi
       done
-
-      # for profile in $*; do
-      #   case "$profile" in
-      #     *Dprofile=*)
-      #       cd $(dirname "$0")
-      #       if [ "$passedSkipConfigOptimizationOption" = true ]; then
-      #         sh profileSetup.sh $profile --skipConfigOptimization
-      #       else
-      #         sh profileSetup.sh $profile
-      #       fi
-      #       echo "Starting the server..."
-      #       ;;
-      #   esac
-      # done
     else
         args="$args $c"
     fi
