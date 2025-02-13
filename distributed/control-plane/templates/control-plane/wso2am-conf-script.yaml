@@ -15,5 +15,5 @@ metadata:
   name: {{ template "apim-helm-cp.fullname" . }}-conf-sh
   namespace : {{ .Release.Namespace }}
 data:
-  api-manager.sh: {{ tpl (.Files.Get "confs/api-manager.sh") . | quote}}
+  api-cp.sh: {{ tpl (.Files.Get "confs/api-cp.sh") . | quote}}
 {{- end }}
