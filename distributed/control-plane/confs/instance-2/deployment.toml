@@ -225,12 +225,6 @@ enable_token_encryption = {{ .Values.wso2.apim.configurations.oauth_config.enabl
 enable_token_hashing = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenHashing }}
 allowed_scopes = {{ toJson .Values.wso2.apim.configurations.oauth_config.allowedScopes }}
 
-[apim.cors]
-allow_origins = "*"
-allow_methods = ["GET","PUT","POST","DELETE","PATCH","OPTIONS"]
-allow_headers = ["authorization","Access-Control-Allow-Origin","Content-Type","SOAPAction","apikey","Internal-Key"]
-allow_credentials = false
-
 {{- if .Values.wso2.apim.configurations.openTracer.enabled }}
 [apim.open_tracer]
 remote_tracer.enable = {{ .Values.wso2.apim.configurations.openTracer.enabled }}
