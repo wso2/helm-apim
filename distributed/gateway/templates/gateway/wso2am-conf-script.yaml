@@ -15,5 +15,5 @@ metadata:
   name: {{ template "apim-helm-gw.fullname" . }}-conf-sh
   namespace : {{ .Release.Namespace }}
 data:
-  api-gateway.sh: {{ tpl (.Files.Get "confs/api-gateway.sh") . | quote}}
+  gateway.sh: {{ tpl (.Files.Get "confs/gateway.sh") . | quote}}
 {{- end }}
