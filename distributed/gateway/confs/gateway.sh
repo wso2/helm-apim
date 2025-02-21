@@ -164,20 +164,6 @@ do
           echo "Passed skipConfigOptimization Option: $passedSkipConfigOptimizationOption"
         fi
       done
-
-      for profile in $*; do
-        case "$profile" in
-          *Dprofile=*)
-            cd $(dirname "$0")
-            if [ "$passedSkipConfigOptimizationOption" = true ]; then
-              sh profileSetup.sh $profile --skipConfigOptimization
-            else
-              sh profileSetup.sh $profile
-            fi
-            echo "Starting the server..."
-            ;;
-        esac
-      done
     else
         args="$args $c"
     fi
@@ -203,7 +189,7 @@ elif [ "$CMD" = "start" ]; then
   fi
   export CARBON_HOME="$CARBON_HOME"
 # using nohup sh to avoid erros in solaris OS.TODO
-  nohup sh "$CARBON_HOME"/bin/api-manager.sh $args > /dev/null 2>&1 &
+  nohup sh "$CARBON_HOME"/bin/gateway.sh $args > /dev/null 2>&1 &
   exit 0
 elif [ "$CMD" = "stop" ]; then
   export CARBON_HOME="$CARBON_HOME"
@@ -222,7 +208,7 @@ elif [ "$CMD" = "restart" ]; then
   done
 
 # using nohup sh to avoid erros in solaris OS.TODO
-  nohup sh "$CARBON_HOME"/bin/api-manager.sh $args > /dev/null 2>&1 &
+  nohup sh "$CARBON_HOME"/bin/gateway.sh $args > /dev/null 2>&1 &
   exit 0
 elif [ "$CMD" = "test" ]; then
     JAVACMD="exec "$JAVACMD""

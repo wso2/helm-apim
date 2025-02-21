@@ -66,7 +66,7 @@ spec:
         imagePullPolicy: {{ .Values.wso2.deployment.imagePullPolicy }}
         env:
         - name: PROFILE_NAME
-          value: control-plane
+          value: default
         - name: NODE_IP
           valueFrom:
             fieldRef:
@@ -107,7 +107,7 @@ spec:
                   echo "Pre stop hook triggered";
                   sleep {{ .Values.wso2.deployment.lifecycle.preStopHook.sleepSeconds }};
                   echo "Shutdown APIM Server";
-                  ${WSO2_SERVER_HOME}/bin/api-manager.sh stop
+                  ${WSO2_SERVER_HOME}/bin/api-cp.sh stop
         resources:
           requests:
             memory: {{ .Values.wso2.deployment.resources.requests.memory }}
@@ -145,8 +145,8 @@ spec:
           subPath: log4j2.properties
         {{- if .Values.wso2.apim.mountStartupScript }}
         - name: wso2am-sh-conf
-          mountPath: /home/wso2carbon/wso2-config-volume/bin/api-manager.sh
-          subPath: api-manager.sh
+          mountPath: /home/wso2carbon/wso2-config-volume/bin/api-cp.sh
+          subPath: api-cp.sh
         {{- end }}
         {{- if .Values.wso2.apim.secureVaultEnabled }}
         - name: wso2am-control-plane-secret-conf

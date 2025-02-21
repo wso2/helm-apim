@@ -109,7 +109,7 @@ spec:
                   echo "Pre stop hook triggered";
                   sleep {{ .Values.wso2.deployment.lifecycle.preStopHook.sleepSeconds }};
                   echo "Shutdown APIM Server";
-                  ${WSO2_SERVER_HOME}/bin/api-manager.sh stop
+                  ${WSO2_SERVER_HOME}/bin/gateway.sh stop
         resources:
           requests:
             memory: {{ .Values.wso2.deployment.resources.requests.memory }}
@@ -153,8 +153,8 @@ spec:
           subPath: log4j2.properties
         {{- if .Values.wso2.apim.mountStartupScript }}
         - name: wso2am-sh-conf
-          mountPath: /home/wso2carbon/wso2-config-volume/bin/api-manager.sh
-          subPath: api-manager.sh
+          mountPath: /home/wso2carbon/wso2-config-volume/bin/gateway.sh
+          subPath: gateway.sh
         {{- end }}
         {{- if .Values.wso2.apim.secureVaultEnabled }}
         - name: wso2am-gateway-secret-conf
