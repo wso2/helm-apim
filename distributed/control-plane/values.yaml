@@ -386,12 +386,12 @@ wso2:
         allowSubscriptionValidationDisabling: true
 
       governance:
-        # -- Governance enabled
+        # -- Override the default values of governance.scheduler if any value exists
         scheduler:
-          thread_pool_size: "20"
-          queue_size: "20"
-          task_check_interval_minutes: "2"
-          task_cleanup_interval_minutes: "30"
+          thread_pool_size: ""
+          queue_size: ""
+          task_check_interval_minutes: ""
+          task_cleanup_interval_minutes: ""
 
   deployment:
     # Container image configurations
