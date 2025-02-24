@@ -213,7 +213,7 @@ wso2:
     mountStartupScript: false
     # TOML configurations
     configurations:
-      gatewayType: "Regular"
+      gatewayType: "Regular,APK,AWS"
       userStore:
         # -- User store type. 
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
@@ -269,7 +269,9 @@ wso2:
       ai:
         enabled: false
         token: ""
+        key: ""
         endpoint: ""
+        token_endpoint: ""
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
