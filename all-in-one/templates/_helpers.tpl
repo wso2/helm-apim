@@ -80,3 +80,16 @@ image: {{ $dockerRegistry }}/{{ $imageName }}{{- if not (eq $imageTag "") }}:{{ 
 {{- end -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Check if all the governance.scheduler configuration values are empty.
+*/}}
+{{- define "scheduler.isEmpty" -}}
+{{- $scheduler := .Values.wso2.apim.configurations.governance.scheduler -}}
+{{- and 
+    (empty $scheduler.thread_pool_size)
+    (empty $scheduler.queue_size)
+    (empty $scheduler.task_check_interval_minutes)
+    (empty $scheduler.task_cleanup_interval_minutes)
+-}}
+{{- end -}}

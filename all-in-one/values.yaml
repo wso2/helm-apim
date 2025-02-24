@@ -551,6 +551,14 @@ wso2:
         enabled: false
         serverId: "Gateway"
 
+      governance:
+        # -- Override the default values of governance.scheduler if any value exists
+        scheduler:
+          thread_pool_size: ""
+          queue_size: ""
+          task_check_interval_minutes: ""
+          task_cleanup_interval_minutes: ""
+
   deployment:
     # Container image configurations
     image:
