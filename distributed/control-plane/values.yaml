@@ -248,7 +248,9 @@ wso2:
       ai:
         enabled: false
         token: ""
+        key: ""
         endpoint: ""
+        token_endpoint: ""
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
@@ -382,6 +384,14 @@ wso2:
       keyManager:
         enableLightweightAPIKeyGeneration: true
         allowSubscriptionValidationDisabling: true
+
+      governance:
+        # -- Governance enabled
+        scheduler:
+          thread_pool_size: "20"
+          queue_size: "20"
+          task_check_interval_minutes: "2"
+          task_cleanup_interval_minutes: "30"
 
   deployment:
     # Container image configurations
