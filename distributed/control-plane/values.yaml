@@ -248,7 +248,9 @@ wso2:
       ai:
         enabled: false
         token: ""
+        key: ""
         endpoint: ""
+        token_endpoint: ""
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
