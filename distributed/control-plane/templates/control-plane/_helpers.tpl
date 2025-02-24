@@ -69,7 +69,7 @@ Common prefix prepended to Kubernetes resources of this chart
 {{- end -}}
 
 {{/*
-Check if all the scheduler configuration values are empty.
+Check if all the governance.scheduler configuration values are empty.
 */}}
 {{- define "scheduler.isEmpty" -}}
 {{- $scheduler := .Values.wso2.apim.configurations.governance.scheduler -}}
