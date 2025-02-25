@@ -266,6 +266,8 @@ remote_tracer.port = {{ .Values.wso2.apim.configurations.openTelemetry.port | qu
 enable = true
 token = {{ .Values.wso2.apim.configurations.ai.token | quote }}
 endpoint = {{ .Values.wso2.apim.configurations.ai.endpoint | quote }}
+token_endpoint = {{ .Values.wso2.apim.configurations.ai.token_endpoint | quote }}
+key = {{ .Values.wso2.apim.configurations.ai.key | quote }}
 {{- else }}
 enable = false
 {{- end }}
@@ -318,3 +320,13 @@ truststore_password = {{ .Values.wso2.apim.configurations.security.truststore.pa
 apim_db_password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote}}
 shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote}}
 {{- end}}
+
+{{- if eq (include "scheduler.isEmpty" .) "false" }}
+[apim.governance.scheduler]
+thread_pool_size = "{{ .Values.wso2.apim.configurations.governance.scheduler.thread_pool_size }}"
+queue_size = "{{ .Values.wso2.apim.configurations.governance.scheduler.queue_size }}"
+task_check_interval_minutes = "{{ .Values.wso2.apim.configurations.governance.scheduler.task_check_interval_minutes }}"
+task_cleanup_interval_minutes = "{{ .Values.wso2.apim.configurations.governance.scheduler.task_cleanup_interval_minutes }}"
+{{- else }}
+# At least one scheduler value is not empty
+{{- end }}
