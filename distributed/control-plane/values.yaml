@@ -385,6 +385,7 @@ wso2:
         enableLightweightAPIKeyGeneration: true
         allowSubscriptionValidationDisabling: true
 
+      # APIM governance configurations
       governance:
         # -- Override the default values of governance.scheduler if any value exists
         scheduler:

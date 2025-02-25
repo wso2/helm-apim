@@ -75,7 +75,7 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
 | wso2.apim.configurations.adminPassword | string | `""` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `""` | Super admin username |
-| wso2.apim.configurations.ai | object | `{"enabled":false,"endpoint":"","token":""}` | APIM AI related configurations |
+| wso2.apim.configurations.ai | object | `{"enabled":false,"endpoint":"","key":"","token":"","token_endpoint":""}` | APIM AI related configurations |
 | wso2.apim.configurations.databases.apim_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM AM_DB configurations. |
 | wso2.apim.configurations.databases.apim_db.password | string | `""` | APIM AM_DB password |
 | wso2.apim.configurations.databases.apim_db.poolParameters | object | `{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
@@ -102,7 +102,8 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | wso2.apim.configurations.devportal.enableRatings | string | `nil` |  |
 | wso2.apim.configurations.devportal.loginUsernameCaseInsensitive | string | `nil` |  |
 | wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
-| wso2.apim.configurations.gatewayType | string | `"Regular"` |  |
+| wso2.apim.configurations.gatewayType | string | `"Regular,APK,AWS"` |  |
+| wso2.apim.configurations.governance.scheduler | object | `{"queue_size":"","task_check_interval_minutes":"","task_cleanup_interval_minutes":"","thread_pool_size":""}` | Override the default values of governance.scheduler if any value exists |
 | wso2.apim.configurations.iskm.enabled | bool | `false` | If Identity Server is used as the Resident KM |
 | wso2.apim.configurations.iskm.serviceName | string | `""` | Kubernetes service name exposing Identity Server |
 | wso2.apim.configurations.iskm.servicePort | int | `9443` | Kubernetes service port exposing Identity Server |
