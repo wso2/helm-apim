@@ -125,8 +125,22 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | wso2.apim.configurations.openTracer.properties.hostname | string | `""` | Remote tracer hostname |
 | wso2.apim.configurations.openTracer.properties.port | string | `""` | Remote tracer port |
 | wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode | bool | `false` |  |
+| wso2.apim.configurations.publisher.enable_api_doc_visibility | bool | `false` | Supported document types in Publisher.  This should be used only if there are additional document types to be supported. |
 | wso2.apim.configurations.publisher.internalKeyIssuer | string | `""` |  |
-| wso2.apim.configurations.publisher.supportedDocumentTypes | string | `""` | Supported document types in Publisher.  This should be used only if there are additional document types to be supported. |
+| wso2.apim.configurations.publisher.supportedDocumentTypes | string | `""` |  |
+| wso2.apim.configurations.sdk.supported_languages[0] | string | `"android"` |  |
+| wso2.apim.configurations.sdk.supported_languages[10] | string | `"ruby"` |  |
+| wso2.apim.configurations.sdk.supported_languages[11] | string | `"swift5"` |  |
+| wso2.apim.configurations.sdk.supported_languages[12] | string | `"clojure"` |  |
+| wso2.apim.configurations.sdk.supported_languages[1] | string | `"java"` |  |
+| wso2.apim.configurations.sdk.supported_languages[2] | string | `"csharp"` |  |
+| wso2.apim.configurations.sdk.supported_languages[3] | string | `"dart"` |  |
+| wso2.apim.configurations.sdk.supported_languages[4] | string | `"groovy"` |  |
+| wso2.apim.configurations.sdk.supported_languages[5] | string | `"javascript"` |  |
+| wso2.apim.configurations.sdk.supported_languages[6] | string | `"jmeter"` |  |
+| wso2.apim.configurations.sdk.supported_languages[7] | string | `"perl"` |  |
+| wso2.apim.configurations.sdk.supported_languages[8] | string | `"php"` |  |
+| wso2.apim.configurations.sdk.supported_languages[9] | string | `"python"` |  |
 | wso2.apim.configurations.security.jksSecretName | string | `"apim-keystore-secret"` | Kubernetes secret containing the keystores and truststore |
 | wso2.apim.configurations.security.keystores.internal.alias | string | `"wso2carbon"` | Internal keystore alias |
 | wso2.apim.configurations.security.keystores.internal.enabled | bool | `false` | Internal keystore enabled |
@@ -145,6 +159,8 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | wso2.apim.configurations.security.keystores.tls.password | string | `""` | TLS keystore password |
 | wso2.apim.configurations.security.truststore.name | string | `"client-truststore.jks"` | Truststore name |
 | wso2.apim.configurations.security.truststore.password | string | `""` | Truststore password |
+| wso2.apim.configurations.transactionCounter.enabled | bool | `false` |  |
+| wso2.apim.configurations.transactionCounter.serviceUrl | string | `""` |  |
 | wso2.apim.configurations.userStore.properties | object | `{"key":"value"}` | User store properties |
 | wso2.apim.configurations.userStore.type | string | `"database_unique_id"` | User store type.  https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/ |
 | wso2.apim.log4j2.appenders | string | `""` | Appenders |
