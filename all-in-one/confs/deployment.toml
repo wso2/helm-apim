@@ -218,6 +218,7 @@ enable = true
 enable = false
 {{- end }}
 server_id = "{{ .Values.wso2.apim.configurations.transactionCounter.serverId }}"
+server_url = "{{ .Values.wso2.apim.configurations.transactionCounter.serverUrl }}"
 
 [oauth.grant_type.token_exchange]
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
@@ -302,6 +303,7 @@ enable_key_provisioning = {{ .Values.wso2.apim.configurations.devportal.enableKe
 {{- end }}
 
 [apim.publisher]
+enable_api_doc_visibility = {{ .Values.wso2.apim.configurations.publisher.enable_api_doc_visibility }}
 {{- if .Values.wso2.apim.configurations.publisher.supportedDocumentTypes }}
 supported_document_types = {{ toJson .Values.wso2.apim.configurations.publisher.supportedDocumentTypes }}
 {{- end }}
@@ -464,3 +466,8 @@ truststore_password = {{ .Values.wso2.apim.configurations.security.truststore.pa
 apim_db_password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote }}
 shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote}}
 {{- end}}
+
+{{- if .Values.wso2.apim.configurations.sdk.supported_languages }}
+[apim.sdk]
+supported_languages = {{ toJson .Values.wso2.apim.configurations.sdk.supported_languages }}
+{{- end }}

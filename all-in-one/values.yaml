@@ -438,6 +438,7 @@ wso2:
       publisher:
         # -- Supported document types in Publisher. 
         # This should be used only if there are additional document types to be supported.
+        enable_api_doc_visibility: false
         supportedDocumentTypes: ""
         enablePortalConfigurationOnlyMode: false
         internalKeyIssuer: ""
@@ -550,6 +551,7 @@ wso2:
       transactionCounter:
         enabled: false
         serverId: "Gateway"
+        serverURL: ""
 
       governance:
         # -- Override the default values of governance.scheduler if any value exists
@@ -558,6 +560,10 @@ wso2:
           queue_size: ""
           task_check_interval_minutes: ""
           task_cleanup_interval_minutes: ""
+      
+      # APIM SDK configurations
+      sdk:
+        supported_languages: ["android", "java", "csharp", "dart", "groovy", "javascript", "jmeter", "perl", "php", "python", "ruby", "swift5", "clojure"]
 
   deployment:
     # Container image configurations
