@@ -117,6 +117,7 @@ password= "$ref{super_admin.password}"
 [apim.transaction_counter]
 {{- if .Values.wso2.apim.configurations.transactionCounter.enabled }}
 enable = true
+server_url = "{{ .Values.wso2.apim.configurations.transactionCounter.serverUrl }}"
 {{- else }}
 enable = false
 {{- end }}

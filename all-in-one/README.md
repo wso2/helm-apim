@@ -82,7 +82,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.ELKAnalytics | object | `{"enabled":false}` | ELK Analytics Parameters |
 | wso2.apim.configurations.adminPassword | string | `"admin"` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `"admin"` | Super admin username |
-| wso2.apim.configurations.ai | object | `{"enabled":false,"endpoint":"","token":""}` | APIM AI related configurations |
+| wso2.apim.configurations.ai | object | `{"enabled":false,"endpoint":"","key":"","token":"","token_endpoint":""}` | APIM AI related configurations |
 | wso2.apim.configurations.cache.gateway_token.enabled | bool | `true` | Gateway token cache enabled |
 | wso2.apim.configurations.cache.gateway_token.expiryTime | string | `"15m"` | Gateway token cache expiration time |
 | wso2.apim.configurations.cache.jwt_claim.enabled | bool | `true` | Gateway JWT claim cache enabled |
@@ -135,7 +135,8 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.eventListeners[0].properties.notificationEndpoint | string | `"https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"` |  |
 | wso2.apim.configurations.eventListeners[0].type | string | `"org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"` |  |
 | wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
-| wso2.apim.configurations.gatewayType | string | `"Regular"` |  |
+| wso2.apim.configurations.gatewayType | string | `"Regular,APK,AWS"` |  |
+| wso2.apim.configurations.governance.scheduler | object | `{"queue_size":"","task_check_interval_minutes":"","task_cleanup_interval_minutes":"","thread_pool_size":""}` | Override the default values of governance.scheduler if any value exists |
 | wso2.apim.configurations.iskm.enabled | bool | `false` |  |
 | wso2.apim.configurations.iskm.revokeURL | string | `""` |  |
 | wso2.apim.configurations.iskm.serviceName | string | `""` |  |
@@ -164,8 +165,22 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.oauth_config.removeOutboundAuthHeader | bool | `true` | Remove auth header from outgoing requests |
 | wso2.apim.configurations.oauth_config.revokeEndpoint | string | `""` | OAuth revoke endpoint |
 | wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode | bool | `false` |  |
+| wso2.apim.configurations.publisher.enable_api_doc_visibility | bool | `false` | Supported document types in Publisher.  This should be used only if there are additional document types to be supported. |
 | wso2.apim.configurations.publisher.internalKeyIssuer | string | `""` |  |
-| wso2.apim.configurations.publisher.supportedDocumentTypes | string | `""` | Supported document types in Publisher.  This should be used only if there are additional document types to be supported. |
+| wso2.apim.configurations.publisher.supportedDocumentTypes | string | `""` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[0] | string | `"android"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[10] | string | `"ruby"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[11] | string | `"swift5"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[12] | string | `"clojure"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[1] | string | `"java"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[2] | string | `"csharp"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[3] | string | `"dart"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[4] | string | `"groovy"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[5] | string | `"javascript"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[6] | string | `"jmeter"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[7] | string | `"perl"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[8] | string | `"php"` |  |
+| wso2.apim.configurations.sdk.supportedLanguages[9] | string | `"python"` |  |
 | wso2.apim.configurations.security.jksSecretName | string | `""` | Kubernetes secret containing the keystores and truststore |
 | wso2.apim.configurations.security.keystores.internal.alias | string | `"wso2carbon"` | Internal keystore alias |
 | wso2.apim.configurations.security.keystores.internal.enabled | bool | `false` | Internal keystore enabled |
@@ -212,6 +227,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.token.revocation.RealtimeNotifierTtl | int | `5000` |  |
 | wso2.apim.configurations.transactionCounter.enabled | bool | `false` |  |
 | wso2.apim.configurations.transactionCounter.serverId | string | `"Gateway"` |  |
+| wso2.apim.configurations.transactionCounter.serverURL | string | `""` |  |
 | wso2.apim.configurations.transport.receiver.ciphers[0] | string | `"SSL_RSA_WITH_RC4_128_MD5"` |  |
 | wso2.apim.configurations.transport.receiver.ciphers[1] | string | `"SSL_RSA_WITH_RC4_128_SHA"` |  |
 | wso2.apim.configurations.transport.receiver.keystore.fileName | string | `"$ref{keystore.tls.file_name}"` |  |
