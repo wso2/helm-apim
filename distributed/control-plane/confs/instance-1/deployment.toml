@@ -163,6 +163,7 @@ oauth2_jwks_url = "{{ .Values.wso2.apim.configurations.oauth_config.oauth2JWKSUr
 {{- end }}
 
 [apim.publisher]
+enable_api_doc_visibility = {{ .Values.wso2.apim.configurations.publisher.enable_api_doc_visibility }}
 {{- if .Values.wso2.apim.configurations.publisher.supportedDocumentTypes }}
 supported_document_types = {{ toJson .Values.wso2.apim.configurations.publisher.supportedDocumentTypes }}
 {{- end }}
@@ -330,3 +331,16 @@ task_cleanup_interval_minutes = "{{ .Values.wso2.apim.configurations.governance.
 {{- else }}
 # At least one scheduler value is not empty
 {{- end }}
+
+{{- if .Values.wso2.apim.configurations.sdk.supported_languages }}
+[apim.sdk]
+supported_languages = {{ toJson .Values.wso2.apim.configurations.sdk.supported_languages }}
+{{- end }}
+
+[apim.transaction_counter]
+{{- if .Values.wso2.apim.configurations.transactionCounter.enabled }}
+enable = true
+{{- else }}
+enable = false
+{{- end }}
+server_url = "{{ .Values.wso2.apim.configurations.transactionCounter.serverUrl }}"

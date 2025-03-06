@@ -121,6 +121,7 @@ enable = true
 enable = false
 {{- end }}
 server_id = "{{ .Values.wso2.apim.configurations.transactionCounter.serverId }}"
+server_url = "{{ .Values.wso2.apim.configurations.transactionCounter.serverUrl }}"
 
 {{ if .Values.wso2.apim.configurations.iskm.enabled }}
 [oauth.grant_type.token_exchange]
