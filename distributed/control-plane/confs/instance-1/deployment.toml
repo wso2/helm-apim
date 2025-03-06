@@ -332,9 +332,11 @@ task_cleanup_interval_minutes = "{{ .Values.wso2.apim.configurations.governance.
 # At least one scheduler value is not empty
 {{- end }}
 
-{{- if .Values.wso2.apim.configurations.sdk.supported_languages }}
+{{- if .Values.wso2.apim.configurations.sdk }}
 [apim.sdk]
-supported_languages = {{ toJson .Values.wso2.apim.configurations.sdk.supported_languages }}
+{{- if .Values.wso2.apim.configurations.sdk.supportedLanguages }}
+supported_languages = {{ toJson .Values.wso2.apim.configurations.sdk.supportedLanguages }}
+{{- end }}
 {{- end }}
 
 [apim.transaction_counter]

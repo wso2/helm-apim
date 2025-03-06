@@ -397,7 +397,7 @@ wso2:
       
       # APIM SDK configurations
       sdk:
-        supported_languages: ["android", "java", "csharp", "dart", "groovy", "javascript", "jmeter", "perl", "php", "python", "ruby", "swift5", "clojure"]
+        supportedLanguages: ["android", "java", "csharp", "dart", "groovy", "javascript", "jmeter", "perl", "php", "python", "ruby", "swift5", "clojure"]
       
       # APIM Transaction Counter configurations
       transactionCounter:
