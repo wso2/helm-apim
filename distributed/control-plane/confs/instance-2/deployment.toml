@@ -328,7 +328,7 @@ supported_languages = {{ toJson .Values.wso2.apim.configurations.sdk.supportedLa
 [apim.transaction_counter]
 {{- if .Values.wso2.apim.configurations.transactionCounter.enabled }}
 enable = true
+server_url = "{{ .Values.wso2.apim.configurations.transactionCounter.serverUrl }}"
 {{- else }}
 enable = false
 {{- end }}
-server_url = "{{ .Values.wso2.apim.configurations.transactionCounter.serverUrl }}"

@@ -214,11 +214,11 @@ allow_subscription_validation_disabling = false
 [apim.transaction_counter]
 {{- if .Values.wso2.apim.configurations.transactionCounter.enabled }}
 enable = true
+server_url = "{{ .Values.wso2.apim.configurations.transactionCounter.serverUrl }}"
 {{- else }}
 enable = false
 {{- end }}
 server_id = "{{ .Values.wso2.apim.configurations.transactionCounter.serverId }}"
-server_url = "{{ .Values.wso2.apim.configurations.transactionCounter.serverUrl }}"
 
 [oauth.grant_type.token_exchange]
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
