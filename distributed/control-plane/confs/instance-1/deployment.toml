@@ -349,3 +349,8 @@ server_url = "{{ .Values.wso2.apim.configurations.transactionCounter.serverUrl }
 {{- else }}
 enable = false
 {{- end }}
+
+[apim.organization_based_access_control]
+enable = {{ .Values.wso2.apim.configurations.organization_based_access_control.enabled }}
+organization_name_local_claim = {{ .Values.wso2.apim.configurations.organization_based_access_control.organization_name_local_claim | quote }}
+organization_id_local_claim = {{ .Values.wso2.apim.configurations.organization_based_access_control.organization_id_local_claim | quote }}

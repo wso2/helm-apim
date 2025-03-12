@@ -476,3 +476,8 @@ shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.pas
 supported_languages = {{ toJson .Values.wso2.apim.configurations.sdk.supportedLanguages }}
 {{- end }}
 {{- end }}
+
+[apim.organization_based_access_control]
+enable = {{ .Values.wso2.apim.configurations.organization_based_access_control.enabled }}
+organization_name_local_claim = {{ .Values.wso2.apim.configurations.organization_based_access_control.organization_name_local_claim | quote }}
+organization_id_local_claim = {{ .Values.wso2.apim.configurations.organization_based_access_control.organization_id_local_claim | quote }}
