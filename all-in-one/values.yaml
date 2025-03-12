@@ -323,6 +323,7 @@ wso2:
           type: "hybrid"
           gatewayType: "Regular"
           provider: "wso2"
+          visibility:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
