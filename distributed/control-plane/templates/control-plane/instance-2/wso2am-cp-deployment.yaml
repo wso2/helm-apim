@@ -149,6 +149,17 @@ spec:
           mountPath: /home/wso2carbon/wso2-config-volume/bin/api-cp.sh
           subPath: api-cp.sh
         {{- end }}
+        {{- if .Values.wso2.apim.mountFrontendConfig }}
+        - name: wso2am-conf-admin-settings
+          mountPath: /home/wso2carbon/wso2-config-volume/repository/deployment/server/webapps/admin/site/public/conf/settings.json
+          subPath: settings.json
+        - name: wso2am-conf-devportal-settings
+          mountPath: /home/wso2carbon/wso2-config-volume/repository/deployment/server/webapps/devportal/site/public/theme/settings.json
+          subPath: settings.json
+        - name: wso2am-conf-publisher-settings
+          mountPath: /home/wso2carbon/wso2-config-volume/repository/deployment/server/webapps/publisher/site/public/conf/settings.json
+          subPath: settings.json
+        {{- end }}
         {{- if .Values.wso2.apim.secureVaultEnabled }}
         - name: wso2am-control-plane-secret-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/security/secret-conf.properties
@@ -204,6 +215,20 @@ spec:
       - name: wso2am-sh-conf
         configMap:
           name: {{ template "apim-helm-cp.fullname" . }}-conf-sh
+          defaultMode: 0407
+      {{- end }}
+      {{- if .Values.wso2.apim.mountFrontendConfig }}
+      - name: wso2am-conf-admin-settings
+        configMap:
+          name: {{ template "apim-helm-cp.fullname" . }}-conf-admin-settings
+          defaultMode: 0407
+      - name: wso2am-conf-devportal-settings
+        configMap:
+          name: {{ template "apim-helm-cp.fullname" . }}-conf-devportal-settings
+          defaultMode: 0407
+      - name: wso2am-conf-publisher-settings
+        configMap:
+          name: {{ template "apim-helm-cp.fullname" . }}-conf-publisher-settings
           defaultMode: 0407
       {{- end }}
       {{- if .Values.wso2.apim.secureVaultEnabled }}
