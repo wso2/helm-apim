@@ -190,7 +190,7 @@ wso2:
     # -- Startup script mount status
     mountStartupScript: false
     # -- Frontend settings.json mount status
-    mountFrontendConfig: true
+    mountFrontendConfig: false
     # TOML configurations
     configurations:
       gatewayType: "Regular,APK,AWS"
