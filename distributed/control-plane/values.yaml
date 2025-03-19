@@ -304,6 +304,7 @@ wso2:
           type: "hybrid"
           gatewayType: "Regular"
           provider: "wso2"
+          visibility:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
@@ -405,6 +406,12 @@ wso2:
       transactionCounter:
         enabled: false
         serviceUrl: ""
+
+      # Organization level access control configurations
+      organization_based_access_control:
+        enabled: true
+        organization_name_local_claim: "http://wso2.org/claims/organization"
+        organization_id_local_claim: "http://wso2.org/claims/organizationId" 
 
   deployment:
     # Container image configurations
