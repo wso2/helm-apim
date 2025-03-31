@@ -11,7 +11,7 @@
 
 aws:
   # -- If AWS is used as the cloud provider
-  enabled: false
+  enabled: true
   efs:
     # -- EFS capacity
     capacity: ""
@@ -83,7 +83,7 @@ azure:
 # Google Cloud Platform (GCP) integration status
 gcp:
   # -- If GCP is used as the cloud provider
-  enabled: false
+  enabled: true
   # -- File Store configuration parameters
   fs:
     # -- Storage capacity of the file system (in GB or other appropriate units)
@@ -229,18 +229,18 @@ wso2:
       adminPassword: "admin"
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: "h2"
+        type: ""
         jdbc:
           # -- JDBC driver class name
-          driver: "org.h2.Driver"
+          driver: ""
         # -- APIM APIMDB configurations. This is required for gateway only in a multi-tenancy scenario
         apim_db:
           # -- APIM APIMDB URL
-          url: "jdbc:h2:./repository/database/WSO2AM_DB;DB_CLOSE_ON_EXIT=FALSE"
+          url: ""
           # -- APIM APIMDB username
-          username: "wso2carbon"
+          username: ""
           # -- APIM APIMDB password
-          password: "wso2carbon"
+          password: ""
           # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: false
@@ -252,11 +252,11 @@ wso2:
             minIdle: 5
         shared_db:
           # -- APIM SharedDB URL
-          url: "jdbc:h2:./repository/database/WSO2SHARED_DB;DB_CLOSE_ON_EXIT=FALSE"
+          url: ""
           # -- APIM SharedDB username
-          username: "wso2carbon"
+          username: ""
           # -- APIM SharedDB password
-          password: "wso2carbon"
+          password: ""
           # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: false
@@ -287,9 +287,9 @@ wso2:
             # -- Primary keystore alias
             alias: "wso2carbon"
             # -- Primary keystore password
-            password: "wso2carbon"
+            password: ""
             # -- Primary keystore key password
-            keyPassword: "wso2carbon"
+            keyPassword: ""
           tls:
             # -- TLS keystore enabled
             enabled: true
@@ -309,14 +309,14 @@ wso2:
             # -- Internal keystore alias
             alias: "wso2carbon"
             # -- Internal keystore password
-            password: "wso2carbon"
+            password: ""
             # -- Internal keystore key password
-            keyPassword: "wso2carbon"
+            keyPassword: ""
         truststore:
           # -- Truststore name
           name: "client-truststore.jks"
           # -- Truststore password
-          password: "wso2carbon"
+          password: ""
 
       gateway:
         # -- APIM Gateway environments
@@ -329,7 +329,7 @@ wso2:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
-          serviceName: "localhost"
+          serviceName: "wso2am-gateway-service"
           servicePort: 9443
           wsHostname: "websocket.wso2.com"
           httpHostname: "gw.wso2.com"
@@ -578,11 +578,11 @@ wso2:
     # Container image configurations
     image:
       # -- Registry containing the image
-      registry: "docker.io"
+      registry: ""
       # -- Repository name consisting the image
-      repository: "wso2/wso2am:4.5.0"
+      repository: ""
       # -- Docker image digest
-      digest: "sha256:e42e5d2c922e2baa4073a9a13458038281f7753f594a87bd3fee75464e254bcb"
+      digest: ""
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
