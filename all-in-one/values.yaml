@@ -578,11 +578,11 @@ wso2:
     # Container image configurations
     image:
       # -- Registry containing the image
-      registry: ""
+      registry: "docker.io"
       # -- Repository name consisting the image
-      repository: ""
+      repository: "wso2/wso2am:4.5.0"
       # -- Docker image digest
-      digest: ""
+      digest: "sha256:e42e5d2c922e2baa4073a9a13458038281f7753f594a87bd3fee75464e254bcb"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
