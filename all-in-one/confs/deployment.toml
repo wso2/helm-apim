@@ -199,7 +199,7 @@ properties.proxyPort = 443
 type = "WSO2-IS"
 server_url = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:9443/services/"
 {{- else }}
-service_url = "https://{{ template "am-all-in-one.fullname" . }}-am-service:${mgt.transport.https.port}/services/"
+service_url = "https://localhost:${mgt.transport.https.port}/services/"
 {{- end }}
 username= "$ref{super_admin.username}"
 password= "$ref{super_admin.password}"

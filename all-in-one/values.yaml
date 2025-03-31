@@ -11,7 +11,7 @@
 
 aws:
   # -- If AWS is used as the cloud provider
-  enabled: true
+  enabled: false
   efs:
     # -- EFS capacity
     capacity: ""
@@ -83,7 +83,7 @@ azure:
 # Google Cloud Platform (GCP) integration status
 gcp:
   # -- If GCP is used as the cloud provider
-  enabled: true
+  enabled: false
   # -- File Store configuration parameters
   fs:
     # -- Storage capacity of the file system (in GB or other appropriate units)
@@ -229,18 +229,18 @@ wso2:
       adminPassword: "admin"
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: ""
+        type: "h2"
         jdbc:
           # -- JDBC driver class name
-          driver: ""
+          driver: "org.h2.Driver"
         # -- APIM APIMDB configurations. This is required for gateway only in a multi-tenancy scenario
         apim_db:
           # -- APIM APIMDB URL
-          url: ""
+          url: "jdbc:h2:./repository/database/WSO2AM_DB;DB_CLOSE_ON_EXIT=FALSE"
           # -- APIM APIMDB username
-          username: ""
+          username: "wso2carbon"
           # -- APIM APIMDB password
-          password: ""
+          password: "wso2carbon"
           # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: false
@@ -252,11 +252,11 @@ wso2:
             minIdle: 5
         shared_db:
           # -- APIM SharedDB URL
-          url: ""
+          url: "jdbc:h2:./repository/database/WSO2SHARED_DB;DB_CLOSE_ON_EXIT=FALSE"
           # -- APIM SharedDB username
-          username: ""
+          username: "wso2carbon"
           # -- APIM SharedDB password
-          password: ""
+          password: "wso2carbon"
           # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: false
@@ -287,9 +287,9 @@ wso2:
             # -- Primary keystore alias
             alias: "wso2carbon"
             # -- Primary keystore password
-            password: ""
+            password: "wso2carbon"
             # -- Primary keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
           tls:
             # -- TLS keystore enabled
             enabled: true
@@ -309,14 +309,14 @@ wso2:
             # -- Internal keystore alias
             alias: "wso2carbon"
             # -- Internal keystore password
-            password: ""
+            password: "wso2carbon"
             # -- Internal keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
         truststore:
           # -- Truststore name
           name: "client-truststore.jks"
           # -- Truststore password
-          password: ""
+          password: "wso2carbon"
 
       gateway:
         # -- APIM Gateway environments
@@ -329,7 +329,7 @@ wso2:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
-          serviceName: "wso2am-gateway-service"
+          serviceName: "localhost"
           servicePort: 9443
           wsHostname: "websocket.wso2.com"
           httpHostname: "gw.wso2.com"
