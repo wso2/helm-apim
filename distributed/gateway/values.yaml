@@ -379,6 +379,12 @@ wso2:
   deployment:
     # Container image configurations
     image:
+      # -- Container registry credentials.
+      # Specify image pull secrets for private registries
+      imagePullSecrets:
+        enabled: false
+        username: ""
+        password: ""
       # -- Container registry hostname
       registry: ""
       # -- Azure ACR repository name consisting the image
