@@ -93,3 +93,8 @@ Check if all the governance.scheduler configuration values are empty.
     (empty $scheduler.task_cleanup_interval_minutes)
 -}}
 {{- end -}}
+
+{{- define "dockerconfigjson" -}}
+{{- $auth := printf "%s:%s" .Values.wso2.deployment.image.imagePullSecrets.username .Values.wso2.deployment.image.imagePullSecrets.password | b64enc -}}
+{{- printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"auth\":\"%s\"}}}" .Values.wso2.deployment.image.registry .Values.wso2.deployment.image.imagePullSecrets.username .Values.wso2.deployment.image.imagePullSecrets.password $auth | b64enc -}}
+{{- end -}}

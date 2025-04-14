@@ -577,6 +577,12 @@ wso2:
   deployment:
     # Container image configurations
     image:
+      # -- Container registry credentials.
+      # Specify image pull secrets for private registries
+      imagePullSecrets:
+        enabled: false
+        username: ""
+        password: ""
       # -- Registry containing the image
       registry: ""
       # -- Repository name consisting the image
