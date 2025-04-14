@@ -67,7 +67,7 @@ spec:
           type: RuntimeDefault
       {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
       imagePullSecrets:
-      - name: {{ template "apim-helm-cp.fullname" . }}-docker-registry-auth
+      - name: {{ template "apim-helm-km.fullname" . }}-docker-registry-auth
       {{- end }}
       containers:
       - name: wso2am-km
