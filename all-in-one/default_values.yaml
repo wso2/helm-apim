@@ -243,7 +243,7 @@ wso2:
           password: "wso2carbon"
           # -- APIM database JDBC pool parameters
           poolParameters:
-            defaultAutoCommit: false
+            defaultAutoCommit: true
             testOnBorrow: true
             testWhileIdle: true
             validationInterval: 30000
@@ -259,7 +259,7 @@ wso2:
           password: "wso2carbon"
           # -- APIM database JDBC pool parameters
           poolParameters:
-            defaultAutoCommit: false
+            defaultAutoCommit: true
             testOnBorrow: true
             testWhileIdle: true
             validationInterval: 30000
