@@ -60,6 +60,10 @@ spec:
       securityContext:
         seccompProfile:
           type: RuntimeDefault
+      {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
+      imagePullSecrets:
+      - name: {{ template "apim-helm-cp.fullname" . }}-docker-registry-auth
+      {{- end }}
       containers:
       - name: wso2am-control-plane
         image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}

@@ -1,8 +1,8 @@
-# wso2am-gateway
+# wso2am-universal-gw
 
 ![Version: 4.5.0-1](https://img.shields.io/badge/Version-4.5.0--1-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
 
-A Helm chart for the deployment of WSO2 API Management Gateway profile
+A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 
 ## Values
 
@@ -142,6 +142,7 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
+| wso2.deployment.image.imagePullSecrets | object | `{"enabled":false,"password":"","username":""}` | Container registry credentials. Specify image pull secrets for private registries |
 | wso2.deployment.image.registry | string | `""` | Container registry hostname |
 | wso2.deployment.image.repository | string | `""` | Azure ACR repository name consisting the image |
 | wso2.deployment.lifecycle.preStopHook.sleepSeconds | int | `10` | Number of seconds to sleep before sending SIGTERM to the pod |
