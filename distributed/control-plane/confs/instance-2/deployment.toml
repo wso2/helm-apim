@@ -151,6 +151,11 @@ allow_refresh_tokens = true
 iat_validity_period = "1h"
 {{- end }}
 
+[oauth.endpoints]
+{{- if .Values.wso2.apim.configurations.oauth_config }}
+oauth2_jwks_url = "{{ .Values.wso2.apim.configurations.oauth_config.oauth2JWKSUrl }}"
+{{- end }}
+
 [apim.publisher]
 enable_api_doc_visibility = {{ .Values.wso2.apim.configurations.publisher.enable_api_doc_visibility }}
 {{- if .Values.wso2.apim.configurations.publisher.supportedDocumentTypes }}
