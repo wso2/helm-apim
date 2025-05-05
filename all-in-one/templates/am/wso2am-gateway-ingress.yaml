@@ -22,18 +22,18 @@ metadata:
 spec:
   ingressClassName: {{ .Values.kubernetes.ingressClass }}
   tls:
-  - hosts:
-    - {{ .Values.kubernetes.ingress.gateway.hostname }}
-  secretName: {{ .Values.kubernetes.ingress.tlsSecret }}
+    - hosts:
+      - {{ .Values.kubernetes.ingress.gateway.hostname }}
+      secretName: {{ .Values.kubernetes.ingress.tlsSecret }}
   rules:
-  - host: {{ .Values.kubernetes.ingress.gateway.hostname }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: {{ template "am-all-in-one.fullname" . }}-am-service
-            port:
-              number: 8243
-{{- end -}}
+    - host: {{ .Values.kubernetes.ingress.gateway.hostname }}
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: {{ template "am-all-in-one.fullname" . }}-am-service
+              port:
+                number: 8243
+  {{- end -}}
