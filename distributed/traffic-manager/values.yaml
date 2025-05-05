@@ -132,7 +132,7 @@ wso2:
           password: ""
           # -- APIM database JDBC pool parameters
           poolParameters:
-            defaultAutoCommit: false
+            defaultAutoCommit: true
             testOnBorrow: true
             testWhileIdle: true
             validationInterval: 30000
@@ -149,7 +149,7 @@ wso2:
           password: ""
           # -- APIM shared database JDBC pool parameters
           poolParameters:
-            defaultAutoCommit: false
+            defaultAutoCommit: true
             testOnBorrow: true
             testWhileIdle: true
             validationInterval: 30000
@@ -251,6 +251,12 @@ wso2:
   deployment:
     # Container image configurations
     image:
+      # -- Container registry credentials.
+      # Specify image pull secrets for private registries
+      imagePullSecrets:
+        enabled: false
+        username: ""
+        password: ""
       # -- Container registry hostname
       registry: ""
       # -- Azure ACR repository name consisting the image

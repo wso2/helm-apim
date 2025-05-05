@@ -134,7 +134,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.eventListeners[0].order | int | `1` |  |
 | wso2.apim.configurations.eventListeners[0].properties.notificationEndpoint | string | `"https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"` |  |
 | wso2.apim.configurations.eventListeners[0].type | string | `"org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"` |  |
-| wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
+| wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","visibility":null,"websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
 | wso2.apim.configurations.gatewayType | string | `"Regular,APK,AWS"` |  |
 | wso2.apim.configurations.governance.scheduler | object | `{"queue_size":"","task_check_interval_minutes":"","task_cleanup_interval_minutes":"","thread_pool_size":""}` | Override the default values of governance.scheduler if any value exists |
 | wso2.apim.configurations.iskm.enabled | bool | `false` |  |
@@ -164,6 +164,9 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.oauth_config.oauth2JWKSUrl | string | `""` |  |
 | wso2.apim.configurations.oauth_config.removeOutboundAuthHeader | bool | `true` | Remove auth header from outgoing requests |
 | wso2.apim.configurations.oauth_config.revokeEndpoint | string | `""` | OAuth revoke endpoint |
+| wso2.apim.configurations.organization_based_access_control.enabled | bool | `true` |  |
+| wso2.apim.configurations.organization_based_access_control.organization_id_local_claim | string | `"http://wso2.org/claims/organizationId"` |  |
+| wso2.apim.configurations.organization_based_access_control.organization_name_local_claim | string | `"http://wso2.org/claims/organization"` |  |
 | wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode | bool | `false` |  |
 | wso2.apim.configurations.publisher.enable_api_doc_visibility | bool | `false` | Supported document types in Publisher.  This should be used only if there are additional document types to be supported. |
 | wso2.apim.configurations.publisher.internalKeyIssuer | string | `""` |  |
@@ -251,6 +254,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.workflow.tokenEndpoint | string | `""` |  |
 | wso2.apim.log4j2.appenders | string | `""` | Appenders |
 | wso2.apim.log4j2.loggers | string | `""` | Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE |
+| wso2.apim.mountFrontendConfig | bool | `false` | Frontend settings.json mount status |
 | wso2.apim.mountStartupScript | bool | `false` | Startup script mount status |
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
@@ -261,6 +265,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.choreoAnalytics.onpremKey | string | `""` | On-premise key for Choreo Analytics |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
+| wso2.deployment.image.imagePullSecrets | object | `{"enabled":false,"password":"","username":""}` | Container registry credentials. Specify image pull secrets for private registries |
 | wso2.deployment.image.registry | string | `""` | Registry containing the image |
 | wso2.deployment.image.repository | string | `""` | Repository name consisting the image |
 | wso2.deployment.lifecycle.preStopHook.sleepSeconds | int | `10` | Time to wait until the apim is terminated gracefully |

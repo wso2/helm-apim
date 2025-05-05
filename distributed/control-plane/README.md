@@ -1,8 +1,8 @@
-# wso2am-cp
+# wso2am-acp
 
 ![Version: 4.5.0-1](https://img.shields.io/badge/Version-4.5.0--1-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
 
-A Helm chart for the deployment of WSO2 API Management Control Plane profile
+A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 
 ## Values
 
@@ -101,7 +101,7 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | wso2.apim.configurations.devportal.enableKeyProvisioning | string | `nil` |  |
 | wso2.apim.configurations.devportal.enableRatings | string | `nil` |  |
 | wso2.apim.configurations.devportal.loginUsernameCaseInsensitive | string | `nil` |  |
-| wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
+| wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","visibility":null,"websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
 | wso2.apim.configurations.gatewayType | string | `"Regular,APK,AWS"` |  |
 | wso2.apim.configurations.governance.scheduler | object | `{"queue_size":"","task_check_interval_minutes":"","task_cleanup_interval_minutes":"","thread_pool_size":""}` | Override the default values of governance.scheduler if any value exists |
 | wso2.apim.configurations.iskm.enabled | bool | `false` | If Identity Server is used as the Resident KM |
@@ -124,6 +124,9 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | wso2.apim.configurations.openTracer.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin |
 | wso2.apim.configurations.openTracer.properties.hostname | string | `""` | Remote tracer hostname |
 | wso2.apim.configurations.openTracer.properties.port | string | `""` | Remote tracer port |
+| wso2.apim.configurations.organization_based_access_control.enabled | bool | `true` |  |
+| wso2.apim.configurations.organization_based_access_control.organization_id_local_claim | string | `"http://wso2.org/claims/organizationId"` |  |
+| wso2.apim.configurations.organization_based_access_control.organization_name_local_claim | string | `"http://wso2.org/claims/organization"` |  |
 | wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode | bool | `false` |  |
 | wso2.apim.configurations.publisher.enable_api_doc_visibility | bool | `false` | Supported document types in Publisher.  This should be used only if there are additional document types to be supported. |
 | wso2.apim.configurations.publisher.internalKeyIssuer | string | `""` |  |
@@ -165,6 +168,7 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | wso2.apim.configurations.userStore.type | string | `"database_unique_id"` | User store type.  https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/ |
 | wso2.apim.log4j2.appenders | string | `""` | Appenders |
 | wso2.apim.log4j2.loggers | string | `""` | Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE |
+| wso2.apim.mountFrontendConfig | bool | `false` | Frontend settings.json mount status |
 | wso2.apim.mountStartupScript | bool | `false` | Startup script mount status |
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
@@ -173,6 +177,7 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | wso2.deployment.highAvailability | bool | `true` | Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed. This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM. |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
+| wso2.deployment.image.imagePullSecrets | object | `{"enabled":false,"password":"","username":""}` | Container registry credentials. Specify image pull secrets for private registries |
 | wso2.deployment.image.registry | string | `""` | Container registry hostname |
 | wso2.deployment.image.repository | string | `""` | Azure ACR repository name consisting the image |
 | wso2.deployment.lifecycle.preStopHook.sleepSeconds | int | `10` | Number of seconds to sleep before sending SIGTERM to the pod |
