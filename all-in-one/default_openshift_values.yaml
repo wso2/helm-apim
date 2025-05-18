@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+# Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
 #
 # This software is the property of WSO2 LLC. and its suppliers, if any.
 # Dissemination of any information or reproduction of any material contained 
@@ -11,7 +11,7 @@
 
 aws:
   # -- If AWS is used as the cloud provider
-  enabled: true
+  enabled: false
   efs:
     # -- EFS capacity
     capacity: ""
@@ -83,7 +83,7 @@ azure:
 # Google Cloud Platform (GCP) integration status
 gcp:
   # -- If GCP is used as the cloud provider
-  enabled: true
+  enabled: false
   # -- File Store configuration parameters
   fs:
     # -- Storage capacity of the file system (in GB or other appropriate units)
@@ -175,8 +175,8 @@ kubernetes:
       annotations:
   securityContext:
     # -- User ID of the container
-    runAsUser: 10001
-    runAsGroup: 10001
+    runAsUser: null
+    runAsGroup: null
     # -- SELinux context for the container
     seLinux:
       enabled: false
@@ -189,7 +189,7 @@ kubernetes:
   # -- Set UNIX permissions over the executable scripts
   configMaps:
     scripts:
-      defaultMode: "0407"
+      defaultMode: "0457"
 
 
 wso2:  
@@ -202,17 +202,33 @@ wso2:
     # -- On-premise key for Choreo Analytics
     onpremKey: ""
 
+  # -- ELK Analytics Parameters
+  ELKAnalytics:
+    enabled: false
+
   # TOML configurations
   apim:
     # -- APIM version
-    version: "4.2.0"
+    version: "4.5.0"
     # -- Secure vauld enabled
     secureVaultEnabled: false
     # Logging related configurations
     log4j2:
       # -- Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE
       loggers: ""
+      # -- Appenders
+      appenders: ""
+    # -- Startup arguments for APIM
+    startupArgs: ""
+    # -- Port Offset for APIM deployment
+    portOffset: 0
+    # -- Startup script mount status
+    mountStartupScript: false
+    # -- Frontend settings.json mount status
+    mountFrontendConfig: false
+    # TOML configurations
     configurations:
+      gatewayType: "Regular,APK,AWS"
       userStore:
         # -- User store type. 
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
@@ -226,21 +242,21 @@ wso2:
       adminPassword: "admin"
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: ""
+        type: "h2"
         jdbc:
           # -- JDBC driver class name
-          driver: ""
+          driver: "org.h2.Driver"
         # -- APIM APIMDB configurations. This is required for gateway only in a multi-tenancy scenario
         apim_db:
           # -- APIM APIMDB URL
-          url: ""
+          url: "jdbc:h2:./repository/database/WSO2AM_DB;DB_CLOSE_ON_EXIT=FALSE"
           # -- APIM APIMDB username
-          username: ""
+          username: "wso2carbon"
           # -- APIM APIMDB password
-          password: ""
+          password: "wso2carbon"
           # -- APIM database JDBC pool parameters
           poolParameters:
-            defaultAutoCommit: false
+            defaultAutoCommit: true
             testOnBorrow: true
             testWhileIdle: true
             validationInterval: 30000
@@ -249,20 +265,28 @@ wso2:
             minIdle: 5
         shared_db:
           # -- APIM SharedDB URL
-          url: ""
+          url: "jdbc:h2:./repository/database/WSO2SHARED_DB;DB_CLOSE_ON_EXIT=FALSE"
           # -- APIM SharedDB username
-          username: ""
+          username: "wso2carbon"
           # -- APIM SharedDB password
-          password: ""
+          password: "wso2carbon"
           # -- APIM database JDBC pool parameters
           poolParameters:
-            defaultAutoCommit: false
+            defaultAutoCommit: true
             testOnBorrow: true
             testWhileIdle: true
             validationInterval: 30000
             maxActive: 100
             maxWait: 60000
             minIdle: 5
+
+      # -- APIM AI related configurations
+      ai:
+        enabled: false
+        token: ""
+        key: ""
+        endpoint: ""
+        token_endpoint: ""
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
@@ -276,9 +300,9 @@ wso2:
             # -- Primary keystore alias
             alias: "wso2carbon"
             # -- Primary keystore password
-            password: ""
+            password: "wso2carbon"
             # -- Primary keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
           tls:
             # -- TLS keystore enabled
             enabled: true
@@ -298,25 +322,27 @@ wso2:
             # -- Internal keystore alias
             alias: "wso2carbon"
             # -- Internal keystore password
-            password: ""
+            password: "wso2carbon"
             # -- Internal keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
         truststore:
           # -- Truststore name
           name: "client-truststore.jks"
           # -- Truststore password
-          password: ""
+          password: "wso2carbon"
 
       gateway:
         # -- APIM Gateway environments
         environments:
         - name: "Default"
           type: "hybrid"
+          gatewayType: "Regular"
           provider: "wso2"
+          visibility:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
-          serviceName: "wso2am-gateway-service"
+          serviceName: "localhost"
           servicePort: 9443
           wsHostname: "websocket.wso2.com"
           httpHostname: "gw.wso2.com"
@@ -399,6 +425,7 @@ wso2:
         enableTokenEncryption: false
         # -- Enable token hashing
         enableTokenHashing: false
+        oauth2JWKSUrl: "http://localhost:9763/oauth2/jwks"
 
       # APIM Devportal configurations
       devportal:
@@ -427,7 +454,10 @@ wso2:
       publisher:
         # -- Supported document types in Publisher. 
         # This should be used only if there are additional document types to be supported.
+        enable_api_doc_visibility: false
         supportedDocumentTypes: ""
+        enablePortalConfigurationOnlyMode: false
+        internalKeyIssuer: ""
 
       # APIM CORS configurations
       cors:
@@ -530,15 +560,48 @@ wso2:
           properties:
             notificationEndpoint: "https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"
 
+      keyManager:
+        enableLightweightAPIKeyGeneration: true
+        allowSubscriptionValidationDisabling: true
+
+      transactionCounter:
+        enabled: false
+        serverId: "Gateway"
+        serverURL: ""
+
+      governance:
+        # -- Override the default values of governance.scheduler if any value exists
+        scheduler:
+          thread_pool_size: ""
+          queue_size: ""
+          task_check_interval_minutes: ""
+          task_cleanup_interval_minutes: ""
+      
+      # APIM SDK configurations
+      sdk:
+        supportedLanguages: ["android", "java", "csharp", "dart", "groovy", "javascript", "jmeter", "perl", "php", "python", "ruby", "swift5", "clojure"]
+
+      # Organization level access control configurations
+      organization_based_access_control:
+        enabled: true
+        organization_name_local_claim: "http://wso2.org/claims/organization"
+        organization_id_local_claim: "http://wso2.org/claims/organizationId" 
+
   deployment:
     # Container image configurations
     image:
+      # -- Container registry credentials.
+      # Specify image pull secrets for private registries
+      imagePullSecrets:
+        enabled: false
+        username: ""
+        password: ""
       # -- Registry containing the image
-      registry: ""
+      registry: "<REGISTRY NAME>"
       # -- Repository name consisting the image
-      repository: ""
+      repository: "<REPOSITORY NAME>"
       # -- Docker image digest
-      digest: ""
+      digest: "<CUSTOM OPENSHIFT IMAGE DIGEST>"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
@@ -594,6 +657,9 @@ wso2:
 
     # -- Minimum available pod counts for PDB
     minAvailable: "50%"
+
+    # -- Node selector to deploy pod in selected node. Add label to the node and specify the label here.
+    nodeSelector:
 
     persistence:
       # -- Persistent runtime artifacts for Apache Solr-based indexing

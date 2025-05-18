@@ -25,7 +25,7 @@ spec:
   tls:
   - hosts:
     - {{ .Values.kubernetes.ingress.websocket.hostname }}
-  secretName: {{ .Values.kubernetes.ingress.tlsSecret }}
+    secretName: {{ .Values.kubernetes.ingress.tlsSecret }}
   rules:
   - host: {{ .Values.kubernetes.ingress.websocket.hostname }}
     http:

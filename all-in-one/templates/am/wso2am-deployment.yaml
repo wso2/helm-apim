@@ -56,7 +56,14 @@ spec:
       {{- end }}
       securityContext:
         seccompProfile:
-          type: RuntimeDefault
+          type: {{ .Values.kubernetes.securityContext.seccompProfile.type }}
+          {{- if eq .Values.kubernetes.securityContext.seccompProfile.type "Localhost" }}
+          localhostProfile: {{ .Values.kubernetes.securityContext.seccompProfile.localhostProfile }}
+          {{- end }}
+      {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
+      imagePullSecrets:
+      - name: {{ template "am-all-in-one.fullname" . }}-docker-registry-auth
+      {{- end }}
       containers:
         - name: wso2am
           image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
@@ -115,9 +122,12 @@ spec:
             runAsGroup: {{ .Values.kubernetes.securityContext.runAsGroup }}
             allowPrivilegeEscalation: false
             runAsNonRoot: true
+            {{- if .Values.kubernetes.securityContext.seLinux.enabled }}
+            seLinuxOptions:
+              level: {{ .Values.kubernetes.securityContext.seLinux.level }}
+            {{- end }}
             capabilities:
-              drop:
-                - all
+              drop: ["ALL"]
           ports:
             - containerPort: 8280
               protocol: "TCP"
@@ -183,12 +193,32 @@ spec:
         - name: wso2am-entrypoint
           configMap:
             name: {{ template "am-all-in-one.fullname" . }}-conf-entrypoint
-            defaultMode: 0407
+            defaultMode: {{ .Values.kubernetes.configMaps.scripts.defaultMode }}
         - name: wso2am-log4j2
           configMap:
             name: {{ template "am-all-in-one.fullname" . }}-conf-log4j2
             defaultMode: 0407
-          {{- if .Values.wso2.apim.secureVaultEnabled }}
+        {{- if .Values.wso2.apim.mountStartupScript }}
+        - name: wso2am-sh-conf
+          configMap:
+            name: {{ template "am-all-in-one.fullname" . }}-conf-sh
+            defaultMode: {{ .Values.kubernetes.configMaps.scripts.defaultMode }}
+        {{- end }}
+        {{- if .Values.wso2.apim.mountFrontendConfig }}
+        - name: wso2am-conf-admin-settings
+          configMap:
+            name: {{ template "am-all-in-one.fullname" . }}-conf-admin-settings
+            defaultMode: 0407
+        - name: wso2am-conf-devportal-settings
+          configMap:
+            name: {{ template "am-all-in-one.fullname" . }}-conf-devportal-settings
+            defaultMode: 0407
+        - name: wso2am-conf-publisher-settings
+          configMap:
+            name: {{ template "am-all-in-one.fullname" . }}-conf-publisher-settings
+            defaultMode: 0407
+        {{- end }}
+        {{- if .Values.wso2.apim.secureVaultEnabled }}
         - name: wso2am-secret-conf
           configMap:
             name: {{ template "am-all-in-one.fullname" . }}-conf-secret-conf

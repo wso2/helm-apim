@@ -60,7 +60,14 @@ spec:
       {{- end }}
       securityContext:
         seccompProfile:
-          type: RuntimeDefault
+          type: {{ .Values.kubernetes.securityContext.seccompProfile.type }}
+          {{- if eq .Values.kubernetes.securityContext.seccompProfile.type "Localhost" }}
+          localhostProfile: {{ .Values.kubernetes.securityContext.seccompProfile.localhostProfile }}
+          {{- end }}
+      {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
+      imagePullSecrets:
+      - name: {{ template "apim-helm-cp.fullname" . }}-docker-registry-auth
+      {{- end }}
       containers:
       - name: wso2am-control-plane
         image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
@@ -120,9 +127,12 @@ spec:
           runAsUser: {{ .Values.kubernetes.securityContext.runAsUser }}
           allowPrivilegeEscalation: false
           runAsNonRoot: true
+          {{- if .Values.kubernetes.securityContext.seLinux.enabled }}
+          seLinuxOptions:
+            level: {{ .Values.kubernetes.securityContext.seLinux.level }}
+          {{- end }}
           capabilities:
-            drop:
-              - all
+            drop: ["ALL"]
         ports:
           - containerPort: 9763
             protocol: "TCP"
@@ -184,11 +194,31 @@ spec:
       - name: wso2am-control-plane-entrypoint
         configMap:
           name: {{ template "apim-helm-cp.fullname" . }}-conf-entrypoint
-          defaultMode: 0407
+          defaultMode: {{ .Values.kubernetes.configMaps.scripts.defaultMode }}
       - name: wso2am-control-plane-log4j2
         configMap:
           name: {{ template "apim-helm-cp.fullname" . }}-conf-log4j2
           defaultMode: 0407
+      {{- if .Values.wso2.apim.mountStartupScript }}
+      - name: wso2am-sh-conf
+        configMap:
+          name: {{ template "apim-helm-cp.fullname" . }}-conf-sh
+          defaultMode: {{ .Values.kubernetes.configMaps.scripts.defaultMode }}
+      {{- end }}
+      {{- if .Values.wso2.apim.mountFrontendConfig }}
+      - name: wso2am-conf-admin-settings
+        configMap:
+          name: {{ template "apim-helm-cp.fullname" . }}-conf-admin-settings
+          defaultMode: 0407
+      - name: wso2am-conf-devportal-settings
+        configMap:
+          name: {{ template "apim-helm-cp.fullname" . }}-conf-devportal-settings
+          defaultMode: 0407
+      - name: wso2am-conf-publisher-settings
+        configMap:
+          name: {{ template "apim-helm-cp.fullname" . }}-conf-publisher-settings
+          defaultMode: 0407
+      {{- end }}
       {{- if .Values.wso2.apim.secureVaultEnabled }}
       - name: wso2am-control-plane-secret-conf
         configMap:
