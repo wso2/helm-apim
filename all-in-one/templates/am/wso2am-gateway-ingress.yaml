@@ -24,7 +24,7 @@ spec:
   tls:
   - hosts:
     - {{ .Values.kubernetes.ingress.gateway.hostname }}
-  secretName: {{ .Values.kubernetes.ingress.tlsSecret }}
+    secretName: {{ .Values.kubernetes.ingress.tlsSecret }}
   rules:
   - host: {{ .Values.kubernetes.ingress.gateway.hostname }}
     http:

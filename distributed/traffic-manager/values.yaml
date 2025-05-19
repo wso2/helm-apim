@@ -11,7 +11,7 @@
 
 aws:
   # -- If AWS is used as the cloud provider
-  enabled: true
+  enabled: false
   ecr:
     # -- AWS Elastic Container Registry name
     registry: ""
@@ -84,8 +84,21 @@ kubernetes:
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
+    # -- SELinux context for the container
+    seLinux:
+      enabled: false
+      level: ""
+    # -- Seccomp profile for the container
+    seccompProfile:
+      # -- Seccomp profile type(RuntimeDefault, Unconfined or Localhost)
+      type: RuntimeDefault
+      localhostProfile: ""
   # -- Enable AppArmor profiles for the deployment
   enableAppArmor: false
+  # -- Set UNIX permissions over the executable scripts
+  configMaps:
+    scripts:
+      defaultMode: "0407"
 
 wso2:  
   apim:

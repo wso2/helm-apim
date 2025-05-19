@@ -177,6 +177,19 @@ kubernetes:
     # -- User ID of the container
     runAsUser: 10001
     runAsGroup: 10001
+    # -- SELinux context for the container
+    seLinux:
+      enabled: false
+      level: ""
+    # -- Seccomp profile for the container
+    seccompProfile:
+      # -- Seccomp profile type(RuntimeDefault, Unconfined or Localhost)
+      type: RuntimeDefault
+      localhostProfile: ""
+  # -- Set UNIX permissions over the executable scripts
+  configMaps:
+    scripts:
+      defaultMode: "0407"
 
 
 wso2:  
@@ -412,7 +425,7 @@ wso2:
         enableTokenEncryption: false
         # -- Enable token hashing
         enableTokenHashing: false
-        oauth2JWKSUrl: ""
+        oauth2JWKSUrl: "http://localhost:9763/oauth2/jwks"
 
       # APIM Devportal configurations
       devportal:

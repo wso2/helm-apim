@@ -62,7 +62,10 @@ spec:
       {{- end }}
       securityContext:
         seccompProfile:
-          type: RuntimeDefault
+          type: {{ .Values.kubernetes.securityContext.seccompProfile.type }}
+          {{- if eq .Values.kubernetes.securityContext.seccompProfile.type "Localhost" }}
+          localhostProfile: {{ .Values.kubernetes.securityContext.seccompProfile.localhostProfile }}
+          {{- end }}
       {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
       imagePullSecrets:
       - name: {{ template "apim-helm-tm.fullname" . }}-docker-registry-auth
@@ -126,9 +129,12 @@ spec:
           runAsUser: {{ .Values.kubernetes.securityContext.runAsUser }}
           allowPrivilegeEscalation: false
           runAsNonRoot: true
+          {{- if .Values.kubernetes.securityContext.seLinux.enabled }}
+          seLinuxOptions:
+            level: {{ .Values.kubernetes.securityContext.seLinux.level }}
+          {{- end }}
           capabilities:
-            drop:
-              - all
+            drop: ["ALL"]
         ports:
           - containerPort: 9763
             protocol: "TCP"
@@ -193,7 +199,7 @@ spec:
       - name: wso2am-traffic-manager-entrypoint
         configMap:
           name: {{ template "apim-helm-tm.fullname" . }}-conf-entrypoint
-          defaultMode: 0407
+          defaultMode: {{ .Values.kubernetes.configMaps.scripts.defaultMode }}
       - name: wso2am-traffic-manager-log4j2
         configMap:
           name: {{ template "apim-helm-tm.fullname" . }}-conf-log4j2
@@ -202,7 +208,7 @@ spec:
       - name: wso2am-sh-conf
         configMap:
           name: {{ template "apim-helm-tm.fullname" . }}-conf-sh
-          defaultMode: 0407
+          defaultMode: {{ .Values.kubernetes.configMaps.scripts.defaultMode }}
       {{- end }}
       {{- if .Values.wso2.apim.secureVaultEnabled }}
       - name: wso2am-traffic-manager-secret-conf
