@@ -467,10 +467,14 @@ wso2:
         enableBlacklistCondition: true
         enablePersistence: true
         throttleDecisionEndpoints: []
-        enableUnlimitedTier: true
-        enableHeaderBasedThrottling: false
-        enableJwtClaimBasedThrottling: false
-        enableQueryParamBasedThrottling: false
+        # -- Enable unlimited throttling tier
+        unlimitedTier: true
+        # -- Enable header based throttling
+        headerBasedThrottling: false
+        # -- Enable JWT claim based throttling
+        jwtClaimBasedThrottling: false
+        # -- Enable query param based throttling
+        queryParamBasedThrottling: false
         blacklistCondition:
           startDelay: 
           period: 
@@ -482,6 +486,16 @@ wso2:
         eventManagement:
           hostname: 
           port: 
+        highAvailability:
+          # -- Enable high availability.
+          enabled: false
+          eventDuplicateUrl: "wso2am-cp-1-service"
+          throttleDecisionEndpoint: "wso2am-cp-2-service"
+          portOffset: 0
+          # -- Traffic manager service urls. You only need to define one if the TM is not in HA.
+          urls:
+            - "wso2am-cp-1-service"
+            - "wso2am-cp-2-service"
 
       workflow:
         enable: false
