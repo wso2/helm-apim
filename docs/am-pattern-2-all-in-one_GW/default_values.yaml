@@ -585,11 +585,11 @@ wso2:
         username: ""
         password: ""
       # -- Registry containing the image
-      registry: "docker.io"
+      registry: "<DOCKER_REGISTRY>"
       # -- Repository name consisting the image
-      repository: "wso2/wso2am:4.5.0"
+      repository: "<ALL-IN-ONE_DOCKER_IMAGE>"
       # -- Docker image digest
-      digest: "sha256:e42e5d2c922e2baa4073a9a13458038281f7753f594a87bd3fee75464e254bcb"
+      digest: "<ALL-IN-ONE_IMAGE_DIGEST>"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 

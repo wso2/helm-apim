@@ -224,11 +224,10 @@ wso2:
 
       eventhub:
         # -- Event hub (control plane) loadbalancer service url
-        serviceUrl: "apim-acp-wso2am-acp-service"
+        serviceUrl: "apim-wso2am-all-in-one-am-service"
         # -- Event hub service urls
         urls:
-          - "apim-acp-wso2am-acp-1-service"
-          - "apim-acp-wso2am-acp-2-service"
+          - "apim-wso2am-all-in-one-am-service"
 
       # APIM OAuth configurations
       oauth_config:
