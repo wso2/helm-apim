@@ -489,8 +489,7 @@ wso2:
         highAvailability:
           # -- Enable high availability.
           enabled: false
-          eventDuplicateUrl: "apim-1-wso2am-all-in-one-am-service"
-          throttleDecisionEndpoint: "apim-2-wso2am-all-in-one-am-service"
+          eventDuplicateUrl: "apim-2-wso2am-all-in-one-am-service"
           portOffset: 0
           # -- Traffic manager service urls. You only need to define one if the TM is not in HA.
           urls:
