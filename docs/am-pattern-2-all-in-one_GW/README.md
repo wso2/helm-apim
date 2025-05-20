@@ -1,4 +1,4 @@
-# Pattern 3: Helm Chart for Deployment of a Simple Scalable WSO2 API Manager
+# Pattern 2: Helm Chart for Deployment of a Simple Scalable WSO2 API Manager
 
 This is the standard distributed deployment for API Manager. The default configuration consists of a single API control plane and two Universal Gateways.
 
@@ -8,7 +8,7 @@ For advanced details on the deployment pattern, please refer to the official
 [documentation](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/single-node/all-in-one-deployment-overview/#single-node-deployment).
 
 ## Contents
-- [Pattern 3: API-M Deployment Overview](#pattern-3-helm-chart-for-deployment-of-a-simple-scalable-deployment-of-wso2-api-manager)
+- [Pattern 2: API-M Deployment Overview](#pattern-3-helm-chart-for-deployment-of-a-simple-scalable-deployment-of-wso2-api-manager)
   - [Contents](#contents)
   - [About this Document](#about-this-document)
   - [Prerequisites](#prerequisites)
