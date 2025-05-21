@@ -8,24 +8,25 @@ For advanced details on the deployment pattern, please refer to the official
 [documentation](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/single-node/all-in-one-deployment-overview/#single-node-deployment).
 
 ## Contents
+
 - [Pattern 0: API-M Deployment with all-in-one setup](#pattern-0-api-m-deployment-with-all-in-one-setup)
   - [Contents](#contents)
   - [Prerequisites](#prerequisites)
-  - [Setup](#setup)
-    - [1. Configuring docker images](#1-configuring-docker-images)
-      - [1.1. Additional Configurations](#11-additional-configurations)
-    - [2. Add ingress controller](#2-add-ingress-controller)
+  - [Minimal Configuration](#minimal-configuration)
   - [Configuration](#configuration)
-    - [1. Configuring helm charts](#1-configuring-helm-charts)
-      - [1.1 Mounting Keystore and Truststore using a Kubernetes Secret](#11-mounting-keystore-and-truststore-using-a-kubernetes-secret)
-      - [1.2 Encrypting secrets](#12-encrypting-secrets)
-      - [1.3 Updating the Helm Chart](#13-updating-the-helm-chart)
-      - [1.4  Managing Java Keystores and Truststores](#14--managing-java-keystores-and-truststores)
+    - [1. General Configuration of Helm Charts](#1-general-configuration-of-helm-charts)
+      - [1.1 Add ingress controller](#11-add-ingress-controller)
+      - [1.2 Mount Keystore and Truststore](#12-mount-keystore-and-truststore)
+      - [1.3 Encrypting secrets](#13-encrypting-secrets)
+      - [1.4 Configure Docker image and Databases](#14-configure-docker-image-and-databases)
       - [1.5 Configure SSL in Service Exposure](#15-configure-ssl-in-service-exposure)
-    - [2. Install the Helm Chart](#2-install-the-helm-chart)
+    - [2. All-in-one Configurations](#2-all-in-one-configurations)
+      - [2.1 Configure multiple gateways](#21-configure-multiple-gateways)
+      - [2.2 Configure User Store Properties](#22-configure-user-store-properties)
+      - [2.4 Configure JWKS URL](#24-configure-jwks-url)
+      - [2.5 Deploy All-in-One](#25-deploy-all-in-one)
     - [3. Add a DNS record mapping the hostnames and the external IP](#3-add-a-dns-record-mapping-the-hostnames-and-the-external-ip)
     - [4. Access Management Consoles](#4-access-management-consoles)
-  - [Minimal Configuration](#minimal-configuration)
 
 ## Prerequisites
 

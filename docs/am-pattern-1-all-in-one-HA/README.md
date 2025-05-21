@@ -12,20 +12,22 @@ For advanced details on this deployment pattern, please refer to the official
 - [Pattern 1: API-M Deployment with All-in-One Setup](#pattern-1-api-m-deployment-with-all-in-one-setup)
   - [Contents](#contents)
   - [Prerequisites](#prerequisites)
-  - [Minimal Configuration](#minimal-configuration)
-  - [Setup](#setup)
-    - [1. Configure Docker Images](#1-configure-docker-images)
-      - [1.1. Additional Configurations](#11-additional-configurations)
-    - [2. Add Ingress Controller](#2-add-ingress-controller)
+    - [1. Basic Configurations](#1-basic-configurations)
+    - [2. Build Docker Images](#2-build-docker-images)
     - [3. Configure Database](#3-configure-database)
+  - [Minimal Configuration](#minimal-configuration)
   - [Configuration](#configuration)
     - [1. General Configuration of Helm Charts](#1-general-configuration-of-helm-charts)
-      - [1.1 Mounting Keystore and Truststore using a Kubernetes Secret](#11-mounting-keystore-and-truststore-using-a-kubernetes-secret)
-      - [1.2 Encrypting Secrets](#12-encrypting-secrets)
-      - [1.3 Update the Helm Chart](#13-update-the-helm-chart)
-      - [1.4 Mount Keystore and Truststore](#14-mount-keystore-and-truststore)
+      - [1.1 Add Ingress Controller](#11-add-ingress-controller)
+      - [1.2 Mount Keystore and Truststore](#12-mount-keystore-and-truststore)
+      - [1.3 Encrypting Secrets](#13-encrypting-secrets)
+      - [1.4 Configure Docker Image and Databases](#14-configure-docker-image-and-databases)
       - [1.5 Configure SSL in Service Exposure](#15-configure-ssl-in-service-exposure)
-    - [2. Install the Helm Chart](#2-install-the-helm-chart)
+    - [2. All-in-One Configurations](#2-all-in-one-configurations)
+      - [2.1 Configure Multiple Gateways](#21-configure-multiple-gateways)
+      - [2.2 Configure User Store Properties](#22-configure-user-store-properties)
+      - [2.4 Configure JWKS URL](#24-configure-jwks-url)
+      - [2.5 Deploy All-in-One](#25-deploy-all-in-one)
     - [3. Add a DNS Record Mapping the Hostnames and the External IP](#3-add-a-dns-record-mapping-the-hostnames-and-the-external-ip)
     - [4. Access Management Consoles](#4-access-management-consoles)
 
@@ -60,7 +62,6 @@ For advanced details on this deployment pattern, please refer to the official
 - If there are any customizations to the JARs in the product, these can also be included in the Docker image itself rather than mounting them from the deployment level (assuming they are common to all environments).
 - Below is a sample Dockerfile to build a custom WSO2 APIM image. Depending on your requirements, you may refer to the following and make the necessary additions. The script will:
   - Use WSO2 APIM 4.5.0 as the base image
-  - Change UID and GID to 10001 (the default APIM image uses 802 as UID and GID)
   - Copy third-party libraries to the `<APIM_HOME>/lib` directory
 
   - Dockerfile for All-in-One:
