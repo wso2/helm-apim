@@ -85,7 +85,6 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
 - Furthermore, if there are any customizations to the jars in the product, that too can be included in the docker image itself rather than mounting those from the deployment level (assuming that they are common to all environments).
 - Following is a sample Dockerfile to build a custom WSO2 APIM image. Depending on the requirement you may refer to the following and do the necessary additions. The below script will do the following:
   - Use WSO2 APIM 4.5.0 as the base image
-  - Change UID and GID to 10001. Default APIM image has 802 as UID and GID
   - Copy 3rd party libraries to the `<APIM_HOME>/lib` directory
 
   - Dockerfile for API Control Plane
@@ -385,7 +384,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
   
   ```bash
   kubectl create namespace <namespace>
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 
@@ -415,7 +414,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
 Replace <release-name> and <namespace> with appropriate values. Replace <helm-chart-path> with the path to the Helm Deployment.
   
   ```bash
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 4. Universal Gateway Configuration
@@ -463,7 +462,7 @@ Replace <release-name> and <namespace> with appropriate values. Replace <helm-ch
 Replace <release-name> and <namespace> with appropriate values. Replace <helm-chart-path> with the path to the Helm Deployment.
   
   ```bash
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 5. Key Manager Configuration
@@ -485,7 +484,7 @@ Replace <release-name> and <namespace> with appropriate values. Replace <helm-ch
 Replace <release-name> and <namespace> with appropriate values. Replace <helm-chart-path> with the path to the Helm Deployment.
   
   ```bash
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 6. Add a DNS record mapping the hostnames and the external IP

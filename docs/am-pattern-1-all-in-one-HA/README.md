@@ -1,4 +1,4 @@
-# Pattern 1: API-M Deployment with All-in-One Setup
+# Pattern 1: API-M Deployment with All-in-One HA Setup
 
 This deployment consists of a single API-M node with a single API-M runtime. You can use this pattern if you expect to receive low traffic and do not require high availability in your environment.
 
@@ -70,20 +70,6 @@ For advanced details on this deployment pattern, please refer to the official
 
     ARG USER_HOME=/home/${USER}
     ARG WSO2_SERVER_NAME=wso2am
-    ARG WSO2_SERVER_VERSION=4.5.0
-    ARG WSO2_SERVER=${WSO2_SERVER_NAME}-${WSO2_SERVER_VERSION}
-    ARG WSO2_SERVER_HOME=${USER_HOME}/${WSO2_SERVER}
-
-    # Copy JDBC MySQL driver
-    ADD --chown=wso2carbon:wso2 https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.28/mysql-connector-java-8.0.28.jar ${WSO2_SERVER_HOME}/repository/components/lib
-    ```
-  
-  - Dockerfile for Universal Gateway:
-    ```dockerfile
-    FROM docker.wso2.com/wso2am-universal-gw:4.5.0.0
-
-    ARG USER_HOME=/home/${USER}
-    ARG WSO2_SERVER_NAME=wso2am-universal-gw
     ARG WSO2_SERVER_VERSION=4.5.0
     ARG WSO2_SERVER=${WSO2_SERVER_NAME}-${WSO2_SERVER_VERSION}
     ARG WSO2_SERVER_HOME=${USER_HOME}/${WSO2_SERVER}
@@ -328,7 +314,7 @@ Now deploy the Helm chart using the following command after creating a namespace
   
   ```bash
   kubectl create namespace <namespace>
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 3. Add a DNS Record Mapping the Hostnames and the External IP

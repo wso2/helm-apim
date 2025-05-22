@@ -107,6 +107,20 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
     # Copy JDBC MySQL driver
     ADD --chown=wso2carbon:wso2 https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.28/mysql-connector-java-8.0.28.jar ${WSO2_SERVER_HOME}/repository/components/lib
     ```
+  
+    - Dockerfile for Traffic Manager
+    ```dockerfile
+    FROM docker.wso2.com/wso2am-tm:4.5.0.0
+
+    ARG USER_HOME=/home/${USER}
+    ARG WSO2_SERVER_NAME=wso2am-tm
+    ARG WSO2_SERVER_VERSION=4.5.0
+    ARG WSO2_SERVER=${WSO2_SERVER_NAME}-${WSO2_SERVER_VERSION}
+    ARG WSO2_SERVER_HOME=${USER_HOME}/${WSO2_SERVER}
+
+    # Copy jdbc mysql driver
+    ADD --chown=wso2carbon:wso2 https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.28/mysql-connector-java-8.0.28.jar ${WSO2_SERVER_HOME}/repository/components/lib
+    ```
 
 - Once the required changes have been made to the Dockerfile, you can use the following command to build the custom image. Replace CONTAINER_REGISTRY, IMAGE_REPO, and TAG accordingly.
   ```bash
@@ -352,7 +366,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
   
   ```bash
   kubectl create namespace <namespace>
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 3. Key Manager Configuration
@@ -374,7 +388,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
 Replace <release-name> and <namespace> with appropriate values. Replace <helm-chart-path> with the path to the Helm Deployment.
   
   ```bash
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 4. Universal Gateway Configuration
@@ -421,7 +435,7 @@ Replace <release-name> and <namespace> with appropriate values. Replace <helm-ch
 Replace <release-name> and <namespace> with appropriate values. Replace <helm-chart-path> with the path to the Helm deployment.
   
   ```bash
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 5. Add a DNS Record Mapping the Hostnames and the External IP
