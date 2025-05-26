@@ -85,7 +85,8 @@ The Helm charts include cloud provider-specific configurations for:
 - Azure (AKS, Azure Files, Azure Database, Key Vault)
 - GCP (GKE, GCS, Cloud SQL, Secret Manager)
 
-**If you are deploying on OpenShift, additional configurations are required for both Docker images and the deployment process. For comprehensive instructions, refer to the [OpenShift Deployment Guide](openshift_deployment.md).**
+> **Note:** Default Helm chart configurations are intended for Kubernetes deployment.  
+> If you are deploying on OpenShift, additional configurations are required for both Docker images and the deployment process. For comprehensive instructions, refer to the [OpenShift Deployment Guide](openshift_deployment.md).
 
 ## Additional Resources
 
