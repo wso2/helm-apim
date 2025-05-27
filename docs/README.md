@@ -78,15 +78,17 @@ Each pattern directory contains:
 4. **Deployment**:
    - Follow the pattern-specific deployment instructions
 
-## Cloud Provider Support
+## Deploy on Kubernetes
 
 The Helm charts include cloud provider-specific configurations for:
 - AWS (EKS, EFS, RDS, Secrets Manager)
 - Azure (AKS, Azure Files, Azure Database, Key Vault)
 - GCP (GKE, GCS, Cloud SQL, Secret Manager)
 
-> **Note:** Default Helm chart configurations are intended for Kubernetes deployment.  
-> If you are deploying on OpenShift, additional configurations are required for both Docker images and the deployment process. For comprehensive instructions, refer to the [OpenShift Deployment Guide](openshift_deployment.md).
+## Deploy on OpenShift
+
+- **Note:** Default Helm chart configurations are intended for Kubernetes deployment.  
+- If you are deploying on OpenShift, additional configurations are required for both Docker images and the deployment process. For comprehensive instructions, refer to the [OpenShift Deployment Guide](openshift_deployment.md).
 
 ## Additional Resources
 
