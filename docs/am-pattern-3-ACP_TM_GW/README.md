@@ -2,7 +2,7 @@
 
 This is the standard distributed deployment for API Manager. The default configuration consists of two API control planes, two Traffic Managers, and two Universal Gateways. This is a production-ready deployment pattern.
 
-![WSO2 API Manager pattern 4 deployment](https://apim.docs.wso2.com/en/4.5.0/assets/img/setup-and-install/deployment-tm.png)
+![WSO2 API Manager pattern 3 deployment](https://apim.docs.wso2.com/en/latest/assets/img/setup-and-install/distributed-deployment-tm.png)
 
 For advanced details on the deployment pattern, please refer to the official
 [documentation](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/single-node/all-in-one-deployment-overview/#single-node-deployment).
