@@ -175,8 +175,8 @@ kubernetes:
       annotations:
   securityContext:
     # -- User ID of the container
-    runAsUser: 10001
-    runAsGroup: 10001
+    runAsUser: null
+    runAsGroup: null
     # -- SELinux context for the container
     seLinux:
       enabled: false
@@ -189,7 +189,7 @@ kubernetes:
   # -- Set UNIX permissions over the executable scripts
   configMaps:
     scripts:
-      defaultMode: "0407"
+      defaultMode: "0457"
 
 
 wso2:  
@@ -597,11 +597,11 @@ wso2:
         username: ""
         password: ""
       # -- Registry containing the image
-      registry: "docker.io"
+      registry: "<REGISTRY NAME>"
       # -- Repository name consisting the image
-      repository: "wso2/wso2am:4.5.0"
+      repository: "<REPOSITORY NAME>"
       # -- Docker image digest
-      digest: "sha256:e42e5d2c922e2baa4073a9a13458038281f7753f594a87bd3fee75464e254bcb"
+      digest: "<CUSTOM OPENSHIFT IMAGE DIGEST>"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
