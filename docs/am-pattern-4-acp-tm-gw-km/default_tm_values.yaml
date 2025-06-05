@@ -109,9 +109,6 @@ wso2:
         # -- User store type. 
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
         type: "database_unique_id"
-        # -- User store properties
-        properties:
-          key: value
       # -- Super admin username
       adminUsername: "admin"
       # -- Super admin password
