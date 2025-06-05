@@ -389,7 +389,7 @@ wso2:
       # -- Container registry hostname
       registry: "<DOCKER_REGISTRY>"
       # -- Azure ACR repository name consisting the image
-      repository: "<ACP_DOCKER_IMAGE>"
+      repository: "<AM_DOCKER_IMAGE>"
       # -- Docker image digest
       digest: "<DOCKER_IMAGE_DIGEST>"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
