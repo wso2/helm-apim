@@ -196,7 +196,7 @@ wso2:
   # TOML configurations
   apim:
     # -- APIM version
-    version: "4.5.0"
+    version: "4.4.0"
     # -- Secure vauld enabled
     secureVaultEnabled: false
     # Logging related configurations
@@ -211,11 +211,9 @@ wso2:
     portOffset: 0
     # -- Startup script mount status
     mountStartupScript: false
-    # -- Frontend settings.json mount status
-    mountFrontendConfig: false
     # TOML configurations
     configurations:
-      gatewayType: "Regular,APK,AWS"
+      gatewayType: "Regular"
       userStore:
         # -- User store type. 
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
@@ -272,9 +270,7 @@ wso2:
       ai:
         enabled: false
         token: ""
-        key: ""
         endpoint: ""
-        token_endpoint: ""
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
@@ -326,7 +322,6 @@ wso2:
           type: "hybrid"
           gatewayType: "Regular"
           provider: "wso2"
-          visibility:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
@@ -442,7 +437,6 @@ wso2:
       publisher:
         # -- Supported document types in Publisher. 
         # This should be used only if there are additional document types to be supported.
-        enable_api_doc_visibility: false
         supportedDocumentTypes: ""
         enablePortalConfigurationOnlyMode: false
         internalKeyIssuer: ""
@@ -555,35 +549,10 @@ wso2:
       transactionCounter:
         enabled: false
         serverId: "Gateway"
-        serverURL: ""
-
-      governance:
-        # -- Override the default values of governance.scheduler if any value exists
-        scheduler:
-          thread_pool_size: ""
-          queue_size: ""
-          task_check_interval_minutes: ""
-          task_cleanup_interval_minutes: ""
-      
-      # APIM SDK configurations
-      sdk:
-        supportedLanguages: ["android", "java", "csharp", "dart", "groovy", "javascript", "jmeter", "perl", "php", "python", "ruby", "swift5", "clojure"]
-
-      # Organization level access control configurations
-      organization_based_access_control:
-        enabled: true
-        organization_name_local_claim: "http://wso2.org/claims/organization"
-        organization_id_local_claim: "http://wso2.org/claims/organizationId" 
 
   deployment:
     # Container image configurations
     image:
-      # -- Container registry credentials.
-      # Specify image pull secrets for private registries
-      imagePullSecrets:
-        enabled: false
-        username: ""
-        password: ""
       # -- Registry containing the image
       registry: "<DOCKER_REGISTRY>"
       # -- Repository name consisting the image
