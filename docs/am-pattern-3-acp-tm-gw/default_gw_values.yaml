@@ -190,7 +190,7 @@ wso2:
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
-        jksSecretName: "jks-secret"
+        jksSecretName: "apim-keystore-secret"
         keystores:
           primary:
             # -- Primary keystore enabled
@@ -233,7 +233,7 @@ wso2:
 
       km:
         # -- Key manager service name if default Resident KM is used
-        serviceUrl: "apim-acp-wso2am-acp-service"
+        serviceUrl: "apim-acp-wso2am-cp-service"
 
       iskm:
         # If Identity Server is used as the Resident KM
@@ -289,13 +289,13 @@ wso2:
         # This should be enabled if the traffic manager is separated from the control-plane.
         enabled: true
         # -- Event hub (control plane) loadbalancer service url
-        serviceUrl: "apim-acp-wso2am-acp-service"
+        serviceUrl: "apim-acp-wso2am-cp-service"
         # -- Event hub (control plane) service port
         servicePort: 9443
         # -- Event hub service urls
         urls:
-          - "apim-acp-wso2am-acp-1-service"
-          - "apim-acp-wso2am-acp-2-service"
+          - "apim-acp-wso2am-cp-1-service"
+          - "apim-acp-wso2am-cp-2-service"
         
       # APIM cache related configurations
       cache:
@@ -382,9 +382,9 @@ wso2:
       # -- Container registry hostname
       registry: "<DOCKER_REGISTRY>"
       # -- Azure ACR repository name consisting the image
-      repository: "<GW_DOCKER_IMAGE>"
+      repository: "<AM_DOCKER_IMAGE>"
       # -- Docker image digest
-      digest: "<GW_IMAGE_DIGEST>"
+      digest: "<AM_IMAGE_DIGEST>"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
