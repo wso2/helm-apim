@@ -40,7 +40,7 @@ aws:
   serviceAccountName: ""
 azure:
   # -- If Azure is used as the cloud provider
-  enabled: true
+  enabled: false
   keyVault:
     # -- Azure Key vault used for credential management
     name: ""
@@ -174,7 +174,7 @@ kubernetes:
 wso2:  
   apim:
     # -- APIM version
-    version: "4.5.0"
+    version: "4.4.0"
     # -- Secure vauld enabled
     secureVaultEnabled: false
     # Logging related configurations
@@ -189,11 +189,9 @@ wso2:
     portOffset: 0
     # -- Startup script mount status
     mountStartupScript: false
-    # -- Frontend settings.json mount status
-    mountFrontendConfig: true
     # TOML configurations
     configurations:
-      gatewayType: "Regular,APK,AWS"
+      gatewayType: "Regular"
       userStore:
         # -- User store type. 
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
@@ -248,13 +246,11 @@ wso2:
       ai:
         enabled: false
         token: ""
-        key: "<AI_KEY>"
-        endpoint: "https://dev-tools.wso2.com/apim-ai-service/v2"
-        token_endpoint: "https://api.asgardeo.io/t/wso2devtools/oauth2/token"
+        endpoint: ""
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
-        jksSecretName: "jks-secret"
+        jksSecretName: "apim-keystore-secret"
         keystores:
           primary:
             # -- Primary keystore enabled
@@ -302,7 +298,6 @@ wso2:
           type: "hybrid"
           gatewayType: "Regular"
           provider: "wso2"
-          visibility:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
@@ -330,7 +325,6 @@ wso2:
       publisher:
         # -- Supported document types in Publisher. 
         # This should be used only if there are additional document types to be supported.
-        enable_api_doc_visibility: false
         supportedDocumentTypes: ""
         enablePortalConfigurationOnlyMode: false
         internalKeyIssuer: ""
@@ -385,41 +379,11 @@ wso2:
 
       keyManager:
         enableLightweightAPIKeyGeneration: true
-        allowSubscriptionValidationDisabling: false
-
-      # APIM governance configurations
-      governance:
-        # -- Override the default values of governance.scheduler if any value exists
-        scheduler:
-          thread_pool_size: ""
-          queue_size: ""
-          task_check_interval_minutes: ""
-          task_cleanup_interval_minutes: ""
-      
-      # APIM SDK configurations
-      sdk:
-        supportedLanguages: ["android", "java", "csharp", "dart", "groovy", "javascript", "jmeter", "perl", "php", "python", "ruby", "swift5", "clojure"]
-      
-      # APIM Transaction Counter configurations
-      transactionCounter:
-        enabled: false
-        serviceUrl: ""
-
-      # Organization level access control configurations
-      organization_based_access_control:
-        enabled: true
-        organization_name_local_claim: "http://wso2.org/claims/organization"
-        organization_id_local_claim: "http://wso2.org/claims/organizationId" 
+        allowSubscriptionValidationDisabling: true
 
   deployment:
     # Container image configurations
     image:
-      # -- Container registry credentials.
-      # Specify image pull secrets for private registries
-      imagePullSecrets:
-        enabled: false
-        username: ""
-        password: ""
       # -- Container registry hostname
       registry: "<DOCKER_REGISTRY>"
       # -- Azure ACR repository name consisting the image
@@ -439,7 +403,7 @@ wso2:
         cpu: "2000m"
       limits:
         # -- Memory limit for API Manager
-        memory: "5Gi"
+        memory: "3Gi"
         # -- CPU limit for API Manager
         cpu: "3000m"
       jvm:

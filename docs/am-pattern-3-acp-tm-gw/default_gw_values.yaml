@@ -27,7 +27,7 @@ aws:
   serviceAccountName: ""
 azure:
   # -- If Azure is used as the cloud provider
-  enabled: true
+  enabled: false
   keyVault:
     # -- Azure Key vault used for credential management
     name: ""
@@ -52,9 +52,9 @@ azure:
       tenantId: ""
     resourceManager:
       # -- Subscription ID of the target Azure Key Vault
-      subscriptionId: "APIM-rnd-001"
+      subscriptionId: ""
       # -- Name of the Azure Resource Group to which the target Azure Key Vault belongs
-      resourceGroup: "rg-private-apim-kavindar"
+      resourceGroup: ""
 
 # Google Cloud Platform (GCP) integration status
 gcp:
@@ -117,11 +117,11 @@ wso2:
   # -- WSO2 Choreo Analytics Parameters
   # If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/).
   choreoAnalytics:
-    enabled: true
+    enabled: false
     # -- Choreo Analytics cloud service endpoint
-    endpoint: "https://analytics-event-auth.choreo.dev/auth/v1"
+    endpoint: ""
     # -- On-premise key for Choreo Analytics
-    onpremKey: "7773da0c-b164-4d16-bffc-82abfa2ce020"
+    onpremKey: ""
   
   # -- ELK Analytics Parameters
   ELKAnalytics:
@@ -129,7 +129,7 @@ wso2:
 
   apim:
     # -- APIM version
-    version: "4.5.0"
+    version: "4.4.0"
     # -- Secure vauld enabled
     secureVaultEnabled: false
     # Logging related configurations
@@ -379,12 +379,6 @@ wso2:
   deployment:
     # Container image configurations
     image:
-      # -- Container registry credentials.
-      # Specify image pull secrets for private registries
-      imagePullSecrets:
-        enabled: false
-        username: ""
-        password: ""
       # -- Container registry hostname
       registry: "<DOCKER_REGISTRY>"
       # -- Azure ACR repository name consisting the image
@@ -449,9 +443,9 @@ wso2:
     replicas: 2
     # HPA configurations
     # -- Minimum replicas for HPA
-    minReplicas: 1
+    minReplicas: 2
     # -- Maximum replicas for HPA
-    maxReplicas: 1
+    maxReplicas: 3
     # -- Target CPU utilization percentage for HPA
     cpuUtilizationPercentage: 75
     # -- Target memory utilization percentage for HPA

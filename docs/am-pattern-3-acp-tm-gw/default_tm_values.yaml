@@ -30,7 +30,7 @@ aws:
   serviceAccountName: ""
 azure:
   # -- If Azure is used as the cloud provider
-  enabled: true
+  enabled: false
   acr:
     # -- Azure container registry name
     registry: ""
@@ -58,9 +58,9 @@ azure:
       tenantId: ""
     resourceManager:
       # -- Subscription ID of the target Azure Key Vault
-      subscriptionId: "APIM-rnd-001"
+      subscriptionId: ""
       # -- Name of the Azure Resource Group to which the target Azure Key Vault belongs
-      resourceGroup: "rg-private-apim-kavindar"
+      resourceGroup: ""
 
 # Google Cloud Platform (GCP) integration status
 gcp:
@@ -90,7 +90,7 @@ kubernetes:
 wso2:  
   apim:
     # -- APIM version
-    version: "4.5.0"
+    version: "4.4.0"
     # -- Secure vauld enabled
     secureVaultEnabled: false
     # Logging related configurations
@@ -251,12 +251,6 @@ wso2:
   deployment:
     # Container image configurations
     image:
-      # -- Container registry credentials.
-      # Specify image pull secrets for private registries
-      imagePullSecrets:
-        enabled: false
-        username: ""
-        password: ""
       # -- Container registry hostname
       registry: "<DOCKER_REGISTRY>"
       # -- Azure ACR repository name consisting the image
