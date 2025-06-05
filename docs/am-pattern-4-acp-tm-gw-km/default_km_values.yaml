@@ -30,7 +30,7 @@ aws:
   serviceAccountName: ""
 azure:
   # -- If Azure is used as the cloud provider
-  enabled: true
+  enabled: false
   acr:
     # -- Azure container registry name
     registry: ""
@@ -110,7 +110,7 @@ kubernetes:
 wso2:  
   apim:
     # -- APIM version
-    version: "4.5.0"
+    version: "4.4.0"
     # -- Secure vauld enabled
     secureVaultEnabled: false
     # Logging related configurations
@@ -134,7 +134,7 @@ wso2:
       # -- Super admin username
       adminUsername: "admin"
       # -- Super admin password
-      adminPassword: "adminksr"
+      adminPassword: "admin"
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
         type: "mysql"
@@ -144,7 +144,7 @@ wso2:
         # -- APIM AM_DB configurations.
         apim_db:
           # -- APIM AM_DB URL
-          url: "jdbc:mysql://wso2-1-aurora-mysql-dev-us-east-2-aurora-rds-cluster.cluster-cny8o2k2a10w.us-east-2.rds.amazonaws.com:3306/apim_db2?useSSL=false"
+          url: "jdbc:mysql://<DB_URL>:3306/apim_db?useSSL=false"
           # -- APIM AM_DB username
           username: "apimadmin"
           # -- APIM AM_DB password
@@ -161,7 +161,7 @@ wso2:
         # -- APIM SharedDB configurations.
         shared_db:
           # -- APIM SharedDB URL
-          url: "jdbc:mysql://wso2-1-aurora-mysql-dev-us-east-2-aurora-rds-cluster.cluster-cny8o2k2a10w.us-east-2.rds.amazonaws.com:3306/shared_db2?useSSL=false"
+          url: "jdbc:mysql://<DB_URL>:3306/shared_db?useSSL=false"
           # -- APIM SharedDB username
           username: "sharedadmin"
           # -- APIM SharedDB password
@@ -178,7 +178,7 @@ wso2:
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
-        jksSecretName: "jks-secret"
+        jksSecretName: "apim-keystore-secret"
         keystores:
           primary:
             # -- Primary keystore enabled
@@ -221,11 +221,11 @@ wso2:
 
       eventhub:
         # -- Event hub (control plane) loadbalancer service url
-        serviceUrl: "apim-acp-wso2am-acp-service"
+        serviceUrl: "apim-acp-wso2am-cp-service"
         # -- Event hub service urls
         urls:
-          - "apim-acp-wso2am-acp-1-service"
-          - "apim-acp-wso2am-acp-2-service"
+          - "apim-acp-wso2am-cp-1-service"
+          - "apim-acp-wso2am-cp-2-service"
 
       # APIM OAuth configurations
       oauth_config:
@@ -260,12 +260,6 @@ wso2:
   deployment:
     # Container image configurations
     image:
-      # -- Container registry credentials.
-      # Specify image pull secrets for private registries
-      imagePullSecrets:
-        enabled: false
-        username: ""
-        password: ""
       # -- Container registry hostname
       registry: "<DOCKER_REGISTRY>"
       # -- Azure ACR repository name consisting the image
