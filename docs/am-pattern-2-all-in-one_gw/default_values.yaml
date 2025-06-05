@@ -274,7 +274,7 @@ wso2:
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
-        jksSecretName: "jks-secret"
+        jksSecretName: "apim-keystore-secret"
         keystores:
           primary:
             # -- Primary keystore enabled
@@ -556,9 +556,9 @@ wso2:
       # -- Registry containing the image
       registry: "<DOCKER_REGISTRY>"
       # -- Repository name consisting the image
-      repository: "<ALL-IN-ONE_DOCKER_IMAGE>"
+      repository: "<AM_DOCKER_IMAGE>"
       # -- Docker image digest
-      digest: "<ALL-IN-ONE_IMAGE_DIGEST>"
+      digest: "<AM_IMAGE_DIGEST>"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
