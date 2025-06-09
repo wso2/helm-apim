@@ -9,10 +9,11 @@
 #
 # --------------------------------------------------------------------------------------
 
+{{- if .Values.wso2.deployment.highAvailability }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "am-all-in-one.fullname" . }}-am-deployment
+  name: {{ template "am-all-in-one.fullname" . }}-am-deployment-2
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
@@ -21,11 +22,11 @@ spec:
   selector:
     matchLabels:
       deployment: {{ template "am-all-in-one.fullname" . }}-am
-      node: {{ template "am-all-in-one.fullname" . }}-am
+      node: {{ template "am-all-in-one.fullname" . }}-am-2
   template:
     metadata:
       annotations:
-        checksum.am.conf: {{ include (print $.Template.BasePath "/am/wso2am-conf.yaml") . | sha256sum }}
+        checksum.am.conf: {{ include (print $.Template.BasePath "/am/instance-2/wso2am-conf.yaml") . | sha256sum }}
         checksum.am.conf.log4j2: {{ include (print $.Template.BasePath "/am/wso2am-conf-log4j2.yaml") . | sha256sum }}
         checksum.am.conf.secret-conf: {{ include (print $.Template.BasePath "/am/wso2am-conf-secret-conf.yaml") . | sha256sum }}
       labels:
@@ -275,3 +276,4 @@ spec:
           persistentVolumeClaim:
             claimName: {{ template "am-all-in-one.fullname" . }}-am-solr-indexed-data-volume-claim
         {{ end }}
+{{- end }}

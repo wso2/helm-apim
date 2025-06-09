@@ -9,15 +9,17 @@
 #
 # --------------------------------------------------------------------------------------
 
+{{- if .Values.wso2.deployment.highAvailability }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "am-all-in-one.fullname" . }}-am-service
+  name: {{ template "am-all-in-one.fullname" . }}-am-service-2
   namespace : {{ .Release.Namespace }}
 spec:
   # label keys and values that must match in order to receive traffic for this service
   selector:
     deployment: {{ template "am-all-in-one.fullname" . }}-am
+    node: {{ template "am-all-in-one.fullname" . }}-am-2
   ports:
     # ports that this service should serve on
     - name: pass-through-http
@@ -44,3 +46,4 @@ spec:
     - name: websub-https
       protocol: TCP
       port: 8021
+{{- end }}
