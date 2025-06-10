@@ -325,11 +325,10 @@ allow_headers = {{ toJson .Values.wso2.apim.configurations.cors.allowHeaders }}
 allow_credentials = {{ .Values.wso2.apim.configurations.cors.allowCredentials }}
 enable_validation_for_ws = {{ .Values.wso2.apim.configurations.cors.enableForWS }}
 
-{{- if .Values.wso2.deployment.highAvailability}}
+{{- if .Values.wso2.deployment.highAvailability }}
 # Traffic Manager configurations
 [apim.throttling]
 event_duplicate_url = ["tcp://{{ template "am-all-in-one.fullname" .}}-am-service-1:5672"]
-service_url = "https://{{ template "am-all-in-one.fullname" .}}-am-service:9443/services/"
 throttle_decision_endpoints = ["tcp://localhost:5672"]
 {{- end }}
 
@@ -358,13 +357,16 @@ hostName = {{ .Values.wso2.apim.configurations.throttling.eventManagement.hostNa
 port = {{ .Values.wso2.apim.configurations.throttling.eventManagement.port}}
 {{- end }}
 
-{{- if .Values.wso2.deployment.highAvailability}}
-{{ range $index, $url := .Values.wso2.apim.configurations.throttling.urls }}
+{{- if .Values.wso2.deployment.highAvailability }}
 [[apim.throttling.url_group]]
-traffic_manager_urls = ["tcp://{{ $url }}:{{ add 9611 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
-traffic_manager_auth_urls = ["ssl://{{ $url }}:{{ add 9711 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+traffic_manager_urls = ["tcp://{{ template "am-all-in-one.fullname" .}}-am-service-1:{{ add 9611 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+traffic_manager_auth_urls = ["ssl://{{ template "am-all-in-one.fullname" .}}-am-service-1:{{ add 9711 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
 type = "loadbalance"
-{{ end }}
+
+[[apim.throttling.url_group]]
+traffic_manager_urls = ["tcp://{{ template "am-all-in-one.fullname" .}}-am-service-2:{{ add 9611 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+traffic_manager_auth_urls = ["ssl://{{ template "am-all-in-one.fullname" .}}-am-service-2:{{ add 9711 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+type = "loadbalance"
 {{ end }}
 
 # [[apim.throttling.url_group]]
