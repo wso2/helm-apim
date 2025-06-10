@@ -116,7 +116,7 @@ For advanced details on this deployment pattern, please refer to the official
 
 1. Deploy All-in-One HA:
 ```bash
-helm install apim wso2/wso2am-all-in-one -f default_values.yaml
+helm install apim wso2/wso2am-all-in-one --version 4.5.0-2 -f default_values.yaml
 ```
 
 
@@ -315,7 +315,7 @@ Now deploy the Helm chart using the following command after creating a namespace
   
   ```bash
   kubectl create namespace <namespace>
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-2 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 #### 2.6 Enable High Availability

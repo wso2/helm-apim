@@ -54,7 +54,7 @@ For advanced details on the deployment pattern, please refer to the official
 
 If you want to try WSO2 API Manager with minimal configuration, you do not need to follow all the steps described above. You can simply use the default values provided in the default_values.yaml, which includes the H2 database and the default keystore and truststore. Once the service is up and running, deploy the NGINX Ingress Controller by following the steps outlined [here](#2-add-ingress-controller).
 ```bash
-helm install apim ./all-in-one -f default_values.yaml
+helm install apim wso2/wso2am-all-in-one --version 4.5.0-2 -f default_values.yaml
 ```
 
 ## Configuration
@@ -248,7 +248,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
   
   ```bash
   kubectl create namespace <namespace>
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-2 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 
