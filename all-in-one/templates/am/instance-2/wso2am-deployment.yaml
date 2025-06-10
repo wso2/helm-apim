@@ -31,7 +31,7 @@ spec:
         checksum.am.conf.secret-conf: {{ include (print $.Template.BasePath "/am/wso2am-conf-secret-conf.yaml") . | sha256sum }}
       labels:
         deployment: {{ template "am-all-in-one.fullname" . }}-am
-        node: {{ template "am-all-in-one.fullname" . }}-am
+        node: {{ template "am-all-in-one.fullname" . }}-am-2
         product: apim
     spec:
       affinity:
@@ -211,7 +211,7 @@ spec:
       volumes:
         - name: wso2am-conf
           configMap:
-            name: {{ template "am-all-in-one.fullname" . }}-am-conf
+            name: {{ template "am-all-in-one.fullname" . }}-am-conf-2
             defaultMode: 0407
         - name: wso2am-entrypoint
           configMap:
