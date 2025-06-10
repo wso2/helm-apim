@@ -8,7 +8,7 @@ For advanced details on the deployment pattern, please refer to the official
 [documentation](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/single-node/all-in-one-deployment-overview/#single-node-deployment).
 
 ## Contents
-- [Pattern 2: API-M Deployment Overview](#pattern-3-helm-chart-for-deployment-of-a-simple-scalable-deployment-of-wso2-api-manager)
+- [Pattern 2: Helm Chart for Deployment of a Simple Scalable WSO2 API Manager](#pattern-2-helm-chart-for-deployment-of-a-simple-scalable-wso2-api-manager)
   - [Contents](#contents)
   - [About this Document](#about-this-document)
   - [Prerequisites](#prerequisites)
@@ -27,9 +27,10 @@ For advanced details on the deployment pattern, please refer to the official
       - [2.1 Configure Multiple Gateways](#21-configure-multiple-gateways)
       - [2.2 Configure User Store Properties](#22-configure-user-store-properties)
       - [2.4 Configure JWKS URL](#24-configure-jwks-url)
-      - [2.5 Deploy ACP](#25-deploy-acp)
+      - [2.5 Deploy All-in-One](#25-deploy-all-in-one)
+      - [2.6 Enable High Availability](#26-enable-high-availability)
     - [3. Universal Gateway Configuration](#3-universal-gateway-configuration)
-      - [3.1 Configure Key Manager, Eventhub and Throttling](#31-configure-key-manager-eventhub-and-throttling)
+      - [3.1 Configure Key Manager, Eventhub, and Throttling](#31-configure-key-manager-eventhub-and-throttling)
       - [3.2 Deploy Universal Gateway](#32-deploy-universal-gateway)
     - [4. Add a DNS Record Mapping the Hostnames and the External IP](#4-add-a-dns-record-mapping-the-hostnames-and-the-external-ip)
     - [5. Access Management Consoles](#5-access-management-consoles)
@@ -345,6 +346,15 @@ Now deploy the Helm Chart using the following command after creating a namespace
   kubectl create namespace <namespace>
   helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
+
+#### 2.6 Enable High Availability
+To enable high availability, you can scale the deployment by increasing the number of replicas for the API Manager runtime. This can be done by modifying the `highAvailability` in the `values.yaml` file:
+
+```yaml
+wso2:
+  deployment:
+    highAvailability: true
+```
 
 ### 3. Universal Gateway Configuration
 

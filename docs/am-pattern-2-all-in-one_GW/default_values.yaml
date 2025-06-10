@@ -576,6 +576,7 @@ wso2:
         organization_id_local_claim: "http://wso2.org/claims/organizationId" 
 
   deployment:
+    highAvailability: false
     # Container image configurations
     image:
       # -- Container registry credentials.

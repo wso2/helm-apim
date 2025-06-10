@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+# Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
 #
 # This software is the property of WSO2 LLC. and its suppliers, if any.
 # Dissemination of any information or reproduction of any material contained 
@@ -177,6 +177,19 @@ kubernetes:
     # -- User ID of the container
     runAsUser: 10001
     runAsGroup: 10001
+    # -- SELinux context for the container
+    seLinux:
+      enabled: false
+      level: ""
+    # -- Seccomp profile for the container
+    seccompProfile:
+      # -- Seccomp profile type(RuntimeDefault, Unconfined or Localhost)
+      type: RuntimeDefault
+      localhostProfile: ""
+  # -- Set UNIX permissions over the executable scripts
+  configMaps:
+    scripts:
+      defaultMode: "0407"
 
 
 wso2:  
@@ -278,7 +291,7 @@ wso2:
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
-        jksSecretName: ""
+        jksSecretName: "apim-keystore-secret"
         keystores:
           primary:
             # -- Primary keystore enabled
@@ -330,7 +343,7 @@ wso2:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
-          serviceName: "localhost"
+          serviceName: "apim-wso2am-all-in-one-am-service"
           servicePort: 9443
           wsHostname: "websocket.wso2.com"
           httpHostname: "gw.wso2.com"
@@ -463,19 +476,16 @@ wso2:
         enableForWS: false
 
       throttling:
+        portOffset: 0
         enableDataPublishing: true
         enablePolicyDeploy: true
         enableBlacklistCondition: true
         enablePersistence: true
         throttleDecisionEndpoints: []
-        # -- Enable unlimited throttling tier
-        unlimitedTier: true
-        # -- Enable header based throttling
-        headerBasedThrottling: false
-        # -- Enable JWT claim based throttling
-        jwtClaimBasedThrottling: false
-        # -- Enable query param based throttling
-        queryParamBasedThrottling: false
+        enableUnlimitedTier: true
+        enableHeaderBasedThrottling: false
+        enableJwtClaimBasedThrottling: false
+        enableQueryParamBasedThrottling: false
         blacklistCondition:
           startDelay: 
           period: 
@@ -487,16 +497,6 @@ wso2:
         eventManagement:
           hostname: 
           port: 
-        highAvailability:
-          # -- Enable high availability.
-          enabled: false
-          eventDuplicateUrl: "apim-1-wso2am-all-in-one-am-service"
-          throttleDecisionEndpoint: "apim-2-wso2am-all-in-one-am-service"
-          portOffset: 0
-          # -- Traffic manager service urls. You only need to define one if the TM is not in HA.
-          urls:
-            - "apim-1-wso2am-all-in-one-am-service"
-            - "apim-2-wso2am-all-in-one-am-service"
 
       workflow:
         enable: false
@@ -590,6 +590,8 @@ wso2:
         organization_id_local_claim: "http://wso2.org/claims/organizationId" 
 
   deployment:
+    # Confgiure High Availability
+    highAvailability: true
     # Container image configurations
     image:
       # -- Container registry credentials.
@@ -598,12 +600,12 @@ wso2:
         enabled: false
         username: ""
         password: ""
-      # -- Registry containing the image
-      registry: "docker.io"
-      # -- Repository name consisting the image
-      repository: "wso2/wso2am:4.5.0"
+      # -- Container registry hostname
+      registry: "<DOCKER_REGISTRY>"
+      # -- Azure ACR repository name consisting the image
+      repository: "<GW_DOCKER_IMAGE>"
       # -- Docker image digest
-      digest: "sha256:e42e5d2c922e2baa4073a9a13458038281f7753f594a87bd3fee75464e254bcb"
+      digest: "<GW_IMAGE_DIGEST>"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
