@@ -171,22 +171,22 @@ kubectl create secret generic jks-secret --from-file=wso2carbon.jks --from-file=
 
 1. Deploy ACP
 ```bash
-helm install apim-acp wso2/wso2am-acp -f default_acp_values.yaml
+helm install apim-acp wso2/wso2am-acp --version 4.5.0-2 -f default_acp_values.yaml
 ```
 
 2. Deploy KM
 ```bash
-helm install apim-km wso2/wso2am-km -f default_km_values.yaml
+helm install apim-km wso2/wso2am-km --version 4.5.0-2 -f default_km_values.yaml
 ```
 
 3. Deploy TM
 ```bash
-helm install apim-tm wso2/wso2am-tm -f default_tm_values.yaml
+helm install apim-tm wso2/wso2am-tm --version 4.5.0-2 -f default_tm_values.yaml
 ```
 
 4. Deploy GW
 ```bash
-helm install apim-gw wso2/wso2-gw -f default_gw_values.yaml
+helm install apim-gw wso2/wso2-gw --version 4.5.0-2 -f default_gw_values.yaml
 ```
 
 - Once the service is up and running, deploy the NGINX Ingress Controller by following the steps outlined in [1.1 Add ingress controller](#11-add-ingress-controller).
@@ -384,7 +384,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
   
   ```bash
   kubectl create namespace <namespace>
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-2 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 
@@ -414,7 +414,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
 Replace <release-name> and <namespace> with appropriate values. Replace <helm-chart-path> with the path to the Helm Deployment.
   
   ```bash
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-2 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 4. Universal Gateway Configuration
@@ -462,7 +462,7 @@ Replace <release-name> and <namespace> with appropriate values. Replace <helm-ch
 Replace <release-name> and <namespace> with appropriate values. Replace <helm-chart-path> with the path to the Helm Deployment.
   
   ```bash
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-2 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 5. Key Manager Configuration
@@ -484,7 +484,7 @@ Replace <release-name> and <namespace> with appropriate values. Replace <helm-ch
 Replace <release-name> and <namespace> with appropriate values. Replace <helm-chart-path> with the path to the Helm Deployment.
   
   ```bash
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-2 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 6. Add a DNS record mapping the hostnames and the external IP

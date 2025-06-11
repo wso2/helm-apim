@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+# Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
 #
 # This software is the property of WSO2 LLC. and its suppliers, if any.
 # Dissemination of any information or reproduction of any material contained 
@@ -12,7 +12,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "am-all-in-one.fullname" . }}-am-deployment
+  name: {{ template "am-all-in-one.fullname" . }}-am-deployment-1
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
@@ -21,16 +21,16 @@ spec:
   selector:
     matchLabels:
       deployment: {{ template "am-all-in-one.fullname" . }}-am
-      node: {{ template "am-all-in-one.fullname" . }}-am
+      node: {{ template "am-all-in-one.fullname" . }}-am-1
   template:
     metadata:
       annotations:
-        checksum.am.conf: {{ include (print $.Template.BasePath "/am/wso2am-conf.yaml") . | sha256sum }}
+        checksum.am.conf: {{ include (print $.Template.BasePath "/am/instance-1/wso2am-conf.yaml") . | sha256sum }}
         checksum.am.conf.log4j2: {{ include (print $.Template.BasePath "/am/wso2am-conf-log4j2.yaml") . | sha256sum }}
         checksum.am.conf.secret-conf: {{ include (print $.Template.BasePath "/am/wso2am-conf-secret-conf.yaml") . | sha256sum }}
       labels:
         deployment: {{ template "am-all-in-one.fullname" . }}-am
-        node: {{ template "am-all-in-one.fullname" . }}-am
+        node: {{ template "am-all-in-one.fullname" . }}-am-1
         product: apim
     spec:
       affinity:
@@ -210,7 +210,7 @@ spec:
       volumes:
         - name: wso2am-conf
           configMap:
-            name: {{ template "am-all-in-one.fullname" . }}-am-conf
+            name: {{ template "am-all-in-one.fullname" . }}-am-conf-1
             defaultMode: 0407
         - name: wso2am-entrypoint
           configMap:
