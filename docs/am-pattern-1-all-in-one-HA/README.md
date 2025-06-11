@@ -9,7 +9,7 @@ For advanced details on this deployment pattern, please refer to the official
 
 ## Contents
 
-- [Pattern 1: API-M Deployment with All-in-One Setup](#pattern-1-api-m-deployment-with-all-in-one-setup)
+- [Pattern 1: API-M Deployment with All-in-One HA Setup](#pattern-1-api-m-deployment-with-all-in-one-ha-setup)
   - [Contents](#contents)
   - [Prerequisites](#prerequisites)
     - [1. Basic Configurations](#1-basic-configurations)
@@ -28,6 +28,7 @@ For advanced details on this deployment pattern, please refer to the official
       - [2.2 Configure User Store Properties](#22-configure-user-store-properties)
       - [2.4 Configure JWKS URL](#24-configure-jwks-url)
       - [2.5 Deploy All-in-One](#25-deploy-all-in-one)
+      - [2.6 Enable High Availability](#26-enable-high-availability)
     - [3. Add a DNS Record Mapping the Hostnames and the External IP](#3-add-a-dns-record-mapping-the-hostnames-and-the-external-ip)
     - [4. Access Management Consoles](#4-access-management-consoles)
 
@@ -113,15 +114,11 @@ For advanced details on this deployment pattern, please refer to the official
 - Run the following command to deploy the Helm charts:
 > **Important:** Naming conventions are important. If you want to change them, ensure consistency. 
 
-1. Deploy All-in-One-1:
+1. Deploy All-in-One HA:
 ```bash
-helm install apim-1 wso2/wso2am-all-in-one -f default_values_1.yaml
+helm install apim wso2/wso2am-all-in-one --version 4.5.0-2 -f default_values.yaml
 ```
 
-2. Deploy All-in-One-2:
-```bash
-helm install apim-2 wso2/wso2am-all-in-one -f default_values_2.yaml
-```
 
 - Once the service is up and running, deploy the NGINX Ingress Controller by following the steps outlined in [1.1 Add Ingress Controller](#11-add-ingress-controller).
 
@@ -308,14 +305,27 @@ wso2:
       oauth_config:
         oauth2JWKSUrl: "https://localhost:9443/oauth2/jwks"
 ```
+
+> **Note:** Use Key Manager's service name instead of `localhost` if you are using a different hostname for the Key Manager.
+
+
 #### 2.5 Deploy All-in-One
 
 Now deploy the Helm chart using the following command after creating a namespace for the deployment. Replace `<release-name>` and `<namespace>` with appropriate values. Replace `<helm-chart-path>` with the path to the Helm deployment.
   
   ```bash
   kubectl create namespace <namespace>
-  helm install <release-name> <helm-chart-path> --version 4.5.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.5.0-2 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
+
+#### 2.6 Enable High Availability
+To enable high availability, you can scale the deployment by increasing the number of replicas for the API Manager runtime. This can be done by modifying the `highAvailability` in the `values.yaml` file:
+
+```yaml
+wso2:
+  deployment:
+    highAvailability: true
+```
 
 ### 3. Add a DNS Record Mapping the Hostnames and the External IP
 
