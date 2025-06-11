@@ -1,6 +1,6 @@
 # wso2am-all-in-one
 
-![version: 4.5.0-2](https://img.shields.io/badge/Version-4.5.0--1-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
+![Version: 4.5.0-2](https://img.shields.io/badge/Version-4.5.0--2-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
@@ -57,6 +57,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | gcp.secretsManager.secret.secretVersion | string | `""` | Version of the secret  |
 | gcp.secretsManager.secretProviderClass | string | `""` | Secret provider class |
 | gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
+| kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
 | kubernetes.ingress.gateway.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
 | kubernetes.ingress.gateway.enabled | bool | `true` |  |
 | kubernetes.ingress.gateway.hostname | string | `"gw.wso2.com"` | Ingress hostname for Gateway pass-through |
@@ -79,6 +80,9 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
 | kubernetes.securityContext.runAsGroup | int | `10001` |  |
 | kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
+| kubernetes.securityContext.seLinux | object | `{"enabled":false,"level":""}` | SELinux context for the container |
+| kubernetes.securityContext.seccompProfile | object | `{"localhostProfile":"","type":"RuntimeDefault"}` | Seccomp profile for the container |
+| kubernetes.securityContext.seccompProfile.type | string | `"RuntimeDefault"` | Seccomp profile type(RuntimeDefault, Unconfined or Localhost) |
 | wso2.ELKAnalytics | object | `{"enabled":false}` | ELK Analytics Parameters |
 | wso2.apim.configurations.adminPassword | string | `"admin"` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `"admin"` | Super admin username |
@@ -102,14 +106,14 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.cors.allowOrigins | list | `["*"]` | CORS Access-Control-Allow-Origin |
 | wso2.apim.configurations.cors.enableForWS | bool | `false` | Enable CORS for Websockets |
 | wso2.apim.configurations.cors.enabled | bool | `true` | CORS configuration enabled |
-| wso2.apim.configurations.databases.apim_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM APIMDB configurations. This is required for gateway only in a multi-tenancy scenario |
+| wso2.apim.configurations.databases.apim_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM APIMDB configurations. This is required for gateway only in a multi-tenancy scenario |
 | wso2.apim.configurations.databases.apim_db.password | string | `""` | APIM APIMDB password |
-| wso2.apim.configurations.databases.apim_db.poolParameters | object | `{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
+| wso2.apim.configurations.databases.apim_db.poolParameters | object | `{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
 | wso2.apim.configurations.databases.apim_db.url | string | `""` | APIM APIMDB URL |
 | wso2.apim.configurations.databases.apim_db.username | string | `""` | APIM APIMDB username |
 | wso2.apim.configurations.databases.jdbc.driver | string | `""` | JDBC driver class name |
 | wso2.apim.configurations.databases.shared_db.password | string | `""` | APIM SharedDB password |
-| wso2.apim.configurations.databases.shared_db.poolParameters | object | `{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
+| wso2.apim.configurations.databases.shared_db.poolParameters | object | `{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
 | wso2.apim.configurations.databases.shared_db.url | string | `""` | APIM SharedDB URL |
 | wso2.apim.configurations.databases.shared_db.username | string | `""` | APIM SharedDB username |
 | wso2.apim.configurations.databases.type | string | `""` | Database type. eg: mysql, oracle, mssql, postgres |
