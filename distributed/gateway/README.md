@@ -1,6 +1,6 @@
 # wso2am-gateway
 
-![Version: 4.4.0-1](https://img.shields.io/badge/Version-4.4.0--1-informational?style=flat-square) ![AppVersion: 4.4.0](https://img.shields.io/badge/AppVersion-4.4.0-informational?style=flat-square)
+![Version: 4.4.0-2](https://img.shields.io/badge/Version-4.4.0--1-informational?style=flat-square) ![AppVersion: 4.4.0](https://img.shields.io/badge/AppVersion-4.4.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management Gateway profile
 
