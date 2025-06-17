@@ -91,3 +91,9 @@ aws:
 ```
 
 For example, if the enabled attribute is set to true under aws, then it is assumed that the helm charts will be deployed in EKS and will be using other AWS services. Refer the [README](all-in-one/README.md) of the charts to get more information on the parameters.
+
+---
+
+## Deploying APIM in Openshift
+
+For step-by-step instructions on deploying **WSO2 API Manager (API-M)** on an OpenShift cluster using Helm charts, refer to the [OpenShift Deployment Guide](docs/openshift_deployment.md).  
