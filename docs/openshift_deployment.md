@@ -69,7 +69,7 @@ oc login <API server URL> -u <user> -p <password>
 1. Before deploying the Helm chart, we need to create a Kubernetes secret containing the keystores and truststore.
 2. You can find the default keystore and truststore in the following location within any of the APIM packs: `repository/resources/security/`
 ```bash
-kubectl create secret generic jks-secret --from-file=wso2carbon.jks --from-file=client-truststore.jks
+kubectl create secret generic apim-keystore-secret --from-file=wso2carbon.jks --from-file=client-truststore.jks
 ```
 
 #### Clone helm-apim

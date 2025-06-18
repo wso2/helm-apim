@@ -164,7 +164,7 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
 - We have provided pre-configured YAML files to help you quickly start the deployment. You can use this file as a starting point to deploy this pattern. This deployment requires separate databases. Therefore, follow the steps in [2. Build Docker Images](#2-build-docker-images) to build the Docker images with JDBC drivers, and refer to [3. Configure Database](#3-configure-database) to set up the database.
 - Follow the steps in [1.2 Mount Keystore and Truststore](#12-mount-keystore-and-truststore) to create the truststore and keystore. If you want to use the WSO2 default keystore and truststore, you can find them in the `repository/resources/security` directory of the product pack. Navigate to this location and run the following command to create the secret:
 ```bash
-kubectl create secret generic jks-secret --from-file=wso2carbon.jks --from-file=client-truststore.jks
+kubectl create secret generic apim-keystore-secret --from-file=wso2carbon.jks --from-file=client-truststore.jks
 ```
 - Run the following command to deploy the Helm charts:
 > **Important:** Naming conventions are important. If you want to change them, ensure consistency. 
@@ -238,7 +238,7 @@ In addition to the primary, internal keystores and truststore files, you can als
 - Refer to the following sample command to create the secret and use it in the APIM.
   
   ```
-  kubectl create secret generic jks-secret --from-file=wso2carbon.jks --from-file=client-truststore.jks --from-file=wso2internal.jks -n <namespace>
+  kubectl create secret generic apim-keystore-secret --from-file=wso2carbon.jks --from-file=client-truststore.jks --from-file=wso2internal.jks -n <namespace>
   ```
 > By default, this deployment uses the default keystores and truststores provided by the relevant WSO2 product.
 > For advanced details with regards to managing custom Java keystores and truststores in a container-based WSO2 product deployment
