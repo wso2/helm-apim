@@ -400,6 +400,7 @@ Replace <release-name> and <namespace> with appropriate values. Replace <helm-ch
     km:
       # -- Key manager service name if default Resident KM is used
       serviceUrl: "<ALL-IN-ONE_SERVICE_NAME>"
+      servicePort: 9443
   ```
 - Configure eventhub
   ```yaml
