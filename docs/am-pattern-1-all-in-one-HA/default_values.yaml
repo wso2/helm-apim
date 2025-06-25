@@ -590,7 +590,7 @@ wso2:
         organization_id_local_claim: "http://wso2.org/claims/organizationId" 
 
   deployment:
-    # Confgiure High Availability
+    # Configure High Availability
     highAvailability: true
     # Container image configurations
     image:
