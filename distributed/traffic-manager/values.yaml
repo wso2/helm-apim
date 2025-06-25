@@ -216,6 +216,8 @@ wso2:
       km:
         # -- Key manager service name if default Resident KM is used
         serviceUrl: "wso2am-cp-service"
+        # -- Key Manager service port
+        servicePort: 9443
 
       iskm:
         # If Identity Server is used as the Resident KM
