@@ -1,6 +1,6 @@
 # wso2am-tm
 
-![Version: 4.4.0-2](https://img.shields.io/badge/Version-4.4.0--1-informational?style=flat-square) ![AppVersion: 4.4.0](https://img.shields.io/badge/AppVersion-4.4.0-informational?style=flat-square)
+![Version: 4.4.0-2](https://img.shields.io/badge/Version-4.4.0--2-informational?style=flat-square) ![AppVersion: 4.4.0](https://img.shields.io/badge/AppVersion-4.4.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 
@@ -56,6 +56,7 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
 | wso2.apim.configurations.iskm.enabled | bool | `false` |  |
 | wso2.apim.configurations.iskm.serviceName | string | `""` |  |
+| wso2.apim.configurations.km.servicePort | int | `9443` | Key Manager service port |
 | wso2.apim.configurations.km.serviceUrl | string | `"wso2am-cp-service"` | Key manager service name if default Resident KM is used |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |

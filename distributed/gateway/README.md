@@ -1,6 +1,6 @@
 # wso2am-gateway
 
-![Version: 4.4.0-2](https://img.shields.io/badge/Version-4.4.0--1-informational?style=flat-square) ![AppVersion: 4.4.0](https://img.shields.io/badge/AppVersion-4.4.0-informational?style=flat-square)
+![Version: 4.4.0-2](https://img.shields.io/badge/Version-4.4.0--2-informational?style=flat-square) ![AppVersion: 4.4.0](https://img.shields.io/badge/AppVersion-4.4.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management Gateway profile
 
@@ -84,6 +84,7 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | wso2.apim.configurations.jwt.generatorImpl | string | `"org.wso2.carbon.apimgt.keymgt.token.JWTGenerator"` |  |
 | wso2.apim.configurations.jwt.header | string | `"X-JWT-Assertion"` |  |
 | wso2.apim.configurations.jwt.signingAlgorithm | string | `"SHA256withRSA"` |  |
+| wso2.apim.configurations.km.servicePort | int | `9443` | Key Manager service port |
 | wso2.apim.configurations.km.serviceUrl | string | `"wso2am-cp-service"` | Key manager service name if default Resident KM is used |
 | wso2.apim.configurations.oauth_config.authHeader | string | `"Authorization"` | OAuth authorization header name |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
