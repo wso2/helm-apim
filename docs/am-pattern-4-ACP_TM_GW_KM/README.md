@@ -397,6 +397,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
     km:
       # -- Key manager service name if default Resident KM is used
       serviceUrl: "<ACP_SERVICE_NAME>"
+      servicePort: 9443
   ```
 - Configure eventhub
   ```yaml
@@ -425,6 +426,7 @@ Replace <release-name> and <namespace> with appropriate values. Replace <helm-ch
     km:
       # -- Key manager service name if default Resident KM is used
       serviceUrl: "<ACP_SERVICE_NAME>"
+      servicePort: 9443
   ```
 - Configure eventhub
   ```yaml
