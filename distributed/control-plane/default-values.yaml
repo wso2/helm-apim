@@ -205,40 +205,42 @@ wso2:
       adminPassword: "admin"
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: "mysql"
+        type: "postgres"
         jdbc:
-          # -- JDBC driver class name
-          driver: "com.mysql.cj.jdbc.Driver"
-        # -- APIM AM_DB configurations.
+          # -- JDBC driver class name for PostgreSQL
+          driver: "org.postgresql.Driver"
+        # -- APIM AM_DB configurations
         apim_db:
-          # -- APIM AM_DB URL
-          url: "jdbc:mysql://<DB_URL>:3306/apim_db?useSSL=false"
+          # -- APIM AM_DB URL (connects to 'apim_db' in PostgreSQL)
+          url: "jdbc:postgresql://wso2-postgres-postgresql.wso2.svc.cluster.local:5432/apim_db"
           # -- APIM AM_DB username
           username: "apimadmin"
           # -- APIM AM_DB password
           password: "apimadmin"
           # -- APIM database JDBC pool parameters
           poolParameters:
-            defaultAutoCommit: true
+            defaultAutoCommit: false
             testOnBorrow: true
             testWhileIdle: true
+            validationQuery: "SELECT 1"
             validationInterval: 30000
             maxActive: 100
             maxWait: 60000
             minIdle: 5
-        # -- APIM SharedDB configurations.
+        # -- APIM SharedDB configurations
         shared_db:
-          # -- APIM SharedDB URL
-          url: "jdbc:mysql://<DB_URL>:3306/shared_db?useSSL=false"
+          # -- APIM SharedDB URL (connects to 'shared_db' in PostgreSQL)
+          url: "jdbc:postgresql://wso2-postgres-postgresql.wso2.svc.cluster.local:5432/shared_db"
           # -- APIM SharedDB username
           username: "sharedadmin"
           # -- APIM SharedDB password
           password: "sharedadmin"
           # -- APIM shared database JDBC pool parameters
           poolParameters:
-            defaultAutoCommit: true
+            defaultAutoCommit: false
             testOnBorrow: true
             testWhileIdle: true
+            validationQuery: "SELECT 1"
             validationInterval: 30000
             maxActive: 100
             maxWait: 60000
