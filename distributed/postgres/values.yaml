@@ -38,10 +38,10 @@ global:
     fullnameOverride: ""
     
     auth:
-      postgresPassword: ""
+      postgresPassword: "wso2"
       username: ""
       password: ""
-      database: ""
+      database: "postgres"
       existingSecret: ""
       secretKeys:
         adminPasswordKey: ""
@@ -158,7 +158,7 @@ auth:
   password: ""
   ## @param auth.database Name for a custom database to create
   ##
-  database: "wso2db"
+  database: "postgres"
   ## @param auth.replicationUsername Name of the replication user
   ##
   replicationUsername: repl_user
@@ -179,6 +179,24 @@ auth:
   ## @param auth.usePasswordFiles Mount credentials as a files instead of using an environment variable
   ##
   usePasswordFiles: true
+  
+initdbScripts:
+  setup.sql: |
+    -- Create two databases
+    CREATE DATABASE apim_db;
+    CREATE DATABASE shared_db;
+
+    -- Create users
+    CREATE USER apimadmin WITH PASSWORD 'apimadmin';
+    CREATE USER sharedadmin WITH PASSWORD 'sharedadmin';
+
+    -- Grant privileges
+    GRANT ALL PRIVILEGES ON DATABASE apim_db TO apimadmin;
+    GRANT ALL PRIVILEGES ON DATABASE shared_db TO sharedadmin;
+
+    -- Optional: Allow login
+    ALTER USER apimadmin WITH LOGIN;
+    ALTER USER sharedadmin WITH LOGIN;
 ## @param architecture PostgreSQL architecture (`standalone` or `replication`)
 ##
 architecture: standalone
