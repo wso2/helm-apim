@@ -425,9 +425,9 @@ wso2:
       # -- Container registry hostname
       registry: "docker.io"
       # -- Azure ACR repository name consisting the image
-      repository: "aungkhantsoe/wso2am-acp-postgres"
+      repository: "aungkhantsoe/wso2am-acp"
       # -- Docker image digest
-      digest: "sha256:b87e42030e68b437b35856a40fb66990b5296c1075405ca17efdf388c12fed21"
+      digest: "sha256:966cbc91859b690f166ff519fe6caba137890582bd13de08785d510c26557024"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
