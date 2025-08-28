@@ -262,7 +262,7 @@ wso2:
 
       km:
         # -- Key manager service name if default Resident KM is used
-        serviceUrl: "apim-acp-wso2am-acp-service"
+        serviceUrl: "wso2-acp-wso2am-acp-service"
         # -- Key Manager service port
         servicePort: 9443        
 
@@ -298,14 +298,14 @@ wso2:
       throttling:
         # -- Traffic manager loadbalancer service url for throttling.
         # If the traffic manager is separated from control-plane, all urls should be pointed to traffic-manager ones.
-        serviceUrl: "apim-tm-wso2am-tm-service"
+        serviceUrl: "wso2-tm-wso2am-tm-service"
         portOffset: 0
         # -- Port of the service URL
         servicePort: 9443
         # -- Traffic manager service urls. You only need to define one if the TM is not in HA.
         urls:
-          - "apim-tm-wso2am-tm-1-service"
-          - "apim-tm-wso2am-tm-2-service"
+          - "wso2-tm-wso2am-tm-1-service"
+          - "wso2-tm-wso2am-tm-2-service"
         # -- Enable unlimited throttling tier
         unlimitedTier: true
         # -- Enable header based throttling
@@ -320,13 +320,13 @@ wso2:
         # This should be enabled if the traffic manager is separated from the control-plane.
         enabled: true
         # -- Event hub (control plane) loadbalancer service url
-        serviceUrl: "apim-acp-wso2am-acp-service"
+        serviceUrl: "wso2-acp-wso2am-acp-service"
         # -- Event hub (control plane) service port
         servicePort: 9443
         # -- Event hub service urls
         urls:
-          - "apim-acp-wso2am-acp-1-service"
-          - "apim-acp-wso2am-acp-2-service"
+          - "wso2-acp-wso2am-acp-1-service"
+          - "wso2-acp-wso2am-acp-2-service"
         
       # APIM cache related configurations
       cache:
