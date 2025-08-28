@@ -165,20 +165,48 @@ wso2:
           # -- JDBC driver class name
           driver: "org.postgresql.Driver"
         # -- APIM SharedDB configurations. This is required for gateway only in a multi-tenancy scenario
+        # shared_db:
+        #   # -- APIM SharedDB URL (connects to 'shared_db' in PostgreSQL)
+        #   url: "jdbc:postgresql://wso2-postgres-postgresql.wso2.svc.cluster.local:5432/shared_db"
+        #   # -- APIM SharedDB username
+        #   username: "sharedadmin"
+        #   # -- APIM SharedDB password
+        #   password: "sharedadmin"
+        #   # -- APIM shared database JDBC pool parameters
+        #   poolParameters:
+        #     defaultAutoCommit: false
+        #     testOnBorrow: true
+        #     testWhileIdle: true
+        #     validationQuery: "SELECT 1"
+        #     validationInterval: 30000
+        #     maxActive: 100
+        #     maxWait: 60000
+        #     minIdle: 5
         shared_db:
-          # -- APIM SharedDB URL (connects to 'shared_db' in PostgreSQL)
-          url: "jdbc:postgresql://wso2-postgres-postgresql.wso2.svc.cluster.local:5432/shared_db"
-          # -- APIM SharedDB username
+          url: "jdbc:postgresql://wso2-postgres-postgresql:5432/shared_db?sslmode=disable"
           username: "sharedadmin"
-          # -- APIM SharedDB password
           password: "sharedadmin"
-          # -- APIM shared database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: false
             testOnBorrow: true
             testWhileIdle: true
             validationQuery: "SELECT 1"
             validationInterval: 30000
+            timeBetweenEvictionRunsMillis: 60000
+            maxActive: 100
+            maxWait: 60000
+            minIdle: 5
+        apim_db:
+          url: "jdbc:postgresql://wso2-postgres-postgresql:5432/apim_db?sslmode=disable"
+          username: "apimadmin"
+          password: "apimadmin"
+          poolParameters:
+            defaultAutoCommit: false
+            testOnBorrow: true
+            testWhileIdle: true
+            validationQuery: "SELECT 1"
+            validationInterval: 30000
+            timeBetweenEvictionRunsMillis: 60000
             maxActive: 100
             maxWait: 60000
             minIdle: 5
@@ -437,7 +465,7 @@ wso2:
     # Indicates whether the container is ready to service requests
     readinessProbe:
       # -- Number of seconds after the container has started before readiness probes are initiated
-      initialDelaySeconds: 60
+      initialDelaySeconds: 180
       # -- How often (in seconds) to perform the probe
       periodSeconds: 10
       # -- Minimum consecutive successes for the probe to be considered successful after having failed
