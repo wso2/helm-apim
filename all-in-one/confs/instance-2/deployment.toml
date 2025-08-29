@@ -172,6 +172,12 @@ auth_token = "{{ .Values.wso2.choreoAnalytics.onpremKey }}"
 {{- else if .Values.wso2.ELKAnalytics.enabled}}
 enable = true
 type = "elk"
+{{- else if .Values.wso2.moesifAnalytics.enabled }}
+enable = true
+type = "moesif"
+properties."moesifKey" = {{ .Values.wso2.moesifAnalytics.key | quote }}
+properties."publisher.reporter.class" = {{ .Values.wso2.moesifAnalytics.publisherReporterClass | quote }}
+logger.reporter.level = {{ .Values.wso2.moesifAnalytics.loggerReporterLevel | quote }}
 {{- else }}
 enable = false
 {{- end }}
@@ -186,6 +192,28 @@ key = {{ .Values.wso2.apim.configurations.ai.key | quote }}
 {{- else }}
 enable = false
 {{- end }}
+
+{{- if .Values.wso2.apim.configurations.ai.embeddingProvider.type }}
+[apim.ai.embedding_provider]
+type = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.type }}"
+[apim.ai.embedding_provider.properties]
+apikey = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties.apikey }}"
+embedding_endpoint = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties.embeddingEndpoint }}"
+embedding_model = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties.embeddingModel }}"
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.ai.vectorDbProvider.type }}
+[apim.ai.vector_db_provider]
+type = "{{ .Values.wso2.apim.configurations.ai.vectorDbProvider.type }}"
+[apim.ai.vector_db_provider.properties]
+uri = "{{ .Values.wso2.apim.configurations.ai.vectorDbProvider.properties.uri }}"
+token = "{{ .Values.wso2.apim.configurations.ai.vectorDbProvider.properties.token }}"
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.mcp.enabled }}
+[apim.mcp]
+enable = {{ .Values.wso2.apim.configurations.mcp.enabled }}
+{{-end }}
 
 [transport.http]
 properties.port = 9763
@@ -214,6 +242,11 @@ enable_lightweight_apikey_generation = false
 allow_subscription_validation_disabling = true
 {{- else }}
 allow_subscription_validation_disabling = false
+{{- end }}
+{{- if .Values.wso2.apim.configurations.keyManager.skipCreateResidentKeyManager }}
+skip_create_resident_key_manager = true
+{{- else }}
+skip_create_resident_key_manager = false
 {{- end }}
 
 [apim.transaction_counter]
@@ -267,6 +300,7 @@ enable_token_hashing = {{ .Values.wso2.apim.configurations.oauth_config.enableTo
 
 [apim.devportal]
 url = "https://{{ .Values.kubernetes.ingress.management.hostname }}/devportal"
+mode = {{ .Values.wso2.apim.configurations.devportal.mode | quote }}
 {{- if .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}
 enable_application_sharing = {{ .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}
 {{- end }}
@@ -308,7 +342,7 @@ enable_key_provisioning = {{ .Values.wso2.apim.configurations.devportal.enableKe
 {{- end }}
 
 [apim.publisher]
-enable_api_doc_visibility = {{ .Values.wso2.apim.configurations.publisher.enable_api_doc_visibility }}
+enable_api_doc_visibility = {{ .Values.wso2.apim.configurations.publisher.enableApiDocVisibility }}
 {{- if .Values.wso2.apim.configurations.publisher.supportedDocumentTypes }}
 supported_document_types = {{ toJson .Values.wso2.apim.configurations.publisher.supportedDocumentTypes }}
 {{- end }}
@@ -486,3 +520,41 @@ supported_languages = {{ toJson .Values.wso2.apim.configurations.sdk.supportedLa
 enable = {{ .Values.wso2.apim.configurations.organization_based_access_control.enabled }}
 organization_name_local_claim = {{ .Values.wso2.apim.configurations.organization_based_access_control.organization_name_local_claim | quote }}
 organization_id_local_claim = {{ .Values.wso2.apim.configurations.organization_based_access_control.organization_id_local_claim | quote }}
+
+[apim.gateway_notification]
+enabled = {{ .Values.wso2..apim.configurations.gatewayNotification.enabled }}
+gateway_id = {{ .Values.wso2..apim.configurations.gatewayNotification.gatewayId | quote }}
+
+[apim.gateway_notification.heartbeat]
+notify_interval = {{ .Values.wso2..apim.configurations.gatewayNotification.heartbeat.notifyInterval | quote }}
+
+[apim.gateway_notification.deployment_ack]
+batch_size = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchSize }}
+batch_interval = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchInterval | quote }}
+max_retry_count = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.maxRetryCount }}
+retry_duration = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.retryDuration | quote }}
+retry_progression_factor = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.retryProgressionFactor }}
+batch_processor_min_thread = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchProcessorMinThread }}
+batch_processor_max_thread = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchProcessorMaxThread }}
+batch_processor_keep_alive = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchProcessorKeepAlive | quote }}
+batch_processor_queue_size = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchProcessorQueueSize }}
+
+[apim.gateway_notification.registration]
+max_retry_count = {{ .Values.wso2..apim.configurations.gatewayNotification.registration.maxRetryCount }}
+retry_duration = {{ .Values.wso2..apim.configurations.gatewayNotification.registration.retryDuration | quote }}
+retry_progression_factor = {{ .Values.wso2..apim.configurations.gatewayNotification.registration.retryProgressionFactor }}
+
+[apim.gateway_notification.cleanup]
+expiry_time = {{ .Values.wso2.apim.configurations.gatewayNotification.cleanUp.expiryTime | quote }}
+data_retention_period = {{ .Values.wso2.apim.configurations.gatewayNotification.cleanUp.dataRetentionPeriod | quote }}
+
+{{- if .Values.wso2.apim.configurations.tenantSharing.enabled }}
+[[apim.tenant_sharing]]
+type = {{ .Values.wso2.apim.configurations.tenantSharing.type | quote }}
+[apim.tenant_sharing.properties]
+enable_tenant_sync = {{ .Values.wso2.apim.configurations.tenantSharing.properties.enableTenantSync }}
+auto_configure_key_manager = {{ .Values.wso2.apim.configurations.tenantSharing.properties.autoConfigureKeyManager }}
+username = {{ .Values.wso2.apim.configurations.tenantSharing.properties.username | quote }}
+password = {{ .Values.wso2.apim.configurations.tenantSharing.properties.password | quote }}
+identity_server_base_url = {{ .Values.wso2.apim.configurations.tenantSharing.properties.identityServerBaseUrl | quote }}
+{{- end }}
