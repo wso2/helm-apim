@@ -103,7 +103,7 @@ kubernetes:
 wso2:  
   apim:
     # -- APIM version
-    version: "4.5.0"
+    version: "4.6.0"
     # -- Secure vauld enabled
     secureVaultEnabled: false
     # Logging related configurations
@@ -262,6 +262,25 @@ wso2:
         hostname: ""
         # -- Remote tracer port
         port: ""
+
+      # -- APIM distributed throttling configurations
+      distributedThrottling:
+        enable: false
+        type: "redis"
+        syncInterval: 1
+        corePoolSize: 5
+        keyvalueStore:
+          host: ""
+          port: 6379
+          user: ""
+          password: ""
+          maxTotal: 20
+          maxIdle: 20
+          minIdle: 4
+          blockWhenExhausted: true
+          testWhileIdle: true
+          minEvictableIdleTimeMillis: 3000
+          timeBetweenEvictionRunsMillis: 1200
 
   deployment:
     # Container image configurations
