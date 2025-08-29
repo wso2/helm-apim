@@ -179,6 +179,7 @@ internal_key_issuer = "{{ .Values.wso2.apim.configurations.publisher.internalKey
 
 [apim.devportal]
 url = "https://{{ .Values.kubernetes.ingress.controlPlane.hostname }}/devportal"
+mode = {{ .Values.wso2.apim.configurations.devportal.mode | quote }}
 {{- if .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}
 enable_application_sharing = {{ .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}
 {{- end }}
@@ -270,11 +271,33 @@ remote_tracer.port = {{ .Values.wso2.apim.configurations.openTelemetry.port | qu
 enable = true
 token = {{ .Values.wso2.apim.configurations.ai.token | quote }}
 endpoint = {{ .Values.wso2.apim.configurations.ai.endpoint | quote }}
-token_endpoint = {{ .Values.wso2.apim.configurations.ai.token_endpoint | quote }}
+token_endpoint = {{ .Values.wso2.apim.configurations.ai.tokenEndpoint | quote }}
 key = {{ .Values.wso2.apim.configurations.ai.key | quote }}
 {{- else }}
 enable = false
 {{- end }}
+
+{{- if .Values.wso2.apim.configurations.ai.embeddingProvider.type }}
+[apim.ai.embedding_provider]
+type = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.type }}"
+[apim.ai.embedding_provider.properties]
+apikey = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties.apikey }}"
+embedding_endpoint = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties.embeddingEndpoint }}"
+embedding_model = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties.embeddingModel }}"
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.ai.vectorDbProvider.type }}
+[apim.ai.vector_db_provider]
+type = "{{ .Values.wso2.apim.configurations.ai.vectorDbProvider.type }}"
+[apim.ai.vector_db_provider.properties]
+uri = "{{ .Values.wso2.apim.configurations.ai.vectorDbProvider.properties.uri }}"
+token = "{{ .Values.wso2.apim.configurations.ai.vectorDbProvider.properties.token }}"
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.mcp.enabled }}
+[apim.mcp]
+enable = {{ .Values.wso2.apim.configurations.mcp.enabled }}
+{{-end }}
 
 [transport.https.properties]
 proxyPort = 443
@@ -354,3 +377,39 @@ enable = false
 enable = {{ .Values.wso2.apim.configurations.organization_based_access_control.enabled }}
 organization_name_local_claim = {{ .Values.wso2.apim.configurations.organization_based_access_control.organization_name_local_claim | quote }}
 organization_id_local_claim = {{ .Values.wso2.apim.configurations.organization_based_access_control.organization_id_local_claim | quote }}
+
+{{- if .Values.wso2.apim.configurations.distributedThrottling.enable }}
+[apim.distributed_throttling]
+enable = true
+type = "{{ .Values.wso2.apim.configurations.distributedThrottling.type }}"
+sync_interval = {{ .Values.wso2.apim.configurations.distributedThrottling.syncInterval }}
+core_pool_size = {{ .Values.wso2.apim.configurations.distributedThrottling.corePoolSize }}
+
+[apim.distributed_throttling.keyvalueStore]
+host = "{{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.host }}"
+port = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.port }}
+user = "{{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.user }}"
+password = "{{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.password }}"
+maxTotal = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.maxTotal }}
+maxIdle = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.maxIdle }}
+minIdle = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.minIdle }}
+block_when_exhausted = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.blockWhenExhausted }}
+test_while_idle = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.testWhileIdle }}
+min_evictable_idle_time_millis = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.minEvictableIdleTimeMillis }}
+time_between_eviction_runs_millis = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.timeBetweenEvictionRunsMillis }}
+{{- end }}
+
+[apim.gateway_notification.cleanup]
+expiry_time = {{ .Values.wso2.apim.configurations.gatewayNotification.cleanUp.expiryTime | quote }}
+data_retention_period = {{ .Values.wso2.apim.configurations.gatewayNotification.cleanUp.dataRetentionPeriod | quote }}
+
+{{- if .Values.wso2.apim.configurations.tenantSharing.enabled }}
+[[apim.tenant_sharing]]
+type = {{ .Values.wso2.apim.configurations.tenantSharing.type | quote }}
+[apim.tenant_sharing.properties]
+enable_tenant_sync = {{ .Values.wso2.apim.configurations.tenantSharing.properties.enableTenantSync }}
+auto_configure_key_manager = {{ .Values.wso2.apim.configurations.tenantSharing.properties.autoConfigureKeyManager }}
+username = {{ .Values.wso2.apim.configurations.tenantSharing.properties.username | quote }}
+password = {{ .Values.wso2.apim.configurations.tenantSharing.properties.password | quote }}
+identity_server_base_url = {{ .Values.wso2.apim.configurations.tenantSharing.properties.identityServerBaseUrl | quote }}
+{{- end }}

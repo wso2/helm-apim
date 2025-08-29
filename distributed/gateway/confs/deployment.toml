@@ -158,12 +158,12 @@ enable_header_based_throttling = {{ .Values.wso2.apim.configurations.throttling.
 enable_jwt_claim_based_throttling = {{ .Values.wso2.apim.configurations.throttling.jwtClaimBasedThrottling }}
 enable_query_param_based_throttling = {{ .Values.wso2.apim.configurations.throttling.queryParamBasedThrottling }}
 
-{{ range $index, $url := .Values.wso2.apim.configurations.throttling.urls }}
 [[apim.throttling.url_group]]
-traffic_manager_urls = ["tcp://{{ $url }}:{{ add 9611 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
-traffic_manager_auth_urls = ["ssl://{{ $url }}:{{ add 9711 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+{{- $len := add (len .Values.wso2.apim.configurations.throttling.urls) -1 }}
+traffic_manager_urls = [{{ range $index, $element := .Values.wso2.apim.configurations.throttling.urls }}"tcp://{{ $element }}:{{ add 9611 $.Values.wso2.apim.configurations.throttling.portOffset }}"{{ if ne $index $len }},{{ end }}{{ end}}]
+{{- $len := add (len .Values.wso2.apim.configurations.throttling.urls) -1 }}
+traffic_manager_auth_urls = [{{ range $index, $element := .Values.wso2.apim.configurations.throttling.urls }}"ssl://{{ $element }}:{{ add 9711 $.Values.wso2.apim.configurations.throttling.portOffset }}"{{ if ne $index $len }},{{ end }}{{ end}}]
 type = "loadbalance"
-{{ end }}
 
 {{- if .Values.wso2.apim.configurations.eventhub.enabled }}
 [apim.event_hub]
@@ -183,6 +183,12 @@ auth_token = "{{ .Values.wso2.choreoAnalytics.onpremKey }}"
 {{- else if .Values.wso2.ELKAnalytics.enabled}}
 enable = true
 type = "elk"
+{{- else if .Values.wso2.moesifAnalytics.enabled }}
+enable = true
+type = "moesif"
+properties."moesifKey" = {{ .Values.wso2.moesifAnalytics.key | quote }}
+properties."publisher.reporter.class" = {{ .Values.wso2.moesifAnalytics.publisherReporterClass | quote }}
+logger.reporter.level = {{ .Values.wso2.moesifAnalytics.loggerReporterLevel | quote }}
 {{- else }}
 enable = false
 {{- end }}
@@ -245,3 +251,26 @@ internal_keystore_key_password = {{ .Values.wso2.apim.configurations.security.ke
 truststore_password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
 shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote}}
 {{- end}}
+
+[apim.gateway_notification]
+enabled = {{ .Values.wso2..apim.configurations.gatewayNotification.enabled }}
+gateway_id = {{ .Values.wso2..apim.configurations.gatewayNotification.gatewayId | quote }}
+
+[apim.gateway_notification.heartbeat]
+notify_interval = {{ .Values.wso2..apim.configurations.gatewayNotification.heartbeat.notifyInterval | quote }}
+
+[apim.gateway_notification.deployment_ack]
+batch_size = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchSize }}
+batch_interval = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchInterval | quote }}
+max_retry_count = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.maxRetryCount }}
+retry_duration = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.retryDuration | quote }}
+retry_progression_factor = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.retryProgressionFactor }}
+batch_processor_min_thread = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchProcessorMinThread }}
+batch_processor_max_thread = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchProcessorMaxThread }}
+batch_processor_keep_alive = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchProcessorKeepAlive | quote }}
+batch_processor_queue_size = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchProcessorQueueSize }}
+
+[apim.gateway_notification.registration]
+max_retry_count = {{ .Values.wso2..apim.configurations.gatewayNotification.registration.maxRetryCount }}
+retry_duration = {{ .Values.wso2..apim.configurations.gatewayNotification.registration.retryDuration | quote }}
+retry_progression_factor = {{ .Values.wso2..apim.configurations.gatewayNotification.registration.retryProgressionFactor }}
