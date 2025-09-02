@@ -288,15 +288,11 @@ wso2:
             minIdle: 5
 
         # -- APIM SharedDB configurations.
-        shared_db:
-          # -- APIM SharedDB URL
+        SHARED_DB:
           url: "jdbc:mysql://mysql-apim-mysql-primary.wso2.svc.cluster.local:3306/shared_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
-          
-          # -- APIM SharedDB username
           username: "sharedadmin"
-          
-          # -- APIM SharedDB password
           password: "sharedadminpass123"
+          jndiConfig: "jdbc/SHARED_DB"
           
           # -- APIM shared database JDBC pool parameters
           poolParameters:
