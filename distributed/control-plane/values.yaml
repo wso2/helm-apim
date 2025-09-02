@@ -218,46 +218,7 @@ wso2:
       adminUsername: "admin"
       # -- Super admin password
       adminPassword: "admin"
-      # databases:
-      #   # -- Database type. eg: mysql, oracle, mssql, postgres
-      #   type: ""
-      #   jdbc:
-      #     # -- JDBC driver class name
-      #     driver: ""
-      #   # -- APIM AM_DB configurations.
-      #   apim_db:
-      #     # -- APIM AM_DB URL
-      #     url: ""
-      #     # -- APIM AM_DB username
-      #     username: ""
-      #     # -- APIM AM_DB password
-      #     password: ""
-      #     # -- APIM database JDBC pool parameters
-      #     poolParameters:
-      #       defaultAutoCommit: true
-      #       testOnBorrow: true
-      #       testWhileIdle: true
-      #       validationInterval: 30000
-      #       maxActive: 100
-      #       maxWait: 60000
-      #       minIdle: 5
-      #   # -- APIM SharedDB configurations.
-      #   shared_db:
-      #     # -- APIM SharedDB URL
-      #     url: ""
-      #     # -- APIM SharedDB username
-      #     username: ""
-      #     # -- APIM SharedDB password
-      #     password: ""
-      #     # -- APIM shared database JDBC pool parameters
-      #     poolParameters:
-      #       defaultAutoCommit: true
-      #       testOnBorrow: true
-      #       testWhileIdle: true
-      #       validationInterval: 30000
-      #       maxActive: 100
-      #       maxWait: 60000
-      #       minIdle: 5
+      # -- Database configurations
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
         type: "mysql"
