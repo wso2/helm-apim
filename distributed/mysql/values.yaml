@@ -229,7 +229,6 @@ primary:
     slow_query_log=0
     long_query_time=10.0
     innodb_file_per_table=ON
-    innodb_large_prefix=ON
     innodb_default_row_format=dynamic
 
     [client]
