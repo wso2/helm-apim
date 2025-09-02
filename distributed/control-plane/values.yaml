@@ -215,9 +215,9 @@ wso2:
         properties:
           key: value
       # -- Super admin username
-      adminUsername: ""
+      adminUsername: "admin"
       # -- Super admin password
-      adminPassword: ""
+      adminPassword: "admin"
       # databases:
       #   # -- Database type. eg: mysql, oracle, mssql, postgres
       #   type: ""
