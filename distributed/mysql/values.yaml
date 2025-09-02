@@ -637,18 +637,17 @@ secondary:
       pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
       log-error=/opt/bitnami/mysql/logs/mysqld.log
 
-      # 👇 Force utf8mb3 (3-byte utf8) instead of utf8mb4
+      # 👇 Explicit utf8mb3 (safe for VARCHAR(255) UNIQUE)
       character-set-server=utf8mb3
-      collation-server=utf8_general_ci
+      collation-server=utf8mb3_general_ci
 
       slow_query_log=0
       long_query_time=10.0
 
-      # 👇 Required for long indexes
+      # 👇 Safe InnoDB settings for long keys
       innodb_file_per_table=1
-      innodb_large_prefix=1
-      innodb_default_row_format=DYNAMIC
       innodb_file_format=Barracuda
+      innodb_default_row_format=DYNAMIC
 
       [client]
       port=3306
@@ -660,6 +659,7 @@ secondary:
       port=3306
       socket=/opt/bitnami/mysql/tmp/mysql.sock
       pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+
 
   ## @param secondary.existingConfigmap Name of existing ConfigMap with MySQL Secondary configuration.
   ## NOTE: When it's set the 'configuration' parameter is ignored
