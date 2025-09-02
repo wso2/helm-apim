@@ -209,6 +209,39 @@ primary:
   ## @param primary.configuration [string] Configure MySQL Primary with a custom my.cnf file
   ## ref: https://mysql.com/kb/en/mysql/configuring-mysql-with-mycnf/#example-of-configuration-file
   ##
+  # configuration: |-
+  #   [mysqld]
+  #   default_authentication_plugin=mysql_native_password
+  #   skip-name-resolve
+  #   explicit_defaults_for_timestamp
+  #   basedir=/opt/bitnami/mysql
+  #   plugin_dir=/opt/bitnami/mysql/lib/plugin
+  #   port=3306
+  #   socket=/opt/bitnami/mysql/tmp/mysql.sock
+  #   datadir=/bitnami/mysql/data
+  #   tmpdir=/opt/bitnami/mysql/tmp
+  #   max_allowed_packet=16M
+  #   bind-address=*
+  #   pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+  #   log-error=/opt/bitnami/mysql/logs/mysqld.log
+  #   character-set-server=UTF8
+  #   collation-server=utf8_general_ci
+  #   slow_query_log=0
+  #   long_query_time=10.0
+  #   innodb_file_per_table=ON
+  #   innodb_default_row_format=dynamic
+
+  #   [client]
+  #   port=3306
+  #   socket=/opt/bitnami/mysql/tmp/mysql.sock
+  #   default-character-set=UTF8
+  #   plugin_dir=/opt/bitnami/mysql/lib/plugin
+
+  #   [manager]
+  #   port=3306
+  #   socket=/opt/bitnami/mysql/tmp/mysql.sock
+  #   pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+
   configuration: |-
     [mysqld]
     default_authentication_plugin=mysql_native_password
@@ -224,24 +257,19 @@ primary:
     bind-address=*
     pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
     log-error=/opt/bitnami/mysql/logs/mysqld.log
-    character-set-server=UTF8
-    collation-server=utf8_general_ci
+
+    # ✅ Explicit utf8mb3 to avoid VARCHAR index length errors
+    character-set-server=utf8mb3
+    collation-server=utf8mb3_general_ci
+
     slow_query_log=0
     long_query_time=10.0
-    innodb_file_per_table=ON
-    innodb_large_prefix=ON
-    innodb_default_row_format=dynamic
 
-    [client]
-    port=3306
-    socket=/opt/bitnami/mysql/tmp/mysql.sock
-    default-character-set=UTF8
-    plugin_dir=/opt/bitnami/mysql/lib/plugin
+    # ✅ Long key support (innodb_large_prefix not needed in 8.0)
+    innodb_file_per_table=1
+    innodb_file_format=Barracuda
+    innodb_default_row_format=DYNAMIC
 
-    [manager]
-    port=3306
-    socket=/opt/bitnami/mysql/tmp/mysql.sock
-    pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
   ## @param primary.existingConfigmap Name of existing ConfigMap with MySQL Primary configuration.
   ## NOTE: When it's set the 'configuration' parameter is ignored
   ##
