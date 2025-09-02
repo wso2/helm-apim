@@ -160,8 +160,8 @@ auth:
 ##
 initdbScripts:
   create-dbs.sql: |
-        CREATE DATABASE IF NOT EXISTS apim_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-        CREATE DATABASE IF NOT EXISTS shared_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+        CREATE DATABASE IF NOT EXISTS apim_db CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+        CREATE DATABASE IF NOT EXISTS shared_db CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 
         CREATE USER 'apimadmin'@'%' IDENTIFIED BY 'apimadminpass123';
         GRANT ALL PRIVILEGES ON apim_db.* TO 'apimadmin'@'%';
@@ -229,6 +229,7 @@ primary:
     slow_query_log=0
     long_query_time=10.0
     innodb_file_per_table=ON
+    innodb_large_prefix=ON
     innodb_default_row_format=dynamic
 
     [client]
@@ -589,36 +590,77 @@ secondary:
   ## @param secondary.configuration [string] Configure MySQL Secondary with a custom my.cnf file
   ## ref: https://mysql.com/kb/en/mysql/configuring-mysql-with-mycnf/#example-of-configuration-file
   ##
+  # configuration: |-
+  #   [mysqld]
+  #   default_authentication_plugin=mysql_native_password
+  #   skip-name-resolve
+  #   explicit_defaults_for_timestamp
+  #   basedir=/opt/bitnami/mysql
+  #   plugin_dir=/opt/bitnami/mysql/lib/plugin
+  #   port=3306
+  #   socket=/opt/bitnami/mysql/tmp/mysql.sock
+  #   datadir=/bitnami/mysql/data
+  #   tmpdir=/opt/bitnami/mysql/tmp
+  #   max_allowed_packet=16M
+  #   bind-address=*
+  #   pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+  #   log-error=/opt/bitnami/mysql/logs/mysqld.log
+  #   character-set-server=UTF8
+  #   collation-server=utf8_general_ci
+  #   slow_query_log=0
+  #   long_query_time=10.0
+
+  #   [client]
+  #   port=3306
+  #   socket=/opt/bitnami/mysql/tmp/mysql.sock
+  #   default-character-set=UTF8
+  #   plugin_dir=/opt/bitnami/mysql/lib/plugin
+
+  #   [manager]
+  #   port=3306
+  #   socket=/opt/bitnami/mysql/tmp/mysql.sock
+  #   pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+
   configuration: |-
-    [mysqld]
-    default_authentication_plugin=mysql_native_password
-    skip-name-resolve
-    explicit_defaults_for_timestamp
-    basedir=/opt/bitnami/mysql
-    plugin_dir=/opt/bitnami/mysql/lib/plugin
-    port=3306
-    socket=/opt/bitnami/mysql/tmp/mysql.sock
-    datadir=/bitnami/mysql/data
-    tmpdir=/opt/bitnami/mysql/tmp
-    max_allowed_packet=16M
-    bind-address=*
-    pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
-    log-error=/opt/bitnami/mysql/logs/mysqld.log
-    character-set-server=UTF8
-    collation-server=utf8_general_ci
-    slow_query_log=0
-    long_query_time=10.0
+      [mysqld]
+      default_authentication_plugin=mysql_native_password
+      skip-name-resolve
+      explicit_defaults_for_timestamp
+      basedir=/opt/bitnami/mysql
+      plugin_dir=/opt/bitnami/mysql/lib/plugin
+      port=3306
+      socket=/opt/bitnami/mysql/tmp/mysql.sock
+      datadir=/bitnami/mysql/data
+      tmpdir=/opt/bitnami/mysql/tmp
+      max_allowed_packet=16M
+      bind-address=*
+      pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+      log-error=/opt/bitnami/mysql/logs/mysqld.log
 
-    [client]
-    port=3306
-    socket=/opt/bitnami/mysql/tmp/mysql.sock
-    default-character-set=UTF8
-    plugin_dir=/opt/bitnami/mysql/lib/plugin
+      # 👇 Force utf8mb3 (3-byte utf8) instead of utf8mb4
+      character-set-server=utf8mb3
+      collation-server=utf8_general_ci
 
-    [manager]
-    port=3306
-    socket=/opt/bitnami/mysql/tmp/mysql.sock
-    pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+      slow_query_log=0
+      long_query_time=10.0
+
+      # 👇 Required for long indexes
+      innodb_file_per_table=1
+      innodb_large_prefix=1
+      innodb_default_row_format=DYNAMIC
+      innodb_file_format=Barracuda
+
+      [client]
+      port=3306
+      socket=/opt/bitnami/mysql/tmp/mysql.sock
+      default-character-set=utf8mb3
+      plugin_dir=/opt/bitnami/mysql/lib/plugin
+
+      [manager]
+      port=3306
+      socket=/opt/bitnami/mysql/tmp/mysql.sock
+      pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+
   ## @param secondary.existingConfigmap Name of existing ConfigMap with MySQL Secondary configuration.
   ## NOTE: When it's set the 'configuration' parameter is ignored
   ##
