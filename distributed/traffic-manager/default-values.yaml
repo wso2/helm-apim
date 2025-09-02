@@ -273,7 +273,7 @@ wso2:
         username: ""
         password: ""
       # -- Container registry hostname
-      registry: "docker.io"
+      registry: ""
       # -- Azure ACR repository name consisting the image
       repository: ""
       # -- Docker image digest

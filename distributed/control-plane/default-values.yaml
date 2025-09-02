@@ -12,14 +12,24 @@
 aws:
   # -- If AWS is used as the cloud provider
   enabled: false
-  ecr:
-    # -- AWS Elastic Container Registry name
-    registry: ""
+  efs:
+    # -- EFS capacity
+    capacity: ""
+    # -- EFS directory permissions
+    directoryPerms: "0777"
+    # -- EFS file system ID for mounting the persistent volume
+    fileSystemId: ""
+    # -- EFS Access Points for static provisioning
+    accessPoints:
+      carbonDb1: ""
+      solr1: ""
+      carbonDb2: ""
+      solr2: ""
   # -- AWS region
   region: ""
   secretsManager:
     # -- AWS Secrets Manager secret provider class name
-    secretProviderClass: "wso2am-tm-secret-provider-class"
+    secretProviderClass: "wso2am-cp-secret-provider-class"
     secretIdentifiers:
       # -- Internal keystore password identifier in secrets manager
       internalKeystorePassword:
@@ -31,14 +41,11 @@ aws:
 azure:
   # -- If Azure is used as the cloud provider
   enabled: false
-  acr:
-    # -- Azure container registry name
-    registry: ""
   keyVault:
     # -- Azure Key vault used for credential management
     name: ""
     # -- Azure Key vault secret provider class name
-    secretProviderClass: "wso2am-tm-secret-provider-class"
+    secretProviderClass: "wso2am-cp-secret-provider-class"
     secretIdentifiers:
       # -- Internal keystore password identifier in keyvault
       internalKeystorePassword: ""
@@ -61,11 +68,66 @@ azure:
       subscriptionId: ""
       # -- Name of the Azure Resource Group to which the target Azure Key Vault belongs
       resourceGroup: ""
+  persistence:
+    # Needed for persisting indexing related data
+    # -- Persistent volume capacity
+    capacity: ""
+    # -- Persistent volume storage class
+    storageClass: ""
+    # -- Azure file secret name
+    secretName: ""
+    # -- Azure fileshare name
+    fileShare: ""
 
 # Google Cloud Platform (GCP) integration status
 gcp:
   # -- If GCP is used as the cloud provider
   enabled: false
+  # -- File Store configuration parameters
+  fs:
+    # -- Storage capacity of the file system (in GB or other appropriate units)
+    capacity: ""
+    # -- FileStore configuration for specific services
+    fileshares:
+      # -- FileShare configs for CarbonDB persistent storage for instance 1
+      carbonDB1:
+        # -- FileStore of the CarbonDB persistent storage for instance 1
+        fileStoreName: ""
+        # -- FileShare of the CarbonDB persistent storage for instance 1
+        fileShareName: ""
+        # -- IP of the CarbonDB persistent storage for instance 1
+        ip: ""
+      # -- FileShare configs for Solr persistent storage for instance 1
+      solr1:
+        # -- FileStore of the Solr persistent storage for instance 1
+        fileStoreName: ""
+        # -- FileShare of the Solr persistent storage for instance 1
+        fileShareName: ""
+        # -- IP of the Solr persistent storage for instance 1
+        ip: ""
+      # -- FileShare configs for CarbonDB2 persistent storage for instance 2
+      carbonDB2:
+        # -- FileStore of the CarbonDB persistent storage for instance 2
+        fileStoreName: ""
+        # -- FileShare of the CarbonDB persistent storage for instance 2
+        fileShareName: ""
+        # -- IP of the CarbonDB persistent storage for instance 2
+        ip: ""
+      # -- FileShare configs for Solr persistent storage for instance 2
+      solr2:
+        # -- FileStore of the Solr persistent storage for instance 2
+        fileStoreName: ""
+        # -- FileShare of the Solr persistent storage for instance 2
+        fileShareName: ""
+        # -- IP of the Solr persistent storage for instance 2
+        ip: ""
+    # -- Tier of the FileStore
+    tier: ""
+    # -- Network of the FileStore
+    network: ""
+    # -- Region of the FileStore
+    location: ""
+
   # -- Secrets Manager configuration parameters
   secretsManager:
     # -- Project ID
@@ -81,6 +143,28 @@ gcp:
   serviceAccountName: ""
 
 kubernetes:
+  # -- Ingress class to be used for the ingress resource
+  ingressClass: "nginx"
+  ingress:
+    # -- Kubernetes secret created for Ingress TLS
+    tlsSecret: ""
+    ratelimit:
+      # -- Ingress rate limit
+      enabled: false
+      # -- Ingress ratelimit zone name
+      zoneName: ""
+      # -- Ingress ratelimit burst limit
+      burstLimit: ""
+    controlPlane:
+      # -- Ingress hostname
+      hostname: "am.wso2.com"
+      # -- Ingress annotations
+      annotations:
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+        nginx.ingress.kubernetes.io/affinity: "cookie"
+        nginx.ingress.kubernetes.io/session-cookie-name: "route"
+        nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
+
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
@@ -114,10 +198,15 @@ wso2:
         appenders: ""
     # -- Startup arguments for APIM
     startupArgs: ""
+    # -- Port Offset for APIM deployment
+    portOffset: 0
     # -- Startup script mount status
     mountStartupScript: false
+    # -- Frontend settings.json mount status
+    mountFrontendConfig: false
     # TOML configurations
     configurations:
+      gatewayType: "Regular,APK,AWS"
       userStore:
         # -- User store type. 
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
@@ -170,6 +259,14 @@ wso2:
             maxWait: 60000
             minIdle: 5
 
+      # -- APIM AI related configurations
+      ai:
+        enabled: false
+        token: ""
+        key: ""
+        endpoint: ""
+        token_endpoint: ""
+
       security:
         # -- Kubernetes secret containing the keystores and truststore
         jksSecretName: "apim-keystore-secret"
@@ -212,26 +309,61 @@ wso2:
           name: "client-truststore.jks"
           # -- Truststore password
           password: ""
-
-      km:
-        # -- Key manager service name if default Resident KM is used
-        serviceUrl: "wso2am-cp-service"
-        # -- Key Manager service port
-        servicePort: 9443
+      
+      gateway:
+        # -- APIM Gateway environments
+        environments:
+        - name: "Default"
+          type: "hybrid"
+          gatewayType: "Regular"
+          provider: "wso2"
+          visibility:
+          displayInApiConsole: true
+          description: "This is a hybrid gateway that handles both production and sandbox token traffic."
+          showAsTokenEndpointUrl: true
+          serviceName: "wso2am-gateway-service"
+          servicePort: 9443
+          wsHostname: "websocket.wso2.com"
+          httpHostname: "gw.wso2.com"
+          websubHostname: "websub.wso2.com"
 
       iskm:
-        # If Identity Server is used as the Resident KM
+        # -- If Identity Server is used as the Resident KM
         enabled: false
-        # Kubernetes service name exposing Identity Server
+        # -- Kubernetes service name exposing Identity Server
         serviceName: ""
+        # -- Kubernetes service port exposing Identity Server
+        servicePort: 9443
+      km:
+        # -- If Key Manager profile is separated
+        enabled: false
+        # -- Kubernetes service name exposing Key Manager
+        serviceName: "wso2am-km-service"
+        # -- Kubernetes service port exposing Key Manager
+        servicePort: 9443
 
-      eventhub:
-        # -- Event hub (control plane) loadbalancer service url
-        serviceUrl: "wso2am-cp-service"
-        # -- Event hub service urls
-        urls:
-          - "wso2am-cp-1-service"
-          - "wso2am-cp-2-service"
+      publisher:
+        # -- Supported document types in Publisher. 
+        # This should be used only if there are additional document types to be supported.
+        enable_api_doc_visibility: false
+        supportedDocumentTypes: ""
+        enablePortalConfigurationOnlyMode: false
+        internalKeyIssuer: ""
+      
+      devportal:
+        enableApplicationSharing:
+        applicationSharingType:
+        applicationSharingImpl:
+        displayMutipleVersions:
+        displayDeprecatedAPIs:
+        enableComments:
+        enableRatings:
+        enableForum:
+        enableAnonymousMode:
+        enableCrossTenantSubscriptions:
+        defaultReservedUsername:
+        loginUsernameCaseInsensitive:
+        enableKeyProvisioning:
 
       # APIM OAuth configurations
       oauth_config:
@@ -239,6 +371,9 @@ wso2:
         enableTokenEncryption: false
         # -- Enable token hashing
         enableTokenHashing: false
+        # -- List of allow-listed scopes
+        allowedScopes: ["^device_.*,openid"]
+        oauth2JWKSUrl: ""
       
       # APIM Open Tracing configurations
       # https://apim.docs.wso2.com/en/latest/observe/api-manager/traces/monitoring-with-opentracing/
@@ -263,6 +398,34 @@ wso2:
         # -- Remote tracer port
         port: ""
 
+      keyManager:
+        enableLightweightAPIKeyGeneration: true
+        allowSubscriptionValidationDisabling: true
+
+      # APIM governance configurations
+      governance:
+        # -- Override the default values of governance.scheduler if any value exists
+        scheduler:
+          thread_pool_size: ""
+          queue_size: ""
+          task_check_interval_minutes: ""
+          task_cleanup_interval_minutes: ""
+      
+      # APIM SDK configurations
+      sdk:
+        supportedLanguages: ["android", "java", "csharp", "dart", "groovy", "javascript", "jmeter", "perl", "php", "python", "ruby", "swift5", "clojure"]
+      
+      # APIM Transaction Counter configurations
+      transactionCounter:
+        enabled: false
+        serviceUrl: ""
+
+      # Organization level access control configurations
+      organization_based_access_control:
+        enabled: true
+        organization_name_local_claim: "http://wso2.org/claims/organization"
+        organization_id_local_claim: "http://wso2.org/claims/organizationId" 
+
   deployment:
     # Container image configurations
     image:
@@ -273,7 +436,7 @@ wso2:
         username: ""
         password: ""
       # -- Container registry hostname
-      registry: "docker.io"
+      registry: ""
       # -- Azure ACR repository name consisting the image
       repository: ""
       # -- Docker image digest
@@ -309,7 +472,7 @@ wso2:
       # -- How often (in seconds) to perform the probe
       periodSeconds: 10
       # -- Minimum consecutive successes for the probe to be considered successful after having failed
-      failureThreshold: 3      
+      failureThreshold: 3
     # Indicates whether the container is running
     livenessProbe:
       # -- Number of seconds after the container has started before liveness probes are initiated
@@ -326,29 +489,33 @@ wso2:
       periodSeconds: 10
       # -- Minimum consecutive successes for the probe to be considered successful after having failed
       failureThreshold: 3
-    
+
     lifecycle:
       preStopHook:
         # -- Number of seconds to sleep before sending SIGTERM to the pod
         sleepSeconds: 10
-    # -- Target CPU utilization percentage for HPA
-    cpuUtilizationPercentage: 75
-    # -- Target memory utilization percentage for HPA
-    memoryUtilizationPercentage: 75
+
+    # Number of deployment replicas
+    replicas: 1
     # -- Minimum available pod counts for PDB
     minAvailable: "50%"
 
     # -- Node selector to deploy pod in selected node. Add label to the node and specify the label here.
     nodeSelector:
 
-    # Kubernetes RollingUpdate strategy configurations
-    strategy:
-      rollingUpdate:
-        # The maximum number of pods that can be scheduled above the desired number of pods
-        maxSurge: 2
-        # The maximum number of pods that can be unavailable during the update
-        maxUnavailable: 0
-
     # -- Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed.
     # This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM.
     highAvailability: true
+
+    persistence:
+      # -- Persistent runtime artifacts for Apache Solr-based indexing
+      solrIndexing:
+        # -- Indicates if persistence of the runtime artifacts for Apache Solr-based indexing is enabled
+        # By default, this is disabled
+        enabled: false
+        # Define capacities for persistent runtime artifact directories
+        capacity:
+          # -- For persisting the H2 based local Carbon database file
+          carbonDatabase: 50M
+          # -- For persisting the indexed solr data
+          solrIndexedData: 50M

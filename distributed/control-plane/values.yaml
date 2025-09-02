@@ -436,11 +436,11 @@ wso2:
         username: ""
         password: ""
       # -- Container registry hostname
-      registry: ""
+      registry: "docker.io"
       # -- Azure ACR repository name consisting the image
-      repository: ""
+      repository: "aungkhantsoe/wso2am-mysql-acp"
       # -- Docker image digest
-      digest: ""
+      digest: "sha256:ed6931605270f34a4f25e2f1940f6f2fee7630feb8417c1f18ab8e6e1075736c"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
