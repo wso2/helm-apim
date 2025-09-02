@@ -18,7 +18,7 @@ global:
   ##   - myRegistryKeySecretName
   ##
   imagePullSecrets: []
-  storageClass: ""
+  storageClass: "alicloud-disk-ssd"
 
 ## @section Common parameters
 ##
@@ -835,7 +835,7 @@ secondary:
     ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
     ##   GKE, AWS & OpenStack)
     ##
-    storageClass: ""
+    storageClass: "alicloud-disk-ssd"
     ## @param secondary.persistence.annotations MySQL secondary persistent volume claim annotations
     ##
     annotations: {}
