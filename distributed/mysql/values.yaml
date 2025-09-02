@@ -244,31 +244,36 @@ primary:
 
   configuration: |-
     [mysqld]
+    # Authentication
     default_authentication_plugin=mysql_native_password
+
+    # Performance & Logging
     skip-name-resolve
     explicit_defaults_for_timestamp
-    basedir=/opt/bitnami/mysql
-    plugin_dir=/opt/bitnami/mysql/lib/plugin
     port=3306
-    socket=/opt/bitnami/mysql/tmp/mysql.sock
-    datadir=/bitnami/mysql/data
-    tmpdir=/opt/bitnami/mysql/tmp
-    max_allowed_packet=16M
     bind-address=*
-    pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+    max_allowed_packet=16M
     log-error=/opt/bitnami/mysql/logs/mysqld.log
 
-    # ✅ Explicit utf8mb3 to avoid VARCHAR index length errors
-    character-set-server=utf8mb3
-    collation-server=utf8mb3_general_ci
+    # ✅ Critical for WSO2: Enable DYNAMIC row format
+    # (This is the default in MySQL 8.0, but we enforce it)
+    innodb_default_row_format=dynamic
 
+    # ✅ Use utf8mb4 for full Unicode support (emojis, international chars)
+    character-set-server=utf8mb4
+    collation-server=utf8mb4_unicode_ci
+    skip-character-set-client-handshake
+
+    # Paths (do not change for Bitnami)
+    basedir=/opt/bitnami/mysql
+    datadir=/bitnami/mysql/data
+    tmpdir=/opt/bitnami/mysql/tmp
+    socket=/opt/bitnami/mysql/tmp/mysql.sock
+    pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
+
+    # Optional: Disable slow query log
     slow_query_log=0
     long_query_time=10.0
-
-    # ✅ Long key support (innodb_large_prefix not needed in 8.0)
-    innodb_file_per_table=1
-    innodb_file_format=Barracuda
-    innodb_default_row_format=DYNAMIC
 
   ## @param primary.existingConfigmap Name of existing ConfigMap with MySQL Primary configuration.
   ## NOTE: When it's set the 'configuration' parameter is ignored
