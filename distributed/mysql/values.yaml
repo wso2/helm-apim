@@ -162,7 +162,6 @@ initdbScripts:
   create-dbs.sql: |
         CREATE DATABASE IF NOT EXISTS apim_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
         CREATE DATABASE IF NOT EXISTS shared_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-        CREATE DATABASE IF NOT EXISTS tm_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
         CREATE USER 'apimadmin'@'%' IDENTIFIED BY 'apimadminpass123';
         GRANT ALL PRIVILEGES ON apim_db.* TO 'apimadmin'@'%';

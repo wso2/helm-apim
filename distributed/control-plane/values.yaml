@@ -218,20 +218,65 @@ wso2:
       adminUsername: ""
       # -- Super admin password
       adminPassword: ""
+      # databases:
+      #   # -- Database type. eg: mysql, oracle, mssql, postgres
+      #   type: ""
+      #   jdbc:
+      #     # -- JDBC driver class name
+      #     driver: ""
+      #   # -- APIM AM_DB configurations.
+      #   apim_db:
+      #     # -- APIM AM_DB URL
+      #     url: ""
+      #     # -- APIM AM_DB username
+      #     username: ""
+      #     # -- APIM AM_DB password
+      #     password: ""
+      #     # -- APIM database JDBC pool parameters
+      #     poolParameters:
+      #       defaultAutoCommit: true
+      #       testOnBorrow: true
+      #       testWhileIdle: true
+      #       validationInterval: 30000
+      #       maxActive: 100
+      #       maxWait: 60000
+      #       minIdle: 5
+      #   # -- APIM SharedDB configurations.
+      #   shared_db:
+      #     # -- APIM SharedDB URL
+      #     url: ""
+      #     # -- APIM SharedDB username
+      #     username: ""
+      #     # -- APIM SharedDB password
+      #     password: ""
+      #     # -- APIM shared database JDBC pool parameters
+      #     poolParameters:
+      #       defaultAutoCommit: true
+      #       testOnBorrow: true
+      #       testWhileIdle: true
+      #       validationInterval: 30000
+      #       maxActive: 100
+      #       maxWait: 60000
+      #       minIdle: 5
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: ""
+        type: "mysql"
+        
         jdbc:
           # -- JDBC driver class name
-          driver: ""
-        # -- APIM AM_DB configurations.
+          driver: "com.mysql.cj.jdbc.Driver"
+        
+        # -- APIM AM_DB (apim_db) configurations.
         apim_db:
           # -- APIM AM_DB URL
-          url: ""
+          url: "jdbc:mysql://mysql-apim-mysql-primary.wso2.svc.cluster.local:3306/apim_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+          
           # -- APIM AM_DB username
-          username: ""
+          username: "apimadmin"
+          
           # -- APIM AM_DB password
-          password: ""
+          password: "apimadminpass123"
+          
           # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
@@ -241,14 +286,18 @@ wso2:
             maxActive: 100
             maxWait: 60000
             minIdle: 5
+
         # -- APIM SharedDB configurations.
         shared_db:
           # -- APIM SharedDB URL
-          url: ""
+          url: "jdbc:mysql://mysql-apim-mysql-primary.wso2.svc.cluster.local:3306/shared_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+          
           # -- APIM SharedDB username
-          username: ""
+          username: "sharedadmin"
+          
           # -- APIM SharedDB password
-          password: ""
+          password: "sharedadminpass123"
+          
           # -- APIM shared database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
