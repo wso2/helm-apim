@@ -18,7 +18,7 @@ global:
   ##   - myRegistryKeySecretName
   ##
   imagePullSecrets: []
-  storageClass: "alicloud-disk-efficiency"
+  storageClass: alicloud-disk-efficiency
 
 ## @section Common parameters
 ##
@@ -456,7 +456,7 @@ primary:
     ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
     ##   GKE, AWS & OpenStack)
     ##
-    storageClass: ""
+    storageClass: alicloud-disk-efficiency
     ## @param primary.persistence.annotations MySQL primary persistent volume claim annotations
     ##
     annotations: {}
