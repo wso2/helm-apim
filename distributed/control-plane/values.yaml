@@ -268,7 +268,7 @@ wso2:
         
         # -- APIM AM_DB (apim_db) configurations.
         apim_db:
-          url: "jdbc:mysql://mysql-db.wso2.svc.cluster.local:3306/apim_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+          url: "jdbc:mysql://mysql-db.wso2.svc.cluster.local:3306/apim_db?useSSL=false"
           username: "apimadmin"
           password: "apimadminpass123"
           # jndiConfig: "jdbc/AM_DB"
@@ -285,7 +285,7 @@ wso2:
 
         # -- APIM SharedDB configurations.
         shared_db:
-          url: "jdbc:mysql://mysql-db.wso2.svc.cluster.local:3306/shared_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+          url: "jdbc:mysql://mysql-db.wso2.svc.cluster.local:3306/shared_db?useSSL=false"
           username: "sharedadmin"
           password: "sharedadminpass123"
           # jndiConfig: "jdbc/SHARED_DB"
