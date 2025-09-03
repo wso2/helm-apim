@@ -832,7 +832,7 @@ primary:
       - ReadWriteOnce
     ## @param primary.persistence.size PVC Storage Request for PostgreSQL volume
     ##
-    size: 10Gi
+    size: 20Gi
     ## @param primary.persistence.annotations Annotations for the PVC
     ##
     annotations: {}
