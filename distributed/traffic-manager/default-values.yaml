@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+# Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
 #
 # This software is the property of WSO2 LLC. and its suppliers, if any.
 # Dissemination of any information or reproduction of any material contained 
@@ -30,7 +30,7 @@ aws:
   serviceAccountName: ""
 azure:
   # -- If Azure is used as the cloud provider
-  enabled: false
+  enabled: true
   acr:
     # -- Azure container registry name
     registry: ""
@@ -58,9 +58,9 @@ azure:
       tenantId: ""
     resourceManager:
       # -- Subscription ID of the target Azure Key Vault
-      subscriptionId: ""
+      subscriptionId: "APIM-rnd-001"
       # -- Name of the Azure Resource Group to which the target Azure Key Vault belongs
-      resourceGroup: ""
+      resourceGroup: "rg-private-apim-kavindar"
 
 # Google Cloud Platform (GCP) integration status
 gcp:
@@ -84,21 +84,8 @@ kubernetes:
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
-    # -- SELinux context for the container
-    seLinux:
-      enabled: false
-      level: ""
-    # -- Seccomp profile for the container
-    seccompProfile:
-      # -- Seccomp profile type(RuntimeDefault, Unconfined or Localhost)
-      type: RuntimeDefault
-      localhostProfile: ""
   # -- Enable AppArmor profiles for the deployment
   enableAppArmor: false
-  # -- Set UNIX permissions over the executable scripts
-  configMaps:
-    scripts:
-      defaultMode: "0407"
 
 wso2:  
   apim:
@@ -126,23 +113,23 @@ wso2:
         properties:
           key: value
       # -- Super admin username
-      adminUsername: ""
+      adminUsername: "admin"
       # -- Super admin password
-      adminPassword: ""
+      adminPassword: "admin"
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: ""
+        type: "mysql"
         jdbc:
           # -- JDBC driver class name
-          driver: ""
+          driver: "com.mysql.cj.jdbc.Driver"
         # -- APIM AM_DB configurations.
         apim_db:
           # -- APIM AM_DB URL
-          url: ""
+          url: "jdbc:mysql://mysql-db:3306/apim_db?useSSL=false"
           # -- APIM AM_DB username
-          username: ""
+          username: "apimadmin"
           # -- APIM AM_DB password
-          password: ""
+          password: "apimadminpass123"
           # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
@@ -155,11 +142,11 @@ wso2:
         # -- APIM SharedDB configurations.
         shared_db:
           # -- APIM SharedDB URL
-          url: ""
+          url: "jdbc:mysql://mysql-db:3306/shared_db?useSSL=false"
           # -- APIM SharedDB username
-          username: ""
+          username: "sharedadmin"
           # -- APIM SharedDB password
-          password: ""
+          password: "sharedadminpass123"
           # -- APIM shared database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
@@ -182,9 +169,9 @@ wso2:
             # -- Primary keystore alias
             alias: "wso2carbon"
             # -- Primary keystore password
-            password: ""
+            password: "wso2carbon"
             # -- Primary keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
           tls:
             # -- TLS keystore enabled
             enabled: true
@@ -193,9 +180,9 @@ wso2:
             # -- TLS keystore alias
             alias: "wso2carbon"
             # -- TLS keystore password
-            password: ""
+            password: "wso2carbon"
             # -- TLS keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
           internal:
             # -- Internal keystore enabled
             enabled: false
@@ -204,20 +191,20 @@ wso2:
             # -- Internal keystore alias
             alias: "wso2carbon"
             # -- Internal keystore password
-            password: ""
+            password: "wso2carbon"
             # -- Internal keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
         truststore:
           # -- Truststore name
           name: "client-truststore.jks"
           # -- Truststore password
-          password: ""
+          password: "wso2carbon"
 
       km:
         # -- Key manager service name if default Resident KM is used
-        serviceUrl: "wso2am-cp-service"
+        serviceUrl: "apim-acp-wso2am-acp-service"
         # -- Key Manager service port
-        servicePort: 9443
+        servicePort: 9443        
 
       iskm:
         # If Identity Server is used as the Resident KM
@@ -227,11 +214,11 @@ wso2:
 
       eventhub:
         # -- Event hub (control plane) loadbalancer service url
-        serviceUrl: "wso2am-cp-service"
+        serviceUrl: "apim-acp-wso2am-acp-service"
         # -- Event hub service urls
         urls:
-          - "wso2am-cp-1-service"
-          - "wso2am-cp-2-service"
+          - "apim-acp-wso2am-acp-1-service"
+          - "apim-acp-wso2am-acp-2-service"
 
       # APIM OAuth configurations
       oauth_config:
@@ -273,11 +260,11 @@ wso2:
         username: ""
         password: ""
       # -- Container registry hostname
-      registry: ""
+      registry: "docker.io"
       # -- Azure ACR repository name consisting the image
-      repository: ""
+      repository: "aungkhantsoe/wso2am-mysql-tm"
       # -- Docker image digest
-      digest: ""
+      digest: "sha256:cd5517b3807c7fe1fac724dca18b9592ad564da461d22c6206cad44affa990c8"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
