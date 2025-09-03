@@ -188,8 +188,8 @@ primary:
     bind-address=0.0.0.0
     pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
     log-error=/opt/bitnami/mysql/logs/mysqld.log
-    character-set-server=UTF8
-    collation-server=utf8_general_ci
+    character-set-server=latin1
+    collation-server=latin1_swedish_ci
     slow_query_log=0
     slow_query_log_file=/opt/bitnami/mysql/logs/mysqld.log
     long_query_time=10.0
@@ -197,7 +197,7 @@ primary:
     [client]
     port=3306
     socket=/opt/bitnami/mysql/tmp/mysql.sock
-    default-character-set=UTF8
+    default-character-set=latin1
     plugin_dir=/opt/bitnami/mysql/lib/plugin
 
     [manager]
