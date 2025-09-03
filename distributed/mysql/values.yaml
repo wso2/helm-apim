@@ -441,10 +441,36 @@ primary:
     successThreshold: 1
   ## @param primary.customLivenessProbe Override default liveness probe for MySQL primary containers
   ##
-  customLivenessProbe: {}
+  customLivenessProbe:
+    exec:
+      command:
+        - mysqladmin
+        - -h
+        - 127.0.0.1          # Use TCP
+        - -u
+        - root
+        - -p${MYSQL_ROOT_PASSWORD}
+        - ping
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 1
+    failureThreshold: 3
   ## @param primary.customReadinessProbe Override default readiness probe for MySQL primary containers
   ##
-  customReadinessProbe: {}
+  customReadinessProbe:
+    exec:
+      command:
+        - mysqladmin
+        - -h
+        - 127.0.0.1          # Use TCP
+        - -u
+        - root
+        - -p${MYSQL_ROOT_PASSWORD}
+        - ping
+    initialDelaySeconds: 15
+    periodSeconds: 5
+    timeoutSeconds: 1
+    failureThreshold: 3
   ## @param primary.customStartupProbe Override default startup probe for MySQL primary containers
   ##
   customStartupProbe:
@@ -452,7 +478,7 @@ primary:
         command:
           - mysqladmin
           - -h
-          - localhost
+          - 127.0.0.1
           - -u
           - root
           - -p${MYSQL_ROOT_PASSWORD}
