@@ -213,7 +213,13 @@ wso2:
         type: "database_unique_id"
         # -- User store properties
         properties:
-          key: value
+          DriverName: "com.mysql.cj.jdbc.Driver"
+          URL: "jdbc:mysql://mysql-db.wso2.svc.cluster.local:3306/shared_db?useSSL=false"
+          UserName: "sharedadmin"
+          Password: "sharedadminpass123"
+          ReadOnly: "false"
+          MaxActive: "100"
+          MinIdle: "5"
       # -- Super admin username
       adminUsername: "admin"
       # -- Super admin password
