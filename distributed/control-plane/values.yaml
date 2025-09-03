@@ -170,6 +170,8 @@ kubernetes:
     runAsUser: 10001
     seccompProfile:
       type: RuntimeDefault
+    seLinux:
+      enabled: false
   # -- Enable AppArmor profiles for the deployment
   enableAppArmor: false
 
