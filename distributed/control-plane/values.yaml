@@ -197,7 +197,7 @@ wso2:
         # -- Appenders
         appenders: ""
     # -- Startup arguments for APIM
-    startupArgs: ""
+    startupArgs: "-Dprofile=apim"
     # -- Port Offset for APIM deployment
     portOffset: 0
     # -- Startup script mount status
