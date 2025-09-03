@@ -202,7 +202,7 @@ wso2:
 
       km:
         # -- Key manager service name if default Resident KM is used
-        serviceUrl: "apim-acp-wso2am-acp-service"
+        serviceUrl: "wso2-acp-wso2am-acp-service"
         # -- Key Manager service port
         servicePort: 9443        
 
@@ -214,11 +214,11 @@ wso2:
 
       eventhub:
         # -- Event hub (control plane) loadbalancer service url
-        serviceUrl: "apim-acp-wso2am-acp-service"
+        serviceUrl: "wso2-acp-wso2am-acp-service"
         # -- Event hub service urls
         urls:
-          - "apim-acp-wso2am-acp-1-service"
-          - "apim-acp-wso2am-acp-2-service"
+          - "wso2-acp-wso2am-acp-1-service"
+          - "wso2-acp-wso2am-acp-2-service"
 
       # APIM OAuth configurations
       oauth_config:
