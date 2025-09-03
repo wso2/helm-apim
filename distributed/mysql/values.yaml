@@ -447,7 +447,22 @@ primary:
   customReadinessProbe: {}
   ## @param primary.customStartupProbe Override default startup probe for MySQL primary containers
   ##
-  customStartupProbe: {}
+  customStartupProbe:
+    exec:
+        command:
+          - mysqladmin
+          - -h
+          - localhost
+          - -u
+          - root
+          - -p${MYSQL_ROOT_PASSWORD}
+          - --socket=/opt/bitnami/mysql/tmp/mysql.sock
+          - ping
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 1
+    failureThreshold: 30
+    successThreshold: 1
   ## @param primary.extraFlags MySQL primary additional command line flags
   ## Can be used to specify command line flags, for example:
   ## E.g.
