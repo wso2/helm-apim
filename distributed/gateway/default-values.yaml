@@ -27,7 +27,7 @@ aws:
   serviceAccountName: ""
 azure:
   # -- If Azure is used as the cloud provider
-  enabled: false
+  enabled: true
   keyVault:
     # -- Azure Key vault used for credential management
     name: ""
@@ -52,9 +52,9 @@ azure:
       tenantId: ""
     resourceManager:
       # -- Subscription ID of the target Azure Key Vault
-      subscriptionId: ""
+      subscriptionId: "APIM-rnd-001"
       # -- Name of the Azure Resource Group to which the target Azure Key Vault belongs
-      resourceGroup: ""
+      resourceGroup: "rg-private-apim-kavindar"
 
 # Google Cloud Platform (GCP) integration status
 gcp:
@@ -110,31 +110,18 @@ kubernetes:
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
-    # -- SELinux context for the container
-    seLinux:
-      enabled: false
-      level: ""
-    # -- Seccomp profile for the container
-    seccompProfile:
-      # -- Seccomp profile type(RuntimeDefault, Unconfined or Localhost)
-      type: RuntimeDefault
-      localhostProfile: ""
   # -- Enable AppArmor profiles for the deployment
   enableAppArmor: false
-  # -- Set UNIX permissions over the executable scripts
-  configMaps:
-    scripts:
-      defaultMode: "0407"
 
 wso2:  
   # -- WSO2 Choreo Analytics Parameters
   # If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/).
   choreoAnalytics:
-    enabled: false
+    enabled: true
     # -- Choreo Analytics cloud service endpoint
-    endpoint: ""
+    endpoint: "https://analytics-event-auth.choreo.dev/auth/v1"
     # -- On-premise key for Choreo Analytics
-    onpremKey: ""
+    onpremKey: "7773da0c-b164-4d16-bffc-82abfa2ce020"
   
   # -- ELK Analytics Parameters
   ELKAnalytics:
@@ -168,24 +155,24 @@ wso2:
         properties:
           key: value
       # -- Super admin username
-      adminUsername: ""
+      adminUsername: "admin"
       # -- Super admin password
-      adminPassword: ""
+      adminPassword: "admin"
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: ""
+        type: "mysql"
         jdbc:
           # -- JDBC driver class name
-          driver: ""
-        # -- APIM SharedDB configurations. This is required for gateway only in a multi-tenancy scenario
+          driver: "com.mysql.cj.jdbc.Driver"
+        # -- APIM AM_DB configurations.
         shared_db:
           # -- APIM SharedDB URL
-          url: ""
+          url: "jdbc:mysql://mysql-db:3306/shared_db?useSSL=false"
           # -- APIM SharedDB username
-          username: ""
+          username: "sharedadmin"
           # -- APIM SharedDB password
-          password: ""
-          # -- APIM database JDBC pool parameters
+          password: "sharedadminpass123"
+          # -- APIM shared database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
             testOnBorrow: true
@@ -213,9 +200,9 @@ wso2:
             # -- Primary keystore alias
             alias: "wso2carbon"
             # -- Primary keystore password
-            password: ""
+            password: "wso2carbon"
             # -- Primary keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
           tls:
             # -- TLS keystore enabled
             enabled: true
@@ -224,9 +211,9 @@ wso2:
             # -- TLS keystore alias
             alias: "wso2carbon"
             # -- TLS keystore password
-            password: ""
+            password: "wso2carbon"
             # -- TLS keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
           internal:
             # -- Internal keystore enabled
             enabled: false
@@ -235,20 +222,20 @@ wso2:
             # -- Internal keystore alias
             alias: "wso2carbon"
             # -- Internal keystore password
-            password: ""
+            password: "wso2carbon"
             # -- Internal keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
         truststore:
           # -- Truststore name
           name: "client-truststore.jks"
           # -- Truststore password
-          password: ""
+          password: "wso2carbon"
 
       km:
         # -- Key manager service name if default Resident KM is used
-        serviceUrl: "wso2am-cp-service"
+        serviceUrl: "wso2-acp-wso2am-acp-service"
         # -- Key Manager service port
-        servicePort: 9443
+        servicePort: 9443        
 
       iskm:
         # If Identity Server is used as the Resident KM
@@ -282,14 +269,14 @@ wso2:
       throttling:
         # -- Traffic manager loadbalancer service url for throttling.
         # If the traffic manager is separated from control-plane, all urls should be pointed to traffic-manager ones.
-        serviceUrl: "wso2am-cp-service"
+        serviceUrl: "wso2-tm-wso2am-tm-service"
         portOffset: 0
         # -- Port of the service URL
         servicePort: 9443
         # -- Traffic manager service urls. You only need to define one if the TM is not in HA.
         urls:
-          - "wso2am-cp-1-service"
-          - "wso2am-cp-2-service"
+          - "wso2-tm-wso2am-tm-1-service"
+          - "wso2-tm-wso2am-tm-2-service"
         # -- Enable unlimited throttling tier
         unlimitedTier: true
         # -- Enable header based throttling
@@ -302,16 +289,16 @@ wso2:
       eventhub:
         # -- Event hub (control plane) enabled.
         # This should be enabled if the traffic manager is separated from the control-plane.
-        enabled: false
+        enabled: true
         # -- Event hub (control plane) loadbalancer service url
-        serviceUrl: "wso2am-cp-service"
+        serviceUrl: "wso2-acp-wso2am-acp-service"
         # -- Event hub (control plane) service port
         servicePort: 9443
         # -- Event hub service urls
         urls:
-          - "wso2am-cp-1-service"
-          - "wso2am-cp-2-service"
-        
+          - "wso2-acp-wso2am-acp-1-service"
+          - "wso2-acp-wso2am-acp-2-service"
+
       # APIM cache related configurations
       cache:
         gateway_token:
@@ -401,11 +388,11 @@ wso2:
         username: ""
         password: ""
       # -- Container registry hostname
-      registry: ""
+      registry: "docker.io"
       # -- Azure ACR repository name consisting the image
-      repository: ""
+      repository: "aungkhantsoe/wso2am-mysql-universal-gw"
       # -- Docker image digest
-      digest: ""
+      digest: "sha256:c5c06662bcb0ae83daf04b55ff045d7af4dfdd0619f56b1c95e6a491fdd578ca"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
@@ -464,9 +451,9 @@ wso2:
     replicas: 2
     # HPA configurations
     # -- Minimum replicas for HPA
-    minReplicas: 2
+    minReplicas: 1
     # -- Maximum replicas for HPA
-    maxReplicas: 3
+    maxReplicas: 1
     # -- Target CPU utilization percentage for HPA
     cpuUtilizationPercentage: 75
     # -- Target memory utilization percentage for HPA
