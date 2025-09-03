@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+# Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
 #
 # This software is the property of WSO2 LLC. and its suppliers, if any.
 # Dissemination of any information or reproduction of any material contained 
@@ -40,7 +40,7 @@ aws:
   serviceAccountName: ""
 azure:
   # -- If Azure is used as the cloud provider
-  enabled: false
+  enabled: true
   keyVault:
     # -- Azure Key vault used for credential management
     name: ""
@@ -168,21 +168,8 @@ kubernetes:
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
-    # -- SELinux context for the container
-    seLinux:
-      enabled: false
-      level: ""
-    # -- Seccomp profile for the container
-    seccompProfile:
-      # -- Seccomp profile type(RuntimeDefault, Unconfined or Localhost)
-      type: RuntimeDefault
-      localhostProfile: ""
   # -- Enable AppArmor profiles for the deployment
   enableAppArmor: false
-  # -- Set UNIX permissions over the executable scripts
-  configMaps:
-    scripts:
-      defaultMode: "0407"
 
 wso2:  
   apim:
@@ -203,7 +190,7 @@ wso2:
     # -- Startup script mount status
     mountStartupScript: false
     # -- Frontend settings.json mount status
-    mountFrontendConfig: false
+    mountFrontendConfig: true
     # TOML configurations
     configurations:
       gatewayType: "Regular,APK,AWS"
@@ -212,26 +199,24 @@ wso2:
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
         type: "database_unique_id"
         # -- User store properties
-        properties:
-          key: value
       # -- Super admin username
-      adminUsername: ""
+      adminUsername: "admin"
       # -- Super admin password
-      adminPassword: ""
+      adminPassword: "admin"
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: ""
+        type: "mysql"
         jdbc:
           # -- JDBC driver class name
-          driver: ""
+          driver: "com.mysql.cj.jdbc.Driver"
         # -- APIM AM_DB configurations.
         apim_db:
           # -- APIM AM_DB URL
-          url: ""
+          url: "jdbc:mysql://mysql-db:3306/apim_db?useSSL=false"
           # -- APIM AM_DB username
-          username: ""
+          username: "apimadmin"
           # -- APIM AM_DB password
-          password: ""
+          password: "apimadminpass123"
           # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
@@ -244,11 +229,11 @@ wso2:
         # -- APIM SharedDB configurations.
         shared_db:
           # -- APIM SharedDB URL
-          url: ""
+          url: "jdbc:mysql://mysql-db:3306/shared_db?useSSL=false"
           # -- APIM SharedDB username
-          username: ""
+          username: "sharedadmin"
           # -- APIM SharedDB password
-          password: ""
+          password: "sharedadminpass123"
           # -- APIM shared database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
@@ -263,9 +248,9 @@ wso2:
       ai:
         enabled: false
         token: ""
-        key: ""
-        endpoint: ""
-        token_endpoint: ""
+        key: "<AI_KEY>"
+        endpoint: "https://dev-tools.wso2.com/apim-ai-service/v2"
+        token_endpoint: "https://api.asgardeo.io/t/wso2devtools/oauth2/token"
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
@@ -279,9 +264,9 @@ wso2:
             # -- Primary keystore alias
             alias: "wso2carbon"
             # -- Primary keystore password
-            password: ""
+            password: "wso2carbon"
             # -- Primary keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
           tls:
             # -- TLS keystore enabled
             enabled: true
@@ -290,9 +275,9 @@ wso2:
             # -- TLS keystore alias
             alias: "wso2carbon"
             # -- TLS keystore password
-            password: ""
+            password: "wso2carbon"
             # -- TLS keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
           internal:
             # -- Internal keystore enabled
             enabled: false
@@ -301,14 +286,14 @@ wso2:
             # -- Internal keystore alias
             alias: "wso2carbon"
             # -- Internal keystore password
-            password: ""
+            password: "wso2carbon"
             # -- Internal keystore key password
-            keyPassword: ""
+            keyPassword: "wso2carbon"
         truststore:
           # -- Truststore name
           name: "client-truststore.jks"
           # -- Truststore password
-          password: ""
+          password: "wso2carbon"
       
       gateway:
         # -- APIM Gateway environments
@@ -321,7 +306,7 @@ wso2:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
-          serviceName: "wso2am-gateway-service"
+          serviceName: "apim-gw-wso2am-gateway-service"
           servicePort: 9443
           wsHostname: "websocket.wso2.com"
           httpHostname: "gw.wso2.com"
@@ -338,7 +323,7 @@ wso2:
         # -- If Key Manager profile is separated
         enabled: false
         # -- Kubernetes service name exposing Key Manager
-        serviceName: "wso2am-km-service"
+        serviceName: "apim-km-wso2am-km-service"
         # -- Kubernetes service port exposing Key Manager
         servicePort: 9443
 
@@ -351,8 +336,8 @@ wso2:
         internalKeyIssuer: ""
       
       devportal:
-        enableApplicationSharing:
-        applicationSharingType:
+        enableApplicationSharing: true
+        applicationSharingType: "default"
         applicationSharingImpl:
         displayMutipleVersions:
         displayDeprecatedAPIs:
@@ -360,7 +345,7 @@ wso2:
         enableRatings:
         enableForum:
         enableAnonymousMode:
-        enableCrossTenantSubscriptions:
+        enableCrossTenantSubscriptions: true
         defaultReservedUsername:
         loginUsernameCaseInsensitive:
         enableKeyProvisioning:
@@ -400,7 +385,7 @@ wso2:
 
       keyManager:
         enableLightweightAPIKeyGeneration: true
-        allowSubscriptionValidationDisabling: true
+        allowSubscriptionValidationDisabling: false
 
       # APIM governance configurations
       governance:
@@ -436,11 +421,11 @@ wso2:
         username: ""
         password: ""
       # -- Container registry hostname
-      registry: ""
+      registry: "docker.io"
       # -- Azure ACR repository name consisting the image
-      repository: ""
+      repository: "aungkhantsoe/wso2am-mysql-acp"
       # -- Docker image digest
-      digest: ""
+      digest: "sha256:596e7e1bcad66e1adf0507c6365488c2ffb667f297acc36163ae96dedf6ecbbf"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
@@ -454,7 +439,7 @@ wso2:
         cpu: "2000m"
       limits:
         # -- Memory limit for API Manager
-        memory: "3Gi"
+        memory: "5Gi"
         # -- CPU limit for API Manager
         cpu: "3000m"
       jvm:
