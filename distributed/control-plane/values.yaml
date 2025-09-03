@@ -481,7 +481,7 @@ wso2:
       # -- Azure ACR repository name consisting the image
       repository: "aungkhantsoe/wso2am-mysql-acp"
       # -- Docker image digest
-      digest: "sha256:e7c1cb15125643b328011f9474be27a1a6d2c3dcec9a14f067160f27d1e2b543"
+      digest: "sha256:596e7e1bcad66e1adf0507c6365488c2ffb667f297acc36163ae96dedf6ecbbf"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
