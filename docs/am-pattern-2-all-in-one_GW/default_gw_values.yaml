@@ -234,6 +234,8 @@ wso2:
       km:
         # -- Key manager service name if default Resident KM is used
         serviceUrl: "apim-wso2am-all-in-one-am-service"
+        # -- Key Manager service port
+        servicePort: 9443        
 
       iskm:
         # If Identity Server is used as the Resident KM
@@ -449,7 +451,7 @@ wso2:
     # -- Minimum replicas for HPA
     minReplicas: 1
     # -- Maximum replicas for HPA
-    maxReplicas: 1
+    maxReplicas: 3
     # -- Target CPU utilization percentage for HPA
     cpuUtilizationPercentage: 75
     # -- Target memory utilization percentage for HPA

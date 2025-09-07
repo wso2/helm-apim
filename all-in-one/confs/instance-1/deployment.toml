@@ -181,6 +181,8 @@ enable = false
 enable = true
 token = {{ .Values.wso2.apim.configurations.ai.token | quote }}
 endpoint = {{ .Values.wso2.apim.configurations.ai.endpoint | quote }}
+token_endpoint = {{ .Values.wso2.apim.configurations.ai.token_endpoint | quote }}
+key = {{ .Values.wso2.apim.configurations.ai.key | quote }}
 {{- else }}
 enable = false
 {{- end }}

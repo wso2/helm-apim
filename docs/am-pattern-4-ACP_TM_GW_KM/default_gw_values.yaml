@@ -190,7 +190,7 @@ wso2:
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
-        jksSecretName: "jks-secret"
+        jksSecretName: "apim-keystore-secret"
         keystores:
           primary:
             # -- Primary keystore enabled
@@ -234,6 +234,8 @@ wso2:
       km:
         # -- Key manager service name if default Resident KM is used
         serviceUrl: "apim-km-wso2am-km-service"
+        # -- Key Manager service port
+        servicePort: 9443        
 
       iskm:
         # If Identity Server is used as the Resident KM
