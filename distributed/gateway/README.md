@@ -189,7 +189,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
 | wso2.deployment.strategy.rollingUpdate.maxSurge | int | `2` |  |
 | wso2.deployment.strategy.rollingUpdate.maxUnavailable | int | `0` |  |
-| wso2.moesifAnalytics.enabled | bool | `false` |  |
+| wso2.moesifAnalytics | object | `{"enabled":false,"key":"","loggerReporterLevel":"","publisherReporterClass":""}` | Moesif Analytics Parameters |
 | wso2.moesifAnalytics.key | string | `""` | Moesif API key |
 | wso2.moesifAnalytics.loggerReporterLevel | string | `""` | Moesif logger reporter level |
 | wso2.moesifAnalytics.publisherReporterClass | string | `""` | Moesif publisher reporter class |

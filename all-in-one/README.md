@@ -323,7 +323,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.deployment.startupProbe.failureThreshold | int | `5` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.startupProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before startup probes are initiated |
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
-| wso2.moesifAnalytics.enabled | bool | `false` |  |
+| wso2.moesifAnalytics | object | `{"enabled":false,"key":"","loggerReporterLevel":"","publisherReporterClass":""}` | Moesif Analytics Parameters |
 | wso2.moesifAnalytics.key | string | `""` | Moesif API key |
 | wso2.moesifAnalytics.loggerReporterLevel | string | `""` | Moesif logger reporter level |
 | wso2.moesifAnalytics.publisherReporterClass | string | `""` | Moesif publisher reporter class |

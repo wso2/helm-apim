@@ -140,6 +140,7 @@ wso2:
   ELKAnalytics:
     enabled: false
 
+  # -- Moesif Analytics Parameters
   moesifAnalytics:
     enabled: false
     # -- Moesif API key
