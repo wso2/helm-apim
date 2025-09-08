@@ -1,6 +1,6 @@
 # wso2am-km
 
-![version: 4.5.0-3](https://img.shields.io/badge/Version-4.5.0--1-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
+![Version: 4.5.0-3](https://img.shields.io/badge/Version-4.5.0--3-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
@@ -36,6 +36,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | gcp.secretsManager.secret.secretVersion | string | `""` | Version of the secret  |
 | gcp.secretsManager.secretProviderClass | string | `""` | Secret provider class |
 | gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
+| kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
 | kubernetes.ingress.km.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
 | kubernetes.ingress.km.hostname | string | `"km.wso2.com"` | Ingress hostname for Gateway pass-through |
@@ -45,17 +46,20 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.ingress.tlsSecret | string | `""` | Kubernetes secret created for Ingress TLS |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
 | kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
+| kubernetes.securityContext.seLinux | object | `{"enabled":false,"level":""}` | SELinux context for the container |
+| kubernetes.securityContext.seccompProfile | object | `{"localhostProfile":"","type":"RuntimeDefault"}` | Seccomp profile for the container |
+| kubernetes.securityContext.seccompProfile.type | string | `"RuntimeDefault"` | Seccomp profile type(RuntimeDefault, Unconfined or Localhost) |
 | wso2.apim.configurations.adminPassword | string | `""` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `""` | Super admin username |
-| wso2.apim.configurations.databases.apim_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM AM_DB configurations. |
+| wso2.apim.configurations.databases.apim_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM AM_DB configurations. |
 | wso2.apim.configurations.databases.apim_db.password | string | `""` | APIM AM_DB password |
-| wso2.apim.configurations.databases.apim_db.poolParameters | object | `{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
+| wso2.apim.configurations.databases.apim_db.poolParameters | object | `{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
 | wso2.apim.configurations.databases.apim_db.url | string | `""` | APIM AM_DB URL |
 | wso2.apim.configurations.databases.apim_db.username | string | `""` | APIM AM_DB username |
 | wso2.apim.configurations.databases.jdbc.driver | string | `""` | JDBC driver class name |
-| wso2.apim.configurations.databases.shared_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM SharedDB configurations. |
+| wso2.apim.configurations.databases.shared_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM SharedDB configurations. |
 | wso2.apim.configurations.databases.shared_db.password | string | `""` | APIM SharedDB password |
-| wso2.apim.configurations.databases.shared_db.poolParameters | object | `{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM shared database JDBC pool parameters |
+| wso2.apim.configurations.databases.shared_db.poolParameters | object | `{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM shared database JDBC pool parameters |
 | wso2.apim.configurations.databases.shared_db.url | string | `""` | APIM SharedDB URL |
 | wso2.apim.configurations.databases.shared_db.username | string | `""` | APIM SharedDB username |
 | wso2.apim.configurations.databases.type | string | `""` | Database type. eg: mysql, oracle, mssql, postgres |
@@ -97,7 +101,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
-| wso2.apim.version | string | `"4.5.0"` | APIM version |
+| wso2.apim.version | string | `"4.6.0"` | APIM version |
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
 | wso2.deployment.highAvailability | bool | `false` | Enable high availability for key manager. If this is enabled, two key manager replicas will be deployed. |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
@@ -125,4 +129,4 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.deployment.strategy.rollingUpdate.maxUnavailable | int | `0` |  |
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)
+Autogenerated from chart metadata using [helm-docs v1.11.2](https://github.com/norwoodj/helm-docs/releases/v1.11.2)

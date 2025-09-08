@@ -1,6 +1,6 @@
 # wso2am-acp
 
-![version: 4.5.0-3](https://img.shields.io/badge/Version-4.5.0--1-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
+![Version: 4.5.0-3](https://img.shields.io/badge/Version-4.5.0--3-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 
@@ -12,7 +12,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | aws.efs.capacity | string | `""` | EFS capacity |
 | aws.efs.directoryPerms | string | `"0777"` | EFS directory permissions |
 | aws.efs.fileSystemId | string | `""` | EFS file system ID for mounting the persistent volume |
-| aws.enabled | bool | `true` | If AWS is used as the cloud provider |
+| aws.enabled | bool | `false` | If AWS is used as the cloud provider |
 | aws.region | string | `""` | AWS region |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword | object | `{"secretKey":"","secretName":""}` | Internal keystore password identifier in secrets manager |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey | string | `""` | AWS Secrets Manager secret key |
@@ -64,6 +64,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | gcp.secretsManager.secret.secretVersion | string | `""` | Version of the secret  |
 | gcp.secretsManager.secretProviderClass | string | `""` | Secret provider class |
 | gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
+| kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
 | kubernetes.ingress.controlPlane.annotations | object | `{"nginx.ingress.kubernetes.io/affinity":"cookie","nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/session-cookie-hash":"sha1","nginx.ingress.kubernetes.io/session-cookie-name":"route"}` | Ingress annotations |
 | kubernetes.ingress.controlPlane.hostname | string | `"am.wso2.com"` | Ingress hostname |
@@ -73,18 +74,21 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | kubernetes.ingress.tlsSecret | string | `""` | Kubernetes secret created for Ingress TLS |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
 | kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
+| kubernetes.securityContext.seLinux | object | `{"enabled":false,"level":""}` | SELinux context for the container |
+| kubernetes.securityContext.seccompProfile | object | `{"localhostProfile":"","type":"RuntimeDefault"}` | Seccomp profile for the container |
+| kubernetes.securityContext.seccompProfile.type | string | `"RuntimeDefault"` | Seccomp profile type(RuntimeDefault, Unconfined or Localhost) |
 | wso2.apim.configurations.adminPassword | string | `""` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `""` | Super admin username |
-| wso2.apim.configurations.ai | object | `{"enabled":false,"endpoint":"","key":"","token":"","token_endpoint":""}` | APIM AI related configurations |
-| wso2.apim.configurations.databases.apim_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM AM_DB configurations. |
+| wso2.apim.configurations.ai | object | `{"embeddingProvider":{"properties":{"apikey":"","embeddingEndpoint":"","embeddingModel":""},"type":""},"enabled":false,"endpoint":"","key":"","token":"","tokenEndpoint":"","vectorDbProvider":{"properties":{"token":"","uri":""},"type":""}}` | APIM AI related configurations |
+| wso2.apim.configurations.databases.apim_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM AM_DB configurations. |
 | wso2.apim.configurations.databases.apim_db.password | string | `""` | APIM AM_DB password |
-| wso2.apim.configurations.databases.apim_db.poolParameters | object | `{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
+| wso2.apim.configurations.databases.apim_db.poolParameters | object | `{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
 | wso2.apim.configurations.databases.apim_db.url | string | `""` | APIM AM_DB URL |
 | wso2.apim.configurations.databases.apim_db.username | string | `""` | APIM AM_DB username |
 | wso2.apim.configurations.databases.jdbc.driver | string | `""` | JDBC driver class name |
-| wso2.apim.configurations.databases.shared_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM SharedDB configurations. |
+| wso2.apim.configurations.databases.shared_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM SharedDB configurations. |
 | wso2.apim.configurations.databases.shared_db.password | string | `""` | APIM SharedDB password |
-| wso2.apim.configurations.databases.shared_db.poolParameters | object | `{"defaultAutoCommit":false,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM shared database JDBC pool parameters |
+| wso2.apim.configurations.databases.shared_db.poolParameters | object | `{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM shared database JDBC pool parameters |
 | wso2.apim.configurations.databases.shared_db.url | string | `""` | APIM SharedDB URL |
 | wso2.apim.configurations.databases.shared_db.username | string | `""` | APIM SharedDB username |
 | wso2.apim.configurations.databases.type | string | `""` | Database type. eg: mysql, oracle, mssql, postgres |
@@ -101,8 +105,12 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.configurations.devportal.enableKeyProvisioning | string | `nil` |  |
 | wso2.apim.configurations.devportal.enableRatings | string | `nil` |  |
 | wso2.apim.configurations.devportal.loginUsernameCaseInsensitive | string | `nil` |  |
+| wso2.apim.configurations.devportal.mode | string | `"HYBRID"` |  |
+| wso2.apim.configurations.distributedThrottling | object | `{"corePoolSize":5,"enable":false,"keyvalueStore":{"blockWhenExhausted":true,"host":"","maxIdle":20,"maxTotal":20,"minEvictableIdleTimeMillis":3000,"minIdle":4,"password":"","port":6379,"testWhileIdle":true,"timeBetweenEvictionRunsMillis":1200,"user":""},"syncInterval":1,"type":"redis"}` | APIM distributed throttling configurations |
 | wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","visibility":null,"websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
-| wso2.apim.configurations.gatewayType | string | `"Regular,APK,AWS"` |  |
+| wso2.apim.configurations.gatewayNotification.cleanUp.dataRetentionPeriod | string | `"30d"` |  |
+| wso2.apim.configurations.gatewayNotification.cleanUp.expiryTime | string | `"2m"` |  |
+| wso2.apim.configurations.gatewayType | string | `"Regular,APK,AWS,Azure,Kong"` |  |
 | wso2.apim.configurations.governance.scheduler | object | `{"queue_size":"","task_check_interval_minutes":"","task_cleanup_interval_minutes":"","thread_pool_size":""}` | Override the default values of governance.scheduler if any value exists |
 | wso2.apim.configurations.iskm.enabled | bool | `false` | If Identity Server is used as the Resident KM |
 | wso2.apim.configurations.iskm.serviceName | string | `""` | Kubernetes service name exposing Identity Server |
@@ -112,6 +120,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.configurations.km.enabled | bool | `false` | If Key Manager profile is separated |
 | wso2.apim.configurations.km.serviceName | string | `"wso2am-km-service"` | Kubernetes service name exposing Key Manager |
 | wso2.apim.configurations.km.servicePort | int | `9443` | Kubernetes service port exposing Key Manager |
+| wso2.apim.configurations.mcp | object | `{"enabled":true}` | APIM MCP related configurations |
 | wso2.apim.configurations.oauth_config.allowedScopes | list | `["^device_.*,openid"]` | List of allow-listed scopes |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
@@ -162,6 +171,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.configurations.security.keystores.tls.password | string | `""` | TLS keystore password |
 | wso2.apim.configurations.security.truststore.name | string | `"client-truststore.jks"` | Truststore name |
 | wso2.apim.configurations.security.truststore.password | string | `""` | Truststore password |
+| wso2.apim.configurations.tenantSharing | object | `{"enabled":false,"properties":{"autoConfigureKeyManager":true,"enableTenantSync":true,"identityServerBaseUrl":"","password":"","username":""},"type":""}` | APIM tenant sharing configurations |
 | wso2.apim.configurations.transactionCounter.enabled | bool | `false` |  |
 | wso2.apim.configurations.transactionCounter.serviceUrl | string | `""` |  |
 | wso2.apim.configurations.userStore.properties | object | `{"key":"value"}` | User store properties |
@@ -173,7 +183,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
-| wso2.apim.version | string | `"4.5.0"` | APIM version |
+| wso2.apim.version | string | `"4.6.0"` | APIM version |
 | wso2.deployment.highAvailability | bool | `true` | Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed. This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM. |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
@@ -205,4 +215,4 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)
+Autogenerated from chart metadata using [helm-docs v1.11.2](https://github.com/norwoodj/helm-docs/releases/v1.11.2)
