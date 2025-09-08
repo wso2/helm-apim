@@ -648,7 +648,7 @@ wso2:
           identityServerBaseUrl: ""
 
   deployment:
-    # Confgiure High Availability
+    # Configure High Availability
     highAvailability: false
     # Container image configurations
     image:

@@ -466,6 +466,7 @@ wso2:
           minEvictableIdleTimeMillis: 3000
           timeBetweenEvictionRunsMillis: 1200
 
+      # -- APIM tenant sharing configurations
       tenantSharing:
         enabled: false
         type: ""

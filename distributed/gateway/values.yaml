@@ -270,25 +270,25 @@ wso2:
           # -- Gateway label used to filter out artifact retrieval
           labels: ["Default"]
       
-    gatewayNotification:
-      enabled: true
-      gatewayId: ""
-      heartbeat:
-        notifyInterval: "1m"
-      deploymentAck:
-        batchSize: 100
-        batchInterval: "2s"
-        maxRetryCount: 5
-        retryDuration: "10s"
-        retryProgressionFactor: 2
-        batchProcessorMinThread: 2
-        batchProcessorMaxThread: 8
-        batchProcessorKeepAlive: "1m"
-        batchProcessorQueueSize: 50
-      registration:
-        maxRetryCount: 5
-        retryDuration: "10s"
-        retryProgressionFactor: 2
+      gatewayNotification:
+        enabled: true
+        gatewayId: ""
+        heartbeat:
+          notifyInterval: "1m"
+        deploymentAck:
+          batchSize: 100
+          batchInterval: "2s"
+          maxRetryCount: 5
+          retryDuration: "10s"
+          retryProgressionFactor: 2
+          batchProcessorMinThread: 2
+          batchProcessorMaxThread: 8
+          batchProcessorKeepAlive: "1m"
+          batchProcessorQueueSize: 50
+        registration:
+          maxRetryCount: 5
+          retryDuration: "10s"
+          retryProgressionFactor: 2
       
       jwt:
         # Enable backend JWT generation in gateway

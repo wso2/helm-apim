@@ -123,7 +123,7 @@ enable = false
 {{- end }}
 server_id = "{{ .Values.wso2.apim.configurations.transactionCounter.serverId }}"
 
-{{ if .Values.wso2.apim.configurations.iskm.enabled }}
+{{- if .Values.wso2.apim.configurations.iskm.enabled }}
 [oauth.grant_type.token_exchange]
 enable = false
 allow_refresh_tokens = true
@@ -131,7 +131,7 @@ iat_validity_period = "1h"
 {{- end }}
 
 # JWT Generation
-{{ if .Values.wso2.apim.configurations.jwt.enabled }}
+{{- if .Values.wso2.apim.configurations.jwt.enabled }}
 [apim.jwt]
 enable = {{ .Values.wso2.apim.configurations.jwt.enabled }}
 encoding = {{ .Values.wso2.apim.configurations.jwt.encoding | quote }} # base64,base64url
@@ -253,24 +253,24 @@ shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.pas
 {{- end}}
 
 [apim.gateway_notification]
-enabled = {{ .Values.wso2..apim.configurations.gatewayNotification.enabled }}
-gateway_id = {{ .Values.wso2..apim.configurations.gatewayNotification.gatewayId | quote }}
+enabled = {{ .Values.wso2.apim.configurations.gatewayNotification.enabled }}
+gateway_id = {{ .Values.wso2.apim.configurations.gatewayNotification.gatewayId | quote }}
 
 [apim.gateway_notification.heartbeat]
-notify_interval = {{ .Values.wso2..apim.configurations.gatewayNotification.heartbeat.notifyInterval | quote }}
+notify_interval = {{ .Values.wso2.apim.configurations.gatewayNotification.heartbeat.notifyInterval | quote }}
 
 [apim.gateway_notification.deployment_ack]
-batch_size = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchSize }}
-batch_interval = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchInterval | quote }}
-max_retry_count = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.maxRetryCount }}
-retry_duration = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.retryDuration | quote }}
-retry_progression_factor = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.retryProgressionFactor }}
-batch_processor_min_thread = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchProcessorMinThread }}
-batch_processor_max_thread = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchProcessorMaxThread }}
-batch_processor_keep_alive = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchProcessorKeepAlive | quote }}
-batch_processor_queue_size = {{ .Values.wso2..apim.configurations.gatewayNotification.deploymentAck.batchProcessorQueueSize }}
+batch_size = {{ .Values.wso2.apim.configurations.gatewayNotification.deploymentAck.batchSize }}
+batch_interval = {{ .Values.wso2.apim.configurations.gatewayNotification.deploymentAck.batchInterval | quote }}
+max_retry_count = {{ .Values.wso2.apim.configurations.gatewayNotification.deploymentAck.maxRetryCount }}
+retry_duration = {{ .Values.wso2.apim.configurations.gatewayNotification.deploymentAck.retryDuration | quote }}
+retry_progression_factor = {{ .Values.wso2.apim.configurations.gatewayNotification.deploymentAck.retryProgressionFactor }}
+batch_processor_min_thread = {{ .Values.wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorMinThread }}
+batch_processor_max_thread = {{ .Values.wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorMaxThread }}
+batch_processor_keep_alive = {{ .Values.wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorKeepAlive | quote }}
+batch_processor_queue_size = {{ .Values.wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorQueueSize }}
 
 [apim.gateway_notification.registration]
-max_retry_count = {{ .Values.wso2..apim.configurations.gatewayNotification.registration.maxRetryCount }}
-retry_duration = {{ .Values.wso2..apim.configurations.gatewayNotification.registration.retryDuration | quote }}
-retry_progression_factor = {{ .Values.wso2..apim.configurations.gatewayNotification.registration.retryProgressionFactor }}
+max_retry_count = {{ .Values.wso2.apim.configurations.gatewayNotification.registration.maxRetryCount }}
+retry_duration = {{ .Values.wso2.apim.configurations.gatewayNotification.registration.retryDuration | quote }}
+retry_progression_factor = {{ .Values.wso2.apim.configurations.gatewayNotification.registration.retryProgressionFactor }}

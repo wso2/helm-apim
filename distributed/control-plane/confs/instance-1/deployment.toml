@@ -296,8 +296,8 @@ token = "{{ .Values.wso2.apim.configurations.ai.vectorDbProvider.properties.toke
 
 {{- if .Values.wso2.apim.configurations.mcp.enabled }}
 [apim.mcp]
-enable = {{ .Values.wso2.apim.configurations.mcp.enabled }}
-{{-end }}
+enable = true
+{{- end }}
 
 [transport.https.properties]
 proxyPort = 443
