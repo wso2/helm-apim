@@ -1,6 +1,6 @@
 # wso2am-all-in-one
 
-![Version: 4.5.0-3](https://img.shields.io/badge/Version-4.5.0--3-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
+![Version: 4.6.0-1](https://img.shields.io/badge/Version-4.6.0--1-informational?style=flat-square) ![AppVersion: 4.6.0](https://img.shields.io/badge/AppVersion-4.6.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
@@ -12,7 +12,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | aws.efs.capacity | string | `""` | EFS capacity |
 | aws.efs.directoryPerms | string | `"0777"` | EFS directory permissions |
 | aws.efs.fileSystemId | string | `""` | EFS file system ID for mounting the persistent volume |
-| aws.enabled | bool | `true` | If AWS is used as the cloud provider |
+| aws.enabled | bool | `false` | If AWS is used as the cloud provider |
 | aws.region | string | `""` | AWS region |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword | object | `{"secretKey":"","secretName":""}` | Internal keystore password identifier in secrets manager |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey | string | `""` | AWS Secrets Manager secret key |
@@ -36,7 +36,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | azure.persistence.secretName | string | `""` | Azure file secret name |
 | azure.persistence.storageClass | string | `""` | Persistent volume storage class |
 | azure.serviceAccount | string | `"wso2am-all-in-one-svc-account"` |  |
-| gcp.enabled | bool | `true` | If GCP is used as the cloud provider |
+| gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
 | gcp.fs | object | `{"capacity":"","fileshares":{"carbonDB":{"fileShareName":"","fileStoreName":"","ip":""},"solr":{"fileShareName":"","fileStoreName":"","ip":""}},"location":"","network":"","tier":""}` | File Store configuration parameters |
 | gcp.fs.capacity | string | `""` | Storage capacity of the file system (in GB or other appropriate units) |
 | gcp.fs.fileshares | object | `{"carbonDB":{"fileShareName":"","fileStoreName":"","ip":""},"solr":{"fileShareName":"","fileStoreName":"","ip":""}}` | FileStore configuration for specific services |
