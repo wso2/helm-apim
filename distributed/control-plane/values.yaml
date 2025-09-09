@@ -187,7 +187,7 @@ kubernetes:
 wso2:  
   apim:
     # -- APIM version
-    version: "4.5.0"
+    version: "4.6.0"
     # -- Secure vauld enabled
     secureVaultEnabled: false
     # Logging related configurations
@@ -206,7 +206,7 @@ wso2:
     mountFrontendConfig: false
     # TOML configurations
     configurations:
-      gatewayType: "Regular,APK,AWS"
+      gatewayType: "Regular,APK,AWS,Azure,Kong"
       userStore:
         # -- User store type. 
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
@@ -265,7 +265,22 @@ wso2:
         token: ""
         key: ""
         endpoint: ""
-        token_endpoint: ""
+        tokenEndpoint: ""
+        embeddingProvider:
+          type: ""
+          properties:
+            apikey: ""
+            embeddingEndpoint: ""
+            embeddingModel: ""
+        vectorDbProvider:
+          type: ""
+          properties:
+            uri: ""
+            token: ""
+      
+      # -- APIM MCP related configurations
+      mcp:
+        enabled: true
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
@@ -327,6 +342,11 @@ wso2:
           httpHostname: "gw.wso2.com"
           websubHostname: "websub.wso2.com"
 
+      gatewayNotification:
+        cleanUp:
+          expiryTime: "2m"
+          dataRetentionPeriod: "30d"
+
       iskm:
         # -- If Identity Server is used as the Resident KM
         enabled: false
@@ -351,6 +371,7 @@ wso2:
         internalKeyIssuer: ""
       
       devportal:
+        mode: "HYBRID"
         enableApplicationSharing:
         applicationSharingType:
         applicationSharingImpl:
@@ -425,6 +446,36 @@ wso2:
         enabled: true
         organization_name_local_claim: "http://wso2.org/claims/organization"
         organization_id_local_claim: "http://wso2.org/claims/organizationId" 
+
+      # -- APIM distributed throttling configurations
+      distributedThrottling:
+        enable: false
+        type: "redis"
+        syncInterval: 1
+        corePoolSize: 5
+        keyvalueStore:
+          host: ""
+          port: 6379
+          user: ""
+          password: ""
+          maxTotal: 20
+          maxIdle: 20
+          minIdle: 4
+          blockWhenExhausted: true
+          testWhileIdle: true
+          minEvictableIdleTimeMillis: 3000
+          timeBetweenEvictionRunsMillis: 1200
+
+      # -- APIM tenant sharing configurations
+      tenantSharing:
+        enabled: false
+        type: ""
+        properties:
+          enableTenantSync: true
+          autoConfigureKeyManager: true
+          username: ""
+          password: ""
+          identityServerBaseUrl: ""
 
   deployment:
     # Container image configurations

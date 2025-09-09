@@ -11,7 +11,7 @@
 
 aws:
   # -- If AWS is used as the cloud provider
-  enabled: true
+  enabled: false
   efs:
     # -- EFS capacity
     capacity: ""
@@ -83,7 +83,7 @@ azure:
 # Google Cloud Platform (GCP) integration status
 gcp:
   # -- If GCP is used as the cloud provider
-  enabled: true
+  enabled: false
   # -- File Store configuration parameters
   fs:
     # -- Storage capacity of the file system (in GB or other appropriate units)
@@ -206,10 +206,20 @@ wso2:
   ELKAnalytics:
     enabled: false
 
+  # -- Moesif Analytics Parameters
+  moesifAnalytics:
+    enabled: false
+    # -- Moesif API key
+    key: ""
+    # -- Moesif publisher reporter class
+    publisherReporterClass: ""
+    # -- Moesif logger reporter level
+    loggerReporterLevel: ""
+
   # TOML configurations
   apim:
     # -- APIM version
-    version: "4.5.0"
+    version: "4.6.0"
     # -- Secure vauld enabled
     secureVaultEnabled: false
     # Logging related configurations
@@ -228,7 +238,7 @@ wso2:
     mountFrontendConfig: false
     # TOML configurations
     configurations:
-      gatewayType: "Regular,APK,AWS"
+      gatewayType: "Regular,APK,AWS,Azure,Kong"
       userStore:
         # -- User store type. 
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
@@ -286,7 +296,22 @@ wso2:
         token: ""
         key: ""
         endpoint: ""
-        token_endpoint: ""
+        tokenEndpoint: ""
+        embeddingProvider:
+          type: ""
+          properties:
+            apikey: ""
+            embeddingEndpoint: ""
+            embeddingModel: ""
+        vectorDbProvider:
+          type: ""
+          properties:
+            uri: ""
+            token: ""
+
+      # -- APIM MCP related configurations
+      mcp:
+        enabled: true
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
@@ -348,10 +373,38 @@ wso2:
           httpHostname: "gw.wso2.com"
           websubHostname: "websub.wso2.com"
 
+      gatewayNotification:
+        enabled: true
+        gatewayId: ""
+        heartbeat:
+          notifyInterval: "1m"
+        deploymentAck:
+          batchSize: 100
+          batchInterval: "2s"
+          maxRetryCount: 5
+          retryDuration: "10s"
+          retryProgressionFactor: 2
+          batchProcessorMinThread: 2
+          batchProcessorMaxThread: 8
+          batchProcessorKeepAlive: "1m"
+          batchProcessorQueueSize: 50
+        registration:
+          maxRetryCount: 5
+          retryDuration: "10s"
+          retryProgressionFactor: 2
+        cleanUp:
+          expiryTime: "2m"
+          dataRetentionPeriod: "30d"
+        
       syncRuntimeArtifacts:
         gateway:
           # -- Gateway label used to filter out artifact retrieval
           labels: ["Default"]
+        tenantLoading:
+          # -- Enable tenant loading in the gateway for artifacts
+          enabled: false
+          # -- Tenants to be loaded in the gateway for artifacts.
+          tenants: "*"
 
       iskm:
         # If Identity Server is used as the Resident KM
@@ -429,6 +482,7 @@ wso2:
 
       # APIM Devportal configurations
       devportal:
+        mode: "HYBRID"
         enableApplicationSharing: 
         applicationSharingType: 
         applicationSharingImpl: 
@@ -454,7 +508,7 @@ wso2:
       publisher:
         # -- Supported document types in Publisher. 
         # This should be used only if there are additional document types to be supported.
-        enable_api_doc_visibility: false
+        enableApiDocVisibility: false
         supportedDocumentTypes: ""
         enablePortalConfigurationOnlyMode: false
         internalKeyIssuer: ""
@@ -564,6 +618,7 @@ wso2:
       keyManager:
         enableLightweightAPIKeyGeneration: true
         allowSubscriptionValidationDisabling: true
+        skipCreateResidentKeyManager: false
 
       transactionCounter:
         enabled: false
@@ -587,6 +642,16 @@ wso2:
         enabled: true
         organization_name_local_claim: "http://wso2.org/claims/organization"
         organization_id_local_claim: "http://wso2.org/claims/organizationId" 
+
+      tenantSharing:
+        enabled: false
+        type: ""
+        properties:
+          enableTenantSync: true
+          autoConfigureKeyManager: true
+          username: ""
+          password: ""
+          identityServerBaseUrl: ""
 
   deployment:
     # Configure High Availability

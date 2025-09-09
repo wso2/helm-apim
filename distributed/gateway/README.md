@@ -1,6 +1,6 @@
 # wso2am-universal-gw
 
-![Version: 4.5.0-3](https://img.shields.io/badge/Version-4.5.0--3-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
+![Version: 4.6.0-1](https://img.shields.io/badge/Version-4.6.0--1-informational?style=flat-square) ![AppVersion: 4.6.0](https://img.shields.io/badge/AppVersion-4.6.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 
@@ -78,6 +78,21 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.configurations.eventhub.servicePort | int | `9443` | Event hub (control plane) service port |
 | wso2.apim.configurations.eventhub.serviceUrl | string | `"wso2am-cp-service"` | Event hub (control plane) loadbalancer service url |
 | wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchInterval | string | `"2s"` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorKeepAlive | string | `"1m"` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorMaxThread | int | `8` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorMinThread | int | `2` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorQueueSize | int | `50` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchSize | int | `100` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.maxRetryCount | int | `5` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.retryDuration | string | `"10s"` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.retryProgressionFactor | int | `2` |  |
+| wso2.apim.configurations.gatewayNotification.enabled | bool | `true` |  |
+| wso2.apim.configurations.gatewayNotification.gatewayId | string | `""` |  |
+| wso2.apim.configurations.gatewayNotification.heartbeat.notifyInterval | string | `"1m"` |  |
+| wso2.apim.configurations.gatewayNotification.registration.maxRetryCount | int | `5` |  |
+| wso2.apim.configurations.gatewayNotification.registration.retryDuration | string | `"10s"` |  |
+| wso2.apim.configurations.gatewayNotification.registration.retryProgressionFactor | int | `2` |  |
 | wso2.apim.configurations.iskm.enabled | bool | `false` |  |
 | wso2.apim.configurations.iskm.serviceName | string | `""` |  |
 | wso2.apim.configurations.jwt.claimDialect | string | `"http://wso2.org/claims"` |  |
@@ -120,7 +135,9 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.configurations.security.keystores.tls.password | string | `""` | TLS keystore password |
 | wso2.apim.configurations.security.truststore.name | string | `"client-truststore.jks"` | Truststore name |
 | wso2.apim.configurations.security.truststore.password | string | `""` | Truststore password |
-| wso2.apim.configurations.sync_runtime_artifacts.gateway.labels | list | `["Default"]` | Gateway label used to filter out artifact retrieval |
+| wso2.apim.configurations.syncRuntimeArtifacts.gateway.labels | list | `["Default"]` | Gateway label used to filter out artifact retrieval |
+| wso2.apim.configurations.syncRuntimeArtifacts.tenantLoading.enabled | bool | `false` | Enable tenant loading in the gateway for artifacts |
+| wso2.apim.configurations.syncRuntimeArtifacts.tenantLoading.tenants | string | `"*"` | Tenants to be loaded in the gateway for artifacts. |
 | wso2.apim.configurations.throttling.headerBasedThrottling | bool | `false` | Enable header based throttling |
 | wso2.apim.configurations.throttling.jwtClaimBasedThrottling | bool | `false` | Enable JWT claim based throttling |
 | wso2.apim.configurations.throttling.portOffset | int | `0` |  |
@@ -140,7 +157,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
-| wso2.apim.version | string | `"4.5.0"` | APIM version |
+| wso2.apim.version | string | `"4.6.0"` | APIM version |
 | wso2.choreoAnalytics | object | `{"enabled":false,"endpoint":"","onpremKey":""}` | WSO2 Choreo Analytics Parameters If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/). |
 | wso2.choreoAnalytics.endpoint | string | `""` | Choreo Analytics cloud service endpoint |
 | wso2.choreoAnalytics.onpremKey | string | `""` | On-premise key for Choreo Analytics |
@@ -174,6 +191,10 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
 | wso2.deployment.strategy.rollingUpdate.maxSurge | int | `2` |  |
 | wso2.deployment.strategy.rollingUpdate.maxUnavailable | int | `0` |  |
+| wso2.moesifAnalytics | object | `{"enabled":false,"key":"","loggerReporterLevel":"","publisherReporterClass":""}` | Moesif Analytics Parameters |
+| wso2.moesifAnalytics.key | string | `""` | Moesif API key |
+| wso2.moesifAnalytics.loggerReporterLevel | string | `""` | Moesif logger reporter level |
+| wso2.moesifAnalytics.publisherReporterClass | string | `""` | Moesif publisher reporter class |
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)
+Autogenerated from chart metadata using [helm-docs v1.11.2](https://github.com/norwoodj/helm-docs/releases/v1.11.2)

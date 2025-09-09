@@ -1,6 +1,6 @@
 # wso2am-all-in-one
 
-![Version: 4.5.0-3](https://img.shields.io/badge/Version-4.5.0--2-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
+![Version: 4.6.0-1](https://img.shields.io/badge/Version-4.6.0--1-informational?style=flat-square) ![AppVersion: 4.6.0](https://img.shields.io/badge/AppVersion-4.6.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
@@ -12,7 +12,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | aws.efs.capacity | string | `""` | EFS capacity |
 | aws.efs.directoryPerms | string | `"0777"` | EFS directory permissions |
 | aws.efs.fileSystemId | string | `""` | EFS file system ID for mounting the persistent volume |
-| aws.enabled | bool | `true` | If AWS is used as the cloud provider |
+| aws.enabled | bool | `false` | If AWS is used as the cloud provider |
 | aws.region | string | `""` | AWS region |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword | object | `{"secretKey":"","secretName":""}` | Internal keystore password identifier in secrets manager |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey | string | `""` | AWS Secrets Manager secret key |
@@ -36,7 +36,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | azure.persistence.secretName | string | `""` | Azure file secret name |
 | azure.persistence.storageClass | string | `""` | Persistent volume storage class |
 | azure.serviceAccount | string | `"wso2am-all-in-one-svc-account"` |  |
-| gcp.enabled | bool | `true` | If GCP is used as the cloud provider |
+| gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
 | gcp.fs | object | `{"capacity":"","fileshares":{"carbonDB":{"fileShareName":"","fileStoreName":"","ip":""},"solr":{"fileShareName":"","fileStoreName":"","ip":""}},"location":"","network":"","tier":""}` | File Store configuration parameters |
 | gcp.fs.capacity | string | `""` | Storage capacity of the file system (in GB or other appropriate units) |
 | gcp.fs.fileshares | object | `{"carbonDB":{"fileShareName":"","fileStoreName":"","ip":""},"solr":{"fileShareName":"","fileStoreName":"","ip":""}}` | FileStore configuration for specific services |
@@ -86,7 +86,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.ELKAnalytics | object | `{"enabled":false}` | ELK Analytics Parameters |
 | wso2.apim.configurations.adminPassword | string | `"admin"` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `"admin"` | Super admin username |
-| wso2.apim.configurations.ai | object | `{"enabled":false,"endpoint":"","key":"","token":"","token_endpoint":""}` | APIM AI related configurations |
+| wso2.apim.configurations.ai | object | `{"embeddingProvider":{"properties":{"apikey":"","embeddingEndpoint":"","embeddingModel":""},"type":""},"enabled":false,"endpoint":"","key":"","token":"","tokenEndpoint":"","vectorDbProvider":{"properties":{"token":"","uri":""},"type":""}}` | APIM AI related configurations |
 | wso2.apim.configurations.cache.gateway_token.enabled | bool | `true` | Gateway token cache enabled |
 | wso2.apim.configurations.cache.gateway_token.expiryTime | string | `"15m"` | Gateway token cache expiration time |
 | wso2.apim.configurations.cache.jwt_claim.enabled | bool | `true` | Gateway JWT claim cache enabled |
@@ -131,6 +131,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.devportal.enableKeyProvisioning | string | `nil` |  |
 | wso2.apim.configurations.devportal.enableRatings | string | `nil` | Whether to display ratings for API |
 | wso2.apim.configurations.devportal.loginUsernameCaseInsensitive | string | `nil` |  |
+| wso2.apim.configurations.devportal.mode | string | `"HYBRID"` |  |
 | wso2.apim.configurations.eventHandlers[0].name | string | `"userPostSelfRegistration"` |  |
 | wso2.apim.configurations.eventHandlers[0].subscriptions[0] | string | `"POST_ADD_USER"` |  |
 | wso2.apim.configurations.eventListeners[0].id | string | `"token_revocation"` |  |
@@ -139,7 +140,24 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.eventListeners[0].properties.notificationEndpoint | string | `"https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"` |  |
 | wso2.apim.configurations.eventListeners[0].type | string | `"org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"` |  |
 | wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","visibility":null,"websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
-| wso2.apim.configurations.gatewayType | string | `"Regular,APK,AWS"` |  |
+| wso2.apim.configurations.gatewayNotification.cleanUp.dataRetentionPeriod | string | `"30d"` |  |
+| wso2.apim.configurations.gatewayNotification.cleanUp.expiryTime | string | `"2m"` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchInterval | string | `"2s"` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorKeepAlive | string | `"1m"` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorMaxThread | int | `8` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorMinThread | int | `2` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorQueueSize | int | `50` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.batchSize | int | `100` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.maxRetryCount | int | `5` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.retryDuration | string | `"10s"` |  |
+| wso2.apim.configurations.gatewayNotification.deploymentAck.retryProgressionFactor | int | `2` |  |
+| wso2.apim.configurations.gatewayNotification.enabled | bool | `true` |  |
+| wso2.apim.configurations.gatewayNotification.gatewayId | string | `""` |  |
+| wso2.apim.configurations.gatewayNotification.heartbeat.notifyInterval | string | `"1m"` |  |
+| wso2.apim.configurations.gatewayNotification.registration.maxRetryCount | int | `5` |  |
+| wso2.apim.configurations.gatewayNotification.registration.retryDuration | string | `"10s"` |  |
+| wso2.apim.configurations.gatewayNotification.registration.retryProgressionFactor | int | `2` |  |
+| wso2.apim.configurations.gatewayType | string | `"Regular,APK,AWS,Azure,Kong"` |  |
 | wso2.apim.configurations.governance.scheduler | object | `{"queue_size":"","task_check_interval_minutes":"","task_cleanup_interval_minutes":"","thread_pool_size":""}` | Override the default values of governance.scheduler if any value exists |
 | wso2.apim.configurations.iskm.enabled | bool | `false` |  |
 | wso2.apim.configurations.iskm.revokeURL | string | `""` |  |
@@ -154,6 +172,8 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.jwt.signingAlgorithm | string | `"SHA256withRSA"` |  |
 | wso2.apim.configurations.keyManager.allowSubscriptionValidationDisabling | bool | `true` |  |
 | wso2.apim.configurations.keyManager.enableLightweightAPIKeyGeneration | bool | `true` |  |
+| wso2.apim.configurations.keyManager.skipCreateResidentKeyManager | bool | `false` |  |
+| wso2.apim.configurations.mcp | object | `{"enabled":true}` | APIM MCP related configurations |
 | wso2.apim.configurations.notification.enableAuthentication | bool | `false` |  |
 | wso2.apim.configurations.notification.enableStartTls | bool | `false` |  |
 | wso2.apim.configurations.notification.fromAddress | string | `nil` |  |
@@ -171,8 +191,8 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.organization_based_access_control.enabled | bool | `true` |  |
 | wso2.apim.configurations.organization_based_access_control.organization_id_local_claim | string | `"http://wso2.org/claims/organizationId"` |  |
 | wso2.apim.configurations.organization_based_access_control.organization_name_local_claim | string | `"http://wso2.org/claims/organization"` |  |
+| wso2.apim.configurations.publisher.enableApiDocVisibility | bool | `false` | Supported document types in Publisher.  This should be used only if there are additional document types to be supported. |
 | wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode | bool | `false` |  |
-| wso2.apim.configurations.publisher.enable_api_doc_visibility | bool | `false` | Supported document types in Publisher.  This should be used only if there are additional document types to be supported. |
 | wso2.apim.configurations.publisher.internalKeyIssuer | string | `""` |  |
 | wso2.apim.configurations.publisher.supportedDocumentTypes | string | `""` |  |
 | wso2.apim.configurations.sdk.supportedLanguages[0] | string | `"android"` |  |
@@ -208,6 +228,15 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.security.truststore.password | string | `""` | Truststore password |
 | wso2.apim.configurations.serviceProvider.spNameRegex | string | `"^[\\sa-zA-Z0-9._-]*$"` |  |
 | wso2.apim.configurations.syncRuntimeArtifacts.gateway.labels | list | `["Default"]` | Gateway label used to filter out artifact retrieval |
+| wso2.apim.configurations.syncRuntimeArtifacts.tenantLoading.enabled | bool | `false` | Enable tenant loading in the gateway for artifacts |
+| wso2.apim.configurations.syncRuntimeArtifacts.tenantLoading.tenants | string | `"*"` | Tenants to be loaded in the gateway for artifacts. |
+| wso2.apim.configurations.tenantSharing.enabled | bool | `false` |  |
+| wso2.apim.configurations.tenantSharing.properties.autoConfigureKeyManager | bool | `true` |  |
+| wso2.apim.configurations.tenantSharing.properties.enableTenantSync | bool | `true` |  |
+| wso2.apim.configurations.tenantSharing.properties.identityServerBaseUrl | string | `""` |  |
+| wso2.apim.configurations.tenantSharing.properties.password | string | `""` |  |
+| wso2.apim.configurations.tenantSharing.properties.username | string | `""` |  |
+| wso2.apim.configurations.tenantSharing.type | string | `""` |  |
 | wso2.apim.configurations.throttling.blacklistCondition.period | string | `nil` |  |
 | wso2.apim.configurations.throttling.blacklistCondition.startDelay | string | `nil` |  |
 | wso2.apim.configurations.throttling.enableBlacklistCondition | bool | `true` |  |
@@ -223,6 +252,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.throttling.eventSync.hostname | string | `nil` |  |
 | wso2.apim.configurations.throttling.eventSync.port | string | `nil` |  |
 | wso2.apim.configurations.throttling.jms.startDelay | string | `nil` |  |
+| wso2.apim.configurations.throttling.portOffset | int | `0` |  |
 | wso2.apim.configurations.throttling.throttleDecisionEndpoints | list | `[]` |  |
 | wso2.apim.configurations.token.revocation.EnablePersistentNotifier | bool | `true` |  |
 | wso2.apim.configurations.token.revocation.EnableRealtimeNotifier | bool | `true` |  |
@@ -263,10 +293,11 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
-| wso2.apim.version | string | `"4.5.0"` | APIM version |
+| wso2.apim.version | string | `"4.6.0"` | APIM version |
 | wso2.choreoAnalytics | object | `{"enabled":false,"endpoint":"","onpremKey":""}` | WSO2 Choreo Analytics Parameters If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/). |
 | wso2.choreoAnalytics.endpoint | string | `""` | Choreo Analytics cloud service endpoint |
 | wso2.choreoAnalytics.onpremKey | string | `""` | On-premise key for Choreo Analytics |
+| wso2.deployment.highAvailability | bool | `false` |  |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
 | wso2.deployment.image.imagePullSecrets | object | `{"enabled":false,"password":"","username":""}` | Container registry credentials. Specify image pull secrets for private registries |
@@ -294,6 +325,10 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.deployment.startupProbe.failureThreshold | int | `5` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.startupProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before startup probes are initiated |
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
+| wso2.moesifAnalytics | object | `{"enabled":false,"key":"","loggerReporterLevel":"","publisherReporterClass":""}` | Moesif Analytics Parameters |
+| wso2.moesifAnalytics.key | string | `""` | Moesif API key |
+| wso2.moesifAnalytics.loggerReporterLevel | string | `""` | Moesif logger reporter level |
+| wso2.moesifAnalytics.publisherReporterClass | string | `""` | Moesif publisher reporter class |
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)
+Autogenerated from chart metadata using [helm-docs v1.11.2](https://github.com/norwoodj/helm-docs/releases/v1.11.2)
