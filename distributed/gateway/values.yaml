@@ -266,10 +266,15 @@ wso2:
         # Kubernetes service name exposing Identity Server
         serviceName: ""
 
-      sync_runtime_artifacts:
+      syncRuntimeArtifacts:
         gateway:
           # -- Gateway label used to filter out artifact retrieval
           labels: ["Default"]
+        tenantLoading:
+          # -- Enable tenant loading in the gateway for artifacts
+          enabled: false
+          # -- Tenants to be loaded in the gateway for artifacts.
+          tenants: "*"
       
       gatewayNotification:
         enabled: true

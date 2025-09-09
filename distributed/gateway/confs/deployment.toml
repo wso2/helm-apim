@@ -144,7 +144,13 @@ claims_extractor_impl = {{ .Values.wso2.apim.configurations.jwt.claimsExtractorI
 {{- end }}
 
 [apim.sync_runtime_artifacts.gateway]
-gateway_labels = {{ toJson .Values.wso2.apim.configurations.sync_runtime_artifacts.gateway.labels }}
+gateway_labels = {{ toJson .Values.wso2.apim.configurations.syncRuntimeArtifacts.gateway.labels }}
+
+{{- if .Values.wso2.apim.configurations.syncRuntimeArtifacts.tenantLoading.enabled }}
+[apim.sync_runtime_artifacts.tenant_loading]
+enable = true
+tenants = {{ .Values.wso2.apim.configurations.syncRuntimeArtifacts.tenantLoading.tenants | quote }}
+{{- end }}
 
 # Traffic Manager configurations
 [apim.throttling]

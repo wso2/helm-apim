@@ -135,7 +135,9 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.configurations.security.keystores.tls.password | string | `""` | TLS keystore password |
 | wso2.apim.configurations.security.truststore.name | string | `"client-truststore.jks"` | Truststore name |
 | wso2.apim.configurations.security.truststore.password | string | `""` | Truststore password |
-| wso2.apim.configurations.sync_runtime_artifacts.gateway.labels | list | `["Default"]` | Gateway label used to filter out artifact retrieval |
+| wso2.apim.configurations.syncRuntimeArtifacts.gateway.labels | list | `["Default"]` | Gateway label used to filter out artifact retrieval |
+| wso2.apim.configurations.syncRuntimeArtifacts.tenantLoading.enabled | bool | `false` | Enable tenant loading in the gateway for artifacts |
+| wso2.apim.configurations.syncRuntimeArtifacts.tenantLoading.tenants | string | `"*"` | Tenants to be loaded in the gateway for artifacts. |
 | wso2.apim.configurations.throttling.headerBasedThrottling | bool | `false` | Enable header based throttling |
 | wso2.apim.configurations.throttling.jwtClaimBasedThrottling | bool | `false` | Enable JWT claim based throttling |
 | wso2.apim.configurations.throttling.portOffset | int | `0` |  |

@@ -228,6 +228,8 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.security.truststore.password | string | `""` | Truststore password |
 | wso2.apim.configurations.serviceProvider.spNameRegex | string | `"^[\\sa-zA-Z0-9._-]*$"` |  |
 | wso2.apim.configurations.syncRuntimeArtifacts.gateway.labels | list | `["Default"]` | Gateway label used to filter out artifact retrieval |
+| wso2.apim.configurations.syncRuntimeArtifacts.tenantLoading.enabled | bool | `false` | Enable tenant loading in the gateway for artifacts |
+| wso2.apim.configurations.syncRuntimeArtifacts.tenantLoading.tenants | string | `"*"` | Tenants to be loaded in the gateway for artifacts. |
 | wso2.apim.configurations.tenantSharing.enabled | bool | `false` |  |
 | wso2.apim.configurations.tenantSharing.properties.autoConfigureKeyManager | bool | `true` |  |
 | wso2.apim.configurations.tenantSharing.properties.enableTenantSync | bool | `true` |  |

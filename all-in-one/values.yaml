@@ -11,7 +11,7 @@
 
 aws:
   # -- If AWS is used as the cloud provider
-  enabled: true
+  enabled: false
   efs:
     # -- EFS capacity
     capacity: ""
@@ -83,7 +83,7 @@ azure:
 # Google Cloud Platform (GCP) integration status
 gcp:
   # -- If GCP is used as the cloud provider
-  enabled: true
+  enabled: false
   # -- File Store configuration parameters
   fs:
     # -- Storage capacity of the file system (in GB or other appropriate units)
@@ -400,6 +400,11 @@ wso2:
         gateway:
           # -- Gateway label used to filter out artifact retrieval
           labels: ["Default"]
+        tenantLoading:
+          # -- Enable tenant loading in the gateway for artifacts
+          enabled: false
+          # -- Tenants to be loaded in the gateway for artifacts.
+          tenants: "*"
 
       iskm:
         # If Identity Server is used as the Resident KM

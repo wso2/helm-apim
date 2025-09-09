@@ -206,6 +206,7 @@ wso2:
   ELKAnalytics:
     enabled: false
 
+  # -- Moesif Analytics Parameters
   moesifAnalytics:
     enabled: false
     # -- Moesif API key
@@ -399,6 +400,11 @@ wso2:
         gateway:
           # -- Gateway label used to filter out artifact retrieval
           labels: ["Default"]
+        tenantLoading:
+          # -- Enable tenant loading in the gateway for artifacts
+          enabled: false
+          # -- Tenants to be loaded in the gateway for artifacts.
+          tenants: "*"
 
       iskm:
         # If Identity Server is used as the Resident KM
@@ -659,9 +665,9 @@ wso2:
       # -- Registry containing the image
       registry: "docker.io"
       # -- Repository name consisting the image
-      repository: "wso2/wso2am:4.5.0"
+      repository: "wso2/wso2am:4.6.0-alpha"
       # -- Docker image digest
-      digest: "sha256:e42e5d2c922e2baa4073a9a13458038281f7753f594a87bd3fee75464e254bcb"
+      digest: "sha256:e69c6cf9250c425b6b13a0f991a2be9b3c8e3355c9b88ffc89fd3a3bea3ba929"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
