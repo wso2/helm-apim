@@ -376,7 +376,7 @@ type = "{{ .Values.wso2.apim.configurations.distributedThrottling.type }}"
 sync_interval = {{ .Values.wso2.apim.configurations.distributedThrottling.syncInterval }}
 core_pool_size = {{ .Values.wso2.apim.configurations.distributedThrottling.corePoolSize }}
 
-[apim.distributed_throttling.keyvalueStore]
+[apim.distributed_throttling.keyvalue_store]
 host = "{{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.host }}"
 port = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.port }}
 user = "{{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.user }}"
