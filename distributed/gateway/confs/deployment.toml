@@ -164,12 +164,21 @@ enable_header_based_throttling = {{ .Values.wso2.apim.configurations.throttling.
 enable_jwt_claim_based_throttling = {{ .Values.wso2.apim.configurations.throttling.jwtClaimBasedThrottling }}
 enable_query_param_based_throttling = {{ .Values.wso2.apim.configurations.throttling.queryParamBasedThrottling }}
 
+{{- if .Values.wso2.apim.configurations.distributedThrottling.enable }}
 [[apim.throttling.url_group]]
 {{- $len := add (len .Values.wso2.apim.configurations.throttling.urls) -1 }}
 traffic_manager_urls = [{{ range $index, $element := .Values.wso2.apim.configurations.throttling.urls }}"tcp://{{ $element }}:{{ add 9611 $.Values.wso2.apim.configurations.throttling.portOffset }}"{{ if ne $index $len }},{{ end }}{{ end}}]
 {{- $len := add (len .Values.wso2.apim.configurations.throttling.urls) -1 }}
 traffic_manager_auth_urls = [{{ range $index, $element := .Values.wso2.apim.configurations.throttling.urls }}"ssl://{{ $element }}:{{ add 9711 $.Values.wso2.apim.configurations.throttling.portOffset }}"{{ if ne $index $len }},{{ end }}{{ end}}]
 type = "loadbalance"
+{{- else }}
+{{ range $index, $url := .Values.wso2.apim.configurations.throttling.urls }}
+[[apim.throttling.url_group]]
+traffic_manager_urls = ["tcp://{{ $url }}:{{ add 9611 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+traffic_manager_auth_urls = ["ssl://{{ $url }}:{{ add 9711 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+type = "loadbalance"
+{{- end }}
+{{- end }}
 
 {{- if .Values.wso2.apim.configurations.eventhub.enabled }}
 [apim.event_hub]

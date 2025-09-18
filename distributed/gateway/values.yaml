@@ -310,7 +310,7 @@ wso2:
         # JWT generation implementation.
         generatorImpl: "org.wso2.carbon.apimgt.keymgt.token.JWTGenerator"
         # Enable end user claim mapping
-        enableUserClaims: "false"
+        enableUserClaims: false
         # JWT claims extractor implementation. eg: org.wso2.carbon.apimgt.impl.token.DefaultClaimsRetriever
         claimsExtractorImpl: "org.wso2.carbon.apimgt.impl.token.DefaultClaimsRetriever"
       
@@ -333,6 +333,11 @@ wso2:
         jwtClaimBasedThrottling: false
         # -- Enable query param based throttling
         queryParamBasedThrottling: false
+
+      # -- APIM distributed throttling configurations
+      distributedThrottling:
+        # -- Distributed throttling enabled in traffic manager
+        enable: false
 
       eventhub:
         # -- Event hub (control plane) enabled.
