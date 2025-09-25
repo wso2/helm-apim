@@ -74,6 +74,8 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.configurations.databases.shared_db.url | string | `""` | APIM SharedDB URL |
 | wso2.apim.configurations.databases.shared_db.username | string | `""` | APIM SharedDB username |
 | wso2.apim.configurations.databases.type | string | `""` | Database type. eg: mysql, oracle, mssql, postgres |
+| wso2.apim.configurations.distributedThrottling | object | `{"enable":false}` | APIM distributed throttling configurations |
+| wso2.apim.configurations.distributedThrottling.enable | bool | `false` | Distributed throttling enabled in traffic manager |
 | wso2.apim.configurations.eventhub.enabled | bool | `false` | Event hub (control plane) enabled. This should be enabled if the traffic manager is separated from the control-plane. |
 | wso2.apim.configurations.eventhub.servicePort | int | `9443` | Event hub (control plane) service port |
 | wso2.apim.configurations.eventhub.serviceUrl | string | `"wso2am-cp-service"` | Event hub (control plane) loadbalancer service url |
