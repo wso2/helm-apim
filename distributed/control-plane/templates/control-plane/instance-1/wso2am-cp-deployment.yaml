@@ -81,6 +81,27 @@ spec:
               fieldPath: status.podIP
         - name: JVM_MEM_OPTS
           value: "-Xms{{ .Values.wso2.deployment.resources.jvm.memory.xms }} -Xmx{{ .Values.wso2.deployment.resources.jvm.memory.xmx }}"
+        {{- if and .Values.wso2.apim.configurations.adminPasswordExistingSecret.secretName .Values.wso2.apim.configurations.adminPasswordExistingSecret.secretKey }}
+        - name: WSO2_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.adminPasswordExistingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.adminPasswordExistingSecret.secretKey }}
+        {{- end }}
+        {{- if and .Values.wso2.apim.configurations.databases.apim_db.passwordExistingSecret.secretName .Values.wso2.apim.configurations.databases.apim_db.passwordExistingSecret.secretKey }}
+        - name: WSO2_APIM_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.databases.apim_db.passwordExistingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.databases.apim_db.passwordExistingSecret.secretKey }}
+        {{- end }}
+        {{- if and .Values.wso2.apim.configurations.databases.shared_db.passwordExistingSecret.secretName .Values.wso2.apim.configurations.databases.shared_db.passwordExistingSecret.secretKey }}
+        - name: WSO2_SHARED_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.databases.shared_db.passwordExistingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.databases.shared_db.passwordExistingSecret.secretKey }}
+        {{- end }}
         startupProbe:
           exec:
             command:

@@ -14,7 +14,9 @@ type = {{ .Values.wso2.apim.configurations.userStore.type | quote }}
 
 [super_admin]
 username = {{ .Values.wso2.apim.configurations.adminUsername | quote }}
-{{- if .Values.wso2.apim.secureVaultEnabled }}
+{{- if and .Values.wso2.apim.configurations.adminPasswordExistingSecret.secretName .Values.wso2.apim.configurations.adminPasswordExistingSecret.secretKey }}
+password = "${env:WSO2_ADMIN_PASSWORD}"
+{{- else if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{admin_password}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
@@ -23,9 +25,11 @@ create_admin_account = true
 
 [database.apim_db]
 type = "{{ .Values.wso2.apim.configurations.databases.type }}"
-url = "{{ .Values.wso2.apim.configurations.databases.apim_db.url}}"
+url = "{{ .Values.wso2.apim.configurations.databases.apim_db.url }}"
 username = "{{ .Values.wso2.apim.configurations.databases.apim_db.username }}"
-{{- if .Values.wso2.apim.secureVaultEnabled }}
+{{- if and .Values.wso2.apim.configurations.databases.apim_db.passwordExistingSecret.secretName .Values.wso2.apim.configurations.databases.apim_db.passwordExistingSecret.secretKey }}
+password = "${env:WSO2_APIM_DB_PASSWORD}"
+{{- else if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{apim_db_password}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote }}
@@ -39,22 +43,24 @@ driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
 
 [database.shared_db]
 type = "{{ .Values.wso2.apim.configurations.databases.type }}"
-url = "{{ .Values.wso2.apim.configurations.databases.shared_db.url}}"
+url = "{{ .Values.wso2.apim.configurations.databases.shared_db.url }}"
 username = "{{ .Values.wso2.apim.configurations.databases.shared_db.username }}"
-{{- if .Values.wso2.apim.secureVaultEnabled }}
+{{- if and .Values.wso2.apim.configurations.databases.shared_db.passwordExistingSecret.secretName .Values.wso2.apim.configurations.databases.shared_db.passwordExistingSecret.secretKey }}
+password = "${env:WSO2_SHARED_DB_PASSWORD}"
+{{- else if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{shared_db_password}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote }}
 {{- end }}
 driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
 
-[apim]
-gateway_type = "{{ .Values.wso2.apim.configurations.gatewayType }}"
-
 [database.shared_db.pool_options]
 {{- range $key, $value := .Values.wso2.apim.configurations.databases.shared_db.poolParameters }}
 {{ $key }} = "{{ $value }}"
 {{- end }}
+
+[apim]
+gateway_type = "{{ .Values.wso2.apim.configurations.gatewayType }}"
 
 {{- if .Values.wso2.apim.configurations.security.keystores.primary.enabled }}
 [keystore.primary]

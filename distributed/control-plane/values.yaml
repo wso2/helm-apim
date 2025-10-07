@@ -201,7 +201,7 @@ wso2:
   apim:
     # -- APIM version
     version: "4.6.0"
-    # -- Secure vauld enabled
+    # -- Secure vault enabled
     secureVaultEnabled: false
     # Logging related configurations
     log4j2:
@@ -231,6 +231,10 @@ wso2:
       adminUsername: ""
       # -- Super admin password
       adminPassword: ""
+      # -- Read password from secret
+      adminPasswordExistingSecret:
+        secretName: "" # e.g apim-admin-secret
+        secretKey: ""  # e.g adminpassword
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
         type: ""
@@ -245,6 +249,10 @@ wso2:
           username: ""
           # -- APIM AM_DB password
           password: ""
+          # -- Read password from secret
+          passwordExistingSecret:
+            secretName: "" # e.g apim-db-secret
+            secretKey: ""  # e.g password
           # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
@@ -262,6 +270,10 @@ wso2:
           username: ""
           # -- APIM SharedDB password
           password: ""
+          # -- Read password from secret
+          passwordExistingSecret:
+            secretName: "" # e.g apim-shared-db-secret
+            secretKey: "" # e.g password
           # -- APIM shared database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
