@@ -665,9 +665,9 @@ wso2:
       # -- Registry containing the image
       registry: "docker.io"
       # -- Repository name consisting the image
-      repository: "wso2/wso2am:4.6.0-alpha"
+      repository: "wso2/wso2am:4.6.0-alpha3"
       # -- Docker image digest
-      digest: "sha256:e69c6cf9250c425b6b13a0f991a2be9b3c8e3355c9b88ffc89fd3a3bea3ba929"
+      digest: "sha256:e730963506b0344659c11ad55a1488bcbd595a50efd23f54503d90d0ac52dc23"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
