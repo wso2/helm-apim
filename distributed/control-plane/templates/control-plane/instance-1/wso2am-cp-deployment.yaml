@@ -177,6 +177,7 @@ spec:
           mountPath: /mnt/secrets-store
           readOnly: true
         {{- end }}
+        {{- if .Values.kubernetes.extraVolumeMounts }}{{ toYaml .Values.kubernetes.extraVolumeMounts | nindent 8 }}{{- end }}
         {{- if .Values.wso2.apim.configurations.security.jksSecretName }}
         - name: wso2am-control-plane-keystores
           mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.truststore.name }}
@@ -261,6 +262,7 @@ spec:
             secretProviderClass: {{ .Values.gcp.secretsManager.secretProviderClass }}
           {{- end }}
       {{- end }}
+      {{- if .Values.kubernetes.extraVolumes }}{{ toYaml .Values.kubernetes.extraVolumes | nindent 6 }}{{- end }}
       {{- if .Values.wso2.apim.configurations.security.jksSecretName }}
       - name: wso2am-control-plane-keystores
         secret:
