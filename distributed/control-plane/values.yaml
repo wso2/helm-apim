@@ -439,7 +439,7 @@ wso2:
       # APIM Transaction Counter configurations
       transactionCounter:
         enabled: false
-        serviceUrl: ""
+        serverUrl: ""
 
       # Organization level access control configurations
       organization_based_access_control:

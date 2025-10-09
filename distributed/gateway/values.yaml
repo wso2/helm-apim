@@ -430,6 +430,7 @@ wso2:
       transactionCounter:
         enabled: false
         serverId: "Gateway1"
+        serverUrl: "https://apim-acp-wso2am-acp-service:9443/internal/data/v1/transaction-records"
 
   deployment:
     # Container image configurations
