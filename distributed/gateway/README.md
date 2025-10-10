@@ -150,6 +150,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.configurations.throttling.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Traffic manager service urls. You only need to define one if the TM is not in HA. |
 | wso2.apim.configurations.transactionCounter.enabled | bool | `false` |  |
 | wso2.apim.configurations.transactionCounter.serverId | string | `"Gateway1"` |  |
+| wso2.apim.configurations.transactionCounter.serverUrl | string | `"https://apim-acp-wso2am-acp-service:9443/internal/data/v1/transaction-records"` |  |
 | wso2.apim.configurations.transport.passthru_https.sender.parameters.hostnameVerifier | string | `"AllowAll"` | Hostname verifier. https://apim.docs.wso2.com/en/latest/install-and-setup/setup/security/enabling-hostname-verification/#configuring-hostname-verification |
 | wso2.apim.configurations.userStore.properties | object | `{"key":"value"}` | User store properties |
 | wso2.apim.configurations.userStore.type | string | `"database_unique_id"` | User store type.  https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/ |

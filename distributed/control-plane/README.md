@@ -173,7 +173,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.configurations.security.truststore.password | string | `""` | Truststore password |
 | wso2.apim.configurations.tenantSharing | object | `{"enabled":false,"properties":{"autoConfigureKeyManager":true,"enableTenantSync":true,"identityServerBaseUrl":"","password":"","username":""},"type":""}` | APIM tenant sharing configurations |
 | wso2.apim.configurations.transactionCounter.enabled | bool | `false` |  |
-| wso2.apim.configurations.transactionCounter.serviceUrl | string | `""` |  |
+| wso2.apim.configurations.transactionCounter.serverUrl | string | `""` |  |
 | wso2.apim.configurations.userStore.properties | object | `{"key":"value"}` | User store properties |
 | wso2.apim.configurations.userStore.type | string | `"database_unique_id"` | User store type.  https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/ |
 | wso2.apim.log4j2.appenders | string | `""` | Appenders |
