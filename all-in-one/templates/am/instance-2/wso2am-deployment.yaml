@@ -76,6 +76,27 @@ spec:
                   fieldPath: status.podIP
             - name: JVM_MEM_OPTS
               value: "-Xms{{ .Values.wso2.deployment.resources.jvm.memory.xms }} -Xmx{{ .Values.wso2.deployment.resources.jvm.memory.xmx }}"
+            {{- if and .Values.wso2.apim.configurations.adminPasswordExistingSecret.secretName .Values.wso2.apim.configurations.adminPasswordExistingSecret.secretKey }}
+            - name: WSO2_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.wso2.apim.configurations.adminPasswordExistingSecret.secretName }}
+                  key:  {{ .Values.wso2.apim.configurations.adminPasswordExistingSecret.secretKey }}
+            {{- end }}
+            {{- if and .Values.wso2.apim.configurations.databases.apim_db.passwordExistingSecret.secretName .Values.wso2.apim.configurations.databases.apim_db.passwordExistingSecret.secretKey }}
+            - name: WSO2_APIM_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.wso2.apim.configurations.databases.apim_db.passwordExistingSecret.secretName }}
+                  key:  {{ .Values.wso2.apim.configurations.databases.apim_db.passwordExistingSecret.secretKey }}
+            {{- end }}
+            {{- if and .Values.wso2.apim.configurations.databases.shared_db.passwordExistingSecret.secretName .Values.wso2.apim.configurations.databases.shared_db.passwordExistingSecret.secretKey }}
+            - name: WSO2_SHARED_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.wso2.apim.configurations.databases.shared_db.passwordExistingSecret.secretName }}
+                  key:  {{ .Values.wso2.apim.configurations.databases.shared_db.passwordExistingSecret.secretKey }}
+            {{- end }}
           startupProbe:
             exec:
               command:
@@ -178,6 +199,7 @@ spec:
               mountPath: /mnt/secrets-store
               readOnly: true
             {{- end }}
+            {{- if .Values.kubernetes.extraVolumeMounts }}{{ toYaml .Values.kubernetes.extraVolumeMounts | nindent 8 }}{{- end }}
             {{- if .Values.wso2.apim.configurations.security.jksSecretName }}
             - name: wso2am-keystores
               mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.truststore.name }}
@@ -263,6 +285,7 @@ spec:
               secretProviderClass: {{ .Values.gcp.secretsManager.secretProviderClass }}
             {{- end }}
         {{- end }}
+        {{- if .Values.kubernetes.extraVolumes }}{{ toYaml .Values.kubernetes.extraVolumes | nindent 6 }}{{- end }}
         {{- if .Values.wso2.apim.configurations.security.jksSecretName }}
         - name: wso2am-keystores
           secret:
