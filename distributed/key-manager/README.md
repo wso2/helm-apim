@@ -1,6 +1,6 @@
 # wso2am-km
 
-![Version: 4.6.0-4](https://img.shields.io/badge/Version-4.6.0--4-informational?style=flat-square) ![AppVersion: 4.6.0](https://img.shields.io/badge/AppVersion-4.6.0-informational?style=flat-square)
+![Version: 4.6.0-5](https://img.shields.io/badge/Version-4.6.0--4-informational?style=flat-square) ![AppVersion: 4.6.0](https://img.shields.io/badge/AppVersion-4.6.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
