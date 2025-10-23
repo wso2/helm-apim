@@ -190,6 +190,19 @@ kubernetes:
   configMaps:
     scripts:
       defaultMode: "0407"
+  
+  # -- Mount extra volumes to the deployment pods, e.g to mount secrets
+  # extraVolumeMounts:
+  #   - name: my-secret
+  #     mountPath: /opt/wso2/secrets
+  #     readOnly: true
+  extraVolumeMounts: []
+  # -- Define the extra volumes to be mounted
+  # extraVolumes:
+  #   - name: my-secret
+  #     secret:
+  #       secretName: my-k8s-secret
+  extraVolumes: []
 
 
 wso2:
