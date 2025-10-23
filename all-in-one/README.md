@@ -234,7 +234,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.token.revocation.RealtimeNotifierTtl | int | `5000` |  |
 | wso2.apim.configurations.transactionCounter.enabled | bool | `false` |  |
 | wso2.apim.configurations.transactionCounter.serverId | string | `"Gateway"` |  |
-| wso2.apim.configurations.transactionCounter.serverURL | string | `""` |  |
+| wso2.apim.configurations.transactionCounter.serverUrl | string | `""` |  |
 | wso2.apim.configurations.transport.receiver.ciphers[0] | string | `"SSL_RSA_WITH_RC4_128_MD5"` |  |
 | wso2.apim.configurations.transport.receiver.ciphers[1] | string | `"SSL_RSA_WITH_RC4_128_SHA"` |  |
 | wso2.apim.configurations.transport.receiver.keystore.fileName | string | `"$ref{keystore.tls.file_name}"` |  |
