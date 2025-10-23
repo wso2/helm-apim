@@ -219,6 +219,12 @@ wso2:
     mountFrontendConfig: false
     # TOML configurations
     configurations:
+      # -- Read passwords from a common secret
+      existingSecret:
+        secretName: "" # e.g apim-secret
+        adminPasswordKey: ""  # e.g adminPassword
+        apimDBPasswordKey: "" # e.g apimDBPassword
+        sharedDBPasswordKey: "" # e.g sharedDBPassword
       gatewayType: "Regular,APK,AWS,Azure,Kong"
       userStore:
         # -- User store type. 
