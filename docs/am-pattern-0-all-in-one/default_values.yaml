@@ -482,15 +482,6 @@ wso2:
         eventManagement:
           hostname: 
           port: 
-        highAvailability:
-          # -- Enable high availability.
-          enabled: false
-          eventDuplicateUrl: "apim-2-wso2am-all-in-one-am-service"
-          portOffset: 0
-          # -- Traffic manager service urls. You only need to define one if the TM is not in HA.
-          urls:
-            - "apim-1-wso2am-all-in-one-am-service"
-            - "apim-2-wso2am-all-in-one-am-service"
 
       workflow:
         enable: false
@@ -563,7 +554,7 @@ wso2:
       transactionCounter:
         enabled: false
         serverId: "Gateway"
-        serverURL: ""
+        serverUrl: ""
 
       governance:
         # -- Override the default values of governance.scheduler if any value exists
@@ -584,6 +575,8 @@ wso2:
         organization_id_local_claim: "http://wso2.org/claims/organizationId" 
 
   deployment:
+    # Configure High Availability
+    highAvailability: true
     # Container image configurations
     image:
       # -- Container registry credentials.
