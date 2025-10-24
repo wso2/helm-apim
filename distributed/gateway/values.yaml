@@ -137,7 +137,7 @@ kubernetes:
   #   - name: my-secret
   #     secret:
   #       secretName: my-k8s-secret
-  extraVolumes: []  
+  extraVolumes: []
 
 wso2:  
   # -- WSO2 Choreo Analytics Parameters
