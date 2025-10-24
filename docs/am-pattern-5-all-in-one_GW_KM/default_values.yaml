@@ -562,7 +562,7 @@ wso2:
       transactionCounter:
         enabled: false
         serverId: "Gateway"
-        serverURL: ""
+        serverUrl: ""
 
       governance:
         # -- Override the default values of governance.scheduler if any value exists
