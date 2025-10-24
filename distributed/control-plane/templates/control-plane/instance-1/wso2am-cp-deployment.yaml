@@ -81,6 +81,27 @@ spec:
               fieldPath: status.podIP
         - name: JVM_MEM_OPTS
           value: "-Xms{{ .Values.wso2.deployment.resources.jvm.memory.xms }} -Xmx{{ .Values.wso2.deployment.resources.jvm.memory.xmx }}"
+        {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.adminPasswordKey }}
+        - name: WSO2_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.existingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.existingSecret.adminPasswordKey }}
+        {{- end }}
+        {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.apimDBPasswordKey }}
+        - name: WSO2_APIM_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.existingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.existingSecret.apimDBPasswordKey }}
+        {{- end }}
+        {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.sharedDBPasswordKey }}
+        - name: WSO2_SHARED_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.existingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.existingSecret.sharedDBPasswordKey }}
+        {{- end }}
         startupProbe:
           exec:
             command:
@@ -197,6 +218,7 @@ spec:
           subPath: {{ .Values.wso2.apim.configurations.security.keystores.internal.name }}
         {{- end }}
         {{- end }}
+        {{- if .Values.kubernetes.extraVolumeMounts }}{{ toYaml .Values.kubernetes.extraVolumeMounts | nindent 8 }}{{- end }}
         {{ if .Values.wso2.deployment.persistence.solrIndexing.enabled }}
         - name: wso2am-control-plane-local-carbondb
           mountPath: /home/wso2carbon/solr/database
@@ -261,6 +283,7 @@ spec:
             secretProviderClass: {{ .Values.gcp.secretsManager.secretProviderClass }}
           {{- end }}
       {{- end }}
+      {{- if .Values.kubernetes.extraVolumes }}{{ toYaml .Values.kubernetes.extraVolumes | nindent 6 }}{{- end }}
       {{- if .Values.wso2.apim.configurations.security.jksSecretName }}
       - name: wso2am-control-plane-keystores
         secret:
