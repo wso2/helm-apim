@@ -233,6 +233,16 @@ wso2:
       security:
         # -- Kubernetes secret containing the keystores and truststore
         jksSecretName: "apim-keystore-secret"
+        # -- Existing secret containing the passwords for the keystores
+        jksExistingSecret:
+          secretName: "" # e.g apim-jks-secret
+          primaryKeystorePasswordKey: ""
+          primaryKeystoreKeyPasswordKey: ""
+          tlsKeystorePasswordKey: ""
+          tlsKeystoreKeyPasswordKey: ""
+          internalKeystorePasswordKey: ""
+          internalKeystoreKeyPasswordKey: ""
+          truststorePasswordKey: ""
         keystores:
           primary:
             # -- Primary keystore enabled
