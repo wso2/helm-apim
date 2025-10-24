@@ -1,6 +1,6 @@
 # wso2am-universal-gw
 
-![Version: 4.5.0-3](https://img.shields.io/badge/Version-4.5.0--3-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
+![Version: 4.5.0-4](https://img.shields.io/badge/Version-4.5.0--3-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 
@@ -36,6 +36,8 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
 | kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
+| kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
+| kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
 | kubernetes.ingress.gateway.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
 | kubernetes.ingress.gateway.hostname | string | `"gw.wso2.com"` | Ingress hostname for Gateway pass-through |
 | kubernetes.ingress.ratelimit.burstLimit | string | `""` | Ingress ratelimit burst limit |
@@ -78,6 +80,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.configurations.eventhub.servicePort | int | `9443` | Event hub (control plane) service port |
 | wso2.apim.configurations.eventhub.serviceUrl | string | `"wso2am-cp-service"` | Event hub (control plane) loadbalancer service url |
 | wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
+| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
 | wso2.apim.configurations.iskm.enabled | bool | `false` |  |
 | wso2.apim.configurations.iskm.serviceName | string | `""` |  |
 | wso2.apim.configurations.jwt.claimDialect | string | `"http://wso2.org/claims"` |  |
@@ -133,7 +136,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.configurations.transactionCounter.serverId | string | `"Gateway1"` |  |
 | wso2.apim.configurations.transport.passthru_https.sender.parameters.hostnameVerifier | string | `"AllowAll"` | Hostname verifier. https://apim.docs.wso2.com/en/latest/install-and-setup/setup/security/enabling-hostname-verification/#configuring-hostname-verification |
 | wso2.apim.configurations.userStore.properties | object | `{"key":"value"}` | User store properties |
-| wso2.apim.configurations.userStore.type | string | `"database_unique_id"` | User store type.  https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/ |
+| wso2.apim.configurations.userStore.type | string | `"database_unique_id"` | User store type. https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/ |
 | wso2.apim.log4j2.appenders | string | `""` | Appenders |
 | wso2.apim.log4j2.loggers | string | `""` | Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE |
 | wso2.apim.mountStartupScript | bool | `false` | Startup script mount status |

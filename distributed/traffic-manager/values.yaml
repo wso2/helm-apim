@@ -3,8 +3,8 @@
 # Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
 #
 # This software is the property of WSO2 LLC. and its suppliers, if any.
-# Dissemination of any information or reproduction of any material contained 
-# herein is strictly forbidden, unless permitted by WSO2 in accordance with the 
+# Dissemination of any information or reproduction of any material contained
+# herein is strictly forbidden, unless permitted by WSO2 in accordance with the
 # WSO2 Commercial License available at https://wso2.com/licenses/eula/3.2
 #
 # --------------------------------------------------------------------------------------
@@ -100,11 +100,24 @@ kubernetes:
     scripts:
       defaultMode: "0407"
 
+  # -- Mount extra volumes to the deployment pods, e.g to mount secrets
+  # extraVolumeMounts:
+  #   - name: my-secret
+  #     mountPath: /opt/wso2/secrets
+  #     readOnly: true
+  extraVolumeMounts: []
+  # -- Define the extra volumes to be mounted
+  # extraVolumes:
+  #   - name: my-secret
+  #     secret:
+  #       secretName: my-k8s-secret
+  extraVolumes: []
+
 wso2:  
   apim:
     # -- APIM version
     version: "4.5.0"
-    # -- Secure vauld enabled
+    # -- Secure vault enabled
     secureVaultEnabled: false
     # Logging related configurations
     log4j2:
@@ -118,8 +131,14 @@ wso2:
     mountStartupScript: false
     # TOML configurations
     configurations:
+      # -- Read passwords from a common secret
+      existingSecret:
+        secretName: "" # e.g apim-secret
+        adminPasswordKey: ""  # e.g adminPassword
+        apimDBPasswordKey: "" # e.g apimDBPassword
+        sharedDBPasswordKey: "" # e.g sharedDBPassword
       userStore:
-        # -- User store type. 
+        # -- User store type.
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
         type: "database_unique_id"
         # -- User store properties

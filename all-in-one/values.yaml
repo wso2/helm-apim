@@ -190,9 +190,21 @@ kubernetes:
   configMaps:
     scripts:
       defaultMode: "0407"
+  
+  # -- Mount extra volumes to the deployment pods, e.g to mount secrets
+  # extraVolumeMounts:
+  #   - name: my-secret
+  #     mountPath: /opt/wso2/secrets
+  #     readOnly: true
+  extraVolumeMounts: []
+  # -- Define the extra volumes to be mounted
+  # extraVolumes:
+  #   - name: my-secret
+  #     secret:
+  #       secretName: my-k8s-secret
+  extraVolumes: []
 
-
-wso2:  
+wso2:
   # -- WSO2 Choreo Analytics Parameters
   # If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/).
   choreoAnalytics:
@@ -228,9 +240,15 @@ wso2:
     mountFrontendConfig: false
     # TOML configurations
     configurations:
+      # -- Read passwords from a common secret
+      existingSecret:
+        secretName: "" # e.g apim-secret
+        adminPasswordKey: ""  # e.g adminPassword
+        apimDBPasswordKey: "" # e.g apimDBPassword
+        sharedDBPasswordKey: "" # e.g sharedDBPassword
       gatewayType: "Regular,APK,AWS"
       userStore:
-        # -- User store type. 
+        # -- User store type.
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
         type: "database_unique_id"
         # -- User store properties
