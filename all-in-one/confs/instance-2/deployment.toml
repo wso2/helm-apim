@@ -125,7 +125,6 @@ password = "${env:WSO2_TRUSTSTORE_PASSWORD}"
 password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
 {{- end }}
 
-
 {{- range $i, $env := .Values.wso2.apim.configurations.gateway.environments }}
 [[apim.gateway.environment]]
 name = {{ $env.name | quote }}
