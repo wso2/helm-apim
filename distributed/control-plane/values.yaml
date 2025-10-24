@@ -184,11 +184,24 @@ kubernetes:
     scripts:
       defaultMode: "0407"
 
+  # -- Mount extra volumes to the deployment pods, e.g to mount secrets
+  # extraVolumeMounts:
+  #   - name: my-secret
+  #     mountPath: /opt/wso2/secrets
+  #     readOnly: true
+  extraVolumeMounts: []
+  # -- Define the extra volumes to be mounted
+  # extraVolumes:
+  #   - name: my-secret
+  #     secret:
+  #       secretName: my-k8s-secret
+  extraVolumes: []
+
 wso2:  
   apim:
     # -- APIM version
     version: "4.6.0"
-    # -- Secure vauld enabled
+    # -- Secure vault enabled
     secureVaultEnabled: false
     # Logging related configurations
     log4j2:
@@ -206,6 +219,12 @@ wso2:
     mountFrontendConfig: false
     # TOML configurations
     configurations:
+      # -- Read passwords from a common secret
+      existingSecret:
+        secretName: "" # e.g apim-secret
+        adminPasswordKey: ""  # e.g adminPassword
+        apimDBPasswordKey: "" # e.g apimDBPassword
+        sharedDBPasswordKey: "" # e.g sharedDBPassword
       gatewayType: "Regular,APK,AWS,Azure,Kong"
       userStore:
         # -- User store type. 
@@ -218,6 +237,10 @@ wso2:
       adminUsername: ""
       # -- Super admin password
       adminPassword: ""
+      # -- Read password from secret
+      adminPasswordExistingSecret:
+        secretName: "" # e.g apim-admin-secret
+        secretKey: ""  # e.g adminpassword
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
         type: ""
@@ -232,6 +255,10 @@ wso2:
           username: ""
           # -- APIM AM_DB password
           password: ""
+          # -- Read password from secret
+          passwordExistingSecret:
+            secretName: "" # e.g apim-db-secret
+            secretKey: ""  # e.g password
           # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
@@ -249,6 +276,10 @@ wso2:
           username: ""
           # -- APIM SharedDB password
           password: ""
+          # -- Read password from secret
+          passwordExistingSecret:
+            secretName: "" # e.g apim-shared-db-secret
+            secretKey: "" # e.g password
           # -- APIM shared database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
