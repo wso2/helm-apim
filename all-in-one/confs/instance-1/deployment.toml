@@ -70,16 +70,12 @@ file_name = "{{ .Values.wso2.apim.configurations.security.keystores.primary.name
 alias = "{{ .Values.wso2.apim.configurations.security.keystores.primary.alias }}"
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{keystore_password}"
+key_password = "$secret{keystore_key_password}"
 {{- else if and .Values.wso2.apim.configurations.jksExistingSecret.secretName .Values.wso2.apim.configurations.jksExistingSecret.primaryKeystorePasswordKey }}
 password = "${env:WSO2_PRIMARY_KEYSTORE_PASSWORD}"
-{{- else }}
-password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
-{{- end }}
-{{- if .Values.wso2.apim.secureVaultEnabled }}
-key_password = "$secret{keystore_key_password}"
-{{- else if and .Values.wso2.apim.configurations.jksExistingSecret.secretName .Values.wso2.apim.configurations.jksExistingSecret.primaryKeystoreKeyPasswordKey }}
 key_password = "${env:WSO2_PRIMARY_KEYSTORE_KEY_PASSWORD}"
 {{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
 key_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.keyPassword | quote }}
 {{- end }}
 {{- end }}
@@ -91,16 +87,12 @@ file_name = "{{ .Values.wso2.apim.configurations.security.keystores.tls.name }}"
 alias = "{{ .Values.wso2.apim.configurations.security.keystores.tls.alias }}"
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{ssl_keystore_password}"
+key_password = "$secret{ssl_key_password}"
 {{- else if and .Values.wso2.apim.configurations.jksExistingSecret.secretName .Values.wso2.apim.configurations.jksExistingSecret.tlsKeystorePasswordKey }}
 password = "${env:WSO2_TLS_KEYSTORE_PASSWORD}"
-{{- else }}
-password = {{ .Values.wso2.apim.configurations.security.keystores.tls.password | quote }}
-{{- end }}
-{{- if .Values.wso2.apim.secureVaultEnabled }}
-key_password = "$secret{ssl_key_password}"
-{{- else if and .Values.wso2.apim.configurations.jksExistingSecret.secretName .Values.wso2.apim.configurations.jksExistingSecret.tlsKeystoreKeyPasswordKey }}
 key_password = "${env:WSO2_TLS_KEYSTORE_KEY_PASSWORD}"
 {{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.tls.password | quote }}
 key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.keyPassword | quote }}
 {{- end }}
 {{- end }}
@@ -112,16 +104,12 @@ file_name = "{{ .Values.wso2.apim.configurations.security.keystores.internal.nam
 alias = "{{ .Values.wso2.apim.configurations.security.keystores.internal.alias }}"
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{internal_keystore_password}"
+key_password = "$secret{internal_keystore_key_password}"
 {{- else if and .Values.wso2.apim.configurations.jksExistingSecret.secretName .Values.wso2.apim.configurations.jksExistingSecret.internalKeystorePasswordKey }}
 password = "${env:WSO2_INTERNAL_KEYSTORE_PASSWORD}"
-{{- else }}
-password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
-{{- end }}
-{{- if .Values.wso2.apim.secureVaultEnabled }}
-key_password = "$secret{internal_keystore_key_password}"
-{{- else if and .Values.wso2.apim.configurations.jksExistingSecret.secretName .Values.wso2.apim.configurations.jksExistingSecret.internalKeystoreKeyPasswordKey }}
 key_password = "${env:WSO2_INTERNAL_KEYSTORE_KEY_PASSWORD}"
 {{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
 key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.keyPassword | quote }}
 {{- end }}
 {{- end }}
