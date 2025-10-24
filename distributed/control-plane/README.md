@@ -66,6 +66,8 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
 | kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
+| kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
+| kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
 | kubernetes.ingress.controlPlane.annotations | object | `{"nginx.ingress.kubernetes.io/affinity":"cookie","nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/session-cookie-hash":"sha1","nginx.ingress.kubernetes.io/session-cookie-name":"route"}` | Ingress annotations |
 | kubernetes.ingress.controlPlane.hostname | string | `"am.wso2.com"` | Ingress hostname |
 | kubernetes.ingress.ratelimit.burstLimit | string | `""` | Ingress ratelimit burst limit |
@@ -78,16 +80,19 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | kubernetes.securityContext.seccompProfile | object | `{"localhostProfile":"","type":"RuntimeDefault"}` | Seccomp profile for the container |
 | kubernetes.securityContext.seccompProfile.type | string | `"RuntimeDefault"` | Seccomp profile type(RuntimeDefault, Unconfined or Localhost) |
 | wso2.apim.configurations.adminPassword | string | `""` | Super admin password |
+| wso2.apim.configurations.adminPasswordExistingSecret | object | `{"secretKey":"","secretName":""}` | Read password from secret |
 | wso2.apim.configurations.adminUsername | string | `""` | Super admin username |
 | wso2.apim.configurations.ai | object | `{"embeddingProvider":{"properties":{"apikey":"","embeddingEndpoint":"","embeddingModel":""},"type":""},"enabled":false,"endpoint":"","key":"","token":"","tokenEndpoint":"","vectorDbProvider":{"properties":{"token":"","uri":""},"type":""}}` | APIM AI related configurations |
-| wso2.apim.configurations.databases.apim_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM AM_DB configurations. |
+| wso2.apim.configurations.databases.apim_db | object | `{"password":"","passwordExistingSecret":{"secretKey":"","secretName":""},"poolParameters":{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM AM_DB configurations. |
 | wso2.apim.configurations.databases.apim_db.password | string | `""` | APIM AM_DB password |
+| wso2.apim.configurations.databases.apim_db.passwordExistingSecret | object | `{"secretKey":"","secretName":""}` | Read password from secret |
 | wso2.apim.configurations.databases.apim_db.poolParameters | object | `{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM database JDBC pool parameters |
 | wso2.apim.configurations.databases.apim_db.url | string | `""` | APIM AM_DB URL |
 | wso2.apim.configurations.databases.apim_db.username | string | `""` | APIM AM_DB username |
 | wso2.apim.configurations.databases.jdbc.driver | string | `""` | JDBC driver class name |
-| wso2.apim.configurations.databases.shared_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM SharedDB configurations. |
+| wso2.apim.configurations.databases.shared_db | object | `{"password":"","passwordExistingSecret":{"secretKey":"","secretName":""},"poolParameters":{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM SharedDB configurations. |
 | wso2.apim.configurations.databases.shared_db.password | string | `""` | APIM SharedDB password |
+| wso2.apim.configurations.databases.shared_db.passwordExistingSecret | object | `{"secretKey":"","secretName":""}` | Read password from secret |
 | wso2.apim.configurations.databases.shared_db.poolParameters | object | `{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000}` | APIM shared database JDBC pool parameters |
 | wso2.apim.configurations.databases.shared_db.url | string | `""` | APIM SharedDB URL |
 | wso2.apim.configurations.databases.shared_db.username | string | `""` | APIM SharedDB username |
@@ -181,7 +186,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.mountFrontendConfig | bool | `false` | Frontend settings.json mount status |
 | wso2.apim.mountStartupScript | bool | `false` | Startup script mount status |
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
-| wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
+| wso2.apim.secureVaultEnabled | bool | `false` | Secure vault enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
 | wso2.apim.version | string | `"4.6.0"` | APIM version |
 | wso2.deployment.highAvailability | bool | `true` | Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed. This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM. |

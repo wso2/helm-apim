@@ -3,8 +3,8 @@
 # Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
 #
 # This software is the property of WSO2 LLC. and its suppliers, if any.
-# Dissemination of any information or reproduction of any material contained 
-# herein is strictly forbidden, unless permitted by WSO2 in accordance with the 
+# Dissemination of any information or reproduction of any material contained
+# herein is strictly forbidden, unless permitted by WSO2 in accordance with the
 # WSO2 Commercial License available at https://wso2.com/licenses/eula/3.2
 #
 # --------------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ spec:
                   - {{ template "am-all-in-one.fullname" . }}
               topologyKey: "topology.kubernetes.io/zone"
             weight: 100
-      {{- if .Values.wso2.apim.secureVaultEnabled }} 
+      {{- if .Values.wso2.apim.secureVaultEnabled }}
       {{- if .Values.aws.enabled }}
       serviceAccount: {{ .Values.aws.serviceAccountName }}
       {{- else if .Values.gcp.enabled }}
@@ -75,6 +75,27 @@ spec:
                   fieldPath: status.podIP
             - name: JVM_MEM_OPTS
               value: "-Xms{{ .Values.wso2.deployment.resources.jvm.memory.xms }} -Xmx{{ .Values.wso2.deployment.resources.jvm.memory.xmx }}"
+            {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.adminPasswordKey }}
+            - name: WSO2_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.wso2.apim.configurations.existingSecret.secretName }}
+                  key:  {{ .Values.wso2.apim.configurations.existingSecret.adminPasswordKey }}
+            {{- end }}
+            {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.apimDBPasswordKey }}
+            - name: WSO2_APIM_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.wso2.apim.configurations.existingSecret.secretName }}
+                  key:  {{ .Values.wso2.apim.configurations.existingSecret.apimDBPasswordKey }}
+            {{- end }}
+            {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.sharedDBPasswordKey }}
+            - name: WSO2_SHARED_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.wso2.apim.configurations.existingSecret.secretName }}
+                  key:  {{ .Values.wso2.apim.configurations.existingSecret.sharedDBPasswordKey }}
+            {{- end }}
           startupProbe:
             exec:
               command:
@@ -83,7 +104,7 @@ spec:
                 - timeout 1 bash -c "</dev/tcp/localhost/9443"
             initialDelaySeconds: {{ .Values.wso2.deployment.startupProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.wso2.deployment.startupProbe.periodSeconds }}
-            failureThreshold: {{ .Values.wso2.deployment.startupProbe.failureThreshold }}         
+            failureThreshold: {{ .Values.wso2.deployment.startupProbe.failureThreshold }}
           livenessProbe:
             httpGet:
               path: /services/Version
@@ -107,7 +128,7 @@ spec:
                   - "-c"
                   - >
                     echo "Pre stop hook triggered";
-                    sleep {{ .Values.wso2.deployment.lifecycle.preStopHook.sleepSeconds }}; 
+                    sleep {{ .Values.wso2.deployment.lifecycle.preStopHook.sleepSeconds }};
                     echo "Shutdown APIM Server";
                     ${WSO2_SERVER_HOME}/bin/api-manager.sh stop
           resources:
@@ -177,6 +198,7 @@ spec:
               mountPath: /mnt/secrets-store
               readOnly: true
             {{- end }}
+            {{- if .Values.kubernetes.extraVolumeMounts }}{{ toYaml .Values.kubernetes.extraVolumeMounts | nindent 8 }}{{- end }}
             {{- if .Values.wso2.apim.configurations.security.jksSecretName }}
             - name: wso2am-keystores
               mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.truststore.name }}
@@ -262,6 +284,7 @@ spec:
               secretProviderClass: {{ .Values.gcp.secretsManager.secretProviderClass }}
             {{- end }}
         {{- end }}
+        {{- if .Values.kubernetes.extraVolumes }}{{ toYaml .Values.kubernetes.extraVolumes | nindent 6 }}{{- end }}
         {{- if .Values.wso2.apim.configurations.security.jksSecretName }}
         - name: wso2am-keystores
           secret:

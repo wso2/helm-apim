@@ -3,8 +3,8 @@
 # Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
 #
 # This software is the property of WSO2 LLC. and its suppliers, if any.
-# Dissemination of any information or reproduction of any material contained 
-# herein is strictly forbidden, unless permitted by WSO2 in accordance with the 
+# Dissemination of any information or reproduction of any material contained
+# herein is strictly forbidden, unless permitted by WSO2 in accordance with the
 # WSO2 Commercial License available at https://wso2.com/licenses/eula/3.2
 #
 # --------------------------------------------------------------------------------------
@@ -123,7 +123,7 @@ gcp:
     secret:
       # -- Name of the secret
       secretName: ""
-      # -- Version of the secret 
+      # -- Version of the secret
       secretVersion: ""
   # -- Service Account with access to read secrets
   serviceAccountName: ""
@@ -190,9 +190,21 @@ kubernetes:
   configMaps:
     scripts:
       defaultMode: "0407"
+  
+  # -- Mount extra volumes to the deployment pods, e.g to mount secrets
+  # extraVolumeMounts:
+  #   - name: my-secret
+  #     mountPath: /opt/wso2/secrets
+  #     readOnly: true
+  extraVolumeMounts: []
+  # -- Define the extra volumes to be mounted
+  # extraVolumes:
+  #   - name: my-secret
+  #     secret:
+  #       secretName: my-k8s-secret
+  extraVolumes: []
 
-
-wso2:  
+wso2:
   # -- WSO2 Choreo Analytics Parameters
   # If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/).
   choreoAnalytics:
@@ -238,9 +250,15 @@ wso2:
     mountFrontendConfig: false
     # TOML configurations
     configurations:
+      # -- Read passwords from a common secret
+      existingSecret:
+        secretName: "" # e.g apim-secret
+        adminPasswordKey: ""  # e.g adminPassword
+        apimDBPasswordKey: "" # e.g apimDBPassword
+        sharedDBPasswordKey: "" # e.g sharedDBPassword
       gatewayType: "Regular,APK,AWS,Azure,Kong"
       userStore:
-        # -- User store type. 
+        # -- User store type.
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
         type: "database_unique_id"
         # -- User store properties
@@ -395,7 +413,7 @@ wso2:
         cleanUp:
           expiryTime: "2m"
           dataRetentionPeriod: "30d"
-        
+
       syncRuntimeArtifacts:
         gateway:
           # -- Gateway label used to filter out artifact retrieval
@@ -413,7 +431,7 @@ wso2:
         serviceName: ""
         # Revoke URL of Identity Server
         revokeURL: ""
-      
+
       jwt:
         # Enable backend JWT generation in gateway
         enabled: false
@@ -431,7 +449,7 @@ wso2:
         enableUserClaims: "false"
         # JWT claims extractor implementation. eg: org.wso2.carbon.apimgt.impl.token.DefaultClaimsRetriever
         claimsExtractorImpl: "org.wso2.carbon.apimgt.impl.token.DefaultClaimsRetriever"
-      
+
       # APIM cache related configurations
       cache:
         gateway_token:
@@ -483,30 +501,30 @@ wso2:
       # APIM Devportal configurations
       devportal:
         mode: "HYBRID"
-        enableApplicationSharing: 
-        applicationSharingType: 
-        applicationSharingImpl: 
+        enableApplicationSharing:
+        applicationSharingType:
+        applicationSharingImpl:
         # -- Whether to display multiple versions of same API or only showing the latest version of an API
-        displayMultipleVersions: 
+        displayMultipleVersions:
         # -- Whether to display deprecated APIs
-        displayDeprecatedApis: 
+        displayDeprecatedApis:
         # -- Whether to display comments for API
-        enableComments: 
+        enableComments:
         # -- Whether to display ratings for API
-        enableRatings: 
+        enableRatings:
         # -- Whether to display forum for API
-        enableForum: 
+        enableForum:
         # -- Whether anonymous mode is enabled
-        enableAnonymousMode: 
-        enableCrossTenantSubscriptions: 
-        defaultReservedUsername: 
+        enableAnonymousMode:
+        enableCrossTenantSubscriptions:
+        defaultReservedUsername:
         # -- Whether to create default application
-        create_default_application: 
+        create_default_application:
         loginUsernameCaseInsensitive:
         enableKeyProvisioning:
 
       publisher:
-        # -- Supported document types in Publisher. 
+        # -- Supported document types in Publisher.
         # This should be used only if there are additional document types to be supported.
         enableApiDocVisibility: false
         supportedDocumentTypes: ""
@@ -540,16 +558,16 @@ wso2:
         enableJwtClaimBasedThrottling: false
         enableQueryParamBasedThrottling: false
         blacklistCondition:
-          startDelay: 
-          period: 
+          startDelay:
+          period:
         jms:
-          startDelay: 
+          startDelay:
         eventSync:
-          hostname: 
-          port: 
+          hostname:
+          port:
         eventManagement:
-          hostname: 
-          port: 
+          hostname:
+          port:
 
       workflow:
         enable: false
@@ -577,7 +595,7 @@ wso2:
           ciphers:
             - "SSL_RSA_WITH_RC4_128_MD5"
             - "SSL_RSA_WITH_RC4_128_SHA"
-            
+
       token:
         revocation:
           NotifierImpl: "org.wso2.carbon.apimgt.keymgt.events.TokenRevocationNotifierImpl"
@@ -590,11 +608,11 @@ wso2:
           PersistentNotifierPassword: "root"
 
       notification:
-        fromAddress: 
-        username: 
-        password: 
-        signature: 
-        hostname: 
+        fromAddress:
+        username:
+        password:
+        signature:
+        hostname:
         port: 25
         enableStartTls: false
         enableAuthentication: false
@@ -632,7 +650,7 @@ wso2:
           queue_size: ""
           task_check_interval_minutes: ""
           task_cleanup_interval_minutes: ""
-      
+
       # APIM SDK configurations
       sdk:
         supportedLanguages: ["android", "java", "csharp", "dart", "groovy", "javascript", "jmeter", "perl", "php", "python", "ruby", "swift5", "clojure"]
@@ -641,7 +659,7 @@ wso2:
       organization_based_access_control:
         enabled: true
         organization_name_local_claim: "http://wso2.org/claims/organization"
-        organization_id_local_claim: "http://wso2.org/claims/organizationId" 
+        organization_id_local_claim: "http://wso2.org/claims/organizationId"
 
       tenantSharing:
         enabled: false
@@ -693,7 +711,7 @@ wso2:
           # -- JVM heap memory Xmx
           xmx: "2048m"
 
-    # Kubernetes Probes     
+    # Kubernetes Probes
     # Indicates whether the container starting
     startupProbe:
       # -- Number of seconds after the container has started before startup probes are initiated
