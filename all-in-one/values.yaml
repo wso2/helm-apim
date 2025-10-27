@@ -131,6 +131,8 @@ gcp:
 kubernetes:
   # -- Ingress class to be used for the ingress resource
   ingressClass: "nginx"
+  # -- Annotations for the Deployment resource
+  annotations: {}
   ingress:
     # -- Kubernetes secret created for Ingress TLS
     tlsSecret: ""
