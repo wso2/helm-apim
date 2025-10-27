@@ -33,6 +33,9 @@ spec:
         checksum.am.gw.conf: {{ include (print $.Template.BasePath "/gateway/wso2am-gateway-conf.yaml") . | sha256sum }}
         checksum.am.gw.conf.log4j2: {{ include (print $.Template.BasePath "/gateway/wso2am-gateway-conf-log4j2.yaml") . | sha256sum }}
         checksum.am.cp.conf.secret: {{ include (print $.Template.BasePath "/gateway/wso2am-gateway-conf-secret-conf.yaml") . | sha256sum }}
+        {{- if .Values.wso2.deployment.podAnnotations }}
+        {{- toYaml .Values.wso2.deployment.podAnnotations | nindent 8 }}
+        {{- end }}
       labels:
         deployment: {{ template "apim-helm-gw.fullname" . }}
         product: apim

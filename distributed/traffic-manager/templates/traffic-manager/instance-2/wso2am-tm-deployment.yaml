@@ -35,6 +35,9 @@ spec:
         checksum.am.tm.conf: {{ include (print $.Template.BasePath "/traffic-manager/instance-2/wso2am-tm-conf.yaml") . | sha256sum }}
         checksum.am.tm.conf.log4j2: {{ include (print $.Template.BasePath "/traffic-manager/wso2am-tm-conf-log4j2.yaml") . | sha256sum }}
         checksum.am.cp.conf.secret: {{ include (print $.Template.BasePath "/traffic-manager/wso2am-tm-conf-secret-conf.yaml") . | sha256sum }}
+        {{- if .Values.wso2.deployment.podAnnotations }}
+        {{- toYaml .Values.wso2.deployment.podAnnotations | nindent 8 }}
+        {{- end }}
       labels:
         deployment: {{ template "apim-helm-tm.fullname" . }}
         node: {{ template "apim-helm-tm.fullname" . }}-2

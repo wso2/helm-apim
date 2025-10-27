@@ -31,6 +31,9 @@ spec:
         checksum.am.cp.conf: {{ include (print $.Template.BasePath "/control-plane/instance-1/wso2am-cp-conf.yaml") . | sha256sum }}
         checksum.am.cp.conf.log4j2: {{ include (print $.Template.BasePath "/control-plane/wso2am-cp-conf-log4j2.yaml") . | sha256sum }}
         checksum.am.cp.conf.secret: {{ include (print $.Template.BasePath "/control-plane/wso2am-cp-conf-secret-conf.yaml") . | sha256sum }}
+        {{- if .Values.wso2.deployment.podAnnotations }}
+        {{- toYaml .Values.wso2.deployment.podAnnotations | nindent 8 }}
+        {{- end }}
       labels:
         deployment: {{ template "apim-helm-cp.fullname" . }}
         node: {{ template "apim-helm-cp.fullname" . }}-1
