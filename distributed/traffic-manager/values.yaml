@@ -81,6 +81,8 @@ gcp:
   serviceAccountName: ""
 
 kubernetes:
+  # -- Annotations for the Deployment resource
+  annotations: {}
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
