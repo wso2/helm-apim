@@ -15,10 +15,6 @@ kind: Deployment
 metadata:
   name: {{ template "apim-helm-cp.fullname" . }}-deployment-2
   namespace: {{ .Release.Namespace }}
-  {{- if .Values.kubernetes.annotations }}
-  annotations:
-    {{- toYaml .Values.kubernetes.annotations | nindent 4 }}
-  {{- end }}
 spec:
   replicas: {{ .Values.wso2.deployment.replicas }}
   strategy:
@@ -36,6 +32,9 @@ spec:
         checksum.am.cp.conf: {{ include (print $.Template.BasePath "/control-plane/instance-2/wso2am-cp-conf.yaml") . | sha256sum }}
         checksum.am.cp.conf.log4j2: {{ include (print $.Template.BasePath "/control-plane/wso2am-cp-conf-log4j2.yaml") . | sha256sum }}
         checksum.am.cp.conf.secret: {{ include (print $.Template.BasePath "/control-plane/wso2am-cp-conf-secret-conf.yaml") . | sha256sum }}
+        {{- if .Values.kubernetes.annotations }}
+        {{- toYaml .Values.kubernetes.annotations | nindent 8 }}
+        {{- end }}
       labels:
         deployment: {{ template "apim-helm-cp.fullname" . }}
         node: {{ template "apim-helm-cp.fullname" . }}-2
