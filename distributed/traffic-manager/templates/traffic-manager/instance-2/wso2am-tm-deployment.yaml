@@ -106,6 +106,49 @@ spec:
               name: {{ .Values.wso2.apim.configurations.existingSecret.secretName }}
               key:  {{ .Values.wso2.apim.configurations.existingSecret.sharedDBPasswordKey }}
         {{- end }}
+        {{- if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.primaryKeystorePasswordKey .Values.wso2.apim.configurations.security.jksExistingSecret.primaryKeystoreKeyPasswordKey }}
+        - name: WSO2_PRIMARY_KEYSTORE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.primaryKeystorePasswordKey }}
+        - name: WSO2_PRIMARY_KEYSTORE_KEY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.primaryKeystoreKeyPasswordKey }}
+        {{- end }}
+        {{- if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.tlsKeystorePasswordKey .Values.wso2.apim.configurations.security.jksExistingSecret.tlsKeystoreKeyPasswordKey }}
+        - name: WSO2_TLS_KEYSTORE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.tlsKeystorePasswordKey }}
+        - name: WSO2_TLS_KEYSTORE_KEY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.tlsKeystoreKeyPasswordKey }}
+        {{- end }}
+        {{- if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.internalKeystorePasswordKey .Values.wso2.apim.configurations.security.jksExistingSecret.internalKeystoreKeyPasswordKey }}
+        - name: WSO2_INTERNAL_KEYSTORE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.internalKeystorePasswordKey }}
+        - name: WSO2_INTERNAL_KEYSTORE_KEY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.internalKeystoreKeyPasswordKey }}
+        {{- end }}
+        {{- if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.truststorePasswordKey }}
+        - name: WSO2_TRUSTSTORE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.truststorePasswordKey }}
+        {{- end }}
         startupProbe:
           exec:
             command:
