@@ -1,6 +1,6 @@
 # wso2am-km
 
-![Version: 4.5.0-4](https://img.shields.io/badge/Version-4.5.0--3-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
+![Version: 4.5.0-4](https://img.shields.io/badge/Version-4.5.0--4-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
@@ -105,6 +105,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
 | wso2.apim.version | string | `"4.5.0"` | APIM version |
+| wso2.deployment.annotations | object | `{}` | Annotations for pods |
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
 | wso2.deployment.highAvailability | bool | `false` | Enable high availability for key manager. If this is enabled, two key manager replicas will be deployed. |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
