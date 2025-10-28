@@ -549,8 +549,8 @@ wso2:
     # -- Node selector to deploy pod in selected node. Add label to the node and specify the label here.
     nodeSelector:
 
-    # -- Pod annotations
-    podAnnotations: {}
+    # -- Annotations for pods
+    annotations: {}
 
     # Kubernetes RollingUpdate strategy configurations
     strategy:

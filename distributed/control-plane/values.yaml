@@ -597,8 +597,8 @@ wso2:
     # -- Node selector to deploy pod in selected node. Add label to the node and specify the label here.
     nodeSelector:
 
-    # -- Pod annotations
-    podAnnotations: {}
+    # -- Annotations for pods
+    annotations: {}
 
     # -- Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed.
     # This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM.
