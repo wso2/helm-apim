@@ -271,7 +271,6 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.choreoAnalytics | object | `{"enabled":false,"endpoint":"","onpremKey":""}` | WSO2 Choreo Analytics Parameters If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/). |
 | wso2.choreoAnalytics.endpoint | string | `""` | Choreo Analytics cloud service endpoint |
 | wso2.choreoAnalytics.onpremKey | string | `""` | On-premise key for Choreo Analytics |
-| wso2.deployment.annotations | object | `{}` | Annotations for pods |
 | wso2.deployment.highAvailability | bool | `false` |  |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
@@ -288,6 +287,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.deployment.persistence.solrIndexing.capacity.carbonDatabase | string | `"50M"` | For persisting the H2 based local Carbon database file |
 | wso2.deployment.persistence.solrIndexing.capacity.solrIndexedData | string | `"50M"` | For persisting the indexed solr data |
 | wso2.deployment.persistence.solrIndexing.enabled | bool | `false` | Indicates if persistence of the runtime artifacts for Apache Solr-based indexing is enabled By default, this is disabled |
+| wso2.deployment.pod.annotations | object | `{}` | Annotations for pods |
 | wso2.deployment.readinessProbe.failureThreshold | int | `5` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.readinessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before readiness probes are initiated |
 | wso2.deployment.readinessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |

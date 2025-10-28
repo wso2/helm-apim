@@ -181,7 +181,6 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vault enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
 | wso2.apim.version | string | `"4.5.0"` | APIM version |
-| wso2.deployment.annotations | object | `{}` | Annotations for pods |
 | wso2.deployment.highAvailability | bool | `true` | Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed. This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM. |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
@@ -198,6 +197,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.deployment.persistence.solrIndexing.capacity.carbonDatabase | string | `"50M"` | For persisting the H2 based local Carbon database file |
 | wso2.deployment.persistence.solrIndexing.capacity.solrIndexedData | string | `"50M"` | For persisting the indexed solr data |
 | wso2.deployment.persistence.solrIndexing.enabled | bool | `false` | Indicates if persistence of the runtime artifacts for Apache Solr-based indexing is enabled By default, this is disabled |
+| wso2.deployment.pod.annotations | object | `{}` | Annotations for pods |
 | wso2.deployment.readinessProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.readinessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before readiness probes are initiated |
 | wso2.deployment.readinessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |

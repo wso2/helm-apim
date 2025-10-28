@@ -101,7 +101,6 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vault enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
 | wso2.apim.version | string | `"4.5.0"` | APIM version |
-| wso2.deployment.annotations | object | `{}` | Annotations for pods |
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
 | wso2.deployment.highAvailability | bool | `true` | Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed. This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM. |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
@@ -116,6 +115,7 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | wso2.deployment.memoryUtilizationPercentage | int | `75` | Target memory utilization percentage for HPA |
 | wso2.deployment.minAvailable | string | `"50%"` | Minimum available pod counts for PDB |
 | wso2.deployment.nodeSelector | string | `nil` | Node selector to deploy pod in selected node. Add label to the node and specify the label here. |
+| wso2.deployment.pod.annotations | object | `{}` | Annotations for pods |
 | wso2.deployment.readinessProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.readinessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before readiness probes are initiated |
 | wso2.deployment.readinessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |

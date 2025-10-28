@@ -147,7 +147,6 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.choreoAnalytics | object | `{"enabled":false,"endpoint":"","onpremKey":""}` | WSO2 Choreo Analytics Parameters If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/). |
 | wso2.choreoAnalytics.endpoint | string | `""` | Choreo Analytics cloud service endpoint |
 | wso2.choreoAnalytics.onpremKey | string | `""` | On-premise key for Choreo Analytics |
-| wso2.deployment.annotations | object | `{}` | Annotations for pods |
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
@@ -163,6 +162,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.deployment.minAvailable | string | `"50%"` | Minimum available pod counts for PDB |
 | wso2.deployment.minReplicas | int | `2` | Minimum replicas for HPA |
 | wso2.deployment.nodeSelector | string | `nil` | Node selector to deploy pod in selected node. Add label to the node and specify the label here. |
+| wso2.deployment.pod.annotations | object | `{}` | Annotations for pods |
 | wso2.deployment.readinessProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.readinessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before readiness probes are initiated |
 | wso2.deployment.readinessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
