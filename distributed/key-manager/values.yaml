@@ -81,10 +81,10 @@ gcp:
   serviceAccountName: ""
 
 kubernetes:
-  # -- Ingress class to be used for the ingress resource
-  ingressClass: "nginx"
   # -- Annotations for the Deployment resource
   annotations: {}
+  # -- Ingress class to be used for the ingress resource
+  ingressClass: "nginx"
   ingress:
     # -- Kubernetes secret created for Ingress TLS
     tlsSecret: ""
