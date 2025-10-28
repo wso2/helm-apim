@@ -121,6 +121,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.deployment.memoryUtilizationPercentage | int | `75` | Target memory utilization percentage for HPA |
 | wso2.deployment.minAvailable | string | `"50%"` | Minimum available pod counts for PDB |
 | wso2.deployment.nodeSelector | string | `nil` | Node selector to deploy pod in selected node. Add label to the node and specify the label here. |
+| wso2.deployment.pod.annotations | object | `{}` | Annotations for pods |
 | wso2.deployment.readinessProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.readinessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before readiness probes are initiated |
 | wso2.deployment.readinessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
