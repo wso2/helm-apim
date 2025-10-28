@@ -81,8 +81,6 @@ gcp:
   serviceAccountName: ""
 
 kubernetes:
-  # -- Annotations for the Deployment resource
-  annotations: {}
   # -- Ingress class to be used for the ingress resource
   ingressClass: "nginx"
   ingress:

@@ -34,7 +34,6 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | gcp.secretsManager.secret.secretVersion | string | `""` | Version of the secret  |
 | gcp.secretsManager.secretProviderClass | string | `""` | Secret provider class |
 | gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
-| kubernetes.annotations | object | `{}` | Annotations for the Deployment resource |
 | kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
