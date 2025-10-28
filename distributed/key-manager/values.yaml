@@ -81,8 +81,6 @@ gcp:
   serviceAccountName: ""
 
 kubernetes:
-  # -- Annotations for the Deployment resource
-  annotations: {}
   # -- Ingress class to be used for the ingress resource
   ingressClass: "nginx"
   ingress:
@@ -373,6 +371,11 @@ wso2:
 
     # -- Node selector to deploy pod in selected node. Add label to the node and specify the label here.
     nodeSelector:
+
+    # Pod-specific configurations
+    pod:
+      # -- Annotations for pods
+      annotations: {}
 
     # Kubernetes RollingUpdate strategy configurations
     strategy:
