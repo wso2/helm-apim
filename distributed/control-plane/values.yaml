@@ -156,6 +156,7 @@ kubernetes:
       # -- Ingress ratelimit burst limit
       burstLimit: ""
     controlPlane:
+      enabled: true
       # -- Ingress hostname
       hostname: "am.wso2.com"
       # -- Ingress annotations

@@ -94,6 +94,7 @@ kubernetes:
       # -- Ingress ratelimit burst limit
       burstLimit: ""
     km:
+      enabled: true
       # -- Ingress hostname for Gateway pass-through
       hostname: "km.wso2.com"
       # -- Ingress annotations for Gateway pass-through
