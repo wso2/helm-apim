@@ -156,6 +156,7 @@ kubernetes:
       # -- Ingress ratelimit burst limit
       burstLimit: ""
     controlPlane:
+      # -- Enable ingress for Control Plane
       enabled: true
       # -- Ingress hostname
       hostname: "am.wso2.com"
