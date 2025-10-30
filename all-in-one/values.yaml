@@ -173,7 +173,7 @@ kubernetes:
       hostname: "websub.wso2.com"
       # -- Ingress annotations for Websub
       annotations:
-  # -- Openshift Route configurations
+  # -- OpenShift Route configurations
   route:
     # -- TLS configuration for OpenShift routes
     tls:
