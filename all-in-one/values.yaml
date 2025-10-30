@@ -177,13 +177,14 @@ kubernetes:
   route:
     # -- TLS configuration for OpenShift routes
     tls:
-      termination:
-        # -- TLS termination type (passthrough, edge, reencrypt)
-        type: "passthrough"
-        # -- TLS certificate for edge/reencrypt termination
-        certificate: ""
-        # -- TLS private key for edge/reencrypt termination
-        key: ""
+      # -- TLS termination type (passthrough, edge, reencrypt)
+      termination: "passthrough"
+      # -- Insecure Edge Termination Policy
+      insecureEdgeTerminationPolicy: "None"
+      # -- TLS certificate for edge/reencrypt termination
+      certificate: ""
+      # -- TLS private key for edge/reencrypt termination
+      key: ""
     management:
       enabled: false
       # Hostname for API Manager Carbon Management Console, Publisher, DevPortal and Admin Portal

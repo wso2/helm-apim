@@ -24,11 +24,12 @@ spec:
   port:
     targetPort: 8243
   tls:
-    termination: {{ .Values.kubernetes.route.tls.termination.type | quote }}
-    {{- if ne .Values.kubernetes.route.tls.termination.type "passthrough" }}
-    {{- if and .Values.kubernetes.route.tls.termination.certificate .Values.kubernetes.route.tls.termination.key }}
-    certificate: {{ .Values.kubernetes.route.tls.termination.certificate | quote }}
-    key: {{ .Values.kubernetes.route.tls.termination.key | quote }}
+    termination: {{ .Values.kubernetes.route.tls.termination | quote }}
+    insecureEdgeTerminationPolicy: {{ .Values.kubernetes.route.tls.insecureEdgeTerminationPolicy | quote }}
+    {{- if ne .Values.kubernetes.route.tls.termination "passthrough" }}
+    {{- if and .Values.kubernetes.route.tls.certificate .Values.kubernetes.route.tls.key }}
+    certificate: {{ .Values.kubernetes.route.tls.certificate | quote }}
+    key: {{ .Values.kubernetes.route.tls.key | quote }}
     {{- else }}
     {{- fail "TLS certificate and key must be provided when termination type is not 'passthrough'." }}
     {{- end }}
