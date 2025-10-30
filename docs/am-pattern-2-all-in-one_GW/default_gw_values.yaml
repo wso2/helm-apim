@@ -376,6 +376,9 @@ wso2:
         enabled: false
         serverId: "Gateway1"
 
+      # -- Add custom configurations to deployment.toml.
+      extraConfigs:
+
   deployment:
     # Container image configurations
     image:

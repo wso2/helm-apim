@@ -214,3 +214,7 @@ test_while_idle = {{ .Values.wso2.apim.configurations.distributedThrottling.keyv
 min_evictable_idle_time_millis = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.minEvictableIdleTimeMillis }}
 time_between_eviction_runs_millis = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.timeBetweenEvictionRunsMillis }}
 {{- end }}
+
+{{- if .Values.wso2.apim.configurations.extraConfigs }}
+{{ .Values.wso2.apim.configurations.extraConfigs }}
+{{- end }}

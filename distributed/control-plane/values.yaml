@@ -520,6 +520,11 @@ wso2:
           password: ""
           identityServerBaseUrl: ""
 
+      # -- Add custom configurations to deployment.toml.
+      extraConfigs: #|
+        # [tenant_mgt]
+        # enable_email_domain = true
+
   deployment:
     # Container image configurations
     image:
