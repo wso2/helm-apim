@@ -48,12 +48,13 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.ingress.ratelimit.zoneName | string | `""` | Ingress ratelimit zone name |
 | kubernetes.ingress.tlsSecret | string | `""` | Kubernetes secret created for Ingress TLS |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
-| kubernetes.route | object | `{"km":{"annotations":null,"enabled":false,"hostname":"km.wso2.com"},"tls":{"certificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"}}` | OpenShift Route configurations |
+| kubernetes.route | object | `{"km":{"annotations":null,"enabled":false,"hostname":"km.wso2.com"},"tls":{"certificate":"","destinationCACertificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"}}` | OpenShift Route configurations |
 | kubernetes.route.km.annotations | string | `nil` | Route annotations for Key Manager |
 | kubernetes.route.km.enabled | bool | `false` | Enable route for Key Manager |
 | kubernetes.route.km.hostname | string | `"km.wso2.com"` | Route hostname for Key Manager |
-| kubernetes.route.tls | object | `{"certificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"}` | TLS configuration for OpenShift routes |
+| kubernetes.route.tls | object | `{"certificate":"","destinationCACertificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"}` | TLS configuration for OpenShift routes |
 | kubernetes.route.tls.certificate | string | `""` | TLS certificate for edge/reencrypt termination |
+| kubernetes.route.tls.destinationCACertificate | string | `""` | Destination CA certificate for reencrypt termination |
 | kubernetes.route.tls.insecureEdgeTerminationPolicy | string | `"None"` | Insecure Edge Termination Policy |
 | kubernetes.route.tls.key | string | `""` | TLS private key for edge/reencrypt termination |
 | kubernetes.route.tls.termination | string | `"passthrough"` | TLS termination type (passthrough, edge, reencrypt) |

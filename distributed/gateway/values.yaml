@@ -124,6 +124,8 @@ kubernetes:
       certificate: ""
       # -- TLS private key for edge/reencrypt termination
       key: ""
+      # -- Destination CA certificate for reencrypt termination
+      destinationCACertificate: ""
     gateway:
       # -- Enable route for Gateway
       enabled: false

@@ -80,13 +80,14 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.ingress.websub.enabled | bool | `true` |  |
 | kubernetes.ingress.websub.hostname | string | `"websub.wso2.com"` | Ingress hostname for Websub |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
-| kubernetes.route | object | `{"gateway":{"annotations":null,"enabled":false,"hostname":"gw.wso2.com"},"management":{"annotations":null,"enabled":false,"hostname":"am.wso2.com"},"tls":{"certificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"},"websocket":{"annotations":null,"enabled":false,"hostname":"websocket.wso2.com"},"websub":{"annotations":null,"enabled":false,"hostname":"websub.wso2.com"}}` | OpenShift Route configurations |
+| kubernetes.route | object | `{"gateway":{"annotations":null,"enabled":false,"hostname":"gw.wso2.com"},"management":{"annotations":null,"enabled":false,"hostname":"am.wso2.com"},"tls":{"certificate":"","destinationCACertificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"},"websocket":{"annotations":null,"enabled":false,"hostname":"websocket.wso2.com"},"websub":{"annotations":null,"enabled":false,"hostname":"websub.wso2.com"}}` | OpenShift Route configurations |
 | kubernetes.route.gateway.annotations | string | `nil` | Route annotations for Gateway pass-through |
 | kubernetes.route.gateway.hostname | string | `"gw.wso2.com"` | Route hostname for Gateway pass-through |
 | kubernetes.route.management.annotations | string | `nil` | Annotations for the API Manager Publisher-DevPortal services Route |
 | kubernetes.route.management.hostname | string | `"am.wso2.com"` | Hostname for API Manager Carbon Management Console, Publisher, DevPortal and Admin Portal |
-| kubernetes.route.tls | object | `{"certificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"}` | TLS configuration for OpenShift routes |
+| kubernetes.route.tls | object | `{"certificate":"","destinationCACertificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"}` | TLS configuration for OpenShift routes |
 | kubernetes.route.tls.certificate | string | `""` | TLS certificate for edge/reencrypt termination |
+| kubernetes.route.tls.destinationCACertificate | string | `""` | Destination CA certificate for reencrypt termination |
 | kubernetes.route.tls.insecureEdgeTerminationPolicy | string | `"None"` | Insecure Edge Termination Policy |
 | kubernetes.route.tls.key | string | `""` | TLS private key for edge/reencrypt termination |
 | kubernetes.route.tls.termination | string | `"passthrough"` | TLS termination type (passthrough, edge, reencrypt) |

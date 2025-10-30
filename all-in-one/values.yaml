@@ -185,6 +185,8 @@ kubernetes:
       certificate: ""
       # -- TLS private key for edge/reencrypt termination
       key: ""
+      # -- Destination CA certificate for reencrypt termination
+      destinationCACertificate: ""
     management:
       enabled: false
       # -- Hostname for API Manager Carbon Management Console, Publisher, DevPortal and Admin Portal

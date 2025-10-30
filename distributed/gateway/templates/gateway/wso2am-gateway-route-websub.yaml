@@ -30,6 +30,7 @@ spec:
     {{- if and .Values.kubernetes.route.tls.certificate .Values.kubernetes.route.tls.key }}
     certificate: {{ .Values.kubernetes.route.tls.certificate | quote }}
     key: {{ .Values.kubernetes.route.tls.key | quote }}
+    destinationCACertificate: {{ .Values.kubernetes.route.tls.destinationCACertificate | quote }}
     {{- else }}
     {{- fail "TLS certificate and key must be provided when termination type is not 'passthrough'." }}
     {{- end }}
