@@ -200,6 +200,7 @@ kubernetes:
       annotations:
         # key: value
     websocket:
+      # -- Enable Route for Websocket
       enabled: false
       # -- Route hostname for Websocket
       hostname: "websocket.wso2.com"
