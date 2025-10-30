@@ -723,16 +723,6 @@ wso2:
   deployment:
     # Configure High Availability
     highAvailability: false
-    # -- OpenShift Route TLS configuration
-    route:
-      tls:
-        termination:
-          # -- TLS termination type (passthrough, edge, reencrypt)
-          type: "passthrough"
-          # -- TLS certificate for edge/reencrypt termination
-          certificate: ""
-          # -- TLS private key for edge/reencrypt termination
-          key: ""
     # Container image configurations
     image:
       # -- Container registry credentials.
