@@ -173,6 +173,45 @@ kubernetes:
       hostname: "websub.wso2.com"
       # -- Ingress annotations for Websub
       annotations:
+  # -- Openshift Route configurations
+  route:
+    # -- TLS configuration for OpenShift routes
+    tls:
+      termination:
+        # -- TLS termination type (passthrough, edge, reencrypt)
+        type: "passthrough"
+        # -- TLS certificate for edge/reencrypt termination
+        certificate: ""
+        # -- TLS private key for edge/reencrypt termination
+        key: ""
+    management:
+      enabled: false
+      # Hostname for API Manager Carbon Management Console, Publisher, DevPortal and Admin Portal
+      hostname: "am.wso2.com"
+      # Annotations for the API Manager Publisher-DevPortal services Route
+      annotations:
+        # key: value
+    gateway:
+      enabled: false
+      # -- Route hostname for Gateway pass-through
+      hostname: "gw.wso2.com"
+      # -- Route annotations for Gateway pass-through
+      annotations:
+        # key: value
+    websocket:
+      enabled: false
+      # -- Route hostname for Websocket
+      hostname: "websocket.wso2.com"
+      # -- Route annotations for Websocket
+      annotations:
+        # key: value
+    websub:
+      enabled: false
+      # -- Route hostname for Websub
+      hostname: "websub.wso2.com"
+      # -- Route annotations for Websub
+      annotations:
+        # key: value
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
@@ -684,6 +723,16 @@ wso2:
   deployment:
     # Configure High Availability
     highAvailability: false
+    # -- OpenShift Route TLS configuration
+    route:
+      tls:
+        termination:
+          # -- TLS termination type (passthrough, edge, reencrypt)
+          type: "passthrough"
+          # -- TLS certificate for edge/reencrypt termination
+          certificate: ""
+          # -- TLS private key for edge/reencrypt termination
+          key: ""
     # Container image configurations
     image:
       # -- Container registry credentials.
