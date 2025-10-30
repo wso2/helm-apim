@@ -187,9 +187,9 @@ kubernetes:
       key: ""
     management:
       enabled: false
-      # Hostname for API Manager Carbon Management Console, Publisher, DevPortal and Admin Portal
+      # -- Hostname for API Manager Carbon Management Console, Publisher, DevPortal and Admin Portal
       hostname: "am.wso2.com"
-      # Annotations for the API Manager Publisher-DevPortal services Route
+      # -- Annotations for the API Manager Publisher-DevPortal services Route
       annotations:
         # key: value
     gateway:
