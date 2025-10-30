@@ -249,3 +249,7 @@ internal_keystore_key_password = {{ .Values.wso2.apim.configurations.security.ke
 truststore_password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
 shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote}}
 {{- end}}
+
+{{- if .Values.wso2.apim.configurations.extraConfigs }}
+{{ .Values.wso2.apim.configurations.extraConfigs }}
+{{- end }}

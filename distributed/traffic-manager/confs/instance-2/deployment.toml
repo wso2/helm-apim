@@ -180,3 +180,7 @@ truststore_password = {{ .Values.wso2.apim.configurations.security.truststore.pa
 apim_db_password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote}}
 shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote}}
 {{- end}}
+
+{{- if .Values.wso2.apim.configurations.extraConfigs }}
+{{ .Values.wso2.apim.configurations.extraConfigs }}
+{{- end }}
