@@ -490,3 +490,7 @@ supported_languages = {{ toJson .Values.wso2.apim.configurations.sdk.supportedLa
 enable = {{ .Values.wso2.apim.configurations.organization_based_access_control.enabled }}
 organization_name_local_claim = {{ .Values.wso2.apim.configurations.organization_based_access_control.organization_name_local_claim | quote }}
 organization_id_local_claim = {{ .Values.wso2.apim.configurations.organization_based_access_control.organization_id_local_claim | quote }}
+
+{{- if .Values.wso2.apim.configurations.extraConfigs }}
+{{ .Values.wso2.apim.configurations.extraConfigs }}
+{{- end }}
