@@ -112,6 +112,44 @@ kubernetes:
       hostname: "websub.wso2.com"
       # -- Ingress annotations for Websub
       annotations:
+  # -- OpenShift Route configurations
+  route:
+    # -- TLS configuration for OpenShift routes
+    tls:
+      # -- TLS termination type (passthrough, edge, reencrypt)
+      termination: "passthrough"
+      # -- Insecure Edge Termination Policy
+      insecureEdgeTerminationPolicy: "None"
+      # -- TLS certificate for edge/reencrypt termination
+      certificate: ""
+      # -- TLS private key for edge/reencrypt termination
+      key: ""
+      # -- Destination CA certificate for reencrypt termination
+      destinationCACertificate: ""
+    gateway:
+      # -- Enable route for Gateway
+      enabled: false
+      # -- Route hostname for Gateway pass-through
+      hostname: "gw.wso2.com"
+      # -- Route annotations for Gateway pass-through
+      annotations:
+        # key: value
+    websocket:
+      # -- Enable route for Websocket
+      enabled: false
+      # -- Route hostname for Websocket
+      hostname: "websocket.wso2.com"
+      # -- Route annotations for Websocket
+      annotations:
+        # key: value
+    websub:
+      # -- Enable route for Websub
+      enabled: false
+      # -- Route hostname for Websub
+      hostname: "websub.wso2.com"
+      # -- Route annotations for Websub
+      annotations:
+        # key: value
 
   securityContext:
     # -- User ID of the container
