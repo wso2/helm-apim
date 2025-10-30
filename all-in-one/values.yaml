@@ -208,6 +208,7 @@ kubernetes:
       annotations:
         # key: value
     websub:
+      # -- Enable Websub route
       enabled: false
       # -- Route hostname for Websub
       hostname: "websub.wso2.com"
