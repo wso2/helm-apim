@@ -76,6 +76,15 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | kubernetes.ingress.ratelimit.zoneName | string | `""` | Ingress ratelimit zone name |
 | kubernetes.ingress.tlsSecret | string | `""` | Kubernetes secret created for Ingress TLS |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
+| kubernetes.route | object | `{"controlPlane":{"annotations":null,"enabled":false,"hostname":"am.wso2.com"},"tls":{"certificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"}}` | OpenShift Route configurations |
+| kubernetes.route.controlPlane.annotations | string | `nil` | Route annotations |
+| kubernetes.route.controlPlane.enabled | bool | `false` | Enable route for Control Plane |
+| kubernetes.route.controlPlane.hostname | string | `"am.wso2.com"` | Route hostname |
+| kubernetes.route.tls | object | `{"certificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"}` | TLS configuration for OpenShift routes |
+| kubernetes.route.tls.certificate | string | `""` | TLS certificate for edge/reencrypt termination |
+| kubernetes.route.tls.insecureEdgeTerminationPolicy | string | `"None"` | Insecure Edge Termination Policy |
+| kubernetes.route.tls.key | string | `""` | TLS private key for edge/reencrypt termination |
+| kubernetes.route.tls.termination | string | `"passthrough"` | TLS termination type (passthrough, edge, reencrypt) |
 | kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
 | kubernetes.securityContext.seLinux | object | `{"enabled":false,"level":""}` | SELinux context for the container |
 | kubernetes.securityContext.seccompProfile | object | `{"localhostProfile":"","type":"RuntimeDefault"}` | Seccomp profile for the container |
