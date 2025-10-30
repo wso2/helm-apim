@@ -466,6 +466,9 @@ wso2:
         enabled: false
         serverId: "Gateway1"
         serverUrl: "https://apim-acp-wso2am-acp-service:9443/internal/data/v1/transaction-records"
+      
+      # -- Add custom configurations to deployment.toml.
+      extraConfigs: 
 
   deployment:
     # Container image configurations

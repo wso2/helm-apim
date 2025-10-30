@@ -304,3 +304,7 @@ batch_processor_queue_size = {{ .Values.wso2.apim.configurations.gatewayNotifica
 max_retry_count = {{ .Values.wso2.apim.configurations.gatewayNotification.registration.maxRetryCount }}
 retry_duration = {{ .Values.wso2.apim.configurations.gatewayNotification.registration.retryDuration | quote }}
 retry_progression_factor = {{ .Values.wso2.apim.configurations.gatewayNotification.registration.retryProgressionFactor }}
+
+{{- if .Values.wso2.apim.configurations.extraConfigs }}
+{{ .Values.wso2.apim.configurations.extraConfigs }}
+{{- end }}

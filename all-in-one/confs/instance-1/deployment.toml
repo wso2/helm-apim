@@ -581,3 +581,7 @@ username = {{ .Values.wso2.apim.configurations.tenantSharing.properties.username
 password = {{ .Values.wso2.apim.configurations.tenantSharing.properties.password | quote }}
 identity_server_base_url = {{ .Values.wso2.apim.configurations.tenantSharing.properties.identityServerBaseUrl | quote }}
 {{- end }}
+
+{{- if .Values.wso2.apim.configurations.extraConfigs }}
+{{ .Values.wso2.apim.configurations.extraConfigs }}
+{{- end }}

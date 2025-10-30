@@ -311,6 +311,9 @@ wso2:
           minEvictableIdleTimeMillis: 3000
           timeBetweenEvictionRunsMillis: 1200
 
+      # -- Add custom configurations to deployment.toml.
+      extraConfigs: 
+
   deployment:
     # Container image configurations
     image:

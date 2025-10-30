@@ -681,6 +681,11 @@ wso2:
           password: ""
           identityServerBaseUrl: ""
 
+      # -- Add custom configurations to deployment.toml.
+      extraConfigs: #|
+        # [tenant_mgt]
+        # enable_email_domain = true
+
   deployment:
     # Configure High Availability
     highAvailability: false
@@ -774,3 +779,4 @@ wso2:
           carbonDatabase: 50M
           # -- For persisting the indexed solr data
           solrIndexedData: 50M
+
