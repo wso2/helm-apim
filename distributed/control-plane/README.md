@@ -69,6 +69,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
 | kubernetes.ingress.controlPlane.annotations | object | `{"nginx.ingress.kubernetes.io/affinity":"cookie","nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/session-cookie-hash":"sha1","nginx.ingress.kubernetes.io/session-cookie-name":"route"}` | Ingress annotations |
+| kubernetes.ingress.controlPlane.enabled | bool | `true` | Enable ingress for Control Plane |
 | kubernetes.ingress.controlPlane.hostname | string | `"am.wso2.com"` | Ingress hostname |
 | kubernetes.ingress.ratelimit.burstLimit | string | `""` | Ingress ratelimit burst limit |
 | kubernetes.ingress.ratelimit.enabled | bool | `false` | Ingress rate limit |

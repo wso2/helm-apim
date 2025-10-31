@@ -9,6 +9,7 @@
 #
 # --------------------------------------------------------------------------------------
 
+{{- if .Values.kubernetes.ingress.km.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -45,3 +46,4 @@ spec:
             name: {{ template "apim-helm-km.fullname" . }}-service
             port: 
               number: {{ add 9443 .Values.wso2.apim.portOffset }}
+{{- end -}}
