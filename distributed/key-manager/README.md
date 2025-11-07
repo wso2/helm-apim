@@ -41,6 +41,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
 | kubernetes.ingress.km.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
+| kubernetes.ingress.km.enabled | bool | `true` | Enable ingress for Key Manager |
 | kubernetes.ingress.km.hostname | string | `"km.wso2.com"` | Ingress hostname for Gateway pass-through |
 | kubernetes.ingress.ratelimit.burstLimit | string | `""` | Ingress ratelimit burst limit |
 | kubernetes.ingress.ratelimit.enabled | bool | `false` | Ingress rate limit |
