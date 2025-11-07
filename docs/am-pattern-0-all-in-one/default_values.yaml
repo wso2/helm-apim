@@ -180,21 +180,12 @@ kubernetes:
 
 
 wso2:  
-  # -- WSO2 Choreo Analytics Parameters
-  # If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/).
-  choreoAnalytics:
-    enabled: false
-    # -- Choreo Analytics cloud service endpoint
-    endpoint: ""
-    # -- On-premise key for Choreo Analytics
-    onpremKey: ""
-
   # -- ELK Analytics Parameters
   ELKAnalytics:
     enabled: false
   # -- Moesif Analytics Parameters
   moesifAnalytics:
-    enabled: true
+    enabled: false
     # -- Moesif API key
     key: "YOUR_MOESIF_API_KEY_HERE"
     # -- Moesif base URL
