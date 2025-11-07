@@ -188,21 +188,21 @@ enable = {{ .Values.wso2.apim.configurations.cache.tags.enabled }}
 expiry_time = {{ .Values.wso2.apim.configurations.cache.tags.expiryTime | quote }}
 
 [apim.analytics]
-{{- if .Values.wso2.choreoAnalytics.enabled }}
-enable = true
-config_endpoint = "{{ .Values.wso2.choreoAnalytics.endpoint }}"
-auth_token = "{{ .Values.wso2.choreoAnalytics.onpremKey }}"
-{{- else if .Values.wso2.ELKAnalytics.enabled}}
+{{- if .Values.wso2.ELKAnalytics.enabled}}
 enable = true
 type = "elk"
 {{- else if .Values.wso2.moesifAnalytics.enabled }}
 enable = true
 type = "moesif"
-properties."moesifKey" = {{ .Values.wso2.moesifAnalytics.key | quote }}
-properties."publisher.reporter.class" = {{ .Values.wso2.moesifAnalytics.publisherReporterClass | quote }}
-logger.reporter.level = {{ .Values.wso2.moesifAnalytics.loggerReporterLevel | quote }}
 {{- else }}
 enable = false
+{{- end }}
+
+{{- if .Values.wso2.moesifAnalytics.enabled }}
+[apim.analytics.properties]
+moesifKey = {{ .Values.wso2.moesifAnalytics.key | quote }}
+moesif_base_url = {{ .Values.wso2.moesifAnalytics.moesif_base_url | quote }}
+send_headers = {{ .Values.wso2.moesifAnalytics.send_headers }}
 {{- end }}
 
 [apim.ai]

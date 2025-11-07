@@ -220,13 +220,13 @@ wso2:
 
   # -- Moesif Analytics Parameters
   moesifAnalytics:
-    enabled: false
+    enabled: true
     # -- Moesif API key
-    key: ""
-    # -- Moesif publisher reporter class
-    publisherReporterClass: ""
-    # -- Moesif logger reporter level
-    loggerReporterLevel: ""
+    key: "YOUR_MOESIF_API_KEY_HERE"
+    # -- Moesif base URL
+    moesif_base_url: "https://api.moesif.net"
+    # -- Moesif send header
+    send_headers: false
 
   # TOML configurations
   apim:
