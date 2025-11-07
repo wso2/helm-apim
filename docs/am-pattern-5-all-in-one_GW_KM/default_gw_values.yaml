@@ -113,19 +113,19 @@ kubernetes:
   # -- Enable AppArmor profiles for the deployment
   enableAppArmor: false
 
-wso2:  
-  # -- WSO2 Choreo Analytics Parameters
-  # If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/).
-  choreoAnalytics:
-    enabled: true
-    # -- Choreo Analytics cloud service endpoint
-    endpoint: "https://analytics-event-auth.choreo.dev/auth/v1"
-    # -- On-premise key for Choreo Analytics
-    onpremKey: "7773da0c-b164-4d16-bffc-82abfa2ce020"
-  
+wso2:   
   # -- ELK Analytics Parameters
   ELKAnalytics:
     enabled: false
+  # -- Moesif Analytics Parameters
+  moesifAnalytics:
+    enabled: false
+    # -- Moesif API key
+    key: "YOUR_MOESIF_API_KEY_HERE"
+    # -- Moesif base URL
+    moesif_base_url: "https://api.moesif.net"
+    # -- Moesif send header
+    send_headers: false
 
   apim:
     # -- APIM version
