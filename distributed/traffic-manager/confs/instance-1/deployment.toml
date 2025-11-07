@@ -14,7 +14,7 @@ username = {{ .Values.wso2.apim.configurations.adminUsername | quote }}
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{admin_password}"
 {{- else if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.adminPasswordKey }}
-password = "${env:WSO2_ADMIN_PASSWORD}"
+password = "$env{WSO2_ADMIN_PASSWORD}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
 {{- end }}
@@ -27,7 +27,7 @@ username = "{{ .Values.wso2.apim.configurations.databases.apim_db.username }}"
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{apim_db_password}"
 {{- else if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.apimDBPasswordKey }}
-password = "${env:WSO2_APIM_DB_PASSWORD}"
+password = "$env{WSO2_APIM_DB_PASSWORD}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote }}
 {{- end }}
@@ -45,7 +45,7 @@ username = "{{ .Values.wso2.apim.configurations.databases.shared_db.username }}"
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{shared_db_password}"
 {{- else if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.sharedDBPasswordKey }}
-password = "${env:WSO2_SHARED_DB_PASSWORD}"
+password = "$env{WSO2_SHARED_DB_PASSWORD}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote }}
 {{- end }}
@@ -65,8 +65,8 @@ alias = "{{ .Values.wso2.apim.configurations.security.keystores.primary.alias }}
 password = "$secret{keystore_password}"
 key_password = "$secret{keystore_key_password}"
 {{- else if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.primaryKeystorePasswordKey }}
-password = "${env:WSO2_PRIMARY_KEYSTORE_PASSWORD}"
-key_password = "${env:WSO2_PRIMARY_KEYSTORE_KEY_PASSWORD}"
+password = "$env{WSO2_PRIMARY_KEYSTORE_PASSWORD}"
+key_password = "$env{WSO2_PRIMARY_KEYSTORE_KEY_PASSWORD}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
 key_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.keyPassword | quote }}
@@ -82,8 +82,8 @@ alias = "{{ .Values.wso2.apim.configurations.security.keystores.tls.alias }}"
 password = "$secret{ssl_keystore_password}"
 key_password = "$secret{ssl_key_password}"
 {{- else if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.tlsKeystorePasswordKey }}
-password = "${env:WSO2_TLS_KEYSTORE_PASSWORD}"
-key_password = "${env:WSO2_TLS_KEYSTORE_KEY_PASSWORD}"
+password = "$env{WSO2_TLS_KEYSTORE_PASSWORD}"
+key_password = "$env{WSO2_TLS_KEYSTORE_KEY_PASSWORD}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.security.keystores.tls.password | quote }}
 key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.keyPassword | quote }}
@@ -99,8 +99,8 @@ alias = "{{ .Values.wso2.apim.configurations.security.keystores.internal.alias }
 password = "$secret{internal_keystore_password}"
 key_password = "$secret{internal_keystore_key_password}"
 {{- else if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.internalKeystorePasswordKey }}
-password = "${env:WSO2_INTERNAL_KEYSTORE_PASSWORD}"
-key_password = "${env:WSO2_INTERNAL_KEYSTORE_KEY_PASSWORD}"
+password = "$env{WSO2_INTERNAL_KEYSTORE_PASSWORD}"
+key_password = "$env{WSO2_INTERNAL_KEYSTORE_KEY_PASSWORD}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
 key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.keyPassword | quote }}
@@ -113,7 +113,7 @@ file_name = "{{ .Values.wso2.apim.configurations.security.truststore.name }}"
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{truststore_password}"
 {{- else if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.truststorePasswordKey }}
-password = "${env:WSO2_TRUSTSTORE_PASSWORD}"
+password = "$env{WSO2_TRUSTSTORE_PASSWORD}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
 {{- end }}
@@ -213,4 +213,8 @@ block_when_exhausted = {{ .Values.wso2.apim.configurations.distributedThrottling
 test_while_idle = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.testWhileIdle }}
 min_evictable_idle_time_millis = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.minEvictableIdleTimeMillis }}
 time_between_eviction_runs_millis = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.timeBetweenEvictionRunsMillis }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.extraConfigs }}
+{{ .Values.wso2.apim.configurations.extraConfigs }}
 {{- end }}
