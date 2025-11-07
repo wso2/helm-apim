@@ -35,13 +35,13 @@ Also
 
 Ex: Following is a sample modified dockerfile created using the existing ```ubuntu/apim``` as the base image. 
 ```Dockerfile
-FROM wso2/wso2am:4.5.0
+FROM wso2/wso2am:4.6.0
 
 ARG USER=wso2carbon
 ARG USER_ID=10001
 ARG USER_HOME=/home/${USER}
 ARG WSO2_SERVER_NAME=wso2am
-ARG WSO2_SERVER_VERSION=4.5.0
+ARG WSO2_SERVER_VERSION=4.6.0
 ARG WSO2_SERVER_REPOSITORY=product-apim
 ARG WSO2_SERVER=${WSO2_SERVER_NAME}-${WSO2_SERVER_VERSION}
 ARG WSO2_SERVER_HOME=${USER_HOME}/${WSO2_SERVER}

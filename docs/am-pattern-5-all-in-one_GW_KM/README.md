@@ -66,7 +66,7 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
   For a production-grade deployment of the desired WSO2 product version, it is highly recommended to use the relevant
   Docker image which packages WSO2 Updates, available at [WSO2 Private Docker Registry](https://docker.wso2.com/). To use these images, you need an active [WSO2 Subscription](https://wso2.com/subscription).
 
-- WSO2 API Manager 4.5.0 provides three Docker images:
+- WSO2 API Manager 4.6.0 provides three Docker images:
   - All-in-one - [wso2am](https://hub.docker.com/r/wso2/wso2am)
   - Universal Gateway (GW) - [wso2am-universal-gw](https://hub.docker.com/r/wso2/wso2am-universal-gw)
 
@@ -76,17 +76,17 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
   ```
 - Furthermore, if there are any customizations to the JARs in the product, those can also be included in the Docker image itself rather than mounting them from the deployment level (assuming that they are common to all environments).
 - The following is a sample Dockerfile to build a custom WSO2 APIM image. Depending on your requirements, you may refer to the following and make the necessary additions. The script below will:
-  - Use WSO2 APIM 4.5.0 as the base image
+  - Use WSO2 APIM 4.6.0 as the base image
   - Change UID and GID to 10001 (the default APIM image has 802 as UID and GID)
   - Copy third-party libraries to the `<APIM_HOME>/lib` directory
 
   - Dockerfile for All-in-one
     ```dockerfile
-    FROM docker.wso2.com/wso2am:4.5.0.0
+    FROM docker.wso2.com/wso2am:4.6.0.0
 
     ARG USER_HOME=/home/${USER}
     ARG WSO2_SERVER_NAME=wso2am
-    ARG WSO2_SERVER_VERSION=4.5.0
+    ARG WSO2_SERVER_VERSION=4.6.0
     ARG WSO2_SERVER=${WSO2_SERVER_NAME}-${WSO2_SERVER_VERSION}
     ARG WSO2_SERVER_HOME=${USER_HOME}/${WSO2_SERVER}
 
@@ -96,11 +96,11 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
   
   - Dockerfile for Universal Gateway
     ```dockerfile
-    FROM docker.wso2.com/wso2am-universal-gw:4.5.0.0
+    FROM docker.wso2.com/wso2am-universal-gw:4.6.0.0
 
     ARG USER_HOME=/home/${USER}
     ARG WSO2_SERVER_NAME=wso2am-universal-gw
-    ARG WSO2_SERVER_VERSION=4.5.0
+    ARG WSO2_SERVER_VERSION=4.6.0
     ARG WSO2_SERVER=${WSO2_SERVER_NAME}-${WSO2_SERVER_VERSION}
     ARG WSO2_SERVER_HOME=${USER_HOME}/${WSO2_SERVER}
 
@@ -110,11 +110,11 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
   
     - Dockerfile for Traffic Manager
     ```dockerfile
-    FROM docker.wso2.com/wso2am-tm:4.5.0.0
+    FROM docker.wso2.com/wso2am-tm:4.6.0.0
 
     ARG USER_HOME=/home/${USER}
     ARG WSO2_SERVER_NAME=wso2am-tm
-    ARG WSO2_SERVER_VERSION=4.5.0
+    ARG WSO2_SERVER_VERSION=4.6.0
     ARG WSO2_SERVER=${WSO2_SERVER_NAME}-${WSO2_SERVER_VERSION}
     ARG WSO2_SERVER_HOME=${USER_HOME}/${WSO2_SERVER}
 
@@ -162,17 +162,17 @@ kubectl create secret generic apim-keystore-secret --from-file=wso2carbon.jks --
 
 1. Deploy All-in-one
 ```bash
-helm install apim wso2/wso2am-all-in-one --version 4.5.0-3 -f default_values.yaml
+helm install apim wso2/wso2am-all-in-one --version 4.6.0-1 -f default_values.yaml
 ```
 
 2. Deploy KM
 ```bash
-helm install apim wso2/wso2am-acp --version 4.5.0-3 -f default_km_values.yaml
+helm install apim wso2/wso2am-acp --version 4.6.0-1 -f default_km_values.yaml
 ```
 
 3. Deploy GW
 ```bash
-helm install apim-gw wso2/wso2am-gw --version 4.5.0-3 -f default_gw_values.yaml
+helm install apim-gw wso2/wso2am-gw --version 4.6.0-1 -f default_gw_values.yaml
 ```
 
 - Once the service is up and running, deploy the NGINX Ingress Controller by following the steps outlined in [1.1 Add Ingress Controller](#11-add-ingress-controller).
@@ -366,7 +366,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
   
   ```bash
   kubectl create namespace <namespace>
-  helm install <release-name> <helm-chart-path> --version 4.5.0-3 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.6.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 3. Key Manager Configuration
@@ -388,7 +388,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
 Replace <release-name> and <namespace> with appropriate values. Replace <helm-chart-path> with the path to the Helm Deployment.
   
   ```bash
-  helm install <release-name> <helm-chart-path> --version 4.5.0-3 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.6.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 4. Universal Gateway Configuration
@@ -436,7 +436,7 @@ Replace <release-name> and <namespace> with appropriate values. Replace <helm-ch
 Replace <release-name> and <namespace> with appropriate values. Replace <helm-chart-path> with the path to the Helm deployment.
   
   ```bash
-  helm install <release-name> <helm-chart-path> --version 4.5.0-3 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.6.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 5. Add a DNS Record Mapping the Hostnames and the External IP
