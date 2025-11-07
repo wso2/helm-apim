@@ -126,6 +126,15 @@ wso2:
   # -- ELK Analytics Parameters
   ELKAnalytics:
     enabled: false
+  # -- Moesif Analytics Parameters
+  moesifAnalytics:
+    enabled: true
+    # -- Moesif API key
+    key: "YOUR_MOESIF_API_KEY_HERE"
+    # -- Moesif base URL
+    moesif_base_url: "https://api.moesif.net"
+    # -- Moesif send header
+    send_headers: false
 
   apim:
     # -- APIM version
