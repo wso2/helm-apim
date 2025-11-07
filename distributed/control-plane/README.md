@@ -1,6 +1,6 @@
 # wso2am-acp
 
-![Version: 4.6.0-rc](https://img.shields.io/badge/Version-4.6.0--rc-informational?style=flat-square) ![AppVersion: 4.6.0](https://img.shields.io/badge/AppVersion-4.6.0-informational?style=flat-square)
+![Version: 4.6.0-1](https://img.shields.io/badge/Version-4.6.0--1-informational?style=flat-square) ![AppVersion: 4.6.0](https://img.shields.io/badge/AppVersion-4.6.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 
