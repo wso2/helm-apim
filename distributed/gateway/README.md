@@ -52,6 +52,22 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | kubernetes.ingress.websub.enabled | bool | `true` | Enable ingress for Websub |
 | kubernetes.ingress.websub.hostname | string | `"websub.wso2.com"` | Ingress hostname for Websub |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
+| kubernetes.route | object | `{"gateway":{"annotations":null,"enabled":false,"hostname":"gw.wso2.com"},"tls":{"certificate":"","destinationCACertificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"},"websocket":{"annotations":null,"enabled":false,"hostname":"websocket.wso2.com"},"websub":{"annotations":null,"enabled":false,"hostname":"websub.wso2.com"}}` | OpenShift Route configurations |
+| kubernetes.route.gateway.annotations | string | `nil` | Route annotations for Gateway pass-through |
+| kubernetes.route.gateway.enabled | bool | `false` | Enable route for Gateway |
+| kubernetes.route.gateway.hostname | string | `"gw.wso2.com"` | Route hostname for Gateway pass-through |
+| kubernetes.route.tls | object | `{"certificate":"","destinationCACertificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"}` | TLS configuration for OpenShift routes |
+| kubernetes.route.tls.certificate | string | `""` | TLS certificate for edge/reencrypt termination |
+| kubernetes.route.tls.destinationCACertificate | string | `""` | Destination CA certificate for reencrypt termination |
+| kubernetes.route.tls.insecureEdgeTerminationPolicy | string | `"None"` | Insecure Edge Termination Policy |
+| kubernetes.route.tls.key | string | `""` | TLS private key for edge/reencrypt termination |
+| kubernetes.route.tls.termination | string | `"passthrough"` | TLS termination type (passthrough, edge, reencrypt) |
+| kubernetes.route.websocket.annotations | string | `nil` | Route annotations for Websocket |
+| kubernetes.route.websocket.enabled | bool | `false` | Enable route for Websocket |
+| kubernetes.route.websocket.hostname | string | `"websocket.wso2.com"` | Route hostname for Websocket |
+| kubernetes.route.websub.annotations | string | `nil` | Route annotations for Websub |
+| kubernetes.route.websub.enabled | bool | `false` | Enable route for Websub |
+| kubernetes.route.websub.hostname | string | `"websub.wso2.com"` | Route hostname for Websub |
 | kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
 | kubernetes.securityContext.seLinux | object | `{"enabled":false,"level":""}` | SELinux context for the container |
 | kubernetes.securityContext.seccompProfile | object | `{"localhostProfile":"","type":"RuntimeDefault"}` | Seccomp profile for the container |

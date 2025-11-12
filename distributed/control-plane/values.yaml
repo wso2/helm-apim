@@ -166,6 +166,28 @@ kubernetes:
         nginx.ingress.kubernetes.io/affinity: "cookie"
         nginx.ingress.kubernetes.io/session-cookie-name: "route"
         nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
+  # -- OpenShift Route configurations
+  route:
+    # -- TLS configuration for OpenShift routes
+    tls:
+      # -- TLS termination type (passthrough, edge, reencrypt)
+      termination: "passthrough"
+      # -- Insecure Edge Termination Policy
+      insecureEdgeTerminationPolicy: "None"
+      # -- TLS certificate for edge/reencrypt termination
+      certificate: ""
+      # -- TLS private key for edge/reencrypt termination
+      key: ""
+      # -- Destination CA certificate for reencrypt termination
+      destinationCACertificate: ""
+    controlPlane:
+      # -- Enable route for Control Plane
+      enabled: false
+      # -- Route hostname
+      hostname: "am.wso2.com"
+      # -- Route annotations
+      annotations:
+        # key: value
 
   securityContext:
     # -- User ID of the container
