@@ -229,6 +229,10 @@ spec:
             - name: wso2am-solr
               mountPath: /home/wso2carbon/solr/indexed-data
             {{ end }}
+            {{- if .Values.kubernetes.openshift.enabled }}
+            - name: wso2am-security-dir
+              mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security
+            {{- end }}
       {{- if .Values.wso2.deployment.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.wso2.deployment.nodeSelector | nindent 8 }}
@@ -302,4 +306,8 @@ spec:
           persistentVolumeClaim:
             claimName: {{ template "am-all-in-one.fullname" . }}-am-solr-indexed-data-volume-claim
         {{ end }}
+        {{- if .Values.kubernetes.openshift.enabled }}
+        - name: wso2am-security-dir
+          emptyDir: {}
+        {{- end }}
 {{- end }}

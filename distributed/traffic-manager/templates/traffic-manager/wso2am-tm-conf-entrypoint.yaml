@@ -44,6 +44,20 @@ data:
     cp /mnt/secrets-store/{{ .Values.gcp.secretsManager.secret.secretName }} ${WSO2_SERVER_HOME}/password-tmp
     {{- end }}
     {{- end }}
+  
+    # For permission configuration on OpenShift.
+    {{- if .Values.kubernetes.openshift.enabled }}
+    echo "Openshift deployment detected."
+    # Copy security dir to writable emptyDir and symlink
+    SRC_SECURITY="${WSO2_SERVER_HOME}/repository/resources/security"
+    WORK_SECURITY="/home/wso2carbon/security-work"
+    
+    if [ -d "${SRC_SECURITY}" ] && [ -d "${WORK_SECURITY}" ] && [ ! -L "${SRC_SECURITY}" ]; then
+      cp -a "${SRC_SECURITY}/." "${WORK_SECURITY}/" && \
+      chgrp -R 0 "${WORK_SECURITY}" && chmod -R g+rwX "${WORK_SECURITY}" && \
+      rm -rf "${SRC_SECURITY}" && ln -s "${WORK_SECURITY}" "${SRC_SECURITY}"
+    fi
+    {{- end }}
 
     # start WSO2 Carbon server
     echo "Start WSO2 Carbon server" >&2

@@ -81,6 +81,10 @@ gcp:
   serviceAccountName: ""
 
 kubernetes:
+  # -- When deploying on OpenShift.
+  openshift:
+    enabled: false
+
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
