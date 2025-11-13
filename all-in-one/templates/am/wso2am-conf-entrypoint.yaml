@@ -52,5 +52,17 @@ data:
     {{- end }}
     {{- end }}
 
+    # For permission configuration on OpenShift.
+    {{- if .Values.kubernetes.openshift.enabled }}
+    SECURITY_DIR="${WSO2_SERVER_HOME}/repository/resources/security"
+
+    if [ -d "${SECURITY_DIR}" ]; then
+    echo "Recreating ${SECURITY_DIR} in writable layer to allow runtime modifications..."
+    TMP_DIR="${SECURITY_DIR}_tmp_copyup"
+    cp -a "${SECURITY_DIR}/." "${TMP_DIR}" && rm -rf "${SECURITY_DIR}" && mv "${TMP_DIR}" "${SECURITY_DIR}"
+    chgrp -R 0 "${SECURITY_DIR}" && chmod -R g+rwX "${SECURITY_DIR}" || true
+    fi
+    {{- end }}
+
     # start WSO2 Carbon server
     sh ${WSO2_SERVER_HOME}/bin/api-manager.sh "$@" {{ .Values.wso2.apim.startupArgs }}
