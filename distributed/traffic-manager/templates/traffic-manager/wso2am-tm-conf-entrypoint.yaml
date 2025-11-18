@@ -45,17 +45,16 @@ data:
     {{- end }}
     {{- end }}
   
-    # For permission configuration on OpenShift.
     {{- if .Values.kubernetes.openshift.enabled }}
+    # For permission configuration on OpenShift.
     echo "Openshift deployment detected."
     # Copy security dir to writable emptyDir and symlink
     SRC_SECURITY="${WSO2_SERVER_HOME}/repository/resources/security"
-    WORK_SECURITY="/home/wso2carbon/security-work"
+    CONFIG_SECURITY="/home/wso2carbon/tmp-security"
     
-    if [ -d "${SRC_SECURITY}" ] && [ -d "${WORK_SECURITY}" ] && [ ! -L "${SRC_SECURITY}" ]; then
-      cp -a "${SRC_SECURITY}/." "${WORK_SECURITY}/" && \
-      chgrp -R 0 "${WORK_SECURITY}" && chmod -R g+rwX "${WORK_SECURITY}" && \
-      rm -rf "${SRC_SECURITY}" && ln -s "${WORK_SECURITY}" "${SRC_SECURITY}"
+    if [ -d "${SRC_SECURITY}" ] && [ -d "${CONFIG_SECURITY}" ] && [ ! -L "${SRC_SECURITY}" ]; then
+      cp -dR "${SRC_SECURITY}/." "${CONFIG_SECURITY}/" && \
+      rm -rf "${SRC_SECURITY}" && cp -dR "${CONFIG_SECURITY}/." "${SRC_SECURITY}/"
     fi
     {{- end }}
 
