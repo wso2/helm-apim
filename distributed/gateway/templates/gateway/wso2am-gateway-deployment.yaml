@@ -219,7 +219,7 @@ spec:
         {{- end }}
         {{- if .Values.kubernetes.openshift.enabled }}
         - name: wso2am-security-dir
-          mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security
+          mountPath: /home/wso2carbon/tmp-security
         {{- end }}
       {{- if .Values.wso2.deployment.nodeSelector }}
       nodeSelector:
