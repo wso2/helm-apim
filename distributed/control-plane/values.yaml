@@ -143,6 +143,10 @@ gcp:
   serviceAccountName: ""
 
 kubernetes:
+  # -- When deploying on OpenShift.
+  openshift:
+    enabled: false
+
   # -- Ingress class to be used for the ingress resource
   ingressClass: "nginx"
   ingress:
