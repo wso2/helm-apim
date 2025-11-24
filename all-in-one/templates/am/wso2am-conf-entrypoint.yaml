@@ -52,5 +52,18 @@ data:
     {{- end }}
     {{- end }}
 
+    {{- if .Values.kubernetes.openshift.enabled }}
+    # For permission configuration on OpenShift.
+    echo "Openshift deployment detected."
+    # Copy security dir to writable emptyDir and symlink
+    SRC_SECURITY="${WSO2_SERVER_HOME}/repository/resources/security"
+    CONFIG_SECURITY="/home/wso2carbon/tmp-security"
+    
+    if [ -d "${SRC_SECURITY}" ] && [ -d "${CONFIG_SECURITY}" ] && [ ! -L "${SRC_SECURITY}" ]; then
+      cp -dR "${SRC_SECURITY}/." "${CONFIG_SECURITY}/" && \
+      rm -rf "${SRC_SECURITY}" && cp -dR "${CONFIG_SECURITY}/." "${SRC_SECURITY}/"
+    fi
+    {{- end }}
+
     # start WSO2 Carbon server
     sh ${WSO2_SERVER_HOME}/bin/api-manager.sh "$@" {{ .Values.wso2.apim.startupArgs }}
