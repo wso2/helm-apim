@@ -113,6 +113,17 @@ key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.k
 {{- end }}
 {{- end }}
 
+[truststore]
+type = "JKS"
+file_name = "{{ .Values.wso2.apim.configurations.security.truststore.name }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{truststore_password}"
+{{- else if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.truststorePasswordKey }}
+password = "$env{WSO2_TRUSTSTORE_PASSWORD}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
+{{- end }}
+
 {{- range $i, $env := .Values.wso2.apim.configurations.gateway.environments }}
 [[apim.gateway.environment]]
 name = {{ $env.name | quote }}
