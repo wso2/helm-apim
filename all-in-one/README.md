@@ -1,6 +1,6 @@
 # wso2am-all-in-one
 
-![Version: 4.5.0-5](https://img.shields.io/badge/Version-4.5.0--5-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
+![Version: 4.5.0-7](https://img.shields.io/badge/Version-4.5.0--7-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
@@ -80,6 +80,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.ingress.websub.enabled | bool | `true` |  |
 | kubernetes.ingress.websub.hostname | string | `"websub.wso2.com"` | Ingress hostname for Websub |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
+| kubernetes.openshift | object | `{"enabled":false}` | When deploying on OpenShift. |
 | kubernetes.securityContext.runAsGroup | int | `10001` |  |
 | kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
 | kubernetes.securityContext.seLinux | object | `{"enabled":false,"level":""}` | SELinux context for the container |
@@ -141,6 +142,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.eventListeners[0].properties.notificationEndpoint | string | `"https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"` |  |
 | wso2.apim.configurations.eventListeners[0].type | string | `"org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"` |  |
 | wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","visibility":null,"websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
 | wso2.apim.configurations.gatewayType | string | `"Regular,APK,AWS"` |  |
 | wso2.apim.configurations.governance.scheduler | object | `{"queue_size":"","task_check_interval_minutes":"","task_cleanup_interval_minutes":"","thread_pool_size":""}` | Override the default values of governance.scheduler if any value exists |

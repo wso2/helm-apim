@@ -15,7 +15,7 @@ username = {{ .Values.wso2.apim.configurations.adminUsername | quote }}
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{admin_password}"
 {{- else if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.adminPasswordKey }}
-password = "${env:WSO2_ADMIN_PASSWORD}"
+password = "$env{WSO2_ADMIN_PASSWORD}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
 {{- end }}
@@ -28,7 +28,7 @@ username = "{{ .Values.wso2.apim.configurations.databases.shared_db.username }}"
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 password = "$secret{shared_db_password}"
 {{- else if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.sharedDBPasswordKey }}
-password = "${env:WSO2_SHARED_DB_PASSWORD}"
+password = "$env{WSO2_SHARED_DB_PASSWORD}"
 {{- else }}
 password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote }}
 {{- end }}
@@ -249,3 +249,7 @@ internal_keystore_key_password = {{ .Values.wso2.apim.configurations.security.ke
 truststore_password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
 shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote}}
 {{- end}}
+
+{{- if .Values.wso2.apim.configurations.extraConfigs }}
+{{ .Values.wso2.apim.configurations.extraConfigs }}
+{{- end }}

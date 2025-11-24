@@ -143,6 +143,10 @@ gcp:
   serviceAccountName: ""
 
 kubernetes:
+  # -- When deploying on OpenShift.
+  openshift:
+    enabled: false
+
   # -- Ingress class to be used for the ingress resource
   ingressClass: "nginx"
   ingress:
@@ -446,6 +450,11 @@ wso2:
         enabled: true
         organization_name_local_claim: "http://wso2.org/claims/organization"
         organization_id_local_claim: "http://wso2.org/claims/organizationId" 
+
+      # -- Add custom configurations to deployment.toml.
+      extraConfigs: #|
+        # [tenant_mgt]
+        # enable_email_domain = true
 
   deployment:
     # Container image configurations

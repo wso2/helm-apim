@@ -81,6 +81,10 @@ gcp:
   serviceAccountName: ""
 
 kubernetes:
+  # -- When deploying on OpenShift.
+  openshift:
+    enabled: false
+
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
@@ -282,6 +286,9 @@ wso2:
         # -- Remote tracer port
         port: ""
 
+      # -- Add custom configurations to deployment.toml.
+      extraConfigs: 
+      
   deployment:
     # Container image configurations
     image:
