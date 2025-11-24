@@ -271,6 +271,10 @@ spec:
         - name: wso2am-control-plane-solr
           mountPath: /home/wso2carbon/solr/indexed-data
         {{ end }}
+        {{- if .Values.kubernetes.openshift.enabled }}
+        - name: wso2am-security-dir
+          mountPath: /home/wso2carbon/tmp-security
+        {{- end }}
       {{- if .Values.wso2.deployment.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.wso2.deployment.nodeSelector | nindent 8 }}
@@ -343,3 +347,7 @@ spec:
         persistentVolumeClaim:
           claimName: {{ template "apim-helm-cp.fullname" . }}-solr-indexed-data-1
       {{ end }}
+      {{- if .Values.kubernetes.openshift.enabled }}
+      - name: wso2am-security-dir
+        emptyDir: {}
+      {{- end }}
