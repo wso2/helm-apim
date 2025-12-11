@@ -15,7 +15,6 @@ metadata:
   name: {{ template "apim-helm-gw.fullname" . }}-deployment
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: {{ .Values.wso2.deployment.replicas }}
   strategy:
     rollingUpdate:
       maxSurge: {{ .Values.wso2.deployment.strategy.rollingUpdate.maxSurge }}

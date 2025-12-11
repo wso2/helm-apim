@@ -451,7 +451,7 @@ wso2:
         cpu: "2000m"
       limits:
         # -- Memory limit for API Manager
-        memory: "3Gi"
+        memory: "4Gi"
         # -- CPU limit for API Manager
         cpu: "3000m"
       jvm:
@@ -492,8 +492,6 @@ wso2:
         # -- Number of seconds to sleep before sending SIGTERM to the pod
         sleepSeconds: 10
 
-    # Number of deployment replicas
-    replicas: 2
     # HPA configurations
     # -- Minimum replicas for HPA
     minReplicas: 2
