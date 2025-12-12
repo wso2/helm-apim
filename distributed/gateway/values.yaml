@@ -451,7 +451,7 @@ wso2:
         cpu: "2000m"
       limits:
         # -- Memory limit for API Manager
-        memory: "4Gi"
+        memory: "3Gi"
         # -- CPU limit for API Manager
         cpu: "3000m"
       jvm:
