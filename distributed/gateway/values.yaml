@@ -492,8 +492,6 @@ wso2:
         # -- Number of seconds to sleep before sending SIGTERM to the pod
         sleepSeconds: 10
 
-    # Number of deployment replicas
-    replicas: 2
     # HPA configurations
     # -- Minimum replicas for HPA
     minReplicas: 2
