@@ -217,6 +217,70 @@ kubernetes:
       # -- Route annotations for Websub
       annotations:
         # key: value
+  # -- Kubernetes Gateway API configurations (alternative to Ingress)
+  # Requires Gateway API CRDs to be installed in the cluster
+  # https://gateway-api.sigs.k8s.io/
+  gatewayAPI:
+    # -- Enable Gateway API resources
+    enabled: false
+    # -- Gateway class name (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
+    gatewayClassName: "istio"
+    # -- Kubernetes secret created for Gateway TLS
+    tlsSecret: ""
+    # -- Gateway annotations
+    annotations: {}
+    # -- Gateway labels
+    labels: {}
+    management:
+      # -- Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal
+      enabled: true
+      # -- Hostname for API Manager Management interfaces
+      hostname: "am.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      # filters:
+      #   - type: RequestHeaderModifier
+      #     requestHeaderModifier:
+      #       add:
+      #         - name: X-Custom-Header
+      #           value: "custom-value"
+      filters: []
+    gateway:
+      # -- Enable HTTPRoute for Gateway pass-through
+      enabled: true
+      # -- Hostname for Gateway pass-through
+      hostname: "gw.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    websocket:
+      # -- Enable HTTPRoute for Websocket
+      enabled: true
+      # -- Hostname for Websocket
+      hostname: "websocket.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    websub:
+      # -- Enable HTTPRoute for Websub
+      enabled: true
+      # -- Hostname for Websub
+      hostname: "websub.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    # -- Backend TLS Policy for HTTPS backend connections (alpha feature)
+    backendTLSPolicy:
+      # -- Enable BackendTLSPolicy
+      enabled: false
+      # -- CA certificate secret name for backend TLS verification
+      caCertificateSecret: ""
+      # -- Backend hostname for TLS verification
+      hostname: "localhost"
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
