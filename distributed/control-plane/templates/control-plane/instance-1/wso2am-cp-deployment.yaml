@@ -84,6 +84,12 @@ spec:
               fieldPath: status.podIP
         - name: JVM_MEM_OPTS
           value: "-Xms{{ .Values.wso2.deployment.resources.jvm.memory.xms }} -Xmx{{ .Values.wso2.deployment.resources.jvm.memory.xmx }}"
+        {{- if .Values.wso2.deployment.envs }}
+        {{- range $name, $value := .Values.wso2.deployment.envs }}
+        - name: {{ $name }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
         {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.adminPasswordKey }}
         - name: WSO2_ADMIN_PASSWORD
           valueFrom:

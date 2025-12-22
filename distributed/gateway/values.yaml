@@ -461,6 +461,11 @@ wso2:
           # -- JVM heap memory Xmx
           xmx: "2048m"
 
+    # Custom environment variables for the container
+    envs: {}
+    # envs:
+    #   OTEL_RESOURCE_ATTRIBUTES: "deployment.environment=Production,service.name=MyService"
+
     # Kubernetes Probes
     # Indicates whether the container starting
     startupProbe:
@@ -495,14 +500,17 @@ wso2:
     # Number of deployment replicas
     replicas: 2
     # HPA configurations
-    # -- Minimum replicas for HPA
-    minReplicas: 2
-    # -- Maximum replicas for HPA
-    maxReplicas: 3
-    # -- Target CPU utilization percentage for HPA
-    cpuUtilizationPercentage: 75
-    # -- Target memory utilization percentage for HPA
-    memoryUtilizationPercentage: 75
+    hpa:
+      enabled: false
+      # -- Minimum replicas for HPA
+      minReplicas: 2
+      # -- Maximum replicas for HPA
+      maxReplicas: 3
+      # -- Target CPU utilization percentage for HPA
+      cpuUtilizationPercentage: 75
+      # -- Target memory utilization percentage for HPA
+      memoryUtilizationPercentage: 75
+
     # -- Minimum available pod counts for PDB
     minAvailable: "50%"
 

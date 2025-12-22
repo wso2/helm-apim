@@ -9,6 +9,7 @@
 #
 # --------------------------------------------------------------------------------------
 
+{{ if .Values.wso2.deployment.hpa.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -18,18 +19,19 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ template "apim-helm-gw.fullname" . }}-deployment
-  minReplicas: {{ .Values.wso2.deployment.minReplicas }}
-  maxReplicas: {{ .Values.wso2.deployment.maxReplicas }}
+  minReplicas: {{ .Values.wso2.deployment.hpa.minReplicas }}
+  maxReplicas: {{ .Values.wso2.deployment.hpa.maxReplicas }}
   metrics:
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: {{ .Values.wso2.deployment.cpuUtilizationPercentage }}
+          averageUtilization: {{ .Values.wso2.deployment.hpa.cpuUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
         target:
           type: Utilization
-          averageUtilization: {{ .Values.wso2.deployment.memoryUtilizationPercentage }}
+          averageUtilization: {{ .Values.wso2.deployment.hpa.memoryUtilizationPercentage }}
+{{ end }}
