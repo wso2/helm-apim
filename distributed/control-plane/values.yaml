@@ -494,6 +494,11 @@ wso2:
           # -- JVM heap memory Xmx
           xmx: "2048m"
 
+    # Custom environment variables for the container
+    envs: {}
+    # envs:
+    #   OTEL_RESOURCE_ATTRIBUTES: "deployment.environment=Production,service.name=MyService"
+
     # Kubernetes Probes
     # Indicates whether the container starting
     startupProbe:
