@@ -59,6 +59,8 @@ spec:
       {{- else if .Values.azure.enabled }}
       serviceAccount: {{ .Values.azure.serviceAccountName }}
       {{- end }}
+      {{- else if .Values.wso2.deployment.serviceAccountName }}
+      serviceAccount: {{ .Values.wso2.deployment.serviceAccountName }}
       {{- end }}
       securityContext:
         seccompProfile:
@@ -66,13 +68,22 @@ spec:
           {{- if eq .Values.kubernetes.securityContext.seccompProfile.type "Localhost" }}
           localhostProfile: {{ .Values.kubernetes.securityContext.seccompProfile.localhostProfile }}
           {{- end }}
-      {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
       imagePullSecrets:
-      - name: {{ template "apim-helm-cp.fullname" . }}-docker-registry-auth
-      {{- end }}
+        {{- if .Values.wso2.deployment.image.imagePullSecrets.enabled }}
+        - name: {{ template "apim-helm-cp.fullname" . }}-docker-registry-auth
+        {{- end }}
+        {{- if .Values.wso2.deployment.image.imagePullSecrets.secrets }}
+        {{- range .Values.wso2.deployment.image.imagePullSecrets.secrets }}
+        - name: {{ . }}
+        {{- end }}
+        {{- end }}
       containers:
       - name: wso2am-control-plane
+        {{ if .Values.wso2.deployment.image.tag }}
+        image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}:{{ .Values.wso2.deployment.image.tag }}
+        {{- else }}
         image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
+        {{- end }}
         imagePullPolicy: {{ .Values.wso2.deployment.imagePullPolicy }}
         env:
         - name: PROFILE_NAME

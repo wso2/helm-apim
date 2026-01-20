@@ -305,8 +305,10 @@ wso2:
     # Container image configurations
     image:
       # -- Container registry credentials.
-      # Specify image pull secrets for private registries
       imagePullSecrets:
+        # Specify image pull secrets for private registries
+        secrets: []
+        # Specify private registry credentials (upload credentials to values is not recommended)
         enabled: false
         username: ""
         password: ""
@@ -391,3 +393,6 @@ wso2:
 
     # -- Enable high availability for key manager. If this is enabled, two key manager replicas will be deployed.
     highAvailability: false
+
+    # -- Use a kubernetes serviceAccount. If empty will use default sa.
+    serviceAccountName: ""

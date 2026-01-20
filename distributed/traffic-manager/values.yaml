@@ -293,8 +293,10 @@ wso2:
     # Container image configurations
     image:
       # -- Container registry credentials.
-      # Specify image pull secrets for private registries
-      imagePullSecrets:
+      imagePullSecrets: 
+        # -- Specify image pull secrets for private registries
+        secrets: []
+        # -- Specify private registry credentials (upload credentials to values is not recommended)
         enabled: false
         username: ""
         password: ""
@@ -302,6 +304,8 @@ wso2:
       registry: ""
       # -- Azure ACR repository name consisting the image
       repository: ""
+      # -- Docker image tag: if specified, digest is ignored
+      tag: ""
       # -- Docker image digest
       digest: ""
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
@@ -388,3 +392,6 @@ wso2:
     # -- Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed.
     # This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM.
     highAvailability: true
+
+    # -- Use a kubernetes serviceAccount. If empty will use default sa.
+    serviceAccountName: ""
