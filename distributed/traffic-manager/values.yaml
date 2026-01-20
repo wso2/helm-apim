@@ -334,6 +334,7 @@ wso2:
     # Custom environment variables for the container
     envs: {}
     # envs:
+    #   TZ: "Europe/Paris"
     #   OTEL_RESOURCE_ATTRIBUTES: "deployment.environment=Production,service.name=MyService"
 
     # Kubernetes Probes
