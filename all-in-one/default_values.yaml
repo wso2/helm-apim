@@ -182,7 +182,7 @@ kubernetes:
   # https://gateway-api.sigs.k8s.io/
   gatewayAPI:
     # -- Enable Gateway API resources
-    enabled: true
+    enabled: false
     defaultTlsCreation: true
     defaultConfigMapCreation: true
     # -- Gateway class name (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
@@ -195,7 +195,7 @@ kubernetes:
     labels: {}
     management:
       # -- Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal
-      enabled: true
+      enabled: false
       # -- Hostname for API Manager Management interfaces
       hostname: "am.wso2.com"
       # -- HTTPRoute annotations
@@ -210,7 +210,7 @@ kubernetes:
       filters: []
     gateway:
       # -- Enable HTTPRoute for Gateway pass-through
-      enabled: true
+      enabled: false
       # -- Hostname for Gateway pass-through
       hostname: "gw.wso2.com"
       # -- HTTPRoute annotations
@@ -219,7 +219,7 @@ kubernetes:
       filters: []
     websocket:
       # -- Enable HTTPRoute for Websocket
-      enabled: true
+      enabled: false
       # -- Hostname for Websocket
       hostname: "websocket.wso2.com"
       # -- HTTPRoute annotations
@@ -228,7 +228,7 @@ kubernetes:
       filters: []
     websub:
       # -- Enable HTTPRoute for Websub
-      enabled: true
+      enabled: false
       # -- Hostname for Websub
       hostname: "websub.wso2.com"
       # -- HTTPRoute annotations
