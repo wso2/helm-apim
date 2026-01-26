@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */ -}}
 
+{{- if and .Values.kubernetes.gatewayAPI.enabled .Values.kubernetes.gatewayAPI.gateway.defaultConfigMapCreation }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -24,3 +25,4 @@ metadata:
 data:
   ca.crt: |
 {{ .Files.Get "confs/wso2.crt" | indent 4 }}
+{{- end }}
