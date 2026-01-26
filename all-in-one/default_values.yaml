@@ -186,7 +186,7 @@ kubernetes:
     # -- Gateway class name (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
     gatewayClassName: "traefik-gateway-class"
     # -- Kubernetes secret created for Gateway TLS
-    tlsSecret:   
+    tlsSecret: "apim-gateway-tls"
     # -- Gateway annotations
     annotations: {}
     # -- Gateway labels
