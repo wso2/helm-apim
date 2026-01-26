@@ -10,7 +10,7 @@
 # --------------------------------------------------------------------------------------
 
 {{- if and .Values.kubernetes.gatewayAPI.enabled .Values.kubernetes.gatewayAPI.backendTLSPolicy.enabled }}
-apiVersion: gateway.networking.k8s.io/v1alpha3
+apiVersion: gateway.networking.k8s.io/v1
 kind: BackendTLSPolicy
 metadata:
   name: {{ template "am-all-in-one.fullname" . }}-backend-tls-policy
