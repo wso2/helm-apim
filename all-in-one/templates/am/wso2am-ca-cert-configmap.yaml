@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */ -}}
 
-{{- if and .Values.kubernetes.gatewayAPI.enabled .Values.kubernetes.gatewayAPI.gateway.defaultConfigMapCreation }}
+{{- if and .Values.kubernetes.gatewayAPI.enabled .Values.kubernetes.gatewayAPI.defaultConfigMapCreation }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
