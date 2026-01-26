@@ -24,6 +24,6 @@ spec:
     caCertificateRefs:
     - name: {{ .Values.kubernetes.gatewayAPI.backendTLSPolicy.caCertificateSecret }}
       group: ""
-      kind: Secret
+      kind: ConfigMap
     hostname: {{ .Values.kubernetes.gatewayAPI.backendTLSPolicy.hostname | default "localhost" }}
 {{- end }}
