@@ -60,6 +60,32 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
+| kubernetes.gatewayAPI | object | `{"annotations":{},"backendTLSPolicy":{"caCertificateSecret":"","enabled":false,"hostname":"localhost"},"enabled":false,"gateway":{"annotations":{},"enabled":true,"filters":[],"hostname":"gw.wso2.com"},"gatewayClassName":"istio","labels":{},"management":{"annotations":{},"enabled":true,"filters":[],"hostname":"am.wso2.com"},"tlsSecret":"","websocket":{"annotations":{},"enabled":true,"filters":[],"hostname":"websocket.wso2.com"},"websub":{"annotations":{},"enabled":true,"filters":[],"hostname":"websub.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster https://gateway-api.sigs.k8s.io/ |
+| kubernetes.gatewayAPI.annotations | object | `{}` | Gateway annotations |
+| kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateSecret":"","enabled":false,"hostname":"localhost"}` | Backend TLS Policy for HTTPS backend connections (alpha feature) |
+| kubernetes.gatewayAPI.backendTLSPolicy.caCertificateSecret | string | `""` | CA certificate secret name for backend TLS verification |
+| kubernetes.gatewayAPI.backendTLSPolicy.enabled | bool | `false` | Enable BackendTLSPolicy |
+| kubernetes.gatewayAPI.backendTLSPolicy.hostname | string | `"localhost"` | Backend hostname for TLS verification |
+| kubernetes.gatewayAPI.enabled | bool | `false` | Enable Gateway API resources |
+| kubernetes.gatewayAPI.gateway.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.gateway.enabled | bool | `true` | Enable HTTPRoute for Gateway pass-through |
+| kubernetes.gatewayAPI.gateway.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.gateway.hostname | string | `"gw.wso2.com"` | Hostname for Gateway pass-through |
+| kubernetes.gatewayAPI.gatewayClassName | string | `"istio"` | Gateway class name (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed) |
+| kubernetes.gatewayAPI.labels | object | `{}` | Gateway labels |
+| kubernetes.gatewayAPI.management.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.management.enabled | bool | `true` | Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal |
+| kubernetes.gatewayAPI.management.filters | list | `[]` | HTTPRoute filters (optional) filters:   - type: RequestHeaderModifier     requestHeaderModifier:       add:         - name: X-Custom-Header           value: "custom-value" |
+| kubernetes.gatewayAPI.management.hostname | string | `"am.wso2.com"` | Hostname for API Manager Management interfaces |
+| kubernetes.gatewayAPI.tlsSecret | string | `""` | Kubernetes secret created for Gateway TLS |
+| kubernetes.gatewayAPI.websocket.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.websocket.enabled | bool | `true` | Enable HTTPRoute for Websocket |
+| kubernetes.gatewayAPI.websocket.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.websocket.hostname | string | `"websocket.wso2.com"` | Hostname for Websocket |
+| kubernetes.gatewayAPI.websub.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.websub.enabled | bool | `true` | Enable HTTPRoute for Websub |
+| kubernetes.gatewayAPI.websub.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.websub.hostname | string | `"websub.wso2.com"` | Hostname for Websub |
 | kubernetes.ingress.gateway.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
 | kubernetes.ingress.gateway.enabled | bool | `true` |  |
 | kubernetes.ingress.gateway.hostname | string | `"gw.wso2.com"` | Ingress hostname for Gateway pass-through |
@@ -325,7 +351,6 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
 | wso2.apim.version | string | `"4.6.0"` | APIM version |
-| wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.highAvailability | bool | `false` |  |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
