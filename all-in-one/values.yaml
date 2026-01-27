@@ -227,8 +227,10 @@ kubernetes:
   gatewayAPI:
     # -- Enable Gateway API resources
     enabled: false
+    defaultTlsCreation: true
+    defaultConfigMapCreation: true
     # -- Gateway class name (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
-    gatewayClassName: "istio"
+    gatewayClassName: "traefik-gateway-class"
     # -- Kubernetes secret created for Gateway TLS
     tlsSecret: ""
     # -- Gateway annotations
