@@ -165,6 +165,39 @@ kubernetes:
         nginx.ingress.kubernetes.io/session-cookie-name: "route"
         nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
 
+  # -- Kubernetes Gateway API configurations (alternative to Ingress)
+  # Requires Gateway API CRDs to be installed in the cluster
+  # https://gateway-api.sigs.k8s.io/
+  gatewayAPI:
+    # -- Enable Gateway API resources
+    enabled: false
+    defaultTlsCreation: true
+    defaultConfigMapCreation: true
+    # -- Gateway class name (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
+    gatewayClassName: "traefik-gateway-class"
+    # -- Kubernetes secret created for Gateway TLS
+    tlsSecret: "apim-gateway-tls"
+    # -- Gateway annotations
+    annotations: {}
+    # -- Gateway labels
+    labels: {}
+    controlPlane:
+      # -- Enable HTTPRoute for Control Plane
+      enabled: false
+      # -- Hostname for Control Plane
+      hostname: "am.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    # -- Backend TLS Policy for HTTPS backend connections (alpha feature)
+    backendTLSPolicy:
+      # -- Enable BackendTLSPolicy
+      enabled: true
+      # -- CA certificate secret name for backend TLS verification
+      caCertificateSecret: "wso2-ca-cert"
+      # -- Backend hostname for TLS verification
+      hostname: "localhost"
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
