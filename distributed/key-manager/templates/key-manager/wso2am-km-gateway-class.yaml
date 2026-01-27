@@ -1,0 +1,21 @@
+# -------------------------------------------------------------------------------------
+#
+# Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+#
+# This software is the property of WSO2 LLC. and its suppliers, if any.
+# Dissemination of any information or reproduction of any material contained 
+# herein is strictly forbidden, unless permitted by WSO2 in accordance with the 
+# WSO2 Commercial License available at https://wso2.com/licenses/eula/3.2
+#
+# --------------------------------------------------------------------------------------
+
+{{- if .Values.kubernetes.gatewayAPI.enabled }}
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: {{ .Values.kubernetes.gatewayAPI.gatewayClassName }}
+  labels:
+    {{- include "apim-helm-km.labels" . | nindent 4 }}
+spec:
+  controllerName: traefik.io/gateway-controller
+{{- end }}
