@@ -200,13 +200,6 @@ kubernetes:
       hostname: "am.wso2.com"
       # -- HTTPRoute annotations
       annotations: {}
-      # -- HTTPRoute filters (optional)
-      # filters:
-      #   - type: RequestHeaderModifier
-      #     requestHeaderModifier:
-      #       add:
-      #         - name: X-Custom-Header
-      #           value: "custom-value"
       filters: []
     gateway:
       # -- Enable HTTPRoute for Gateway pass-through
