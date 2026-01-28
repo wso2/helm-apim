@@ -60,7 +60,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
-| kubernetes.gatewayAPI | object | `{"annotations":{},"backendTLSPolicy":{"caCertificateSecret":"","enabled":false,"hostname":"localhost"},"enabled":false,"gateway":{"annotations":{},"enabled":true,"filters":[],"hostname":"gw.wso2.com"},"gatewayClassName":"istio","labels":{},"management":{"annotations":{},"enabled":true,"filters":[],"hostname":"am.wso2.com"},"tlsSecret":"","websocket":{"annotations":{},"enabled":true,"filters":[],"hostname":"websocket.wso2.com"},"websub":{"annotations":{},"enabled":true,"filters":[],"hostname":"websub.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster https://gateway-api.sigs.k8s.io/ |
+| kubernetes.gatewayAPI | object | `{"annotations":{},"backendTLSPolicy":{"caCertificateSecret":"","enabled":false,"hostname":"localhost"},"defaultConfigMapCreation":true,"defaultTlsCreation":true,"enabled":false,"gateway":{"annotations":{},"enabled":true,"filters":[],"hostname":"gw.wso2.com"},"gatewayClass":{"name":"nginx"},"labels":{},"management":{"annotations":{},"enabled":true,"filters":[],"hostname":"am.wso2.com"},"tlsSecret":"","websocket":{"annotations":{},"enabled":true,"filters":[],"hostname":"websocket.wso2.com"},"websub":{"annotations":{},"enabled":true,"filters":[],"hostname":"websub.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster https://gateway-api.sigs.k8s.io/ |
 | kubernetes.gatewayAPI.annotations | object | `{}` | Gateway annotations |
 | kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateSecret":"","enabled":false,"hostname":"localhost"}` | Backend TLS Policy for HTTPS backend connections (alpha feature) |
 | kubernetes.gatewayAPI.backendTLSPolicy.caCertificateSecret | string | `""` | CA certificate secret name for backend TLS verification |
@@ -71,7 +71,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.gatewayAPI.gateway.enabled | bool | `true` | Enable HTTPRoute for Gateway pass-through |
 | kubernetes.gatewayAPI.gateway.filters | list | `[]` | HTTPRoute filters (optional) |
 | kubernetes.gatewayAPI.gateway.hostname | string | `"gw.wso2.com"` | Hostname for Gateway pass-through |
-| kubernetes.gatewayAPI.gatewayClassName | string | `"istio"` | Gateway class name (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed) |
+| kubernetes.gatewayAPI.gatewayClass | object | `{"name":"nginx"}` | Gateway class name (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed) |
 | kubernetes.gatewayAPI.labels | object | `{}` | Gateway labels |
 | kubernetes.gatewayAPI.management.annotations | object | `{}` | HTTPRoute annotations |
 | kubernetes.gatewayAPI.management.enabled | bool | `true` | Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal |
