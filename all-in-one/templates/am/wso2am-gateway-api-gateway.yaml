@@ -29,7 +29,7 @@ spec:
   {{- if .Values.kubernetes.gatewayAPI.management.enabled }}
   - name: management-https
     hostname: {{ .Values.kubernetes.gatewayAPI.management.hostname }}
-    port: 8443
+    port: 443
     protocol: HTTPS
     tls:
       mode: Terminate
@@ -43,7 +43,7 @@ spec:
   {{- if .Values.kubernetes.gatewayAPI.gateway.enabled }}
   - name: gateway-https
     hostname: {{ .Values.kubernetes.gatewayAPI.gateway.hostname }}
-    port: 8443
+    port: 443
     protocol: HTTPS
     tls:
       mode: Terminate
@@ -57,7 +57,7 @@ spec:
   {{- if .Values.kubernetes.gatewayAPI.websocket.enabled }}
   - name: websocket-https
     hostname: {{ .Values.kubernetes.gatewayAPI.websocket.hostname }}
-    port: 8443
+    port: 443
     protocol: HTTPS
     tls:
       mode: Terminate
@@ -71,7 +71,7 @@ spec:
   {{- if .Values.kubernetes.gatewayAPI.websub.enabled }}
   - name: websub-https
     hostname: {{ .Values.kubernetes.gatewayAPI.websub.hostname }}
-    port: 8443
+    port: 443
     protocol: HTTPS
     tls:
       mode: Terminate
