@@ -117,7 +117,7 @@ kubernetes:
     defaultConfigMapCreation: true
     # -- Gateway class name (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
     gatewayClass:
-      name: "traefik"
+      name: "nginx"
     # -- Kubernetes secret created for Gateway TLS
     tlsSecret: "apim-gateway-tls"
     # -- Gateway annotations
