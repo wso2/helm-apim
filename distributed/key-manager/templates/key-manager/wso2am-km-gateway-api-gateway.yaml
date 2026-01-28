@@ -24,7 +24,7 @@ metadata:
 {{ toYaml .Values.kubernetes.gatewayAPI.labels | indent 4 }}
 {{- end }}
 spec:
-  gatewayClassName: {{ .Values.kubernetes.gatewayAPI.gatewayClassName }}
+  gatewayClassName: {{ .Values.kubernetes.gatewayAPI.gatewayClass.name }}
   listeners:
   {{- if .Values.kubernetes.gatewayAPI.km.enabled }}
   - name: keymanager-https
