@@ -199,6 +199,15 @@ kubernetes:
       caCertificateSecret: "wso2-ca-cert"
       # -- Backend hostname for TLS verification
       hostname: "localhost"
+    # -- Upstream Settings Policy for session affinity using IP hash load balancing
+    # This provides basic session persistence by routing requests from the same client IP to the same backend Pod
+    # For cookie-based session persistence (requires NGINX Plus), configure sessionPersistence on HTTPRoute instead
+    upstreamSettingsPolicy:
+      # -- Enable UpstreamSettingsPolicy
+      enabled: true
+      # -- Load balancing method. Valid values: least_conn, ip_hash, random, random_two_least_conn
+      # Use "ip_hash" for session affinity (sticky sessions)
+      loadBalancingMethod: "ip_hash"
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
