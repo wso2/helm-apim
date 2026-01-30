@@ -161,8 +161,8 @@ kubernetes:
   gatewayAPI:
     # -- Enable Gateway API resources
     enabled: false
-    defaultTlsCreation: true
-    defaultConfigMapCreation: true
+    defaultTlsCreation: false
+    defaultConfigMapCreation: false
     # -- Gateway class name (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
     gatewayClass:
       name: "nginx"
