@@ -22,7 +22,7 @@ spec:
     name: {{ template "am-all-in-one.fullname" . }}-am-service
   validation:
     caCertificateRefs:
-    - name: {{ .Values.kubernetes.gatewayAPI.backendTLSPolicy.caCertificateSecret }}
+    - name: {{ .Values.kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap }}
       group: ""
       kind: ConfigMap
     hostname: {{ .Values.kubernetes.gatewayAPI.backendTLSPolicy.hostname | default "localhost" }}
