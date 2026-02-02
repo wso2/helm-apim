@@ -1,0 +1,136 @@
+# -------------------------------------------------------------------------------------
+#
+# Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+#
+# This software is the property of WSO2 LLC. and its suppliers, if any.
+# Dissemination of any information or reproduction of any material contained 
+# herein is strictly forbidden, unless permitted by WSO2 in accordance with the 
+# WSO2 Commercial License available at https://wso2.com/licenses/eula/3.2
+#
+# --------------------------------------------------------------------------------------
+
+# Example Gateway API Gateway resource for WSO2 API Manager
+# This must be created before deploying the Helm chart when using Gateway API
+#
+# Prerequisites:
+# 1. Gateway API CRDs must be installed if not present
+# 2. A Gateway API controller must be installed (e.g., NGINX Gateway Fabric, Istio, Envoy Gateway, Contour)
+#
+# Note: TLS Secret and CA ConfigMap are managed by the Helm chart when:
+#   - kubernetes.gatewayAPI.defaultTlsCreation: true
+#   - kubernetes.gatewayAPI.defaultConfigMapCreation: true
+#
+# Usage:
+#   kubectl create namespace apim
+#   kubectl apply -f gateway.yaml -n apim
+#   # Then deploy the Helm chart which will create the TLS Secret and CA ConfigMap
+#
+# This example uses default values from default_values.yaml:
+#   - gatewayName: "wso2-apim-gateway"
+#   - tlsSecret: "apim-gateway-tls"
+#   - management.hostname: "am.wso2.com"
+#   - gateway.hostname: "gw.wso2.com"
+#   - websocket.hostname: "websocket.wso2.com"
+#   - websub.hostname: "websub.wso2.com"
+#   - controlPlane.hostname: "am.wso2.com" (for distributed control plane)
+#   - km.hostname: "km.wso2.com" (for distributed key manager)
+#
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: wso2-apim-gateway
+  namespace: apim
+  # Optional annotations for gateway controller configuration
+  annotations:
+    nginx.org/lb-method: "ip_hash"  # For NGINX Gateway Fabric
+spec:
+  # Change gatewayClassName to match your installed Gateway API controller
+  # Examples: nginx, istio, envoy-gateway, contour, gke-l7-global-external-managed
+  gatewayClassName: nginx
+  
+  listeners:
+  # Listener for API Manager Management interfaces (Publisher, DevPortal, Admin, Carbon)
+  - name: management-https
+    hostname: "am.wso2.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: apim-gateway-tls
+    allowedRoutes:
+      namespaces:
+        from: Same
+  
+  # Listener for Gateway runtime traffic (API invocations)
+  - name: gateway-https
+    hostname: "gw.wso2.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: apim-gateway-tls
+    allowedRoutes:
+      namespaces:
+        from: Same
+  
+  # Listener for WebSocket APIs
+  - name: websocket-https
+    hostname: "websocket.wso2.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: apim-gateway-tls
+    allowedRoutes:
+      namespaces:
+        from: Same
+  
+  # Listener for WebSub APIs
+  - name: websub-https
+    hostname: "websub.wso2.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: apim-gateway-tls
+    allowedRoutes:
+      namespaces:
+        from: Same
+  
+  # For distributed deployments, additional listeners for control-plane and key-manager:
+  
+  # Listener for Control Plane
+  - name: controlplane-https
+    hostname: "am.wso2.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: apim-gateway-tls
+    allowedRoutes:
+      namespaces:
+        from: Same
+  
+  # Listener for Key Manager
+  - name: keymanager-https
+    hostname: "km.wso2.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: apim-gateway-tls
+    allowedRoutes:
+      namespaces:
+        from: Same

@@ -167,20 +167,20 @@ kubernetes:
 
   # -- Kubernetes Gateway API configurations (alternative to Ingress)
   # Requires Gateway API CRDs to be installed in the cluster
+  # The Gateway resource must be created externally before deploying this chart
+  # See docs/assets/gateway.yaml for an example Gateway manifest
   gatewayAPI:
-    # -- Enable Gateway API resources
+    # -- Enable Gateway API resources (HTTPRoutes and policies)
     enabled: false
+    # -- Name of the externally-created Gateway resource that HTTPRoutes will reference
+    # This Gateway must exist in the same namespace before installing the chart
+    gatewayName: "wso2-apim-gateway"
+    # -- Create TLS secret for Gateway (uses certificate files from confs/)
     defaultTlsCreation: true
-    defaultConfigMapCreation: true
-    # -- Gateway class name (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
-    gatewayClass:
-      name: "nginx"
-    # -- Kubernetes secret created for Gateway TLS
+    # -- Kubernetes secret name for Gateway TLS (used when defaultTlsCreation is true)
     tlsSecret: "apim-gateway-tls"
-    # -- Gateway annotations
-    annotations: {}
-    # -- Gateway labels
-    labels: {}
+    # -- Create CA certificate ConfigMap for BackendTLSPolicy
+    defaultConfigMapCreation: true
     controlPlane:
       # -- Enable HTTPRoute for Control Plane
       enabled: false
@@ -190,12 +190,13 @@ kubernetes:
       annotations: {}
       # -- HTTPRoute filters (optional)
       filters: []
-    # -- Backend TLS Policy for HTTPS backend connections  
+    # -- Backend TLS Policy for HTTPS backend connections
     backendTLSPolicy:
       # -- Enable BackendTLSPolicy
       enabled: true
-      # -- CA certificate secret name for backend TLS verification
-      caCertificateSecret: "wso2-ca-cert"
+      # -- CA certificate ConfigMap name for backend TLS verification
+      # This ConfigMap is created by the chart when defaultConfigMapCreation is true
+      caCertificateConfigMap: "wso2-ca-cert"
       # -- Backend hostname for TLS verification
       hostname: "localhost"
     # -- Upstream Settings Policy for session affinity using IP hash load balancing
