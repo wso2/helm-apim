@@ -104,7 +104,6 @@ kubernetes:
 
   # -- Kubernetes Gateway API configurations (alternative to Ingress)
   # Requires Gateway API CRDs to be installed in the cluster
-  # https://gateway-api.sigs.k8s.io/
   gatewayAPI:
     # -- Enable Gateway API resources
     enabled: false
@@ -128,7 +127,7 @@ kubernetes:
       annotations: {}
       # -- HTTPRoute filters (optional)
       filters: []
-    # -- Backend TLS Policy for HTTPS backend connections (alpha feature)
+    # -- Backend TLS Policy for HTTPS backend connections  
     backendTLSPolicy:
       # -- Enable BackendTLSPolicy
       enabled: true
