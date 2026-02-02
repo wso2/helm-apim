@@ -21,7 +21,7 @@ metadata:
 {{- end }}
 spec:
   parentRefs:
-  - name: {{ template "apim-helm-km.fullname" . }}-gateway
+  - name: {{ .Values.kubernetes.gatewayAPI.gatewayName }}
     sectionName: keymanager-https
   hostnames:
   - {{ .Values.kubernetes.gatewayAPI.km.hostname }}

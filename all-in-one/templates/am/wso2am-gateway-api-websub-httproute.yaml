@@ -21,7 +21,7 @@ metadata:
 {{- end }}
 spec:
   parentRefs:
-  - name: {{ template "am-all-in-one.fullname" . }}-gateway
+  - name: {{ .Values.kubernetes.gatewayAPI.gatewayName }}
     sectionName: websub-https
   hostnames:
   - {{ .Values.kubernetes.gatewayAPI.websub.hostname }}

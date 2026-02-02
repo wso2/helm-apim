@@ -21,7 +21,7 @@ metadata:
 {{- end }}
 spec:
   parentRefs:
-  - name: {{ template "apim-helm-gw.fullname" . }}-gateway
+  - name: {{ .Values.kubernetes.gatewayAPI.gatewayName }}
     sectionName: websocket-https
   hostnames:
   - {{ .Values.kubernetes.gatewayAPI.websocket.hostname }}
