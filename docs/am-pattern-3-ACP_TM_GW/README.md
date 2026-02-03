@@ -188,6 +188,16 @@ The Helm charts for the API Manager deployment are available in the [WSO2 Helm C
 
 You can use either the **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (Ingress-based) or **[NGINX Gateway Fabric](https://docs.nginx.com/nginx-gateway-fabric/)** (Gateway API-based) suitable for your cloud environment or local deployment.
 
+**TLS Certificate Configuration (Required for both options)**
+
+You need to create a Kubernetes secret containing the TLS certificate and private key. This secret will be used for TLS termination at the load balancer level.
+
+```bash
+kubectl create secret tls my-tls-secret --key <private key filename> --cert <certificate filename>
+```
+
+Include the name of this secret in your Helm chart configuration under `tlsSecret` for either Ingress or Gateway API.
+
 **Option 1: NGINX Ingress Controller (Ingress-based approach)**
 
 Some sample annotations that could be used with the ingress resources are as follows:
@@ -198,7 +208,7 @@ Some sample annotations that could be used with the ingress resources are as fol
     ```yaml
     ingressClass: "nginx"
     ingress:
-      tlsSecret: ""
+      tlsSecret: "my-tls-secret"
       ratelimit:
         enabled: false
         zoneName: ""
@@ -210,10 +220,6 @@ Some sample annotations that could be used with the ingress resources are as fol
           nginx.ingress.kubernetes.io/affinity: "cookie"
           nginx.ingress.kubernetes.io/session-cookie-name: "route"
           nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
-    ```
-  - You need to create a Kubernetes secret including the certificate and the private key and include the name of the secret in the Helm charts. This will be used for TLS termination at the load balancer level by the ingress controller. Please refer to the [documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls) for more information.
-    ```
-    kubectl create secret tls my-tls-secret --key <private key filename> --cert <certificate filename>
     ```
 
 **Option 2: NGINX Gateway Fabric (Gateway API-based approach)**
@@ -492,21 +498,33 @@ Obtain the external IP (EXTERNAL-IP) of the API Manager Ingress resources by lis
 kubectl get ing -n <NAMESPACE>
 ```
 
+If you are using Gateway API instead of Ingress, obtain the external IP from the Gateway resource:
+```bash
+kubectl get gateway -n <NAMESPACE>
+```
+Use the address from the `ADDRESS` column as the external IP.
+
 If the defined hostnames (in the previous step) are backed by a DNS service, add a DNS record mapping the hostnames and the external IP (`EXTERNAL-IP`) in the relevant DNS service.
 
 If the defined hostnames are not backed by a DNS service, for the purpose of evaluation you may add an entry mapping the hostnames and the external IP in the `/etc/hosts` file at the client side.
 
+> **Note:** In the following commands, `<hostname>` refers to the hostname configured in your deployment. This can be either:
+> - `kubernetes.ingress.management.hostname` (if using Ingress Controller)
+> - `kubernetes.gatewayAPI.management.hostname` (if using Gateway API)
+> 
+> Similarly, `<gateway.hostname>` refers to `kubernetes.ingress.gateway.hostname` or `kubernetes.gatewayAPI.gateway.hostname`, and so on for other hostnames.
+
 ```
-<EXTERNAL-IP> <kubernetes.ingress.management.hostname> <kubernetes.ingress.gateway.hostname> <kubernetes.ingress.websub.hostname> <kubernetes.ingress.websocket.hostname> 
+<EXTERNAL-IP> <management.hostname> <gateway.hostname> <websub.hostname> <websocket.hostname> 
 ```
 
 ### 6. Access Management Consoles
 
-- API Manager Publisher: `https://<kubernetes.ingress.management.hostname>/publisher`
+- API Manager Publisher: `https://<management.hostname>/publisher`
 
-- API Manager DevPortal: `https://<kubernetes.ingress.management.hostname>/devportal`
+- API Manager DevPortal: `https://<management.hostname>/devportal`
 
-- API Manager Carbon Console: `https://<kubernetes.ingress.management.hostname>/carbon`
+- API Manager Carbon Console: `https://<management.hostname>/carbon`
 
-- Universal Gateway: `https://<kubernetes.ingress.gateway.hostname>`
+- Universal Gateway: `https://<gateway.hostname>`
 
