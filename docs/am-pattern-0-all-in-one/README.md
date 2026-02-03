@@ -43,7 +43,9 @@ For advanced details on the deployment pattern, please refer to the official
   and [Kubernetes client](https://kubernetes.io/docs/tasks/tools/install-kubectl/) in order to run the steps provided in the
   following quick start guide.
 - An already setup [Kubernetes cluster](https://kubernetes.io/docs/setup).
-- Install either [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/) or [NGINX Gateway Fabric](https://docs.nginx.com/nginx-gateway-fabric/) for routing. 
+- Install a routing controller. Choose either:
+  - **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (enabled by default) - Traditional Ingress-based routing
+  - **[NGINX Gateway Fabric](https://docs.nginx.com/nginx-gateway-fabric/)** (disabled by default) - Modern Gateway API-based routing
 - Add the WSO2 Helm chart repository.
 
     ```
@@ -52,7 +54,7 @@ For advanced details on the deployment pattern, please refer to the official
 
 ## Minimal Configuration
 
-If you want to try WSO2 API Manager with minimal configuration, you do not need to follow all the steps described above. You can simply use the default values provided in the default_values.yaml, which includes the H2 database and the default keystore and truststore. Once the service is up and running, deploy either the NGINX Ingress Controller or NGINX Gateway Fabric by following the steps outlined in [1.1 Add ingress controller or Gateway API controller](#11-add-ingress-controller-or-gateway-api-controller).
+If you want to try WSO2 API Manager with minimal configuration, you do not need to follow all the steps described above. You can simply use the default values provided in the default_values.yaml, which includes the H2 database and the default keystore and truststore. The Helm chart uses Ingress by default. Once the service is up and running, deploy the NGINX Ingress Controller. If you prefer Gateway API instead, follow the steps outlined in [1.1 Add ingress controller or Gateway API controller](#11-add-ingress-controller-or-gateway-api-controller) to configure and enable it.
 ```bash
 helm install apim wso2/wso2am-all-in-one --version 4.6.0-1 -f default_values.yaml
 ```
@@ -97,11 +99,12 @@ Some sample annotations that could be used with the ingress resources are as fol
     kubectl create secret tls my-tls-secret --key <private key filename> --cert <certificate filename>
     ```
 
-**Option 2: NGINX Gateway Fabric (Gateway API-based approach)**
+**Option 2: NGINX Gateway Fabric (Gateway API-based approach, disabled by default)**
 
-If you prefer to use the Gateway API with NGINX Gateway Fabric, you can enable it in the Helm chart configuration:
+If you prefer to use the Gateway API with NGINX Gateway Fabric instead of Ingress, you can enable it in the Helm chart configuration:
 
   - Set `kubernetes.gatewayAPI.enabled` to `true` in your values file.
+  - Disable Ingress by setting the appropriate ingress enabled flags to `false`.
   - Configure the Gateway API resources with appropriate hostnames and settings. Please refer to the [NGINX Gateway Fabric documentation](https://docs.nginx.com/nginx-gateway-fabric/) for installation and configuration details.
   
     ```yaml

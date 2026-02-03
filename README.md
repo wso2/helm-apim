@@ -10,8 +10,10 @@ This repo will be used to maintain APIM related helm charts
 - A running Kubernetes cluster (AKS, EKS, etc.)
 
 - Controller for routing traffic. You can use either:
-  - **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (traditional Ingress-based approach) suitable for your cloud environment, OR
-  - **[NGINX Gateway Fabric](https://docs.nginx.com/nginx-gateway-fabric/)** (Gateway API-based approach) for a more modern, role-oriented API
+  - **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (enabled by default) - Traditional Ingress-based approach suitable for your cloud environment
+  - **[NGINX Gateway Fabric](https://docs.nginx.com/nginx-gateway-fabric/)** (disabled by default) - Gateway API-based approach for a more modern, role-oriented API
+  
+  > **Note:** Ingress is enabled by default in the Helm charts. To use Gateway API instead, set `kubernetes.gatewayAPI.enabled=true` and ensure Ingress is disabled in your values file.
   
   Some sample annotations that could be used with the ingress resources are as follows.
 

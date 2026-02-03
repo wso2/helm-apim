@@ -38,7 +38,9 @@ For advanced details on this deployment pattern, please refer to the official
 
 - Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git), [Helm](https://helm.sh/docs/intro/install/), and the [Kubernetes client](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to run the steps provided in this quick start guide.
 - An already set up [Kubernetes cluster](https://kubernetes.io/docs/setup/).
-- Install either the [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/) or [NGINX Gateway Fabric](https://docs.nginx.com/nginx-gateway-fabric/) for routing.
+- Install a routing controller. Choose either:
+  - **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (enabled by default) - Traditional Ingress-based routing
+  - **[NGINX Gateway Fabric](https://docs.nginx.com/nginx-gateway-fabric/)** (disabled by default) - Modern Gateway API-based routing
 - Add the WSO2 Helm chart repository:
   ```bash
   helm repo add wso2 https://helm.wso2.com && helm repo update
@@ -120,7 +122,7 @@ helm install apim wso2/wso2am-all-in-one --version 4.6.0-1 -f default_values.yam
 ```
 
 
-- Once the service is up and running, deploy either the NGINX Ingress Controller or NGINX Gateway Fabric by following the steps outlined in [1.1 Add Ingress Controller or Gateway API Controller](#11-add-ingress-controller-or-gateway-api-controller).
+- Once the service is up and running, deploy the NGINX Ingress Controller (Ingress is enabled by default). If you prefer to use Gateway API instead, follow the steps outlined in [1.1 Add Ingress Controller or Gateway API Controller](#11-add-ingress-controller-or-gateway-api-controller) to configure and enable it.
 
 ## Configuration
 
@@ -162,11 +164,12 @@ Some sample annotations that could be used with the ingress resources are as fol
     kubectl create secret tls my-tls-secret --key <private key filename> --cert <certificate filename>
     ```
 
-**Option 2: NGINX Gateway Fabric (Gateway API-based approach)**
+**Option 2: NGINX Gateway Fabric (Gateway API-based approach, disabled by default)**
 
-If you prefer to use the Gateway API with NGINX Gateway Fabric, you can enable it in the Helm chart configuration:
+If you prefer to use the Gateway API with NGINX Gateway Fabric instead of Ingress, you can enable it in the Helm chart configuration:
 
   - Set `kubernetes.gatewayAPI.enabled` to `true` in your values file.
+  - Disable Ingress by setting the appropriate ingress enabled flags to `false`.
   - Configure the Gateway API resources with appropriate hostnames and settings. Please refer to the [NGINX Gateway Fabric documentation](https://docs.nginx.com/nginx-gateway-fabric/) for installation and configuration details.
   
     ```yaml
@@ -191,6 +194,8 @@ If you prefer to use the Gateway API with NGINX Gateway Fabric, you can enable i
     ```
 
   > **Important:** When using Gateway API, you must disable the Ingress settings in your values file to avoid conflicts.
+
+  > **Note:** When deploying with multiple control-plane instances (high availability) using NGINX Gateway Fabric, you may want to add the `nginx.org/lb-method: "ip_hash"` annotation to the Gateway resource for session affinity. See the example Gateway manifest at `docs/assets/gateway.yaml` for reference.
 
   - Gateway API provides a more expressive, extensible, and role-oriented API for configuring traffic routing in Kubernetes.
 

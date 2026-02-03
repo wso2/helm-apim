@@ -11,7 +11,7 @@
 
 # Example Gateway API Gateway resource for WSO2 API Manager
 # This must be created before deploying the Helm chart when using Gateway API
-#
+# IMPORTANT: Update the certificate data in the Secret resource below with your own TLS certificate and key for production use.
 #
 
 apiVersion: v1
@@ -96,7 +96,7 @@ spec:
       namespaces:
         from: Same
   
-  # For distributed deployments, additional listeners for control-plane and key-manager:
+  # For distributed deployments, additional listeners for key-manager:
   
   # Listener for Key Manager
   - name: keymanager-https

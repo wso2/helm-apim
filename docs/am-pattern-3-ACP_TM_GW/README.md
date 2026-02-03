@@ -49,7 +49,9 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
 
 - Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git), [Helm](https://helm.sh/docs/intro/install/), and [Kubernetes client](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to run the steps provided in the following quick start guide.
 - An already set up [Kubernetes cluster](https://kubernetes.io/docs/setup).
-- Install either [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/) or [NGINX Gateway Fabric](https://docs.nginx.com/nginx-gateway-fabric/) for routing. 
+- Install a routing controller. Choose either:
+  - **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (enabled by default) - Traditional Ingress-based routing
+  - **[NGINX Gateway Fabric](https://docs.nginx.com/nginx-gateway-fabric/)** (disabled by default) - Modern Gateway API-based routing
 - Add the WSO2 Helm chart repository.
   ```bash
   helm repo add wso2 https://helm.wso2.com && helm repo update
@@ -172,7 +174,7 @@ helm install apim-tm wso2/wso2am-tm --version 4.6.0-1 -f default_tm_values.yaml
 helm install apim-gw wso2/wso2am-gw --version 4.6.0-1 -f default_gw_values.yaml
 ```
 
-- Once the service is up and running, deploy either the NGINX Ingress Controller or NGINX Gateway Fabric by following the steps outlined in [1.1 Add Ingress Controller or Gateway API Controller](#11-add-ingress-controller-or-gateway-api-controller).
+- Once the service is up and running, deploy the NGINX Ingress Controller (Ingress is enabled by default). If you prefer to use Gateway API instead, follow the steps outlined in [1.1 Add Ingress Controller or Gateway API Controller](#11-add-ingress-controller-or-gateway-api-controller) to configure and enable it.
 
 ## Configuration
 
@@ -243,6 +245,8 @@ If you prefer to use the Gateway API with NGINX Gateway Fabric, you can enable i
     ```
 
   > **Important:** When using Gateway API, you must disable the Ingress settings in your values file to avoid conflicts.
+
+  > **Note:** When deploying with multiple control-plane instances (high availability) using NGINX Gateway Fabric, you may want to add the `nginx.org/lb-method: "ip_hash"` annotation to the Gateway resource for session affinity. See the example Gateway manifest at `docs/assets/gateway.yaml` for reference.
 
   - Gateway API provides a more expressive, extensible, and role-oriented API for configuring traffic routing in Kubernetes.
 

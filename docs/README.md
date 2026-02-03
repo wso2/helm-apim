@@ -62,7 +62,9 @@ Each pattern directory contains:
 1. **Prerequisites**:
    - Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git), [Helm](https://helm.sh/docs/intro/install/), and [Kubernetes client](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
    - Set up a [Kubernetes cluster](https://kubernetes.io/docs/setup)
-   - Install either [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/) or [NGINX Gateway Fabric](https://docs.nginx.com/nginx-gateway-fabric/) for routing
+   - Install a routing controller. Choose either:
+     - **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (enabled by default) - Traditional Ingress-based routing
+     - **[NGINX Gateway Fabric](https://docs.nginx.com/nginx-gateway-fabric/)** (disabled by default) - Modern Gateway API-based routing
    - Add the WSO2 Helm chart repository: `helm repo add wso2 https://helm.wso2.com && helm repo update`
 
 2. **Build Docker Images**:
