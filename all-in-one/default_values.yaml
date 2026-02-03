@@ -187,7 +187,7 @@ kubernetes:
     # -- Name of the externally-created Gateway resource that HTTPRoutes will reference
     # This Gateway must exist in the same namespace before installing the chart
     gatewayName: "wso2-apim-gateway"
-    # -- Create TLS secret for Gateway (uses certificate files from confs/)
+    # -- Create CA certificate ConfigMap for BackendTLSPolicy
     defaultConfigMapCreation: true
     management:
       # -- Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal

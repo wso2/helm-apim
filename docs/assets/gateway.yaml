@@ -96,7 +96,7 @@ spec:
       namespaces:
         from: Same
   
-  # For distributed deployments, additional listeners for key-manager:
+  # For distributed deployments, additional listeners for key-manager and stand-alone control-plane
   
   # Listener for Key Manager
   - name: keymanager-https
@@ -111,3 +111,17 @@ spec:
     allowedRoutes:
       namespaces:
         from: Same
+
+  # Listener for Stand-alone Control Plane (If you are enabling this remove the management listener above)
+  # - name: controlplane-https
+  #   hostname: "am.wso2.com"
+  #   port: 443
+  #   protocol: HTTPS
+  #   tls:
+  #     mode: Terminate
+  #     certificateRefs:
+  #     - kind: Secret
+  #       name: apim-gateway-tls
+  #   allowedRoutes:
+  #     namespaces:
+  #       from: Same
