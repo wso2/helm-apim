@@ -228,9 +228,9 @@ kubernetes:
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
     enabled: false
-    # -- Name of the externally-created Gateway resource that HTTPRoutes will reference
+    # -- Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
     # This Gateway must exist in the same namespace before installing the chart
-    gatewayName: ""
+    gatewayName: "nginx"
     defaultConfigMapCreation: false
     management:
       # -- Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal
@@ -279,10 +279,9 @@ kubernetes:
       # -- Enable BackendTLSPolicy
       enabled: false
       # -- CA certificate ConfigMap name for backend TLS verification
-      # This ConfigMap must be created externally (see docs/assets/ca-configmap.yaml)
-      caCertificateConfigMap: "wso2-apim-ca-cert"
+      caCertificateConfigMap: ""
       # -- Backend hostname for TLS verification
-      hostname: "localhost"
+      hostname: ""
     # -- Upstream Settings Policy for session affinity using IP hash load balancing
     # This provides basic session persistence by routing requests from the same client IP to the same backend Pod
     # For cookie-based session persistence (requires NGINX Plus), configure sessionPersistence on HTTPRoute instead

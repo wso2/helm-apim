@@ -60,24 +60,21 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
-| kubernetes.gatewayAPI | object | `{"annotations":{},"backendTLSPolicy":{"caCertificateSecret":"","enabled":false,"hostname":"localhost"},"defaultConfigMapCreation":false,"defaultTlsCreation":false,"enabled":false,"gateway":{"annotations":{},"enabled":true,"filters":[],"hostname":"gw.wso2.com"},"gatewayClass":{"name":"nginx"},"labels":{},"management":{"annotations":{},"enabled":true,"filters":[],"hostname":"am.wso2.com"},"tlsSecret":"","upstreamSettingsPolicy":{"enabled":false,"loadBalancingMethod":"ip_hash"},"websocket":{"annotations":{},"enabled":true,"filters":[],"hostname":"websocket.wso2.com"},"websub":{"annotations":{},"enabled":true,"filters":[],"hostname":"websub.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster |
-| kubernetes.gatewayAPI.annotations | object | `{}` | Gateway annotations |
-| kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateSecret":"","enabled":false,"hostname":"localhost"}` | Backend TLS Policy for HTTPS backend connections |
-| kubernetes.gatewayAPI.backendTLSPolicy.caCertificateSecret | string | `""` | CA certificate secret name for backend TLS verification |
+| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"defaultConfigMapCreation":false,"enabled":false,"gateway":{"annotations":{},"enabled":true,"filters":[],"hostname":"gw.wso2.com"},"gatewayName":"nginx","management":{"annotations":{},"enabled":true,"filters":[],"hostname":"am.wso2.com"},"upstreamSettingsPolicy":{"enabled":false,"loadBalancingMethod":"ip_hash"},"websocket":{"annotations":{},"enabled":true,"filters":[],"hostname":"websocket.wso2.com"},"websub":{"annotations":{},"enabled":true,"filters":[],"hostname":"websub.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See docs/assets/gateway.yaml for an example Gateway manifest |
+| kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateConfigMap":"","enabled":false,"hostname":""}` | Backend TLS Policy for HTTPS backend connections |
+| kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap | string | `""` | CA certificate ConfigMap name for backend TLS verification |
 | kubernetes.gatewayAPI.backendTLSPolicy.enabled | bool | `false` | Enable BackendTLSPolicy |
-| kubernetes.gatewayAPI.backendTLSPolicy.hostname | string | `"localhost"` | Backend hostname for TLS verification |
-| kubernetes.gatewayAPI.enabled | bool | `false` | Enable Gateway API resources |
+| kubernetes.gatewayAPI.backendTLSPolicy.hostname | string | `""` | Backend hostname for TLS verification |
+| kubernetes.gatewayAPI.enabled | bool | `false` | Enable Gateway API resources (HTTPRoutes and policies) |
 | kubernetes.gatewayAPI.gateway.annotations | object | `{}` | HTTPRoute annotations |
 | kubernetes.gatewayAPI.gateway.enabled | bool | `true` | Enable HTTPRoute for Gateway pass-through |
 | kubernetes.gatewayAPI.gateway.filters | list | `[]` | HTTPRoute filters (optional) |
 | kubernetes.gatewayAPI.gateway.hostname | string | `"gw.wso2.com"` | Hostname for Gateway pass-through |
-| kubernetes.gatewayAPI.gatewayClass | object | `{"name":"nginx"}` | Gateway class name (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed) |
-| kubernetes.gatewayAPI.labels | object | `{}` | Gateway labels |
+| kubernetes.gatewayAPI.gatewayName | string | `"nginx"` | Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed) This Gateway must exist in the same namespace before installing the chart |
 | kubernetes.gatewayAPI.management.annotations | object | `{}` | HTTPRoute annotations |
 | kubernetes.gatewayAPI.management.enabled | bool | `true` | Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal |
 | kubernetes.gatewayAPI.management.filters | list | `[]` | HTTPRoute filters (optional) filters:   - type: RequestHeaderModifier     requestHeaderModifier:       add:         - name: X-Custom-Header           value: "custom-value" |
 | kubernetes.gatewayAPI.management.hostname | string | `"am.wso2.com"` | Hostname for API Manager Management interfaces |
-| kubernetes.gatewayAPI.tlsSecret | string | `""` | Kubernetes secret created for Gateway TLS |
 | kubernetes.gatewayAPI.upstreamSettingsPolicy | object | `{"enabled":false,"loadBalancingMethod":"ip_hash"}` | Upstream Settings Policy for session affinity using IP hash load balancing This provides basic session persistence by routing requests from the same client IP to the same backend Pod For cookie-based session persistence (requires NGINX Plus), configure sessionPersistence on HTTPRoute instead |
 | kubernetes.gatewayAPI.upstreamSettingsPolicy.enabled | bool | `false` | Enable UpstreamSettingsPolicy |
 | kubernetes.gatewayAPI.upstreamSettingsPolicy.loadBalancingMethod | string | `"ip_hash"` | Load balancing method. Valid values: least_conn, ip_hash, random, random_two_least_conn Use "ip_hash" for session affinity (sticky sessions) |
