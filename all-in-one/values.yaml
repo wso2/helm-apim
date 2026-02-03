@@ -231,11 +231,6 @@ kubernetes:
     # -- Name of the externally-created Gateway resource that HTTPRoutes will reference
     # This Gateway must exist in the same namespace before installing the chart
     gatewayName: ""
-    # -- Create TLS secret for Gateway (uses certificate files from confs/)
-    defaultTlsCreation: false
-    # -- Kubernetes secret name for Gateway TLS (used when defaultTlsCreation is true)
-    tlsSecret: ""
-    # -- Create CA certificate ConfigMap for BackendTLSPolicy
     defaultConfigMapCreation: false
     management:
       # -- Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal

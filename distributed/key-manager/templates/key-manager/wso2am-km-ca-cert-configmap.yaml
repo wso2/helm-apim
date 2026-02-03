@@ -18,7 +18,7 @@ limitations under the License.
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.kubernetes.gatewayAPI.backendTLSPolicy.caCertificateSecret }}
+  name: {{ .Values.kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "apim-helm-km.labels" . | nindent 4 }}

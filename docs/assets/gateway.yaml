@@ -12,29 +12,20 @@
 # Example Gateway API Gateway resource for WSO2 API Manager
 # This must be created before deploying the Helm chart when using Gateway API
 #
-# Prerequisites:
-# 1. Gateway API CRDs must be installed if not present
-# 2. A Gateway API controller must be installed (e.g., NGINX Gateway Fabric, Istio, Envoy Gateway, Contour)
 #
-# Note: TLS Secret and CA ConfigMap are managed by the Helm chart when:
-#   - kubernetes.gatewayAPI.defaultTlsCreation: true
-#   - kubernetes.gatewayAPI.defaultConfigMapCreation: true
-#
-# Usage:
-#   kubectl create namespace apim
-#   kubectl apply -f gateway.yaml -n apim
-#   # Then deploy the Helm chart which will create the TLS Secret and CA ConfigMap
-#
-# This example uses default values from default_values.yaml:
-#   - gatewayName: "wso2-apim-gateway"
-#   - tlsSecret: "apim-gateway-tls"
-#   - management.hostname: "am.wso2.com"
-#   - gateway.hostname: "gw.wso2.com"
-#   - websocket.hostname: "websocket.wso2.com"
-#   - websub.hostname: "websub.wso2.com"
-#   - controlPlane.hostname: "am.wso2.com" (for distributed control plane)
-#   - km.hostname: "km.wso2.com" (for distributed key manager)
-#
+
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/tls
+metadata:
+  name: apim-gateway-tls
+  namespace: apim
+data:
+  tls.crt: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURDekNDQWZPZ0F3SUJBZ0lVTTZQY3Vjd2ErWVEvS1cwTjcwbWtDUjY1UjVJd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0ZURVRNQkVHQTFVRUF3d0tLaTUzYzI4eUxtTnZiVEFlRncweU5qQXhNall4TURJNU5EVmFGdzB5TnpBeApNall4TURJNU5EVmFNQlV4RXpBUkJnTlZCQU1NQ2lvdWQzTnZNaTVqYjIwd2dnRWlNQTBHQ1NxR1NJYjNEUUVCCkFRVUFBNElCRHdBd2dnRUtBb0lCQVFEQ1hZOGd6SzIxdmhlb0puakhaTXRSR0twOTN3dUgvdzdPLy9OSGZuUHQKZVR6azFORk43R3lqTnZrbW5kZEppVHl4d3l1U0FFVWd3R1dsemhRaEtzV3QxNkVGMXFZYUg4VjhlNC9JWks2MApHMHQ3d1FWdGtrM0tHZUt0V3pZYXBEa0k2TWxvTUduY3laUFdOek9QNWgxYUhHNTZ6VFI0ZWZGRDBMM3JrT0oyCnlLTzFIeDB6NzZPSENlWklRNDd0eGl1ekdLVUtmRHEwcXZDWHBPUUFTSm5JNjR0M2VKYVJjNDFuVFZ4bjNLSFoKV09Bb25rZUFpbVNCOTdQN2xRQXZ1SnMvTFVra09PcDFHZWFFSGdLOElVUWJrRStVRVdMZ2pwbkJjN2lFSkYzUAp1ek05bVJweHJGV1c1NDdGc2J1YkJlRWs3bVlLazZuOUpQQWtFS0VCZTRiWEFnTUJBQUdqVXpCUk1CMEdBMVVkCkRnUVdCQlJOTGIzRzU1YUNiTys0N2MwOG9ub3hDMXFWNVRBZkJnTlZIU01FR0RBV2dCUk5MYjNHNTVhQ2JPKzQKN2MwOG9ub3hDMXFWNVRBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUEwR0NTcUdTSWIzRFFFQkN3VUFBNElCQVFCSwowV3h2ZXJhUFZGQzNqaW5obG50cTlzUGN5anZPL1dXZlNGUUcveHhGUEM1aHE0OVhndmUxcWlsT2hrRmhFNm5CCjRIRVNBbzlMR2xlbEFETmF3d0tFTGVBR0dBWU9qUGxoaG95N0F1dGF0MXIvMG5vZzRHTjRVMW1vUEZiNDNZeUUKWFdKcTZ0ZVl2UmFWRFFDeFFPTlhxNDh0ZFYwcWRQclBlZ0FsRU9mTXdHQ0ZlV2xDQ2dvOE1MWXp1YVZDR1RyZwpMQ3NIQWJHVUNjVkpqVUNyd0NZRjVNNFdycEpQV1QyMGpTTlZ3Qk81Nng1VHJsMXNkUnlzMHZzWjFvYjJnNENSCkwydFdSOE1CdW5INHpQYy9jcEc3Y2ZBY25BTFM0dUc5Z2NaN3kxT2taK0FJcjNDcVpqaDZLZDhZYVJoNmhrSWYKVUdrN1FhN0tONzJES0g3T29wcWcKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo="
+  tls.key: "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2Z0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktnd2dnU2tBZ0VBQW9JQkFRRENYWThneksyMXZoZW8KSm5qSFpNdFJHS3A5M3d1SC93N08vL05IZm5QdGVUemsxTkZON0d5ak52a21uZGRKaVR5eHd5dVNBRVVnd0dXbAp6aFFoS3NXdDE2RUYxcVlhSDhWOGU0L0laSzYwRzB0N3dRVnRrazNLR2VLdFd6WWFwRGtJNk1sb01HbmN5WlBXCk56T1A1aDFhSEc1NnpUUjRlZkZEMEwzcmtPSjJ5S08xSHgwejc2T0hDZVpJUTQ3dHhpdXpHS1VLZkRxMHF2Q1gKcE9RQVNKbkk2NHQzZUphUmM0MW5UVnhuM0tIWldPQW9ua2VBaW1TQjk3UDdsUUF2dUpzL0xVa2tPT3AxR2VhRQpIZ0s4SVVRYmtFK1VFV0xnanBuQmM3aUVKRjNQdXpNOW1ScHhyRldXNTQ3RnNidWJCZUVrN21ZS2s2bjlKUEFrCkVLRUJlNGJYQWdNQkFBRUNnZ0VBUUlEWExxM3Vta21QUlUwYk9TVVF1b1dpa3lwU0E5eVlHQWRtUDl4Tjhjb1IKOU9sUjJ2Znk1OG1uTHZNa0R2SCtGQXB1NjhHdUwxdmFnQWVmczVBajBYa2xwYS9pS1BwUlNtb2hRZ0p6M2k3Twp3cS9Bc3VmaWJBZGlMR0VBV0NBWEU0ZFp5L3VCTG5ZeFcxNnZmSHFFVkRMcVVWUEhyWkhlaVVCOXZ1OHkwUE5hCkY3Q09PNkc4Z0dRQ3Y4Z2xUMlF4THExQkZmSjRzNVRyZzBLamd6cHpKWFhFTkNTNVhDMlJhTXRGZit2b2RPSmMKMVk5ZWorR0pSdWpiNm9LQVYxd1VQeTdoVjJvU1ZjVmxRUnRsdTlFWHBGcUtjVmhVTlFBUDlsR1Bkem12WmFOSAp6QTcyM3BBZHo1NVdKeCtYS2ZnelZvSmFGMXFEMVFHN0o0Ky9jTzhpMVFLQmdRRGpWQXRNakdrelRTRmU2SDkxCmVtQUJIWUNOYUdPY0JidHhOR2prUFZBZG5VMWl6SWhNR1Z2eUk2K1JzT3dQNUVyOU54NHZVY3ZhN2xRMzNwQ2cKd1A2MzNOLzZSOHV4eEpDc1cxdWJ1ZkVuSHIxOHlON1dKcXZ4NnJPSWt1a0dyQStwaXNjc1dsS1lPNzhnZ3BrbAp2UEFuZUp4VnhrSFQyM0wrV1Bvc2pYeGJ2UUtCZ1FEYTRUYkdKYW13YWgwaEJ2S3ErVGR4WkFHWDAvWHl6TDRiCm95dFl2Y3hKNlhJYk5CYUlaL0d2NnJsclhFWUdTdFBCZ1MzWGNVbDVJbFhVN2FkdUFBREhyZWJVTXNsNENpY3QKK0pCU1BqbVBPRVlLVEYvT1pTV3V1ZGVuY1pTSGIzQ1pNN2JtYzdCN3Bxbkl0ODFzRi8ycHVraXM3Q0o3WkxvSQo1U2VGbkxpc0l3S0JnUUNuQVEwejlVc3J4eFFtOTBMNytTVWliSndPUm93M0NQY0ZXVzFkajdXVnJBUTMrdTUrCmlYckV6bmFpMzRqc3U5aGpZZVNvK3J4NlgvQTdBeVRaRkMrTXY1VkQ5dzZyMEM1QWtQVWgyRjVUVVAvLzlrbk8KcGFaWUdRWS81VDJRQzBPT1dFZXVTOFMxMWQ2NWNYZzFBektpckxhZFJRTURNd3F0MUl3bHd1T0RPUUtCZ1FDRApSOG1lbDBCciszbDFNY0dqSXM5S1IzMWRIMWpKUkZ4U0gxQUViZkoxOG5ycUxoZkZ3UEtKWFBQUm5RcXpBM1oyCi9aQU5SSG1aR2lyNUI0SUF6Q2VybkhaeWwvT1crQi8veHJKcFljRU1VZWhRalBaNXlOa05MNUpWY0I1eURUa3YKNm9DdFFINTk2N3l5RXV3M0JUeXo3SE5pcEU4YVM1UDVlZGgybjBWMG1RS0JnR2M4UUllMWh5WXFSaTFQaVBKQgpZcjUrY3ZXVFBOVWNqZC9QKzJiT082dVA2T2duUFI2djFVM3JyVkJna3VVQ2RON3p5bXhRb0Mva1Jrck11QVNCCmpJMTYzRm9QaGVnMXhldTdWQ1RhKzBFREN5TE5qZ2Vlb3d1aXJtR1k0WDVIbmJZekR2ZDNHMHdjLzhMRXV2WE0KY0gybzhFY1BJd1REQUdPNXdOOWdEdmJYCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K"
+
+---
+
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
@@ -106,20 +97,6 @@ spec:
         from: Same
   
   # For distributed deployments, additional listeners for control-plane and key-manager:
-  
-  # Listener for Control Plane
-  - name: controlplane-https
-    hostname: "am.wso2.com"
-    port: 443
-    protocol: HTTPS
-    tls:
-      mode: Terminate
-      certificateRefs:
-      - kind: Secret
-        name: apim-gateway-tls
-    allowedRoutes:
-      namespaces:
-        from: Same
   
   # Listener for Key Manager
   - name: keymanager-https

@@ -141,10 +141,6 @@ kubernetes:
     # This Gateway must exist in the same namespace before installing the chart
     gatewayName: ""
     # -- Create TLS secret for Gateway (uses certificate files from confs/)
-    defaultTlsCreation: false
-    # -- Kubernetes secret name for Gateway TLS (used when defaultTlsCreation is true)
-    tlsSecret: ""
-    # -- Create CA certificate ConfigMap for BackendTLSPolicy
     defaultConfigMapCreation: false
     km:
       # -- Enable HTTPRoute for Key Manager
