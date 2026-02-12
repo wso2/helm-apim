@@ -460,8 +460,8 @@ wso2:
 
       # APIM OAuth configurations
       oauth_config:
-        # -- Remove auth header from outgoing requests
-        removeOutboundAuthHeader: true
+        # -- Enable outbound auth header in outgoing requests
+        enableOutboundAuthHeader: false
         # -- OAuth authorization header name
         authHeader: "Authorization"
         # -- OAuth revoke endpoint
