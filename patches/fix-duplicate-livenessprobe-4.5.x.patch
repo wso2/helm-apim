@@ -1,0 +1,38 @@
+From 086c5ce251f371ed9acafd696feeb9b053aa94d8 Mon Sep 17 00:00:00 2001
+From: "copilot-swe-agent[bot]" <198982749+Copilot@users.noreply.github.com>
+Date: Fri, 13 Feb 2026 06:01:26 +0000
+Subject: [PATCH] Fix duplicate livenessProbe in key-manager deployment for
+ 4.5.x
+
+- Changed second livenessProbe to readinessProbe
+- Updated probe configuration references to use readinessProbe values
+- Backport of PR #144 fix to 4.5.x branch
+---
+ .../templates/key-manager/wso2am-km-deployment.yaml       | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/distributed/key-manager/templates/key-manager/wso2am-km-deployment.yaml b/distributed/key-manager/templates/key-manager/wso2am-km-deployment.yaml
+index 8c1661b..1df6658 100644
+--- a/distributed/key-manager/templates/key-manager/wso2am-km-deployment.yaml
++++ b/distributed/key-manager/templates/key-manager/wso2am-km-deployment.yaml
+@@ -117,13 +117,13 @@ spec:
+           initialDelaySeconds: {{ .Values.wso2.deployment.livenessProbe.initialDelaySeconds }}
+           periodSeconds: {{ .Values.wso2.deployment.livenessProbe.periodSeconds }}
+           failureThreshold: {{ .Values.wso2.deployment.livenessProbe.failureThreshold }}
+-        livenessProbe:
++        readinessProbe:
+           httpGet:
+               path: /services/Version
+               port: {{ add 9763 .Values.wso2.apim.portOffset }}
+-          initialDelaySeconds: {{ .Values.wso2.deployment.livenessProbe.initialDelaySeconds }}
+-          periodSeconds: {{ .Values.wso2.deployment.livenessProbe.periodSeconds }}
+-          failureThreshold: {{ .Values.wso2.deployment.livenessProbe.failureThreshold }}
++          initialDelaySeconds: {{ .Values.wso2.deployment.readinessProbe.initialDelaySeconds }}
++          periodSeconds: {{ .Values.wso2.deployment.readinessProbe.periodSeconds }}
++          failureThreshold: {{ .Values.wso2.deployment.readinessProbe.failureThreshold }}
+         lifecycle:
+           preStop:
+             exec:
+-- 
+2.52.0
+
