@@ -237,8 +237,8 @@ wso2:
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
         type: "database_unique_id"
         # -- User store properties
-        properties:
-          key: value
+        properties: {}
+          #key: value
       # -- Super admin username
       adminUsername: ""
       # -- Super admin password
@@ -422,6 +422,11 @@ wso2:
         hostname: ""
         # -- Remote tracer port
         port: ""
+      # JMX
+      jmx:
+        enabled: false
+        rmiRegistryPort: 9999
+        rmiServerPort: 11111
 
       keyManager:
         enableLightweightAPIKeyGeneration: true

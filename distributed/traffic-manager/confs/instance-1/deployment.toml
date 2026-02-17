@@ -127,15 +127,15 @@ throttle_decision_endpoints = ["tcp://localhost:5672"]
 enable = true
 username = "$ref{super_admin.username}"
 password = "$ref{super_admin.password}"
-service_url = "https://{{ .Values.wso2.apim.configurations.eventhub.serviceUrl }}:9443/services/"
+service_url = "https://{{ .Values.wso2.apim.configurations.eventhub.serviceUrl }}:{{ .Values.wso2.apim.configurations.eventhub.servicePort }}/services/"
 {{- $len := add (len .Values.wso2.apim.configurations.eventhub.urls) -1 }}
-event_listening_endpoints = [{{ range $index, $element := .Values.wso2.apim.configurations.eventhub.urls }}"tcp://{{ $element }}:5672"{{ if ne $index $len }},{{ end }}{{ end}}]
+event_listening_endpoints = [{{ range $index, $element := .Values.wso2.apim.configurations.eventhub.urls }}"tcp://{{ $element }}"{{ if ne $index $len }},{{ end }}{{ end}}]
 
 [apim.oauth_config]
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
 revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:9443/oauth2/revoke"
 {{- else }}
-revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.km.serviceUrl }}:9443/oauth2/revoke"
+revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.km.serviceUrl }}:{{ .Values.wso2.apim.configurations.km.servicePortUrl }}/oauth2/revoke"
 {{- end }}
 enable_token_encryption = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenEncryption }}
 enable_token_hashing = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenHashing }}
@@ -154,6 +154,12 @@ remote_tracer.enable = {{ .Values.wso2.apim.configurations.openTelemetry.enabled
 remote_tracer.name = {{ .Values.wso2.apim.configurations.openTelemetry.name | quote }}
 remote_tracer.hostname = {{ .Values.wso2.apim.configurations.openTelemetry.hostname | quote }}
 remote_tracer.port = {{ .Values.wso2.apim.configurations.openTelemetry.port | quote }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.jmx.enabled }}
+[monitoring.jmx]
+rmi_registry_port = {{ .Values.wso2.apim.configurations.jmx.rmiRegistryPort }}
+rmi_server_port = {{ .Values.wso2.apim.configurations.jmx.rmiServerPort }}
 {{- end }}
 
 [transport.https.properties]

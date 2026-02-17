@@ -187,6 +187,12 @@ spec:
             protocol: "TCP"
           - containerPort: 5672
             protocol: "TCP"
+          {{- if .Values.wso2.apim.configurations.jmx.enabled }}
+          - containerPort: {{ .Values.wso2.apim.configurations.jmx.rmiRegistryPort }}
+            protocol: "TCP"
+          - containerPort: {{ .Values.wso2.apim.configurations.jmx.rmiServerPort }}
+            protocol: "TCP"
+          {{- end }}
         volumeMounts:
         - name: wso2am-traffic-manager-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml

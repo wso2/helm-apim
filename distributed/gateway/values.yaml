@@ -407,6 +407,11 @@ wso2:
         hostname: ""
         # -- Remote tracer port
         port: ""
+      # JMX
+      jmx:
+        enabled: false
+        rmiRegistryPort: 9999
+        rmiServerPort: 11111
 
       transport:
         passthru_https:

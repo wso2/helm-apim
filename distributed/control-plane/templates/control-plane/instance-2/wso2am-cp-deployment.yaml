@@ -185,6 +185,12 @@ spec:
             protocol: "TCP"
           - containerPort: {{ add 5672 .Values.wso2.apim.portOffset }}
             protocol: "TCP"
+          {{- if .Values.wso2.apim.configurations.jmx.enabled }}
+          - containerPort: {{ .Values.wso2.apim.configurations.jmx.rmiRegistryPort }}
+            protocol: "TCP"
+          - containerPort: {{ .Values.wso2.apim.configurations.jmx.rmiServerPort }}
+            protocol: "TCP"
+          {{- end }}
         volumeMounts:
         - name: wso2am-control-plane-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml

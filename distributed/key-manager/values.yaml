@@ -267,6 +267,8 @@ wso2:
         urls:
           - "wso2am-cp-1-service"
           - "wso2am-cp-2-service"
+        # -- Port Offset for APIM deployment
+        portOffset: 0
 
       # APIM OAuth configurations
       oauth_config:
@@ -297,6 +299,11 @@ wso2:
         hostname: ""
         # -- Remote tracer port
         port: ""
+      # JMX
+      jmx:
+        enabled: false
+        rmiRegistryPort: 9999
+        rmiServerPort: 11111
 
       # -- Add custom configurations to deployment.toml.
       extraConfigs:

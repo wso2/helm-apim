@@ -251,10 +251,12 @@ wso2:
       eventhub:
         # -- Event hub (control plane) loadbalancer service url
         serviceUrl: "wso2am-cp-service"
+        # -- Key Manager service port
+        servicePort: 9443
         # -- Event hub service urls
         urls:
-          - "wso2am-cp-1-service"
-          - "wso2am-cp-2-service"
+          - "wso2am-cp-1-service:5672"
+          - "wso2am-cp-2-service:5672"
 
       # APIM OAuth configurations
       oauth_config:
@@ -285,6 +287,11 @@ wso2:
         hostname: ""
         # -- Remote tracer port
         port: ""
+      # JMX
+      jmx:
+        enabled: false
+        rmiRegistryPort: 9999
+        rmiServerPort: 11111
 
       # -- Add custom configurations to deployment.toml.
       extraConfigs: 

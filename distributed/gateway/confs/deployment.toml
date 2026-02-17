@@ -234,6 +234,12 @@ remote_tracer.hostname = {{ .Values.wso2.apim.configurations.openTelemetry.hostn
 remote_tracer.port = {{ .Values.wso2.apim.configurations.openTelemetry.port | quote }}
 {{- end }}
 
+{{- if .Values.wso2.apim.configurations.jmx.enabled }}
+[monitoring.jmx]
+rmi_registry_port = {{ .Values.wso2.apim.configurations.jmx.rmiRegistryPort }}
+rmi_server_port = {{ .Values.wso2.apim.configurations.jmx.rmiServerPort }}
+{{- end }}
+
 [transport.passthru_https.sender.parameters]
 HostnameVerifier = {{ .Values.wso2.apim.configurations.transport.passthru_https.sender.parameters.hostnameVerifier | quote }}
 
