@@ -269,6 +269,22 @@ revoke_endpoint = {{ .Values.wso2.apim.configurations.oauth_config.revokeEndpoin
 enable_token_encryption = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenEncryption }}
 enable_token_hashing = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenHashing }}
 
+{{- if .Values.wso2.apim.configurations.openTracer.enabled }}
+[apim.open_tracer]
+remote_tracer.enable = {{ .Values.wso2.apim.configurations.openTracer.enabled }}
+remote_tracer.name = {{ .Values.wso2.apim.configurations.openTracer.name | quote }}
+remote_tracer.properties.hostname = {{ .Values.wso2.apim.configurations.openTracer.properties.hostname | quote }}
+remote_tracer.properties.port = {{ .Values.wso2.apim.configurations.openTracer.properties.port | quote }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.openTelemetry.enabled }}
+[apim.open_telemetry]
+remote_tracer.enable = {{ .Values.wso2.apim.configurations.openTelemetry.enabled }}
+remote_tracer.name = {{ .Values.wso2.apim.configurations.openTelemetry.name | quote }}
+remote_tracer.hostname = {{ .Values.wso2.apim.configurations.openTelemetry.hostname | quote }}
+remote_tracer.port = {{ .Values.wso2.apim.configurations.openTelemetry.port | quote }}
+{{- end }}
+
 [apim.devportal]
 url = "https://{{ .Values.kubernetes.ingress.management.hostname }}/devportal"
 {{- if .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}
