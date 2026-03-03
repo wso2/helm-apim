@@ -1,6 +1,6 @@
 # wso2am-universal-gw
 
-![Version: 4.6.0-1](https://img.shields.io/badge/Version-4.6.0--1-informational?style=flat-square) ![AppVersion: 4.6.0](https://img.shields.io/badge/AppVersion-4.6.0-informational?style=flat-square)
+![Version: 4.6.0-2](https://img.shields.io/badge/Version-4.6.0--2-informational?style=flat-square) ![AppVersion: 4.6.0](https://img.shields.io/badge/AppVersion-4.6.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 
@@ -52,6 +52,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | kubernetes.ingress.websub.enabled | bool | `true` | Enable ingress for Websub |
 | kubernetes.ingress.websub.hostname | string | `"websub.wso2.com"` | Ingress hostname for Websub |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
+| kubernetes.openshift | object | `{"enabled":false}` | When deploying on OpenShift. |
 | kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
 | kubernetes.securityContext.seLinux | object | `{"enabled":false,"level":""}` | SELinux context for the container |
 | kubernetes.securityContext.seccompProfile | object | `{"localhostProfile":"","type":"RuntimeDefault"}` | Seccomp profile for the container |
@@ -86,6 +87,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.configurations.eventhub.serviceUrl | string | `"wso2am-cp-service"` | Event hub (control plane) loadbalancer service url |
 | wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
 | wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.gatewayNotification.deploymentAck.batchInterval | string | `"2s"` |  |
 | wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorKeepAlive | string | `"1m"` |  |
 | wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorMaxThread | int | `8` |  |
@@ -168,9 +170,6 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
 | wso2.apim.version | string | `"4.6.0"` | APIM version |
-| wso2.choreoAnalytics | object | `{"enabled":false,"endpoint":"","onpremKey":""}` | WSO2 Choreo Analytics Parameters If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/). |
-| wso2.choreoAnalytics.endpoint | string | `""` | Choreo Analytics cloud service endpoint |
-| wso2.choreoAnalytics.onpremKey | string | `""` | On-premise key for Choreo Analytics |
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
@@ -202,7 +201,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
 | wso2.deployment.strategy.rollingUpdate.maxSurge | int | `2` |  |
 | wso2.deployment.strategy.rollingUpdate.maxUnavailable | int | `0` |  |
-| wso2.moesifAnalytics | object | `{"enabled":true,"key":"YOUR_MOESIF_API_KEY_HERE","moesif_base_url":"https://api.moesif.net","send_headers":false}` | Moesif Analytics Parameters |
+| wso2.moesifAnalytics | object | `{"enabled":false,"key":"YOUR_MOESIF_API_KEY_HERE","moesif_base_url":"https://api.moesif.net","send_headers":false}` | Moesif Analytics Parameters |
 | wso2.moesifAnalytics.key | string | `"YOUR_MOESIF_API_KEY_HERE"` | Moesif API key |
 | wso2.moesifAnalytics.moesif_base_url | string | `"https://api.moesif.net"` | Moesif base URL |
 | wso2.moesifAnalytics.send_headers | bool | `false` | Moesif send header |

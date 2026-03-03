@@ -70,7 +70,7 @@ spec:
       containers:
         - name: wso2am
           image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
-          imagePullPolicy: {{ .Values.wso2.deployment.imagePullPolicy }}
+          imagePullPolicy: {{ .Values.wso2.deployment.image.imagePullPolicy }}
           env:
             - name: NODE_IP
               valueFrom:
@@ -244,7 +244,7 @@ spec:
               mountPath: /mnt/secrets-store
               readOnly: true
             {{- end }}
-            {{- if .Values.kubernetes.extraVolumeMounts }}{{ toYaml .Values.kubernetes.extraVolumeMounts | nindent 8 }}{{- end }}
+            {{- if .Values.kubernetes.extraVolumeMounts }}{{ toYaml .Values.kubernetes.extraVolumeMounts | nindent 12 }}{{- end }}
             {{- if .Values.wso2.apim.configurations.security.jksSecretName }}
             - name: wso2am-keystores
               mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/security/{{ .Values.wso2.apim.configurations.security.truststore.name }}
@@ -271,6 +271,10 @@ spec:
             - name: wso2am-solr
               mountPath: /home/wso2carbon/solr/indexed-data
             {{ end }}
+            {{- if .Values.kubernetes.openshift.enabled }}
+            - name: wso2am-security-dir
+              mountPath: /home/wso2carbon/tmp-security
+            {{- end }}
       {{- if .Values.wso2.deployment.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.wso2.deployment.nodeSelector | nindent 8 }}
@@ -330,7 +334,7 @@ spec:
               secretProviderClass: {{ .Values.gcp.secretsManager.secretProviderClass }}
             {{- end }}
         {{- end }}
-        {{- if .Values.kubernetes.extraVolumes }}{{ toYaml .Values.kubernetes.extraVolumes | nindent 6 }}{{- end }}
+        {{- if .Values.kubernetes.extraVolumes }}{{ toYaml .Values.kubernetes.extraVolumes | nindent 8 }}{{- end }}
         {{- if .Values.wso2.apim.configurations.security.jksSecretName }}
         - name: wso2am-keystores
           secret:
@@ -344,3 +348,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ template "am-all-in-one.fullname" . }}-am-solr-indexed-data-volume-claim
         {{ end }}
+        {{- if .Values.kubernetes.openshift.enabled }}
+        - name: wso2am-security-dir
+          emptyDir: {}
+        {{- end }}
