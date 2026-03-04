@@ -317,8 +317,8 @@ wso2:
         servicePort: 9443
         # -- Traffic manager service urls. You only need to define one if the TM is not in HA.
         urls:
-          - "wso2am-cp-1-service"
-          - "wso2am-cp-2-service"
+          - "wso2am-cp-1-service:5672"
+          - "wso2am-cp-2-service:5672"
         # -- Enable unlimited throttling tier
         unlimitedTier: true
         # -- Enable header based throttling

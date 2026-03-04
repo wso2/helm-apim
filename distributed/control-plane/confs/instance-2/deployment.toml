@@ -249,11 +249,12 @@ auth_urls = ["ssl://{{ template "apim-helm-cp.fullname" . }}-2-service:{{ add 97
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
 revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:{{ .Values.wso2.apim.configurations.iskm.servicePort }}/oauth2/revoke"
 {{- else }}
-revoke_endpoint = "https://{{ template "apim-helm-cp.fullname" . }}-service:{{ add 9443 .Values.wso2.apim.portOffset }}/oauth2/revoke"
+revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.km.serviceName }}:{{ .Values.wso2.apim.configurations.km.servicePort }}/oauth2/revoke"
 {{- end }}
 enable_token_encryption = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenEncryption }}
 enable_token_hashing = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenHashing }}
 allowed_scopes = {{ toJson .Values.wso2.apim.configurations.oauth_config.allowedScopes }}
+#enable_outbound_auth_header = true
 
 {{- if .Values.wso2.apim.configurations.openTracer.enabled }}
 [apim.open_tracer]

@@ -110,9 +110,9 @@ password = {{ .Values.wso2.apim.configurations.security.truststore.password | qu
 [apim.key_manager]
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
 type = "WSO2-IS"
-service_url = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:9443/services/"
+service_url = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:{{ .Values.wso2.apim.configurations.iskm.servicePort }}/services/"
 {{- else }}
-service_url = "https://{{ .Values.wso2.apim.configurations.km.serviceUrl }}:9443/services/"
+service_url = "https://{{ .Values.wso2.apim.configurations.km.serviceUrl }}:{{ .Values.wso2.apim.configurations.km.servicePort }}/services/"
 {{- end }}
 
 {{- if .Values.wso2.deployment.highAvailability}}
@@ -133,9 +133,9 @@ event_listening_endpoints = [{{ range $index, $element := .Values.wso2.apim.conf
 
 [apim.oauth_config]
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
-revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:9443/oauth2/revoke"
+revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:{{ .Values.wso2.apim.configurations.iskm.servicePort }}/oauth2/revoke"
 {{- else }}
-revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.km.serviceUrl }}:{{ .Values.wso2.apim.configurations.km.servicePortUrl }}/oauth2/revoke"
+revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.km.serviceUrl }}:{{ .Values.wso2.apim.configurations.km.servicePort }}/oauth2/revoke"
 {{- end }}
 enable_token_encryption = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenEncryption }}
 enable_token_hashing = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenHashing }}
