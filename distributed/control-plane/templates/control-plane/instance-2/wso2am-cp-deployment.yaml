@@ -149,6 +149,12 @@ spec:
               name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
               key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.truststorePasswordKey }}
         {{- end }}
+        {{- if .Values.wso2.deployment.envs }}
+        {{- range $key, $val := .Values.wso2.deployment.envs }}
+        - name: {{ $key }}
+          value: {{ $val | quote }}
+        {{- end }}
+        {{- end }}
         startupProbe:
           exec:
             command:

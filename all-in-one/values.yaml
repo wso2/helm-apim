@@ -829,6 +829,13 @@ wso2:
       # -- Annotations for pods
       annotations: {}
 
+    # -- Environment variables for the deployment
+    # Example:
+    #   envs:
+    #     MY_CUSTOM_VAR: "my-value"
+    #     ANOTHER_VAR: "another-value"
+    envs: {}
+
     persistence:
       # -- Persistent runtime artifacts for Apache Solr-based indexing
       solrIndexing:
