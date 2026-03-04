@@ -78,7 +78,7 @@ spec:
       containers:
       - name: wso2am-km
         image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
-        imagePullPolicy: {{ .Values.wso2.deployment.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.wso2.deployment.image.imagePullPolicy }}
         env:
         - name: PROFILE_NAME
           value: key-manager
@@ -109,6 +109,12 @@ spec:
             secretKeyRef:
               name: {{ .Values.wso2.apim.configurations.existingSecret.secretName }}
               key:  {{ .Values.wso2.apim.configurations.existingSecret.sharedDBPasswordKey }}
+        {{- end }}
+        {{- if .Values.wso2.deployment.envs }}
+        {{- range $key, $val := .Values.wso2.deployment.envs }}
+        - name: {{ $key }}
+          value: {{ $val | quote }}
+        {{- end }}
         {{- end }}
         livenessProbe:
           httpGet:

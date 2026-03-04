@@ -1,6 +1,6 @@
 # wso2am-universal-gw
 
-![Version: 4.5.0-8](https://img.shields.io/badge/Version-4.5.0--8-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
+![Version: 4.5.0-9](https://img.shields.io/badge/Version-4.5.0--9-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 
@@ -153,6 +153,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.choreoAnalytics.endpoint | string | `""` | Choreo Analytics cloud service endpoint |
 | wso2.choreoAnalytics.onpremKey | string | `""` | On-premise key for Choreo Analytics |
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
+| wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
 | wso2.deployment.image.imagePullSecrets | object | `{"enabled":false,"password":"","username":""}` | Container registry credentials. Specify image pull secrets for private registries |

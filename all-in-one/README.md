@@ -1,6 +1,6 @@
 # wso2am-all-in-one
 
-![Version: 4.5.0-8](https://img.shields.io/badge/Version-4.5.0--8-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
+![Version: 4.5.0-9](https://img.shields.io/badge/Version-4.5.0--9-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
@@ -173,6 +173,14 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.oauth_config.oauth2JWKSUrl | string | `""` |  |
 | wso2.apim.configurations.oauth_config.removeOutboundAuthHeader | bool | `true` | Remove auth header from outgoing requests |
 | wso2.apim.configurations.oauth_config.revokeEndpoint | string | `""` | OAuth revoke endpoint |
+| wso2.apim.configurations.openTelemetry.enabled | bool | `false` | Open Telemetry enabled |
+| wso2.apim.configurations.openTelemetry.hostname | string | `""` | Remote tracer hostname |
+| wso2.apim.configurations.openTelemetry.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin, OTLP |
+| wso2.apim.configurations.openTelemetry.port | string | `""` | Remote tracer port |
+| wso2.apim.configurations.openTracer.enabled | bool | `false` | Open Tracing enabled |
+| wso2.apim.configurations.openTracer.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin |
+| wso2.apim.configurations.openTracer.properties.hostname | string | `""` | Remote tracer hostname |
+| wso2.apim.configurations.openTracer.properties.port | string | `""` | Remote tracer port |
 | wso2.apim.configurations.organization_based_access_control.enabled | bool | `true` |  |
 | wso2.apim.configurations.organization_based_access_control.organization_id_local_claim | string | `"http://wso2.org/claims/organizationId"` |  |
 | wso2.apim.configurations.organization_based_access_control.organization_name_local_claim | string | `"http://wso2.org/claims/organization"` |  |
@@ -273,6 +281,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.choreoAnalytics | object | `{"enabled":false,"endpoint":"","onpremKey":""}` | WSO2 Choreo Analytics Parameters If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/). |
 | wso2.choreoAnalytics.endpoint | string | `""` | Choreo Analytics cloud service endpoint |
 | wso2.choreoAnalytics.onpremKey | string | `""` | On-premise key for Choreo Analytics |
+| wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.highAvailability | bool | `false` |  |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
