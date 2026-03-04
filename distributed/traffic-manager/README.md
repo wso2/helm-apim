@@ -40,6 +40,7 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
+| kubernetes.openshift | object | `{"enabled":false}` | When deploying on OpenShift. |
 | kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
 | kubernetes.securityContext.seLinux | object | `{"enabled":false,"level":""}` | SELinux context for the container |
 | kubernetes.securityContext.seccompProfile | object | `{"localhostProfile":"","type":"RuntimeDefault"}` | Seccomp profile for the container |
@@ -62,6 +63,7 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | wso2.apim.configurations.eventhub.serviceUrl | string | `"wso2am-cp-service"` | Event hub (control plane) loadbalancer service url |
 | wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
 | wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.iskm.enabled | bool | `false` |  |
 | wso2.apim.configurations.iskm.serviceName | string | `""` |  |
 | wso2.apim.configurations.km.servicePort | int | `9443` | Key Manager service port |
@@ -104,6 +106,7 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
 | wso2.apim.version | string | `"4.6.0"` | APIM version |
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
+| wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.highAvailability | bool | `true` | Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed. This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM. |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |

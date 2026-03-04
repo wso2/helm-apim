@@ -80,6 +80,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.ingress.websub.enabled | bool | `true` |  |
 | kubernetes.ingress.websub.hostname | string | `"websub.wso2.com"` | Ingress hostname for Websub |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
+| kubernetes.openshift | object | `{"enabled":false}` | When deploying on OpenShift. |
 | kubernetes.route | object | `{"gateway":{"annotations":null,"enabled":false,"hostname":"gw.wso2.com"},"management":{"annotations":null,"enabled":false,"hostname":"am.wso2.com"},"tls":{"certificate":"","destinationCACertificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"},"websocket":{"annotations":null,"enabled":false,"hostname":"websocket.wso2.com"},"websub":{"annotations":null,"enabled":false,"hostname":"websub.wso2.com"}}` | OpenShift Route configurations |
 | kubernetes.route.gateway.annotations | string | `nil` | Route annotations for Gateway pass-through |
 | kubernetes.route.gateway.hostname | string | `"gw.wso2.com"` | Route hostname for Gateway pass-through |
@@ -159,6 +160,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.eventListeners[0].properties.notificationEndpoint | string | `"https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"` |  |
 | wso2.apim.configurations.eventListeners[0].type | string | `"org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"` |  |
 | wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","visibility":null,"websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
 | wso2.apim.configurations.gatewayNotification.cleanUp.dataRetentionPeriod | string | `"30d"` |  |
 | wso2.apim.configurations.gatewayNotification.cleanUp.expiryTime | string | `"2m"` |  |
@@ -208,6 +210,14 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.oauth_config.oauth2JWKSUrl | string | `""` |  |
 | wso2.apim.configurations.oauth_config.removeOutboundAuthHeader | bool | `true` | Remove auth header from outgoing requests |
 | wso2.apim.configurations.oauth_config.revokeEndpoint | string | `""` | OAuth revoke endpoint |
+| wso2.apim.configurations.openTelemetry.enabled | bool | `false` | Open Telemetry enabled |
+| wso2.apim.configurations.openTelemetry.hostname | string | `""` | Remote tracer hostname |
+| wso2.apim.configurations.openTelemetry.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin, OTLP |
+| wso2.apim.configurations.openTelemetry.port | string | `""` | Remote tracer port |
+| wso2.apim.configurations.openTracer.enabled | bool | `false` | Open Tracing enabled |
+| wso2.apim.configurations.openTracer.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin |
+| wso2.apim.configurations.openTracer.properties.hostname | string | `""` | Remote tracer hostname |
+| wso2.apim.configurations.openTracer.properties.port | string | `""` | Remote tracer port |
 | wso2.apim.configurations.organization_based_access_control.enabled | bool | `true` |  |
 | wso2.apim.configurations.organization_based_access_control.organization_id_local_claim | string | `"http://wso2.org/claims/organizationId"` |  |
 | wso2.apim.configurations.organization_based_access_control.organization_name_local_claim | string | `"http://wso2.org/claims/organization"` |  |
@@ -315,9 +325,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
 | wso2.apim.version | string | `"4.6.0"` | APIM version |
-| wso2.choreoAnalytics | object | `{"enabled":false,"endpoint":"","onpremKey":""}` | WSO2 Choreo Analytics Parameters If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/). |
-| wso2.choreoAnalytics.endpoint | string | `""` | Choreo Analytics cloud service endpoint |
-| wso2.choreoAnalytics.onpremKey | string | `""` | On-premise key for Choreo Analytics |
+| wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.highAvailability | bool | `false` |  |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
@@ -347,7 +355,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.deployment.startupProbe.failureThreshold | int | `5` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.startupProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before startup probes are initiated |
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
-| wso2.moesifAnalytics | object | `{"enabled":true,"key":"YOUR_MOESIF_API_KEY_HERE","moesif_base_url":"https://api.moesif.net","send_headers":false}` | Moesif Analytics Parameters |
+| wso2.moesifAnalytics | object | `{"enabled":false,"key":"YOUR_MOESIF_API_KEY_HERE","moesif_base_url":"https://api.moesif.net","send_headers":false}` | Moesif Analytics Parameters |
 | wso2.moesifAnalytics.key | string | `"YOUR_MOESIF_API_KEY_HERE"` | Moesif API key |
 | wso2.moesifAnalytics.moesif_base_url | string | `"https://api.moesif.net"` | Moesif base URL |
 | wso2.moesifAnalytics.send_headers | bool | `false` | Moesif send header |

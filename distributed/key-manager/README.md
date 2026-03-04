@@ -48,6 +48,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.ingress.ratelimit.zoneName | string | `""` | Ingress ratelimit zone name |
 | kubernetes.ingress.tlsSecret | string | `""` | Kubernetes secret created for Ingress TLS |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
+| kubernetes.openshift | object | `{"enabled":false}` | When deploying on OpenShift. |
 | kubernetes.route | object | `{"km":{"annotations":null,"enabled":false,"hostname":"km.wso2.com"},"tls":{"certificate":"","destinationCACertificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"}}` | OpenShift Route configurations |
 | kubernetes.route.km.annotations | string | `nil` | Route annotations for Key Manager |
 | kubernetes.route.km.enabled | bool | `false` | Enable route for Key Manager |
@@ -79,6 +80,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.eventhub.serviceUrl | string | `"wso2am-cp-service"` | Event hub (control plane) loadbalancer service url |
 | wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
 | wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
 | wso2.apim.configurations.openTelemetry.enabled | bool | `false` | Open Telemetry enabled |
@@ -118,6 +120,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
 | wso2.apim.version | string | `"4.6.0"` | APIM version |
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
+| wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.highAvailability | bool | `false` | Enable high availability for key manager. If this is enabled, two key manager replicas will be deployed. |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |

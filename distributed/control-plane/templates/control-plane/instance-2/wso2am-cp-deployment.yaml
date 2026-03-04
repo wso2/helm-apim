@@ -74,7 +74,7 @@ spec:
       containers:
       - name: wso2am-control-plane
         image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
-        imagePullPolicy: {{ .Values.wso2.deployment.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.wso2.deployment.image.imagePullPolicy }}
         env:
         - name: PROFILE_NAME
           value: default
@@ -148,6 +148,12 @@ spec:
             secretKeyRef:
               name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
               key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.truststorePasswordKey }}
+        {{- end }}
+        {{- if .Values.wso2.deployment.envs }}
+        {{- range $key, $val := .Values.wso2.deployment.envs }}
+        - name: {{ $key }}
+          value: {{ $val | quote }}
+        {{- end }}
         {{- end }}
         startupProbe:
           exec:

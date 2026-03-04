@@ -76,6 +76,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | kubernetes.ingress.ratelimit.zoneName | string | `""` | Ingress ratelimit zone name |
 | kubernetes.ingress.tlsSecret | string | `""` | Kubernetes secret created for Ingress TLS |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
+| kubernetes.openshift | object | `{"enabled":false}` | When deploying on OpenShift. |
 | kubernetes.route | object | `{"controlPlane":{"annotations":null,"enabled":false,"hostname":"am.wso2.com"},"tls":{"certificate":"","destinationCACertificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"}}` | OpenShift Route configurations |
 | kubernetes.route.controlPlane.annotations | string | `nil` | Route annotations |
 | kubernetes.route.controlPlane.enabled | bool | `false` | Enable route for Control Plane |
@@ -124,6 +125,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.configurations.devportal.mode | string | `"HYBRID"` |  |
 | wso2.apim.configurations.distributedThrottling | object | `{"corePoolSize":5,"enable":false,"keyvalueStore":{"blockWhenExhausted":true,"host":"","maxIdle":20,"maxTotal":20,"minEvictableIdleTimeMillis":3000,"minIdle":4,"password":"","port":6379,"testWhileIdle":true,"timeBetweenEvictionRunsMillis":1200,"user":""},"syncInterval":1,"type":"redis"}` | APIM distributed throttling configurations |
 | wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","visibility":null,"websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
 | wso2.apim.configurations.gatewayNotification.cleanUp.dataRetentionPeriod | string | `"30d"` |  |
 | wso2.apim.configurations.gatewayNotification.cleanUp.expiryTime | string | `"2m"` |  |
@@ -202,6 +204,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vault enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
 | wso2.apim.version | string | `"4.6.0"` | APIM version |
+| wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.highAvailability | bool | `true` | Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed. This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM. |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |

@@ -81,6 +81,10 @@ gcp:
   serviceAccountName: ""
 
 kubernetes:
+  # -- When deploying on OpenShift.
+  openshift:
+    enabled: false
+
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
@@ -396,6 +400,13 @@ wso2:
     pod:
       # -- Annotations for pods
       annotations: {}
+
+    # -- Environment variables for the deployment
+    # Example:
+    #   envs:
+    #     MY_CUSTOM_VAR: "my-value"
+    #     ANOTHER_VAR: "another-value"
+    envs: {}
 
     # Kubernetes RollingUpdate strategy configurations
     strategy:
