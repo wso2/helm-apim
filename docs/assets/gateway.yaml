@@ -31,13 +31,10 @@ kind: Gateway
 metadata:
   name: wso2-apim-gateway
   namespace: apim
-  # Optional annotations for gateway controller configuration
-  annotations:
-    nginx.org/lb-method: "ip_hash"  # For NGINX Gateway Fabric
 spec:
   # Change gatewayClassName to match your installed Gateway API controller
   # Examples: nginx, istio, envoy-gateway, contour, gke-l7-global-external-managed
-  gatewayClassName: nginx
+  gatewayClassName: envoy-gateway
   
   listeners:
   # Listener for API Manager Management interfaces (Publisher, DevPortal, Admin, Carbon)
