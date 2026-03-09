@@ -142,7 +142,7 @@ kubernetes:
       # -- Ingress ratelimit burst limit
       burstLimit: ""
     management:
-      enabled: true
+      enabled: false
       # Hostname for API Manager Carbon Management Console, Publisher, DevPortal and Admin Portal
       hostname: "am.wso2.com"
       # Annotations for the API Manager Publisher-DevPortal services Ingress
@@ -152,7 +152,7 @@ kubernetes:
         nginx.ingress.kubernetes.io/session-cookie-name: "route"
         nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
     gateway:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Gateway pass-through
       hostname: "gw.wso2.com"
       # -- Ingress annotations for Gateway pass-through
@@ -161,14 +161,14 @@ kubernetes:
         nginx.ingress.kubernetes.io/proxy-buffering: "on"
         nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
     websocket:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Websocket
       hostname: "websocket.wso2.com"
       # -- Ingress annotations for Websocket
       annotations:
         #todo: add websocket specific annotations
     websub:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Websub
       hostname: "websub.wso2.com"
       # -- Ingress annotations for Websub
@@ -180,7 +180,7 @@ kubernetes:
   # See docs/assets/gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
-    enabled: false
+    enabled: true
     # -- Name of the externally-created Gateway resource that HTTPRoutes will reference
     # This Gateway must exist in the same namespace before installing the chart
     gatewayName: "wso2-apim-gateway"
@@ -188,7 +188,7 @@ kubernetes:
     defaultConfigMapCreation: true
     management:
       # -- Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal
-      enabled: false
+      enabled: true
       # -- Hostname for API Manager Management interfaces
       hostname: "am.wso2.com"
       # -- HTTPRoute annotations
@@ -196,7 +196,7 @@ kubernetes:
       filters: []
     gateway:
       # -- Enable HTTPRoute for Gateway pass-through
-      enabled: false
+      enabled: true
       # -- Hostname for Gateway pass-through
       hostname: "gw.wso2.com"
       # -- HTTPRoute annotations
@@ -205,7 +205,7 @@ kubernetes:
       filters: []
     websocket:
       # -- Enable HTTPRoute for Websocket
-      enabled: false
+      enabled: true
       # -- Hostname for Websocket
       hostname: "websocket.wso2.com"
       # -- HTTPRoute annotations
@@ -214,7 +214,7 @@ kubernetes:
       filters: []
     websub:
       # -- Enable HTTPRoute for Websub
-      enabled: false
+      enabled: true
       # -- Hostname for Websub
       hostname: "websub.wso2.com"
       # -- HTTPRoute annotations
@@ -240,6 +240,7 @@ kubernetes:
         name: "WSO2_CP_STICKY_SESSION"
         # -- Cookie TTL. Use "0s" for a session cookie (expires when browser closes)
         ttl: "0s"
+  securityContext:
     # -- User ID of the container
     runAsUser: 10001
     runAsGroup: 10001

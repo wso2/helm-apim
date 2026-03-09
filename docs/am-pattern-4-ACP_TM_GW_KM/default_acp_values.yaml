@@ -171,7 +171,7 @@ kubernetes:
   # See docs/assets/gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
-    enabled: false
+    enabled: true
     # -- Name of the externally-created Gateway resource that HTTPRoutes will reference
     # This Gateway must exist in the same namespace before installing the chart
     gatewayName: "wso2-apim-gateway"
@@ -179,7 +179,7 @@ kubernetes:
     defaultConfigMapCreation: true
     controlPlane:
       # -- Enable HTTPRoute for Control Plane
-      enabled: false
+      enabled: true
       # -- Hostname for Control Plane
       hostname: "am.wso2.com"
       # -- HTTPRoute annotations
