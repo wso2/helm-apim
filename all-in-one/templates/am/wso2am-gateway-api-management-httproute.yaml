@@ -22,7 +22,7 @@ metadata:
 spec:
   parentRefs:
   - name: {{ .Values.kubernetes.gatewayAPI.gatewayName }}
-    sectionName: management-https
+    sectionName: control-plane-https
   hostnames:
   - {{ .Values.kubernetes.gatewayAPI.management.hostname }}
   rules:

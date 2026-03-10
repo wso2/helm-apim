@@ -46,8 +46,8 @@ spec:
   gatewayClassName: envoy-gateway
   
   listeners:
-  # Listener for API Manager Management interfaces (Publisher, DevPortal, Admin, Carbon)
-  - name: management-https
+  # Listener for Control Plane traffic (Publisher, DevPortal, Admin, Carbon)
+  - name: control-plane-https
     hostname: "am.wso2.com"
     port: 443
     protocol: HTTPS
@@ -107,20 +107,6 @@ spec:
   # Listener for Key Manager
   # - name: keymanager-https
   #   hostname: "km.wso2.com"
-  #   port: 443
-  #   protocol: HTTPS
-  #   tls:
-  #     mode: Terminate
-  #     certificateRefs:
-  #     - kind: Secret
-  #       name: apim-gateway-tls
-  #   allowedRoutes:
-  #     namespaces:
-  #       from: Same
-
-  # Listener for Stand-alone Control Plane (If you are enabling this remove the management listener above)
-  # - name: controlplane-https
-  #   hostname: "am.wso2.com"
   #   port: 443
   #   protocol: HTTPS
   #   tls:
