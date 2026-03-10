@@ -174,7 +174,7 @@ kubernetes:
     enabled: true
     # -- Name of the externally-created Gateway resource that HTTPRoutes will reference
     # This Gateway must exist in the same namespace before installing the chart
-    gatewayName: "wso2-apim-gateway"
+    gatewayName: "envoy-gateway"
     # -- Create CA certificate ConfigMap for BackendTLSPolicy
     defaultConfigMapCreation: true
     controlPlane:

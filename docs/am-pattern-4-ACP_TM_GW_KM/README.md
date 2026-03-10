@@ -55,8 +55,17 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
   following quick start guide.
 - An already set up [Kubernetes cluster](https://kubernetes.io/docs/setup).
 - Install a routing controller. Choose either:
-  - **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (enabled by default) - Traditional Ingress-based routing
-  - **[NGINX Gateway Fabric](https://docs.nginx.com/nginx-gateway-fabric/)** (disabled by default) - Modern Gateway API-based routing
+  - **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (enabled by default) - **DEPRECATED**: Traditional Ingress-based routing. While still supported, this option is deprecated and will be removed in future releases.
+  - **[Envoy Gateway](https://gateway.envoyproxy.io/docs/install/install-helm/)** (disabled by default) - **RECOMMENDED**: Modern Gateway API-based routing. Install as follows:
+    ```
+    helm install envoy-gateway oci://docker.io/envoyproxy/gateway-helm \
+    --version v1.7.0 -n envoy-gateway-system \
+    --set config.envoyGateway.extensionApis.enableBackend=true \
+    --set envoyGateway.gateway.experimentalFeatures.enabled=true
+    ```
+    Gateway and GatewayClass can be created with `kubectl apply -f docs/assets/gateway.yaml`.
+
+  > **Important:** It is advisable to use the Gateway API instead of NGINX Ingress Controller.
 - Add the WSO2 Helm chart repository.
   ```bash
   helm repo add wso2 https://helm.wso2.com && helm repo update
@@ -204,7 +213,7 @@ The helm charts for the API Manager deployment are available in the [WSO2 Helm C
 
 #### 1.1 Add ingress controller or Gateway API controller
 
-You can use either the **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (Ingress-based) or **[NGINX Gateway Fabric](https://docs.nginx.com/nginx-gateway-fabric/)** (Gateway API-based) suitable for your cloud environment or local deployment.
+You can use either the **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (Ingress-based) or **[Envoy Gateway](https://gateway.envoyproxy.io/docs/install/install-helm/)** (Gateway API-based) suitable for your cloud environment or local deployment.
 
 **TLS Certificate Configuration (Required for both options)**
 
@@ -240,19 +249,37 @@ Some sample annotations that could be used with the ingress resources are as fol
           nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
     ```
 
-**Option 2: NGINX Gateway Fabric (Gateway API-based approach)**
+**Option 2: Envoy Gateway (Gateway API-based approach) - RECOMMENDED**
 
-If you prefer to use the Gateway API with NGINX Gateway Fabric, you can enable it in the Helm chart configuration:
+It is advisable to use the Gateway API with Envoy Gateway instead of NGINX Ingress Controller. To enable it in the Helm chart configuration:
 
-  - Set `kubernetes.gatewayAPI.enabled` to `true` in your values file.
-  - Configure the Gateway API resources with appropriate hostnames and settings. Please refer to the [NGINX Gateway Fabric documentation](https://docs.nginx.com/nginx-gateway-fabric/) for installation and configuration details.
+  - Enable Gateway API and disable Ingress in your values file:
   
     ```yaml
     kubernetes:
       gatewayAPI:
         enabled: true
-        gatewayClass:
-          name: "nginx"
+        management:
+          enabled: true
+        gateway:
+          enabled: true
+        websocket:
+          enabled: true
+        websub:
+          enabled: true
+    ```
+  
+  - Create Gateway and GatewayClass using `kubectl apply -f docs/assets/gateway.yaml`.
+  - For this pattern with separate Key Manager, edit `docs/assets/gateway.yaml` and comment out/in the relevant listeners before applying.
+  - Configure the Gateway API resources with appropriate hostnames and settings.
+  
+  > **Note:** When using Envoy Gateway, the `kubernetes.gatewayAPI.defaultTlsCreation` and `kubernetes.gatewayAPI.defaultConfigMapCreation` parameters are set to `true` by default, which will create default TLS secrets and ConfigMaps. For production deployments, it is recommended to create your own custom TLS secret and ConfigMap and reference them in the configuration.
+  
+    ```yaml
+    kubernetes:
+      gatewayAPI:
+        enabled: true
+        gatewayName: "envoy-gateway"
         management:
           enabled: true
           hostname: "am.wso2.com"
@@ -269,8 +296,6 @@ If you prefer to use the Gateway API with NGINX Gateway Fabric, you can enable i
     ```
 
   > **Important:** When using Gateway API, you must disable the Ingress settings in your values file to avoid conflicts.
-
-  > **Note:** When deploying with multiple control-plane instances (high availability) using NGINX Gateway Fabric, you may want to add the `nginx.org/lb-method: "ip_hash"` annotation to the Gateway resource for session affinity. See the example Gateway manifest at `docs/assets/gateway.yaml` for reference.
 
   - Gateway API provides a more expressive, extensible, and role-oriented API for configuring traffic routing in Kubernetes.
 
