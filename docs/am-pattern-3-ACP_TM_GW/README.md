@@ -227,7 +227,8 @@ You need to create a Kubernetes secret containing the TLS certificate and privat
 kubectl create secret tls my-tls-secret --key <private key filename> --cert <certificate filename>
 ```
 
-Include the name of this secret in your Helm chart configuration under `tlsSecret` for either Ingress or Gateway API.
+If you are using the Gateway API, make sure to reference this secret in the TLS configuration for the listeners of your Gateway manifest.
+If you are using the NGINX Ingress Controller, ensure that the `tlsSecret` field is set to the name of the secret you created.
 
 **Option 1: Envoy Gateway (Gateway API-based approach) - RECOMMENDED**
 
@@ -267,7 +268,7 @@ It is advisable to use the Gateway API with Envoy Gateway instead of NGINX Ingre
     kubernetes:
       gatewayAPI:
         enabled: true
-        gatewayName: "envoy-gateway"
+        gatewayName: "wso2-apim-gateway"
         defaultConfigMapCreation: false
         management:
           enabled: true
