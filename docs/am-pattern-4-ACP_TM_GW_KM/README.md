@@ -639,4 +639,3 @@ hostnames and the external IP in the `/etc/hosts` file at the client-side.
 - API Manager Carbon Console: `https://<management.hostname>/carbon`
 
 - Universal Gateway: `https://<gateway.hostname>`
-
