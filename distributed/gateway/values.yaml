@@ -164,7 +164,7 @@ kubernetes:
     enabled: false
     # -- Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
     # This Gateway must exist in the same namespace before installing the chart
-    gatewayName: "nginx"
+    gatewayName: ""
     gateway:
       # -- Enable HTTPRoute for Gateway pass-through
       enabled: true

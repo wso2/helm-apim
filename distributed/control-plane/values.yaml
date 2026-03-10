@@ -202,7 +202,8 @@ kubernetes:
     enabled: false
     # -- Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
     # This Gateway must exist in the same namespace before installing the chart
-    gatewayName: "nginx"
+    gatewayName: ""
+    # -- Create CA certificate ConfigMap for BackendTLSPolicy
     defaultConfigMapCreation: false
     controlPlane:
       # -- Enable HTTPRoute for Control Plane
