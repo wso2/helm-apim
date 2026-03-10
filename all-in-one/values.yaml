@@ -230,7 +230,7 @@ kubernetes:
     enabled: false
     # -- Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
     # This Gateway must exist in the same namespace before installing the chart
-    gatewayName: "nginx"
+    gatewayName: ""
     defaultConfigMapCreation: false
     management:
       # -- Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal
@@ -239,13 +239,6 @@ kubernetes:
       hostname: "am.wso2.com"
       # -- HTTPRoute annotations
       annotations: {}
-      # -- HTTPRoute filters (optional)
-      # filters:
-      #   - type: RequestHeaderModifier
-      #     requestHeaderModifier:
-      #       add:
-      #         - name: X-Custom-Header
-      #           value: "custom-value"
       filters: []
     gateway:
       # -- Enable HTTPRoute for Gateway pass-through
