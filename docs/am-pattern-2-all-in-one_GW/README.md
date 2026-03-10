@@ -523,7 +523,7 @@ If the defined hostnames are not backed by a DNS service, for the purpose of eva
 <EXTERNAL-IP> <management.hostname> <gateway.hostname> <websub.hostname> <websocket.hostname> 
 ```
 
-### 4. Access Management Consoles
+### 5. Access Management Consoles
 
 - API Manager Publisher: `https://<management.hostname>/publisher`
 
@@ -532,4 +532,3 @@ If the defined hostnames are not backed by a DNS service, for the purpose of eva
 - API Manager Carbon Console: `https://<management.hostname>/carbon`
 
 - Universal Gateway: `https://<gateway.hostname>`
-
