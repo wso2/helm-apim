@@ -69,7 +69,7 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
   For a production-grade deployment of the desired WSO2 product version, it is highly recommended to use the relevant
   Docker image which packages WSO2 Updates, available at [WSO2 Private Docker Registry](https://docker.wso2.com/). To use these images, you need an active [WSO2 Subscription](https://wso2.com/subscription).
 
-- WSO2 API Manager 4.6.0 provides three Docker images:
+- WSO2 API Manager 4.6.0 provides two Docker images:
   - All-in-one - [wso2am](https://hub.docker.com/r/wso2/wso2am)
   - Universal Gateway (GW) - [wso2am-universal-gw](https://hub.docker.com/r/wso2/wso2am-universal-gw)
 

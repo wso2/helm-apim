@@ -123,8 +123,6 @@ kubernetes:
     # -- Name of the externally-created Gateway resource that HTTPRoutes will reference
     # This Gateway must exist in the same namespace before installing the chart
     gatewayName: "wso2-apim-gateway"
-    # -- Create CA certificate ConfigMap for BackendTLSPolicy
-    defaultConfigMapCreation: false
     gateway:
       # -- Enable HTTPRoute for Gateway pass-through
       enabled: true
@@ -157,7 +155,6 @@ kubernetes:
       # -- Enable BackendTLSPolicy
       enabled: true
       # -- CA certificate ConfigMap name for backend TLS verification
-      # This ConfigMap is created by the chart when defaultConfigMapCreation is true
       caCertificateConfigMap: "wso2-ca-cert"
       # -- Backend hostname for TLS verification
       hostname: "localhost"
