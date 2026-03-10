@@ -15,7 +15,7 @@ For advanced details on the deployment pattern, please refer to the official
   - [Minimal Configuration](#minimal-configuration)
   - [Configuration](#configuration)
     - [1. General Configuration of Helm Charts](#1-general-configuration-of-helm-charts)
-      - [1.1 Add ingress controller or Gateway API controller](#11-add-ingress-controller-or-gateway-api-controller)
+      - [1.1 Add Gateway API controller or Ingresss controller](#11-add-gateway-api-controller-or-ingress-controller)
       - [1.2 Mount Keystore and Truststore](#12-mount-keystore-and-truststore)
       - [1.3 Encrypting secrets](#13-encrypting-secrets)
       - [1.4 Configure Docker image and Databases](#14-configure-docker-image-and-databases)
@@ -339,15 +339,17 @@ wso2:
       oauth_config:
         oauth2JWKSUrl: "https://localhost:9443/oauth2/jwks"
 ```
+
+> **Note:** Use Key Manager's service name instead of `localhost` if you are using a different hostname for the Key Manager.
+
 #### 2.5 Deploy All-in-One
 
-Now deploy the Helm Chart using the following command after creating a namespace for the deployment. Replace <release-name> and <namespace> with appropriate values. Replace <helm-chart-path> with the path to the Helm Deployment.
+Now deploy the Helm Chart using the following command after creating a namespace for the deployment. Replace `<release-name>` and `<namespace>` with appropriate values. Replace `<helm-chart-path>` with the path to the Helm Deployment.
   
   ```bash
   kubectl create namespace <namespace>
   helm install <release-name> <helm-chart-path> --version 4.6.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
-
 
 ### 3. Add a DNS record mapping the hostnames and the external IP
 
@@ -377,16 +379,13 @@ If the defined hostnames are not backed by a DNS service, for the purpose of eva
 >
 > Similarly, `<gateway.hostname>` refers to `kubernetes.ingress.gateway.hostname` or `kubernetes.gatewayAPI.gateway.hostname`, and so on for other hostnames.
 
-```
+```yaml
 <EXTERNAL-IP> <management.hostname> <gateway.hostname> <websub.hostname> <websocket.hostname> 
 ```
 
 ### 4. Access Management Consoles
 
 - API Manager Publisher: `https://<management.hostname>/publisher`
-
 - API Manager DevPortal: `https://<management.hostname>/devportal`
-
 - API Manager Carbon Console: `https://<management.hostname>/carbon`
-
 - Universal Gateway: `https://<gateway.hostname>`
