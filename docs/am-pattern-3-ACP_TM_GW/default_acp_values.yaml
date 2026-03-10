@@ -156,6 +156,8 @@ kubernetes:
       # -- Ingress ratelimit burst limit
       burstLimit: ""
     controlPlane:
+      # -- Enable Ingress for Control Plane
+      enabled: false
       # -- Ingress hostname
       hostname: "am.wso2.com"
       # -- Ingress annotations
@@ -200,7 +202,7 @@ kubernetes:
     # Requires Envoy Gateway controller support for BackendTrafficPolicy
     backendTrafficPolicy:
       # -- Enable BackendTrafficPolicy
-      enabled: false
+      enabled: true
       cookie:
         # -- Cookie name used for sticky sessions
         name: "WSO2_CP_STICKY_SESSION"
