@@ -440,14 +440,13 @@ kubectl get ing -n <NAMESPACE>
 
 Use the address from the `ADDRESS` or `EXTERNAL-IP` column as the external IP.
 
-If the defined hostnames are not backed by a DNS service, for evaluation purposes you may add an entry mapping the
-hostnames and the external IP in the `/etc/hosts` file on the client side.
+If the defined hostnames are not backed by a DNS service, for evaluation purposes you may add an entry mapping the hostnames and the external IP in the `/etc/hosts` file on the client side.
 
 > **Note:** In the following commands, `<hostname>` refers to the hostname configured in your deployment. This can be either:
 >
 > - `kubernetes.ingress.management.hostname` (if using Ingress Controller)
 > - `kubernetes.gatewayAPI.management.hostname` (if using Gateway API)
-> 
+>
 > Similarly, `<gateway.hostname>` refers to `kubernetes.ingress.gateway.hostname` or `kubernetes.gatewayAPI.gateway.hostname`, and so on for other hostnames.
 
 ```yaml
