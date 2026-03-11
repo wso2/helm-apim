@@ -113,7 +113,7 @@ password = "$secret{truststore_password}"
 password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
 {{- end }}
 
-{{- range $i, $env := .Values.wso2.apim.configurations.gateway.environments }}
+{{ range $i, $env := .Values.wso2.apim.configurations.gateway.environments }}
 [[apim.gateway.environment]]
 name = {{ $env.name | quote }}
 type = {{ $env.type | quote }}
@@ -135,7 +135,17 @@ https_endpoint = "https://{{ $env.httpHostname }}"
 websub_event_receiver_http_endpoint = "http://{{ $env.websubHostname }}"
 websub_event_receiver_https_endpoint = "https://{{ $env.websubHostname }}"
 
-{{- end }}
+{{ range $j, $vhostenv := $env.virtualHosts }}
+[[apim.gateway.environment.virtual_host]]
+ws_endpoint = "ws://{{ $vhostenv.wsHostname }}"
+wss_endpoint = "wss://{{ $vhostenv.wsHostname }}"
+http_endpoint = "http://{{ $vhostenv.httpHostname }}"
+https_endpoint = "https://{{ $vhostenv.httpHostname }}"
+websub_event_receiver_http_endpoint = "http://{{ $vhostenv.websubHostname }}"
+websub_event_receiver_https_endpoint = "https://{{ $vhostenv.websubHostname }}"
+{{ end }}
+
+{{ end }}
 
 [apim.key_manager]
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
