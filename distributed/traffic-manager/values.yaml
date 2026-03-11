@@ -125,10 +125,31 @@ wso2:
     secureVaultEnabled: false
     # Logging related configurations
     log4j2:
-        # -- Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE
+        # -- Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE or loggers defined in loggersConfig. This should be a comma separated string. For example, if you want to enable audit log and http access log in the console, you can specify the following:
         loggers: ""
-        # -- Appenders
+        # example
+        # loggers: "AUDIT_LOG_CONSOLE,HTTP_ACCESS_CONSOLE, gateway-debug"
+        # -- Custom loggers that can be added to log4j2.properties. This should be in the format of log4j2 properties file without the Loggers/Appenders/Properties sections. For example, if you want to add a logger named "gateway-debug" with DEBUG level, you can specify the following:
+        loggersConfig: ""        
+        # example
+        # loggersConfig: |
+        #   # -- Add custom loggers to log4j2.properties. This will be added under the Loggers section of log4j2.properties
+        #   logger.gateway-debug.name = org.wso2.carbon.apimgt.gateway
+        #   logger.gateway-debug.level = DEBUG
+
+        # -- Appenders that can be enabled. Allowed values are appenders defined in appendersConfig. This should be a comma separated string. For example, if you want to enable a file appender named "GatewayFileAppender", you can specify the following:
+        # appenders: "GatewayFileAppender"
         appenders: ""
+
+        # -- Custom appenders that can be added to log4j2.properties. This should be in the format of log4j2 properties file without the Loggers/Appenders/Properties sections. For example, if you want to add a file appender named "GatewayFileAppender" that logs gateway logs to a file, you can specify the following:
+        # appendersConfig: |
+        #   # -- Add custom appenders to log4j2.properties. This will be added under the Appenders section of log4j2.properties
+        #   appender.GatewayFileAppender.type = File
+        #   appender.GatewayFileAppender.name = GatewayFileAppender
+        #   appender.GatewayFileAppender.fileName = /home/wso2carbon/logs/gateway.log
+        #   appender.GatewayFileAppender.layout.type = PatternLayout
+        #   appender.GatewayFileAppender.layout.pattern = [%d] %p %c - %m%n
+        appendersConfig: ""
     # -- Startup arguments for APIM
     startupArgs: ""
     # -- Startup script mount status
