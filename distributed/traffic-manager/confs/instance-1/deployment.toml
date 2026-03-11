@@ -163,8 +163,18 @@ remote_tracer.properties.port = {{ .Values.wso2.apim.configurations.openTracer.p
 [apim.open_telemetry]
 remote_tracer.enable = {{ .Values.wso2.apim.configurations.openTelemetry.enabled }}
 remote_tracer.name = {{ .Values.wso2.apim.configurations.openTelemetry.name | quote }}
+{{- if ne (.Values.wso2.apim.configurations.openTelemetry.url) "" }}
+remote_tracer.url = {{ .Values.wso2.apim.configurations.openTelemetry.url | quote }}
+{{- else }}
 remote_tracer.hostname = {{ .Values.wso2.apim.configurations.openTelemetry.hostname | quote }}
 remote_tracer.port = {{ .Values.wso2.apim.configurations.openTelemetry.port | quote }}
+{{- end }}
+{{- end }}
+
+{{- range .Values.wso2.apim.configurations.openTelemetry.resourceAttributes }}
+[[apim.open_telemetry.resource_attributes]]
+name = {{ .name | quote }}
+value = {{ .value | quote }}
 {{- end }}
 
 [transport.https.properties]
