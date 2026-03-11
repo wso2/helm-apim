@@ -109,7 +109,7 @@ kubernetes:
 
   securityContext:
     # -- User ID of the container
-    runAsUser: 10001
+    runAsUser: 802
     # -- SELinux context for the container
     seLinux:
       enabled: false

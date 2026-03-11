@@ -67,14 +67,10 @@ spec:
           {{- if eq .Values.kubernetes.securityContext.seccompProfile.type "Localhost" }}
           localhostProfile: {{ .Values.kubernetes.securityContext.seccompProfile.localhostProfile }}
           {{- end }}
-      {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
-      imagePullSecrets:
-      - name: {{ template "apim-helm-tm.fullname" . }}-docker-registry-auth
-      {{- end }}
       containers:
       - name: wso2am-traffic-manager
         image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
-        imagePullPolicy: {{ .Values.wso2.deployment.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.wso2.deployment.image.imagePullPolicy }}
         env:
         - name: PROFILE_NAME
           value: traffic-manager
@@ -196,12 +192,6 @@ spec:
         configMap:
           name: {{ template "apim-helm-tm.fullname" . }}-conf-log4j2
           defaultMode: 0407
-      {{- if .Values.wso2.apim.mountStartupScript }}
-      - name: wso2am-sh-conf
-        configMap:
-          name: {{ template "apim-helm-tm.fullname" . }}-conf-sh
-          defaultMode: {{ .Values.kubernetes.configMaps.scripts.defaultMode }}
-      {{- end }}
       {{- if .Values.wso2.apim.secureVaultEnabled }}
       - name: wso2am-traffic-manager-secret-conf
         configMap:

@@ -60,14 +60,10 @@ spec:
           {{- if eq .Values.kubernetes.securityContext.seccompProfile.type "Localhost" }}
           localhostProfile: {{ .Values.kubernetes.securityContext.seccompProfile.localhostProfile }}
           {{- end }}
-      {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
-      imagePullSecrets:
-      - name: {{ template "am-all-in-one.fullname" . }}-docker-registry-auth
-      {{- end }}
       containers:
         - name: wso2am
           image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
-          imagePullPolicy: {{ .Values.wso2.deployment.imagePullPolicy }}
+          imagePullPolicy: {{ .Values.wso2.deployment.image.imagePullPolicy }}
           env:
             - name: NODE_IP
               valueFrom:
@@ -198,26 +194,6 @@ spec:
           configMap:
             name: {{ template "am-all-in-one.fullname" . }}-conf-log4j2
             defaultMode: 0407
-        {{- if .Values.wso2.apim.mountStartupScript }}
-        - name: wso2am-sh-conf
-          configMap:
-            name: {{ template "am-all-in-one.fullname" . }}-conf-sh
-            defaultMode: {{ .Values.kubernetes.configMaps.scripts.defaultMode }}
-        {{- end }}
-        {{- if .Values.wso2.apim.mountFrontendConfig }}
-        - name: wso2am-conf-admin-settings
-          configMap:
-            name: {{ template "am-all-in-one.fullname" . }}-conf-admin-settings
-            defaultMode: 0407
-        - name: wso2am-conf-devportal-settings
-          configMap:
-            name: {{ template "am-all-in-one.fullname" . }}-conf-devportal-settings
-            defaultMode: 0407
-        - name: wso2am-conf-publisher-settings
-          configMap:
-            name: {{ template "am-all-in-one.fullname" . }}-conf-publisher-settings
-            defaultMode: 0407
-        {{- end }}
         {{- if .Values.wso2.apim.secureVaultEnabled }}
         - name: wso2am-secret-conf
           configMap:
