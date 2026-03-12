@@ -338,7 +338,7 @@ remote_tracer.port = {{ .Values.wso2.apim.configurations.openTelemetry.port | qu
 {{- end }}
 
 [apim.devportal]
-url = "https://{{ .Values.kubernetes.gatewayAPI.management.hostname }}/devportal"
+url = "https://{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.management.hostname }}{{- else -}}{{ .Values.kubernetes.ingress.management.hostname }}{{- end -}}/devportal"
 mode = {{ .Values.wso2.apim.configurations.devportal.mode | quote }}
 {{- if .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}
 enable_application_sharing = {{ .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}
