@@ -146,7 +146,7 @@ kubernetes:
       # -- Ingress ratelimit burst limit
       burstLimit: ""
     management:
-      enabled: true
+      enabled: false
       # Hostname for API Manager Carbon Management Console, Publisher, DevPortal and Admin Portal
       hostname: "am.wso2.com"
       # Annotations for the API Manager Publisher-DevPortal services Ingress
@@ -156,7 +156,7 @@ kubernetes:
         nginx.ingress.kubernetes.io/session-cookie-name: "route"
         nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
     gateway:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Gateway pass-through
       hostname: "gw.wso2.com"
       # -- Ingress annotations for Gateway pass-through
@@ -165,14 +165,14 @@ kubernetes:
         nginx.ingress.kubernetes.io/proxy-buffering: "on"
         nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
     websocket:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Websocket
       hostname: "websocket.wso2.com"
       # -- Ingress annotations for Websocket
       annotations:
         #todo: add websocket specific annotations
     websub:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Websub
       hostname: "websub.wso2.com"
       # -- Ingress annotations for Websub
@@ -227,12 +227,12 @@ kubernetes:
   # See docs/assets/gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
-    enabled: false
+    enabled: true
     # -- Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
     # This Gateway must exist in the same namespace before installing the chart
     gatewayName: ""
     # -- Create CA certificate ConfigMap for BackendTLSPolicy
-    defaultConfigMapCreation: false
+    defaultConfigMapCreation: true
     management:
       # -- Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal
       enabled: true
