@@ -1,5 +1,5 @@
 [server]
-hostname = "tm.wso2.com"
+hostname = "{{- if and .Values.kubernetes.gatewayAPI .Values.kubernetes.gatewayAPI.enabled .Values.kubernetes.gatewayAPI.trafficManager .Values.kubernetes.gatewayAPI.trafficManager.hostname -}}{{ .Values.kubernetes.gatewayAPI.trafficManager.hostname }}{{- else if and .Values.kubernetes.ingress .Values.kubernetes.ingress.trafficManager .Values.kubernetes.ingress.trafficManager.hostname -}}{{ .Values.kubernetes.ingress.trafficManager.hostname }}{{- else -}}tm.wso2.com{{- end -}}"
 node_ip = "$env{NODE_IP}"
 server_role = "traffic-manager"
 
