@@ -230,6 +230,14 @@ kubernetes:
       caCertificateConfigMap: "wso2-ca-cert"
       # -- Backend hostname for TLS verification
       hostname: "localhost"
+    backendTrafficPolicy:
+      # -- Enable BackendTrafficPolicy
+      enabled: false
+      cookie:
+        # -- Cookie name used for sticky sessions
+        name: "WSO2_CP_STICKY_SESSION"
+        # -- Cookie TTL. Use "0s" for a session cookie (expires when browser closes)
+        ttl: "0s"
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
