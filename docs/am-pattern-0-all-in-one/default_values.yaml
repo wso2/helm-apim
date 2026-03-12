@@ -232,7 +232,7 @@ kubernetes:
       hostname: "localhost"
     backendTrafficPolicy:
       # -- Enable BackendTrafficPolicy
-      enabled: false
+      enabled: true
       cookie:
         # -- Cookie name used for sticky sessions
         name: "WSO2_CP_STICKY_SESSION"
