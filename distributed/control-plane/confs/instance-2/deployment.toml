@@ -1,5 +1,5 @@
 [server]
-hostname = "{{ .Values.kubernetes.ingress.controlPlane.hostname }}"
+hostname = "{{ .Values.kubernetes.gatewayAPI.controlPlane.hostname }}"
 node_ip = "$env{NODE_IP}"
 offset = {{ .Values.wso2.apim.portOffset }}
 base_path = "${carbon.protocol}://${carbon.host}:${carbon.management.port}"
@@ -195,7 +195,7 @@ internal_key_issuer = "{{ .Values.wso2.apim.configurations.publisher.internalKey
 {{- end }}
 
 [apim.devportal]
-url = "https://{{ .Values.kubernetes.ingress.controlPlane.hostname }}/devportal"
+url = "https://{{ .Values.kubernetes.gatewayAPI.controlPlane.hostname }}/devportal"
 mode = {{ .Values.wso2.apim.configurations.devportal.mode | quote }}
 {{- if .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}
 enable_application_sharing = {{ .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}

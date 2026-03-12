@@ -88,6 +88,8 @@ kubernetes:
       # -- Ingress ratelimit burst limit
       burstLimit: ""
     gateway:
+      # -- Enable Ingress for Gateway pass-through
+      enabled: false
       # -- Ingress hostname for Gateway pass-through
       hostname: "gw.wso2.com"
       # -- Ingress annotations for Gateway pass-through
@@ -96,17 +98,66 @@ kubernetes:
         nginx.ingress.kubernetes.io/proxy-buffering: "on"
         nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
     websocket:
+      # -- Enable Ingress for Websocket
+      enabled: false
       # -- Ingress hostname for Websocket
       hostname: "websocket.wso2.com"
       # -- Ingress annotations for Websocket
       annotations:
         #todo: add websocket specific annotations
     websub:
+      # -- Enable Ingress for Websub
+      enabled: false
       # -- Ingress hostname for Websub
       hostname: "websub.wso2.com"
       # -- Ingress annotations for Websub
       annotations:
 
+  # -- Kubernetes Gateway API configurations (alternative to Ingress)
+  # Requires Gateway API CRDs to be installed in the cluster
+  # The Gateway resource must be created externally before deploying this chart
+  # See docs/assets/gateway.yaml for an example Gateway manifest
+  gatewayAPI:
+    # -- Enable Gateway API resources (HTTPRoutes and policies)
+    enabled: true
+    # -- Name of the externally-created Gateway resource that HTTPRoutes will reference
+    # This Gateway must exist in the same namespace before installing the chart
+    gatewayName: "wso2-apim-gateway"
+    gateway:
+      # -- Enable HTTPRoute for Gateway pass-through
+      enabled: true
+      # -- Hostname for Gateway pass-through
+      hostname: "gw.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    websocket:
+      # -- Enable HTTPRoute for Websocket
+      enabled: true
+      # -- Hostname for Websocket
+      hostname: "websocket.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    websub:
+      # -- Enable HTTPRoute for Websub
+      enabled: true
+      # -- Hostname for Websub
+      hostname: "websub.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    # -- Backend TLS Policy for HTTPS backend connections
+    backendTLSPolicy:
+      # -- Enable BackendTLSPolicy
+      enabled: true
+      # -- CA certificate ConfigMap name for backend TLS verification
+      caCertificateConfigMap: "wso2-ca-cert"
+      # -- Backend hostname for TLS verification
+      hostname: "localhost"
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
@@ -456,7 +507,7 @@ wso2:
     # -- Minimum replicas for HPA
     minReplicas: 1
     # -- Maximum replicas for HPA
-    maxReplicas: 1
+    maxReplicas: 3
     # -- Target CPU utilization percentage for HPA
     cpuUtilizationPercentage: 75
     # -- Target memory utilization percentage for HPA
