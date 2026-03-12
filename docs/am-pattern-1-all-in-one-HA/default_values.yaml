@@ -548,7 +548,9 @@ wso2:
         enablePolicyDeploy: true
         enableBlacklistCondition: true
         enablePersistence: true
-        throttleDecisionEndpoints: []
+        throttleDecisionEndpoints: 
+          - "tcp://apim-wso2am-all-in-one-am-service:9611"
+          - "ssl://apim-wso2am-all-in-one-am-service:9711"
         enableUnlimitedTier: true
         enableHeaderBasedThrottling: false
         enableJwtClaimBasedThrottling: false
@@ -559,11 +561,11 @@ wso2:
         jms:
           startDelay: 
         eventSync:
-          hostname: 
-          port: 
+          hostname: "apim-wso2am-all-in-one-am-service"
+          port:  5672
         eventManagement:
-          hostname: 
-          port: 
+          hostname: "apim-wso2am-all-in-one-am-service"
+          port: 5672
 
       workflow:
         enable: false
@@ -574,7 +576,7 @@ wso2:
 
       transport:
         receiver:
-          type: ""
+          type: "binary"
           workerThreads: 10
           sessionTimeout: ""
           keystore:

@@ -102,18 +102,18 @@ spec:
       namespaces:
         from: Same
   
-  # For distributed deployments, additional listeners for key-manager and stand-alone control-plane
+  # For distributed deployments, additional listeners for key-manager
   
   # Listener for Key Manager
-  # - name: keymanager-https
-  #   hostname: "km.wso2.com"
-  #   port: 443
-  #   protocol: HTTPS
-  #   tls:
-  #     mode: Terminate
-  #     certificateRefs:
-  #     - kind: Secret
-  #       name: apim-gateway-tls
-  #   allowedRoutes:
-  #     namespaces:
-  #       from: Same
+  - name: keymanager-https
+    hostname: "km.wso2.com"
+    port: 443
+    protocol: HTTPS
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: apim-gateway-tls
+    allowedRoutes:
+      namespaces:
+        from: Same

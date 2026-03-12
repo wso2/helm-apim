@@ -108,14 +108,14 @@ kubernetes:
   # See docs/assets/gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
-    enabled: false
+    enabled: true
     # -- Name of the externally-created Gateway resource that HTTPRoutes will reference
     # This Gateway must exist in the same namespace before installing the chart
     gatewayName: "wso2-apim-gateway"
     # -- Create CA certificate ConfigMap for BackendTLSPolicy
     km:
       # -- Enable HTTPRoute for Key Manager
-      enabled: false
+      enabled: true
       # -- Hostname for Key Manager
       hostname: "km.wso2.com"
       # -- HTTPRoute annotations
