@@ -60,24 +60,50 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
+| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"backendTrafficPolicy":{"cookie":{"name":"WSO2_CP_STICKY_SESSION","ttl":"0s"},"enabled":false},"defaultConfigMapCreation":false,"enabled":true,"gateway":{"annotations":{},"enabled":true,"filters":[],"hostname":"gw.wso2.com"},"gatewayName":"","management":{"annotations":{},"enabled":true,"filters":[],"hostname":"am.wso2.com"},"websocket":{"annotations":{},"enabled":true,"filters":[],"hostname":"websocket.wso2.com"},"websub":{"annotations":{},"enabled":true,"filters":[],"hostname":"websub.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See docs/assets/gateway.yaml for an example Gateway manifest |
+| kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateConfigMap":"","enabled":false,"hostname":""}` | Backend TLS Policy for HTTPS backend connections |
+| kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap | string | `""` | CA certificate ConfigMap name for backend TLS verification |
+| kubernetes.gatewayAPI.backendTLSPolicy.enabled | bool | `false` | Enable BackendTLSPolicy |
+| kubernetes.gatewayAPI.backendTLSPolicy.hostname | string | `""` | Backend hostname for TLS verification |
+| kubernetes.gatewayAPI.backendTrafficPolicy.cookie.name | string | `"WSO2_CP_STICKY_SESSION"` | Cookie name used for sticky sessions |
+| kubernetes.gatewayAPI.backendTrafficPolicy.cookie.ttl | string | `"0s"` | Cookie TTL. Use "0s" for a session cookie (expires when browser closes) |
+| kubernetes.gatewayAPI.backendTrafficPolicy.enabled | bool | `false` | Enable BackendTrafficPolicy |
+| kubernetes.gatewayAPI.defaultConfigMapCreation | bool | `false` | Create CA certificate ConfigMap for BackendTLSPolicy |
+| kubernetes.gatewayAPI.enabled | bool | `true` | Enable Gateway API resources (HTTPRoutes and policies) |
+| kubernetes.gatewayAPI.gateway.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.gateway.enabled | bool | `true` | Enable HTTPRoute for Gateway pass-through |
+| kubernetes.gatewayAPI.gateway.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.gateway.hostname | string | `"gw.wso2.com"` | Hostname for Gateway pass-through |
+| kubernetes.gatewayAPI.gatewayName | string | `""` | Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed) This Gateway must exist in the same namespace before installing the chart |
+| kubernetes.gatewayAPI.management.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.management.enabled | bool | `true` | Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal |
+| kubernetes.gatewayAPI.management.hostname | string | `"am.wso2.com"` | Hostname for API Manager Management interfaces |
+| kubernetes.gatewayAPI.websocket.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.websocket.enabled | bool | `true` | Enable HTTPRoute for Websocket |
+| kubernetes.gatewayAPI.websocket.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.websocket.hostname | string | `"websocket.wso2.com"` | Hostname for Websocket |
+| kubernetes.gatewayAPI.websub.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.websub.enabled | bool | `true` | Enable HTTPRoute for Websub |
+| kubernetes.gatewayAPI.websub.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.websub.hostname | string | `"websub.wso2.com"` | Hostname for Websub |
 | kubernetes.ingress.gateway.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
-| kubernetes.ingress.gateway.enabled | bool | `true` |  |
+| kubernetes.ingress.gateway.enabled | bool | `false` |  |
 | kubernetes.ingress.gateway.hostname | string | `"gw.wso2.com"` | Ingress hostname for Gateway pass-through |
 | kubernetes.ingress.management.annotations."nginx.ingress.kubernetes.io/affinity" | string | `"cookie"` |  |
 | kubernetes.ingress.management.annotations."nginx.ingress.kubernetes.io/backend-protocol" | string | `"HTTPS"` |  |
 | kubernetes.ingress.management.annotations."nginx.ingress.kubernetes.io/session-cookie-hash" | string | `"sha1"` |  |
 | kubernetes.ingress.management.annotations."nginx.ingress.kubernetes.io/session-cookie-name" | string | `"route"` |  |
-| kubernetes.ingress.management.enabled | bool | `true` |  |
+| kubernetes.ingress.management.enabled | bool | `false` |  |
 | kubernetes.ingress.management.hostname | string | `"am.wso2.com"` |  |
 | kubernetes.ingress.ratelimit.burstLimit | string | `""` | Ingress ratelimit burst limit |
 | kubernetes.ingress.ratelimit.enabled | bool | `false` | Ingress rate limit |
 | kubernetes.ingress.ratelimit.zoneName | string | `""` | Ingress ratelimit zone name |
 | kubernetes.ingress.tlsSecret | string | `""` | Kubernetes secret created for Ingress TLS |
 | kubernetes.ingress.websocket.annotations | string | `nil` | Ingress annotations for Websocket |
-| kubernetes.ingress.websocket.enabled | bool | `true` |  |
+| kubernetes.ingress.websocket.enabled | bool | `false` |  |
 | kubernetes.ingress.websocket.hostname | string | `"websocket.wso2.com"` | Ingress hostname for Websocket |
 | kubernetes.ingress.websub.annotations | string | `nil` | Ingress annotations for Websub |
-| kubernetes.ingress.websub.enabled | bool | `true` |  |
+| kubernetes.ingress.websub.enabled | bool | `false` |  |
 | kubernetes.ingress.websub.hostname | string | `"websub.wso2.com"` | Ingress hostname for Websub |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
 | kubernetes.openshift | object | `{"enabled":false}` | When deploying on OpenShift. |
