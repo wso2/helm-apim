@@ -1,5 +1,5 @@
 [server]
-hostname = "{{ .Values.kubernetes.gatewayAPI.management.hostname }}"
+hostname = "{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.management.hostname }}{{- else -}}{{ .Values.kubernetes.ingress.management.hostname }}{{- end -}}"
 node_ip = "$env{NODE_IP}"
 offset = {{ .Values.wso2.apim.portOffset }}
 mode = "single" #single or ha
