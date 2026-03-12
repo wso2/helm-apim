@@ -1,0 +1,19 @@
+{{- if and .Values.kubernetes.gatewayAPI.enabled .Values.kubernetes.gatewayAPI.controlPlane.enabled .Values.kubernetes.gatewayAPI.backendTrafficPolicy.enabled }}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: {{ template "apim-helm-cp.fullname" . }}-backend-traffic-policy
+  namespace: {{ .Release.Namespace }}
+spec:
+  targetRefs:
+  - group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: {{ template "apim-helm-cp.fullname" . }}-httproute
+  loadBalancer:
+    type: ConsistentHash
+    consistentHash:
+      type: Cookie
+      cookie:
+        name: {{ .Values.kubernetes.gatewayAPI.backendTrafficPolicy.cookie.name | default "WSO2_CP_STICKY_SESSION" | quote }}
+        ttl: {{ .Values.kubernetes.gatewayAPI.backendTrafficPolicy.cookie.ttl | default "0s" | quote }}
+{{- end }}

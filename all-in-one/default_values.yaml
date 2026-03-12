@@ -146,7 +146,7 @@ kubernetes:
       # -- Ingress ratelimit burst limit
       burstLimit: ""
     management:
-      enabled: true
+      enabled: false
       # Hostname for API Manager Carbon Management Console, Publisher, DevPortal and Admin Portal
       hostname: "am.wso2.com"
       # Annotations for the API Manager Publisher-DevPortal services Ingress
@@ -156,7 +156,7 @@ kubernetes:
         nginx.ingress.kubernetes.io/session-cookie-name: "route"
         nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
     gateway:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Gateway pass-through
       hostname: "gw.wso2.com"
       # -- Ingress annotations for Gateway pass-through
@@ -165,18 +165,84 @@ kubernetes:
         nginx.ingress.kubernetes.io/proxy-buffering: "on"
         nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
     websocket:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Websocket
       hostname: "websocket.wso2.com"
       # -- Ingress annotations for Websocket
       annotations:
         #todo: add websocket specific annotations
     websub:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Websub
       hostname: "websub.wso2.com"
       # -- Ingress annotations for Websub
       annotations:
+  # -- Kubernetes Gateway API configurations (alternative to Ingress)
+  # Requires Gateway API CRDs to be installed in the cluster
+  # The Gateway resource must be created externally before deploying this chart
+  # See docs/assets/gateway.yaml for an example Gateway manifest
+  gatewayAPI:
+    # -- Enable Gateway API resources (HTTPRoutes and policies)
+    enabled: true
+    # -- Name of the externally-created Gateway resource that HTTPRoutes will reference
+    # This Gateway must exist in the same namespace before installing the chart
+    gatewayName: "wso2-apim-gateway"
+    # -- Create CA certificate ConfigMap for BackendTLSPolicy
+    defaultConfigMapCreation: true
+    management:
+      # -- Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal
+      enabled: true
+      # -- Hostname for API Manager Management interfaces
+      hostname: "am.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      filters: []
+    gateway:
+      # -- Enable HTTPRoute for Gateway pass-through
+      enabled: true
+      # -- Hostname for Gateway pass-through
+      hostname: "gw.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    websocket:
+      # -- Enable HTTPRoute for Websocket
+      enabled: true
+      # -- Hostname for Websocket
+      hostname: "websocket.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    websub:
+      # -- Enable HTTPRoute for Websub
+      enabled: true
+      # -- Hostname for Websub
+      hostname: "websub.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    # -- Backend TLS Policy for HTTPS backend connections
+    backendTLSPolicy:
+      # -- Enable BackendTLSPolicy
+      enabled: true
+      # -- CA certificate ConfigMap name for backend TLS verification
+      # This ConfigMap is created by the chart when defaultConfigMapCreation is true
+      caCertificateConfigMap: "wso2-ca-cert"
+      # -- Backend hostname for TLS verification
+      hostname: "localhost"    
+    # -- Backend Traffic Policy for cookie-based session affinity
+    # Requires Envoy Gateway controller support for BackendTrafficPolicy
+    backendTrafficPolicy:
+      # -- Enable BackendTrafficPolicy
+      enabled: false
+      cookie:
+        # -- Cookie name used for sticky sessions
+        name: "WSO2_CP_STICKY_SESSION"
+        # -- Cookie TTL. Use "0s" for a session cookie (expires when browser closes)
+        ttl: "0s"
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
@@ -474,7 +540,7 @@ wso2:
         enableTokenEncryption: false
         # -- Enable token hashing
         enableTokenHashing: false
-        oauth2JWKSUrl: "http://localhost:9763/oauth2/jwks"
+        oauth2JWKSUrl: "https://apim-wso2am-all-in-one-am-service:9443/oauth2/jwks"
 
       # APIM Devportal configurations
       devportal:

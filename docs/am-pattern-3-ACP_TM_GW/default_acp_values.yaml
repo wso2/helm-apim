@@ -156,6 +156,8 @@ kubernetes:
       # -- Ingress ratelimit burst limit
       burstLimit: ""
     controlPlane:
+      # -- Enable Ingress for Control Plane
+      enabled: false
       # -- Ingress hostname
       hostname: "am.wso2.com"
       # -- Ingress annotations
@@ -165,6 +167,46 @@ kubernetes:
         nginx.ingress.kubernetes.io/session-cookie-name: "route"
         nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
 
+  # -- Kubernetes Gateway API configurations (alternative to Ingress)
+  # Requires Gateway API CRDs to be installed in the cluster
+  # The Gateway resource must be created externally before deploying this chart
+  # See docs/assets/gateway.yaml for an example Gateway manifest
+  gatewayAPI:
+    # -- Enable Gateway API resources (HTTPRoutes and policies)
+    enabled: true
+    # -- Name of the externally-created Gateway resource that HTTPRoutes will reference
+    # This Gateway must exist in the same namespace before installing the chart
+    gatewayName: "wso2-apim-gateway"
+    # -- Create CA certificate ConfigMap for BackendTLSPolicy
+    defaultConfigMapCreation: true
+    controlPlane:
+      # -- Enable HTTPRoute for Control Plane
+      enabled: true
+      # -- Hostname for Control Plane
+      hostname: "am.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    # -- Backend TLS Policy for HTTPS backend connections
+    backendTLSPolicy:
+      # -- Enable BackendTLSPolicy
+      enabled: true
+      # -- CA certificate ConfigMap name for backend TLS verification
+      # This ConfigMap is created by the chart when defaultConfigMapCreation is true
+      caCertificateConfigMap: "wso2-ca-cert"
+      # -- Backend hostname for TLS verification
+      hostname: "localhost"
+    # -- Backend Traffic Policy for cookie-based session affinity
+    # Requires Envoy Gateway controller support for BackendTrafficPolicy
+    backendTrafficPolicy:
+      # -- Enable BackendTrafficPolicy
+      enabled: true
+      cookie:
+        # -- Cookie name used for sticky sessions
+        name: "WSO2_CP_STICKY_SESSION"
+        # -- Cookie TTL. Use "0s" for a session cookie (expires when browser closes)
+        ttl: "0s"
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
@@ -254,7 +296,7 @@ wso2:
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
-        jksSecretName: "apim-keystore-secret"
+        jksSecretName: ""
         keystores:
           primary:
             # -- Primary keystore enabled
@@ -358,7 +400,7 @@ wso2:
         enableTokenHashing: false
         # -- List of allow-listed scopes
         allowedScopes: ["^device_.*,openid"]
-        oauth2JWKSUrl: ""
+        oauth2JWKSUrl: "https://apim-acp-wso2am-acp-service:9443/oauth2/jwks"
       
       # APIM Open Tracing configurations
       # https://apim.docs.wso2.com/en/latest/observe/api-manager/traces/monitoring-with-opentracing/
