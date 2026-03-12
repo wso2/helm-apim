@@ -33,7 +33,7 @@ spec:
         value: /
     backendRefs:
     - name: {{ template "am-all-in-one.fullname" . }}-am-service
-      port: 8243
+      port: {{ add 8243 (.Values.wso2.apim.portOffset | default 0) }}
     {{- if .Values.kubernetes.gatewayAPI.gateway.filters }}
     filters:
 {{ toYaml .Values.kubernetes.gatewayAPI.gateway.filters | indent 4 }}
