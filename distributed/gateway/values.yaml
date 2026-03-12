@@ -93,7 +93,7 @@ kubernetes:
       burstLimit: ""
     gateway:
       # -- Enable ingress for Gateway
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Gateway pass-through
       hostname: "gw.wso2.com"
       # -- Ingress annotations for Gateway pass-through
@@ -103,7 +103,7 @@ kubernetes:
         nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
     websocket:
       # -- Enable ingress for Websocket
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Websocket
       hostname: "websocket.wso2.com"
       # -- Ingress annotations for Websocket
@@ -111,7 +111,7 @@ kubernetes:
         #todo: add websocket specific annotations
     websub:
       # -- Enable ingress for Websub
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Websub
       hostname: "websub.wso2.com"
       # -- Ingress annotations for Websub
@@ -161,7 +161,7 @@ kubernetes:
   # See docs/assets/gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
-    enabled: false
+    enabled: true
     # -- Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
     # This Gateway must exist in the same namespace before installing the chart
     gatewayName: ""
