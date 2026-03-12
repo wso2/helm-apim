@@ -9,7 +9,11 @@ This repo will be used to maintain APIM related helm charts
 
 - A running Kubernetes cluster (AKS, EKS, etc.)
 
-- Ingress controller for routing traffic. The recommendation is to use [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/) suitable for your cloud environment. Some sample annotations that could be used with the ingress resources are as follows.
+- Controller for routing traffic. You can use either:
+  - **[Envoy Gateway](https://gateway.envoyproxy.io/docs/install/install-helm/)** (enabled by default) - **RECOMMENDED**: Gateway API-based approach for a more modern, role-oriented API.
+  - **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (disabled by default) - **DEPRECATED**: Traditional Ingress-based approach. While still supported, this option is deprecated and will be removed in future releases.
+  
+  Some sample annotations that could be used with the ingress resources are as follows.
 
   > The ingress class should be set to `nginx` in the ingress resource if you are using the NGINX Ingress Controller.
 
