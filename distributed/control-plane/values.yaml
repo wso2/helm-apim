@@ -161,7 +161,7 @@ kubernetes:
       burstLimit: ""
     controlPlane:
       # -- Enable ingress for Control Plane
-      enabled: true
+      enabled: false
       # -- Ingress hostname
       hostname: "am.wso2.com"
       # -- Ingress annotations
@@ -177,7 +177,7 @@ kubernetes:
   # See docs/assets/gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
-    enabled: false
+    enabled: true
     # -- Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
     # This Gateway must exist in the same namespace before installing the chart
     gatewayName: ""
