@@ -67,6 +67,8 @@ data:
     CONFIG_SECURITY="/home/wso2carbon/tmp-security"
     
     if [ -d "${SRC_SECURITY}" ] && [ -d "${CONFIG_SECURITY}" ] && [ ! -L "${SRC_SECURITY}" ]; then
+      # Clean up before copying
+      find "${CONFIG_SECURITY}" -mindepth 1 -delete 2>/dev/null || rm -rf "${CONFIG_SECURITY:?}"/* "${CONFIG_SECURITY:?}"/.[!.]* 2>/dev/null
       cp -dR "${SRC_SECURITY}/." "${CONFIG_SECURITY}/" && \
       rm -rf "${SRC_SECURITY}" && cp -dR "${CONFIG_SECURITY}/." "${SRC_SECURITY}/"
     fi
