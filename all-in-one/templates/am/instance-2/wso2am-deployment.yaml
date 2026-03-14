@@ -361,4 +361,8 @@ spec:
           persistentVolumeClaim:
             claimName: {{ template "am-all-in-one.fullname" . }}-am-solr-indexed-data-volume-claim
         {{ end }}
+        {{- if .Values.kubernetes.openshift.enabled }}
+        - name: wso2am-security-dir
+          emptyDir: {}
+        {{- end }}
 {{- end }}

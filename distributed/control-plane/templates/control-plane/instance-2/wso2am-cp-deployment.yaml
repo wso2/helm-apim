@@ -354,4 +354,8 @@ spec:
         persistentVolumeClaim:
           claimName: {{ template "apim-helm-cp.fullname" . }}-solr-indexed-data-2
       {{ end }}
+      {{- if .Values.kubernetes.openshift.enabled }}
+      - name: wso2am-security-dir
+        emptyDir: {}
+      {{- end }}
 {{- end }}

@@ -48,7 +48,7 @@ data:
     {{- if .Values.kubernetes.openshift.enabled }}
     # For permission configuration on OpenShift.
     echo "Openshift deployment detected."
-    # Copy security dir to writable emptyDir and symlink
+    # Copy security dir to writable emptyDir and restore
     SRC_SECURITY="${WSO2_SERVER_HOME}/repository/resources/security"
     CONFIG_SECURITY="/home/wso2carbon/tmp-security"
     
