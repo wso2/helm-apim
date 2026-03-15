@@ -73,7 +73,7 @@ Each pattern directory contains:
    - Include necessary JDBC drivers and customizations in your Docker images
 
 3. **Configuration**:
-   - Configure ingress controller
+   - Configure routing
    - Set up databases
    - Configure keystores and truststores
    - Update Helm chart values

@@ -32,6 +32,13 @@ For advanced details on this deployment pattern, please refer to the official
     - [3. Add a DNS Record Mapping the Hostnames and the External IP](#3-add-a-dns-record-mapping-the-hostnames-and-the-external-ip)
     - [4. Access Management Consoles](#4-access-management-consoles)
 
+## About this Document
+
+This document provides comprehensive instructions for deploying WSO2 API Manager in a distributed Kubernetes environment using Helm charts, with a focus on separating the Traffic Manager and Gateway from the Control Plane.
+
+- **[Minimal Configuration](#minimal-configuration)**: Offers a quick start guide with pre-configured YAML files, allowing you to rapidly deploy the recommended pattern with minimal setup. This section is ideal for users who want to get started quickly.
+- The rest of the document details advanced setup options, including custom Docker image building, database configuration, keystore and truststore management, routing setup, and fine-tuning of Helm chart values for production-grade deployments.
+
 ## Prerequisites
 
 ### 1. Basic Configurations
@@ -39,10 +46,9 @@ For advanced details on this deployment pattern, please refer to the official
 - Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git), [Helm](https://helm.sh/docs/intro/install/), and the [Kubernetes client](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to run the steps provided in this quick start guide.
 - An already set up [Kubernetes cluster](https://kubernetes.io/docs/setup/).
 - Install a routing controller. Choose either:
-  - **[Envoy Gateway](https://gateway.envoyproxy.io/docs/install/install-helm/)** (enabled by default) - **RECOMMENDED**: Modern Gateway API-based routing.
-  - **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (disabled by default) - **DEPRECATED**: Traditional Ingress-based routing. While still supported, this option is deprecated and will be removed in future releases.
-  
-  > **Important:** It is advisable to use the Gateway API instead of NGINX Ingress Controller.
+  - **[Envoy Gateway](https://gateway.envoyproxy.io/docs/install/install-helm/)** (enabled by default) - **RECOMMENDED** (Modern Gateway API-based routing)
+  - **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (disabled by default) - **DEPRECATED** (Traditional Ingress-based routing. While still supported, this option is deprecated)
+
 - Add the WSO2 Helm chart repository:
 
   ```bash
@@ -57,20 +63,23 @@ For advanced details on this deployment pattern, please refer to the official
 
   For a production-grade deployment of the desired WSO2 product version, it is highly recommended to use the relevant Docker image that includes WSO2 Updates, available at the [WSO2 Private Docker Registry](https://docker.wso2.com/). To use these images, you need an active [WSO2 Subscription](https://wso2.com/subscription).
 
-- WSO2 API Manager 4.6.0 provides three Docker images:
+- WSO2 API Manager 4.6.0 provides two Docker images:
   - All-in-one - [wso2am](https://hub.docker.com/r/wso2/wso2am)
   - Universal Gateway (GW) - [wso2am-universal-gw](https://hub.docker.com/r/wso2/wso2am-universal-gw)
 
 - Since the products need to connect to databases at runtime, you must include the relevant JDBC drivers in the distribution. This can be done during the Docker image build stage. For example, you can add the MySQL driver as follows:
+
   ```dockerfile
   ADD --chown=wso2carbon:wso2 https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.28/mysql-connector-java-8.0.28.jar ${WSO2_SERVER_HOME}/repository/components/lib
   ```
+
 - If there are any customizations to the JARs in the product, these can also be included in the Docker image itself rather than mounting them from the deployment level (assuming they are common to all environments).
 - Below is a sample Dockerfile to build a custom WSO2 APIM image. Depending on your requirements, you may refer to the following and make the necessary additions. The script will:
   - Use WSO2 APIM 4.6.0 as the base image
   - Copy third-party libraries to the `<APIM_HOME>/lib` directory
 
   - Dockerfile for All-in-One:
+
     ```dockerfile
     FROM docker.wso2.com/wso2am:4.6.0.0
 
@@ -85,10 +94,13 @@ For advanced details on this deployment pattern, please refer to the official
     ```
 
 - Once the required changes have been made to the Dockerfile, you can use the following command to build the custom image. Replace `CONTAINER_REGISTRY`, `IMAGE_REPO`, and `TAG` accordingly:
+  
   ```bash
   docker build -t CONTAINER_REGISTRY/IMAGE_REPO:TAG .
   ```
+
 - After building your custom Docker image, push it to your container registry so it can be accessed by your Kubernetes cluster:
+  
   ```bash
   docker push CONTAINER_REGISTRY/IMAGE_REPO:TAG
   ```
@@ -98,6 +110,7 @@ For advanced details on this deployment pattern, please refer to the official
 - Before running the API Manager, you must configure the databases and populate them with the initial data. All required database scripts are available in the `dbscripts` directory of the product pack. Locate the appropriate scripts for your chosen database engine and execute them accordingly. It is recommended to use two separate database users with limited permissions for enhanced security.
 
 - An example for MySQL is provided below:
+  
   ```sql
   CREATE DATABASE apim_db CHARACTER SET latin1;
   CREATE DATABASE shared_db CHARACTER SET latin1;
@@ -107,6 +120,7 @@ For advanced details on this deployment pattern, please refer to the official
   CREATE USER 'sharedadmin'@'%' IDENTIFIED BY 'sharedadmin';
   GRANT ALL ON shared_db.* TO 'sharedadmin'@'%';
   ```
+
   ```bash
   mysql -h <DB_HOST> -P 3306 -u sharedadmin -p -Dshared_db < './dbscripts/mysql.sql'
   mysql -h <DB_HOST> -P 3306 -u apimadmin -p -Dapim_db < './dbscripts/apimgt/mysql.sql'
@@ -119,7 +133,7 @@ For advanced details on this deployment pattern, please refer to the official
 - Create a namespace for the deployment.
 
   ```bash
-  kubectl create namespace <namespace>
+  kubectl create namespace apim
   ```
 
 - Install the Envoy Gateway as follows:
@@ -134,13 +148,13 @@ For advanced details on this deployment pattern, please refer to the official
 - Apply the sample Gateway manifest to create the Gateway and GatewayClass resources:
 
   ```bash
-  kubectl apply -f docs/assets/sample-gateway.yaml -n <namespace>
+  kubectl apply -f docs/assets/sample-gateway.yaml -n apim
   ```
 
 - Run the following command to deploy the Helm charts for the All-in-One HA:
 
   ```bash
-  helm install apim wso2/wso2am-all-in-one --version 4.6.0-1 -f default_values.yaml
+  helm install apim wso2/wso2am-all-in-one --version 4.6.0-1 -f default_values.yaml -n apim
   ```
 
 The Helm chart uses Gateway API by default. If you prefer Ingress instead, follow the steps outlined in [1.1 Add Gateway API controller or Ingress controller](#11-add-gateway-api-controller-or-ingress-controller) to configure and enable it.
@@ -156,14 +170,14 @@ The Helm charts for the API Manager deployment are available in the [WSO2 Helm C
 
 #### 1.1 Add Gateway API Controller or Ingress Controller
 
-You can use either the **[Envoy Gateway](https://gateway.envoyproxy.io/docs/install/install-helm/)** (Gateway API-based) or **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (Ingress-based) suitable for your cloud environment or local deployment.
+You can use either the **[Envoy Gateway](https://gateway.envoyproxy.io/docs/install/install-helm/)** (Gateway API-based) or **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (Ingress-based) for routing the traffic to the API Manager. By default, the charts are configured to use the Envoy Gateway. If you want to use the NGINX Ingress Controller instead, you should disable the Gateway API and enable the Ingress in the Helm chart values.
 
 **TLS Certificate Configuration (Required for both options)**
 
 You need to create a Kubernetes secret containing the TLS certificate and private key. This secret will be used for TLS termination at the load balancer level.
 
   ```bash
-  kubectl create secret tls apim-gateway-tls --key <private key filename> --cert <certificate filename>
+  kubectl create secret tls my-tls-secret --key <private key filename> --cert <certificate filename>
   ```
 
 If you are using the Gateway API, make sure to reference this secret in the TLS configuration for the listeners of your Gateway manifest.
@@ -188,10 +202,10 @@ It is advisable to use the Gateway API with Envoy Gateway instead of NGINX Ingre
   You can create and apply the created Gateway and GatewayClass resources by running the following command:
 
   ```bash
-    kubectl apply -f gateway-manifest.yaml -n <namespace>
+    kubectl apply -f <your-gateway-manifest> -n <namespace>
   ```
 
-  Ensure that the hostnames in your created Gateway manifest match the hostnames configured in your Helm chart values. Additionally the TLS secret created above should be correctly referenced in the Gateway manifest for TLS termination.
+  Ensure that the hostnames and Gateway name in your created Gateway manifest match those configured in your Helm chart values. Additionally the TLS secret created above should be correctly referenced in the Gateway manifest for TLS termination.
 
 - Create a ConfigMap containing the CA certificate for backend TLS verification and reference it under `backendTLSPolicy.caCertificateConfigMap` in the Helm chart values. This is required if you have enabled backend TLS verification in the Gateway configuration.
   
@@ -224,13 +238,15 @@ It is advisable to use the Gateway API with Envoy Gateway instead of NGINX Ingre
         backendTLSPolicy:
           enabled: true
           caCertificateConfigMap: "wso2-ca-cert"
-          hostname: "localhost"
+          hostname: "<hostname used in the TLS certificate>"
         backendTrafficPolicy:
           enabled: true
           cookie:
             name: "WSO2_CP_STICKY_SESSION"
             ttl: "0s"
     ```
+
+- If you require further routing customizations you can use any of the [Gateway API Extensions](https://gateway.envoyproxy.io/docs/api/extension_types/) provided by Envoy
 
 **Option 2: NGINX Ingress Controller (Ingress-based approach) - DEPRECATED**
 
@@ -242,7 +258,7 @@ Some sample annotations that could be used with the ingress resources are as fol
     ```yaml
     ingressClass: "nginx"
     ingress:
-      tlsSecret: "apim-gateway-tls"
+      tlsSecret: "my-tls-secret"
       ratelimit:
         enabled: false
         zoneName: ""
@@ -440,6 +456,9 @@ kubectl get ing -n <NAMESPACE>
 ```
 
 Use the address from the `ADDRESS` or `EXTERNAL-IP` column as the external IP.
+
+If the defined hostnames (in the previous step) are backed by a DNS service, add a DNS record mapping the hostnames and
+the external IP in the relevant DNS service.
 
 If the defined hostnames are not backed by a DNS service, for evaluation purposes you may add an entry mapping the hostnames and the external IP in the `/etc/hosts` file on the client side.
 
