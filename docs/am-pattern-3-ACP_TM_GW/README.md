@@ -166,16 +166,16 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
 ## Minimal Configuration
 
 - We have provided pre-configured YAML files to help you quickly start the deployment. You can use these files as a starting point to deploy this pattern. This deployment requires separate databases. Therefore, follow the steps in [2. Build Docker Images](#2-build-docker-images) to build the Docker images with JDBC drivers, and refer to [3. Configure Database](#3-configure-database) to set up the database.
-- Follow the steps in [1.2 Mount Keystore and Truststore](#12-mount-keystore-and-truststore) to create the truststore and keystore. If you want to use the WSO2 default keystore and truststore, you can find them in the `repository/resources/security` directory of the product pack. Navigate to this location and run the following command to create the secret:
-
-  ```bash
-  kubectl create secret generic apim-keystore-secret --from-file=wso2carbon.jks --from-file=client-truststore.jks -n apim
-  ```
-
 - Create a namespace for the deployment.
 
   ```bash
   kubectl create namespace apim
+  ```
+  
+- Follow the steps in [1.2 Mount Keystore and Truststore](#12-mount-keystore-and-truststore) to create the truststore and keystore. If you want to use the WSO2 default keystore and truststore, you can find them in the `repository/resources/security` directory of the product pack. Navigate to this location and run the following command to create the secret:
+
+  ```bash
+  kubectl create secret generic apim-keystore-secret --from-file=wso2carbon.jks --from-file=client-truststore.jks -n apim
   ```
 
 - Install the Envoy Gateway as follows:
