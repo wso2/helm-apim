@@ -186,13 +186,13 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
 1. Deploy All-in-one
 
     ```bash
-    helm install apim wso2/wso2am-all-in-one --version 4.6.0-1 -f default_values.yaml
+    helm install apim wso2/wso2am-all-in-one --version 4.6.0-1 -f default_values.yaml -n apim
     ```
 
 2. Deploy GW
 
     ```bash
-    helm install apim-gw wso2/wso2am-gw --version 4.6.0-1 -f default_gw_values.yaml
+    helm install apim-gw wso2/wso2am-gw --version 4.6.0-1 -f default_gw_values.yaml -n apim
     ```
 
 The Helm chart uses Gateway API by default. If you prefer Ingress instead, follow the steps outlined in [1.1 Add Gateway API controller or Ingress controller](#11-add-gateway-api-controller-or-ingress-controller) to configure and enable it.
@@ -230,8 +230,9 @@ It is advisable to use the Gateway API with Envoy Gateway instead of NGINX Ingre
     ```bash
     helm install envoy-gateway oci://docker.io/envoyproxy/gateway-helm \
     --version v1.7.0 -n envoy-gateway-system \
-     --set config.envoyGateway.extensionApis.enableBackend=true \
-     --set envoyGateway.gateway.experimentalFeatures.enabled=true
+    --set config.envoyGateway.extensionApis.enableBackend=true \
+    --set envoyGateway.gateway.experimentalFeatures.enabled=true \
+    --create-namespace
     ```
 
 - Create and apply a Gateway and GatewayClass.
@@ -243,7 +244,7 @@ It is advisable to use the Gateway API with Envoy Gateway instead of NGINX Ingre
     kubectl apply -f <your-gateway-manifest> -n <namespace>
   ```
 
-  Ensure that the hostnames and Gateway name in your created Gateway manifest match those configured in your Helm chart values. Additionally the TLS secret created above should be correctly referenced in the Gateway manifest for TLS termination.
+  Ensure that the hostnames and Gateway name in your created Gateway manifest match those configured in your Helm chart values. Additionally the TLS secret created above should be correctly referenced in the listeners of the Gateway class for TLS termination.
 
 - Create a ConfigMap containing the CA certificate for backend TLS verification and reference it under `backendTLSPolicy.caCertificateConfigMap` in the Helm chart values. This is required if you have enabled backend TLS verification in the Gateway configuration.
   

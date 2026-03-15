@@ -15,7 +15,7 @@ For advanced details on the deployment pattern, please refer to the official
   - [Minimal Configuration](#minimal-configuration)
   - [Configuration](#configuration)
     - [1. General Configuration of Helm Charts](#1-general-configuration-of-helm-charts)
-      - [1.1 Add Gateway API controller or Ingresss controller](#11-add-gateway-api-controller-or-ingress-controller)
+      - [1.1 Add Gateway API controller or Ingress controller](#11-add-gateway-api-controller-or-ingress-controller)
       - [1.2 Mount Keystore and Truststore](#12-mount-keystore-and-truststore)
       - [1.3 Encrypting secrets](#13-encrypting-secrets)
       - [1.4 Configure Docker image and Databases](#14-configure-docker-image-and-databases)
@@ -126,8 +126,9 @@ It is advisable to use the Gateway API with Envoy Gateway instead of NGINX Ingre
     ```bash
     helm install envoy-gateway oci://docker.io/envoyproxy/gateway-helm \
     --version v1.7.0 -n envoy-gateway-system \
-     --set config.envoyGateway.extensionApis.enableBackend=true \
-     --set envoyGateway.gateway.experimentalFeatures.enabled=true
+    --set config.envoyGateway.extensionApis.enableBackend=true \
+    --set envoyGateway.gateway.experimentalFeatures.enabled=true \
+    --create-namespace
     ```
 
 - Create and apply a Gateway and GatewayClass.
