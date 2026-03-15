@@ -40,7 +40,7 @@ For advanced details on the deployment pattern, please refer to the official
 
 ## About this Document
 
-This document provides comprehensive instructions for deploying WSO2 API Manager in a distributed Kubernetes environment using Helm charts, with a focus on separating the Traffic Manager and Gateway from the Control Plane.
+This document provides comprehensive instructions for deploying WSO2 API Manager in a distributed Kubernetes environment using Helm charts, with a focus on separating the Key Manager and Gateway from the Control Plane.
 
 - **[Minimal Configuration](#minimal-configuration)**: Offers a quick start guide with pre-configured YAML files, allowing you to rapidly deploy the recommended pattern with minimal setup. This section is ideal for users who want to get started quickly.
 - The rest of the document details advanced setup options, including custom Docker image building, database configuration, keystore and truststore management, ingress controller setup, and fine-tuning of Helm chart values for production-grade deployments.
@@ -188,6 +188,7 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
   --set config.envoyGateway.extensionApis.enableBackend=true \
   --set envoyGateway.gateway.experimentalFeatures.enabled=true \
   --create-namespace
+  ```
 
 - Apply the sample Gateway manifest to create the Gateway and GatewayClass resources:
 
