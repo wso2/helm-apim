@@ -170,8 +170,8 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
   helm install envoy-gateway oci://docker.io/envoyproxy/gateway-helm \
   --version v1.7.0 -n envoy-gateway-system \
   --set config.envoyGateway.extensionApis.enableBackend=true \
-  --set envoyGateway.gateway.experimentalFeatures.enabled=true
-  ```
+  --set envoyGateway.gateway.experimentalFeatures.enabled=true \
+  --create-namespace
 
 - Apply the sample Gateway manifest to create the Gateway and GatewayClass resources:
 
