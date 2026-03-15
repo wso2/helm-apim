@@ -18,7 +18,7 @@ apiVersion: v1
 kind: Secret
 type: kubernetes.io/tls
 metadata:
-  name: apim-gateway-tls
+  name: my-tls-secret
   namespace: apim
 data:
   tls.crt: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURDekNDQWZPZ0F3SUJBZ0lVTTZQY3Vjd2ErWVEvS1cwTjcwbWtDUjY1UjVJd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0ZURVRNQkVHQTFVRUF3d0tLaTUzYzI4eUxtTnZiVEFlRncweU5qQXhNall4TURJNU5EVmFGdzB5TnpBeApNall4TURJNU5EVmFNQlV4RXpBUkJnTlZCQU1NQ2lvdWQzTnZNaTVqYjIwd2dnRWlNQTBHQ1NxR1NJYjNEUUVCCkFRVUFBNElCRHdBd2dnRUtBb0lCQVFEQ1hZOGd6SzIxdmhlb0puakhaTXRSR0twOTN3dUgvdzdPLy9OSGZuUHQKZVR6azFORk43R3lqTnZrbW5kZEppVHl4d3l1U0FFVWd3R1dsemhRaEtzV3QxNkVGMXFZYUg4VjhlNC9JWks2MApHMHQ3d1FWdGtrM0tHZUt0V3pZYXBEa0k2TWxvTUduY3laUFdOek9QNWgxYUhHNTZ6VFI0ZWZGRDBMM3JrT0oyCnlLTzFIeDB6NzZPSENlWklRNDd0eGl1ekdLVUtmRHEwcXZDWHBPUUFTSm5JNjR0M2VKYVJjNDFuVFZ4bjNLSFoKV09Bb25rZUFpbVNCOTdQN2xRQXZ1SnMvTFVra09PcDFHZWFFSGdLOElVUWJrRStVRVdMZ2pwbkJjN2lFSkYzUAp1ek05bVJweHJGV1c1NDdGc2J1YkJlRWs3bVlLazZuOUpQQWtFS0VCZTRiWEFnTUJBQUdqVXpCUk1CMEdBMVVkCkRnUVdCQlJOTGIzRzU1YUNiTys0N2MwOG9ub3hDMXFWNVRBZkJnTlZIU01FR0RBV2dCUk5MYjNHNTVhQ2JPKzQKN2MwOG9ub3hDMXFWNVRBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUEwR0NTcUdTSWIzRFFFQkN3VUFBNElCQVFCSwowV3h2ZXJhUFZGQzNqaW5obG50cTlzUGN5anZPL1dXZlNGUUcveHhGUEM1aHE0OVhndmUxcWlsT2hrRmhFNm5CCjRIRVNBbzlMR2xlbEFETmF3d0tFTGVBR0dBWU9qUGxoaG95N0F1dGF0MXIvMG5vZzRHTjRVMW1vUEZiNDNZeUUKWFdKcTZ0ZVl2UmFWRFFDeFFPTlhxNDh0ZFYwcWRQclBlZ0FsRU9mTXdHQ0ZlV2xDQ2dvOE1MWXp1YVZDR1RyZwpMQ3NIQWJHVUNjVkpqVUNyd0NZRjVNNFdycEpQV1QyMGpTTlZ3Qk81Nng1VHJsMXNkUnlzMHZzWjFvYjJnNENSCkwydFdSOE1CdW5INHpQYy9jcEc3Y2ZBY25BTFM0dUc5Z2NaN3kxT2taK0FJcjNDcVpqaDZLZDhZYVJoNmhrSWYKVUdrN1FhN0tONzJES0g3T29wcWcKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo="
@@ -55,7 +55,7 @@ spec:
       mode: Terminate
       certificateRefs:
       - kind: Secret
-        name: apim-gateway-tls
+        name: my-tls-secret
     allowedRoutes:
       namespaces:
         from: Same
@@ -69,7 +69,7 @@ spec:
       mode: Terminate
       certificateRefs:
       - kind: Secret
-        name: apim-gateway-tls
+        name: my-tls-secret
     allowedRoutes:
       namespaces:
         from: Same
@@ -83,7 +83,7 @@ spec:
       mode: Terminate
       certificateRefs:
       - kind: Secret
-        name: apim-gateway-tls
+        name: my-tls-secret
     allowedRoutes:
       namespaces:
         from: Same
@@ -97,7 +97,7 @@ spec:
       mode: Terminate
       certificateRefs:
       - kind: Secret
-        name: apim-gateway-tls
+        name: my-tls-secret
     allowedRoutes:
       namespaces:
         from: Same
@@ -113,7 +113,7 @@ spec:
       mode: Terminate
       certificateRefs:
       - kind: Secret
-        name: apim-gateway-tls
+        name: my-tls-secret
     allowedRoutes:
       namespaces:
         from: Same
