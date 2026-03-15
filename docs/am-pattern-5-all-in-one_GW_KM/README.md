@@ -237,7 +237,7 @@ The Helm charts for the API Manager deployment are available in the [WSO2 Helm C
 You need to create a Kubernetes secret containing the TLS certificate and private key. This secret will be used for TLS termination at the load balancer level.
 
 ```bash
-kubectl create secret tls my-tls-secret --key <private key filename> --cert <certificate filename>
+kubectl create secret tls my-tls-secret --key <private key filename> --cert <certificate filename> -n <namespace>
 ```
 
 If you are using the Gateway API, make sure to reference this secret in the TLS configuration for the listeners of your Gateway manifest.
