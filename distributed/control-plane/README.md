@@ -1,6 +1,6 @@
 # wso2am-acp
 
-![Version: 4.6.0-1](https://img.shields.io/badge/Version-4.6.0--1-informational?style=flat-square) ![AppVersion: 4.6.0](https://img.shields.io/badge/AppVersion-4.6.0-informational?style=flat-square)
+![Version: 4.7.0](https://img.shields.io/badge/Version-4.7.0-informational?style=flat-square) ![AppVersion: 4.7.0](https://img.shields.io/badge/AppVersion-4.7.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 
@@ -203,7 +203,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vault enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
-| wso2.apim.version | string | `"4.6.0"` | APIM version |
+| wso2.apim.version | string | `"4.7.0"` | APIM version |
 | wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.highAvailability | bool | `true` | Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed. This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM. |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |

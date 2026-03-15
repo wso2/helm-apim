@@ -89,7 +89,7 @@ If you want to try WSO2 API Manager with minimal configuration, you do not need 
 - Then deploy the Helm chart using the following command:
 
   ```bash
-  helm install apim wso2/wso2am-all-in-one --version 4.6.0-1 -f default_values.yaml -n apim
+  helm install apim wso2/wso2am-all-in-one --version 4.7.0 -f default_values.yaml -n apim
   ```
 
 The Helm chart uses Gateway API by default. If you prefer Ingress instead, follow the steps outlined in [1.1 Add Gateway API controller or Ingress controller](#11-add-gateway-api-controller-or-ingress-controller) to configure and enable it.
@@ -98,7 +98,7 @@ The Helm chart uses Gateway API by default. If you prefer Ingress instead, follo
 
 ### 1. General Configuration of Helm Charts
 
-The helm charts for the API Manager deployment are available in the [WSO2 Helm Chart Repository](https://github.com/wso2/helm-apim/tree/4.5.x). You can either use the charts from the repository or clone the repository and use the charts from the local copy.
+The helm charts for the API Manager deployment are available in the [WSO2 Helm Chart Repository](https://github.com/wso2/helm-apim/tree/4.7.x). You can either use the charts from the repository or clone the repository and use the charts from the local copy.
 
 - The helm naming convention for APIM follows a simple pattern. The following format is used for naming the resources.
 ```<RELEASE_NAME>-<CHART_NAME>-<RESOURCE_NAME>```
@@ -360,7 +360,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
   
   ```bash
   kubectl create namespace <namespace>
-  helm install <release-name> <helm-chart-path> --version 4.6.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.7.0 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 3. Add a DNS record mapping the hostnames and the external IP

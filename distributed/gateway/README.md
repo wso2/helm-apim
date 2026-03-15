@@ -1,6 +1,6 @@
 # wso2am-universal-gw
 
-![Version: 4.6.0-1](https://img.shields.io/badge/Version-4.6.0--1-informational?style=flat-square) ![AppVersion: 4.6.0](https://img.shields.io/badge/AppVersion-4.6.0-informational?style=flat-square)
+![Version: 4.7.0](https://img.shields.io/badge/Version-4.7.0-informational?style=flat-square) ![AppVersion: 4.7.0](https://img.shields.io/badge/AppVersion-4.7.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 
@@ -185,7 +185,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
-| wso2.apim.version | string | `"4.6.0"` | APIM version |
+| wso2.apim.version | string | `"4.7.0"` | APIM version |
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
 | wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |

@@ -77,7 +77,7 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
   Docker image which packages WSO2 Updates, available at [WSO2 Private Docker Registry](https://docker.wso2.com/). In order
   to use these images, you need an active [WSO2 Subscription](https://wso2.com/subscription).
 
-- WSO2 API Manager 4.6.0 provides three docker images, they are:
+- WSO2 API Manager 4.7.0 provides three docker images, they are:
   - API Control Plane (ACP) - [wso2am-acp](https://hub.docker.com/r/wso2/wso2am-acp)
   - Traffic Manager (TM) - [wso2am-tm](https://hub.docker.com/r/wso2/wso2am-tm)
   - Universal Gateway (GW) - [wso2am-universal-gw](https://hub.docker.com/r/wso2/wso2am-universal-gw)
@@ -92,17 +92,17 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
   
 - Furthermore, if there are any customizations to the jars in the product, that too can be included in the docker image itself rather than mounting those from the deployment level (assuming that they are common to all environments).
 - Following is a sample Dockerfile to build a custom WSO2 APIM image. Depending on the requirement you may refer to the following and do the necessary additions. The below script will do the following:
-  - Use WSO2 APIM 4.6.0 as the base image
+  - Use WSO2 APIM 4.7.0 as the base image
   - Copy 3rd party libraries to the `<APIM_HOME>/lib` directory
 
   - Dockerfile for API Control Plane
 
     ```dockerfile
-    FROM docker.wso2.com/wso2am-acp:4.6.0.0
+    FROM docker.wso2.com/wso2am-acp:4.7.0.0
 
     ARG USER_HOME=/home/${USER}
     ARG WSO2_SERVER_NAME=wso2am-acp
-    ARG WSO2_SERVER_VERSION=4.6.0
+    ARG WSO2_SERVER_VERSION=4.7.0
     ARG WSO2_SERVER=${WSO2_SERVER_NAME}-${WSO2_SERVER_VERSION}
     ARG WSO2_SERVER_HOME=${USER_HOME}/${WSO2_SERVER}
 
@@ -113,11 +113,11 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
   - Dockerfile for Traffic Manager
 
     ```dockerfile
-    FROM docker.wso2.com/wso2am-tm:4.6.0.0
+    FROM docker.wso2.com/wso2am-tm:4.7.0.0
 
     ARG USER_HOME=/home/${USER}
     ARG WSO2_SERVER_NAME=wso2am-tm
-    ARG WSO2_SERVER_VERSION=4.6.0
+    ARG WSO2_SERVER_VERSION=4.7.0
     ARG WSO2_SERVER=${WSO2_SERVER_NAME}-${WSO2_SERVER_VERSION}
     ARG WSO2_SERVER_HOME=${USER_HOME}/${WSO2_SERVER}
 
@@ -128,11 +128,11 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
   - Dockerfile for Universal Gateway
 
     ```dockerfile
-    FROM docker.wso2.com/wso2am-universal-gw:4.6.0.0
+    FROM docker.wso2.com/wso2am-universal-gw:4.7.0.0
 
     ARG USER_HOME=/home/${USER}
     ARG WSO2_SERVER_NAME=wso2am-universal-gw
-    ARG WSO2_SERVER_VERSION=4.6.0
+    ARG WSO2_SERVER_VERSION=4.7.0
     ARG WSO2_SERVER=${WSO2_SERVER_NAME}-${WSO2_SERVER_VERSION}
     ARG WSO2_SERVER_HOME=${USER_HOME}/${WSO2_SERVER}
 
@@ -212,25 +212,25 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
 1. Deploy ACP
 
     ```bash
-    helm install apim-acp wso2/wso2am-acp --version 4.6.0-1 -f default_acp_values.yaml -n apim
+    helm install apim-acp wso2/wso2am-acp --version 4.7.0 -f default_acp_values.yaml -n apim
     ```
 
 2. Deploy KM
 
     ```bash
-    helm install apim-km wso2/wso2am-km --version 4.6.0-1 -f default_km_values.yaml -n apim
+    helm install apim-km wso2/wso2am-km --version 4.7.0 -f default_km_values.yaml -n apim
     ```
 
 3. Deploy TM
 
     ```bash
-    helm install apim-tm wso2/wso2am-tm --version 4.6.0-1 -f default_tm_values.yaml -n apim
+    helm install apim-tm wso2/wso2am-tm --version 4.7.0 -f default_tm_values.yaml -n apim
     ```
 
 4. Deploy GW
 
     ```bash
-    helm install apim-gw wso2/wso2-gw --version 4.6.0-1 -f default_gw_values.yaml -n apim
+    helm install apim-gw wso2/wso2-gw --version 4.7.0 -f default_gw_values.yaml -n apim
     ```
 
 The Helm chart uses Gateway API by default. If you prefer Ingress instead, follow the steps outlined in [1.1 Add Gateway API Controller or Ingress Controller](#11-add-gateway-api-controller-or-ingress-controller) to configure and enable it.
@@ -239,7 +239,7 @@ The Helm chart uses Gateway API by default. If you prefer Ingress instead, follo
 
 ### 1. General Configuration of Helm Charts
 
-The helm charts for the API Manager deployment are available in the [WSO2 Helm Chart Repository](https://github.com/wso2/helm-apim/tree/4.5.x). You can either use the charts from the repository or clone the repository and use the charts from the local copy.
+The helm charts for the API Manager deployment are available in the [WSO2 Helm Chart Repository](https://github.com/wso2/helm-apim/tree/4.7.x). You can either use the charts from the repository or clone the repository and use the charts from the local copy.
 
 - The helm naming convention for APIM follows a simple pattern. The following format is used for naming the resources.
 ```<RELEASE_NAME>-<CHART_NAME>-<RESOURCE_NAME>```
@@ -506,7 +506,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
   
   ```bash
   kubectl create namespace <namespace>
-  helm install <release-name> <helm-chart-path> --version 4.6.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.7.0 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 
@@ -538,7 +538,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
 Replace `<release-name>` and `<namespace>` with appropriate values. Replace `<helm-chart-path>` with the path to the Helm Deployment.
   
   ```bash
-  helm install <release-name> <helm-chart-path> --version 4.6.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.7.0 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 4. Universal Gateway Configuration
@@ -587,7 +587,7 @@ Replace `<release-name>` and `<namespace>` with appropriate values. Replace `<he
 Replace `<release-name>` and `<namespace>` with appropriate values. Replace `<helm-chart-path>` with the path to the Helm Deployment.
   
   ```bash
-  helm install <release-name> <helm-chart-path> --version 4.6.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.7.0 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 5. Key Manager Configuration
@@ -609,7 +609,7 @@ Replace `<release-name>` and `<namespace>` with appropriate values. Replace `<he
 Replace `<release-name>` and `<namespace>` with appropriate values. Replace `<helm-chart-path>` with the path to the Helm Deployment.
   
   ```bash
-  helm install <release-name> <helm-chart-path> --version 4.6.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.7.0 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 6. Add a DNS Record Mapping the Hostnames and the External IP

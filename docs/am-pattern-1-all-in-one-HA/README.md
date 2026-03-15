@@ -63,7 +63,7 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
 
   For a production-grade deployment of the desired WSO2 product version, it is highly recommended to use the relevant Docker image that includes WSO2 Updates, available at the [WSO2 Private Docker Registry](https://docker.wso2.com/). To use these images, you need an active [WSO2 Subscription](https://wso2.com/subscription).
 
-- WSO2 API Manager 4.6.0 provides two Docker images:
+- WSO2 API Manager 4.7.0 provides two Docker images:
   - All-in-one - [wso2am](https://hub.docker.com/r/wso2/wso2am)
   - Universal Gateway (GW) - [wso2am-universal-gw](https://hub.docker.com/r/wso2/wso2am-universal-gw)
 
@@ -75,17 +75,17 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
 
 - If there are any customizations to the JARs in the product, these can also be included in the Docker image itself rather than mounting them from the deployment level (assuming they are common to all environments).
 - Below is a sample Dockerfile to build a custom WSO2 APIM image. Depending on your requirements, you may refer to the following and make the necessary additions. The script will:
-  - Use WSO2 APIM 4.6.0 as the base image
+  - Use WSO2 APIM 4.7.0 as the base image
   - Copy third-party libraries to the `<APIM_HOME>/lib` directory
 
   - Dockerfile for All-in-One:
 
     ```dockerfile
-    FROM docker.wso2.com/wso2am:4.6.0.0
+    FROM docker.wso2.com/wso2am:4.7.0.0
 
     ARG USER_HOME=/home/${USER}
     ARG WSO2_SERVER_NAME=wso2am
-    ARG WSO2_SERVER_VERSION=4.6.0
+    ARG WSO2_SERVER_VERSION=4.7.0
     ARG WSO2_SERVER=${WSO2_SERVER_NAME}-${WSO2_SERVER_VERSION}
     ARG WSO2_SERVER_HOME=${USER_HOME}/${WSO2_SERVER}
 
@@ -155,7 +155,7 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
 - Run the following command to deploy the Helm charts for the All-in-One HA:
 
   ```bash
-  helm install apim wso2/wso2am-all-in-one --version 4.6.0-1 -f default_values.yaml -n apim
+  helm install apim wso2/wso2am-all-in-one --version 4.7.0 -f default_values.yaml -n apim
   ```
 
 The Helm chart uses Gateway API by default. If you prefer Ingress instead, follow the steps outlined in [1.1 Add Gateway API controller or Ingress controller](#11-add-gateway-api-controller-or-ingress-controller) to configure and enable it.
@@ -164,7 +164,7 @@ The Helm chart uses Gateway API by default. If you prefer Ingress instead, follo
 
 ### 1. General Configuration of Helm Charts
 
-The Helm charts for the API Manager deployment are available in the [WSO2 Helm Chart Repository](https://github.com/wso2/helm-apim/tree/4.5.x). You can either use the charts from the repository or clone the repository and use the charts from the local copy.
+The Helm charts for the API Manager deployment are available in the [WSO2 Helm Chart Repository](https://github.com/wso2/helm-apim/tree/4.7.x). You can either use the charts from the repository or clone the repository and use the charts from the local copy.
 
 - The Helm naming convention for APIM follows a simple pattern. The following format is used for naming the resources:
 ```<RELEASE_NAME>-<CHART_NAME>-<RESOURCE_NAME>```
@@ -430,7 +430,7 @@ Now deploy the Helm chart using the following command after creating a namespace
   
   ```bash
   kubectl create namespace <namespace>
-  helm install <release-name> <helm-chart-path> --version 4.6.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.7.0 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 #### 2.6 Enable High Availability
