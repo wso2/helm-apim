@@ -22,25 +22,31 @@ spec:
     # ports that this service should serve on
     - name: pass-through-http
       protocol: TCP
-      port: 8280
+      port: {{ add 8280 (.Values.wso2.apim.portOffset | default 0) }}
     - name: pass-through-https
       protocol: TCP
-      port: 8243
+      port: {{ add 8243 (.Values.wso2.apim.portOffset | default 0) }}
     - name: binary
       protocol: TCP
-      port: 9611
+      port: {{ add 9611 (.Values.wso2.apim.portOffset | default 0) }}
     - name: binary-secure
       protocol: TCP
-      port: 9711
+      port: {{ add 9711 (.Values.wso2.apim.portOffset | default 0) }}
     - name: jms-tcp
       protocol: TCP
-      port: 5672
+      port: {{ add 5672 (.Values.wso2.apim.portOffset | default 0) }}
     - name: servlet-https
       protocol: TCP
-      port: 9443
+      port: {{ add 9443 (.Values.wso2.apim.portOffset | default 0) }}
     - name: websub-http
       protocol: TCP
-      port: 9021
+      port: {{ add 9021 (.Values.wso2.apim.portOffset | default 0) }}
     - name: websub-https
       protocol: TCP
-      port: 8021
+      port: {{ add 8021 (.Values.wso2.apim.portOffset | default 0) }}
+    - name: websocket-https
+      protocol: TCP
+      port: {{ add 8099 (.Values.wso2.apim.portOffset | default 0) }}
+    - name: websocket-http
+      protocol: TCP
+      port: {{ add 9099 (.Values.wso2.apim.portOffset | default 0) }}
