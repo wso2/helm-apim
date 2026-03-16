@@ -1,0 +1,23 @@
+# -------------------------------------------------------------------------------------
+#
+# Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+#
+# This software is the property of WSO2 LLC. and its suppliers, if any.
+# Dissemination of any information or reproduction of any material contained 
+# herein is strictly forbidden, unless permitted by WSO2 in accordance with the 
+# WSO2 Commercial License available at https://wso2.com/licenses/eula/3.2
+#
+# --------------------------------------------------------------------------------------
+
+{{- if and .Values.kubernetes.gatewayAPI.enabled .Values.kubernetes.gatewayAPI.defaultConfigMapCreation }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "apim-helm-cp.labels" . | nindent 4 }}
+data:
+  ca.crt: |
+{{ .Files.Get "confs/wso2.crt" | indent 4 }}
+{{- end }}
