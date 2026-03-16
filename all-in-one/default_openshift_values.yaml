@@ -228,7 +228,7 @@ wso2:
   apim:
     # -- APIM version
     version: "4.7.0"
-    # -- Secure vauld enabled
+    # -- Secure vault enabled
     secureVaultEnabled: false
     # Logging related configurations
     log4j2:
