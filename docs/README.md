@@ -76,6 +76,8 @@ Each pattern directory contains:
    - Configure routing
    - Set up databases
    - Configure keystores and truststores
+   - Configure the mandatory symmetric internal encryption key (`wso2.apim.configurations.encryption.key`) used by API Manager for internal encryption and decryption of shared data; use the same key across all nodes in HA or distributed deployments
+   - If secure vault is enabled, configure the cloud provider secret store with `secretEncryptionKey`; this is different from the mandatory internal encryption key above and is used only to resolve encrypted secrets at runtime
    - Update Helm chart values
 
 4. **Deployment**:

@@ -42,13 +42,24 @@ data:
     test -d ${artifact_volume} && [[ "$(ls -A ${artifact_volume})" ]] && cp -RL ${artifact_volume}/* ${WSO2_SERVER_HOME}/
 
     {{- if .Values.wso2.apim.secureVaultEnabled }}
-    # copy internal keystore credentials to password-tmp file for cipher-tool usage
+    {{- if eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider" }}
+    # copy the symmetric encryption key to ${WSO2_SERVER_HOME}/encryption-key-tmp for secure-vault usage
+    {{- if .Values.azure.enabled }}
+    cp /mnt/secrets-store/{{ .Values.azure.keyVault.secretIdentifiers.secretEncryptionKey }} ${WSO2_SERVER_HOME}/encryption-key-tmp
+    {{- else if .Values.aws.enabled }}
+    cp /mnt/secrets-store/{{ .Values.aws.secretsManager.secretIdentifiers.secretEncryptionKey.secretKey }} ${WSO2_SERVER_HOME}/encryption-key-tmp
+    {{- else if .Values.gcp.enabled }}
+    cp /mnt/secrets-store/{{ .Values.gcp.secretsManager.secretEncryptionKey.secretName }} ${WSO2_SERVER_HOME}/encryption-key-tmp
+    {{- end }}
+    {{- else }}
+    # copy the internal keystore password to ${WSO2_SERVER_HOME}/password-tmp for keystore-based encryption
     {{- if .Values.azure.enabled }}
     cp /mnt/secrets-store/{{ .Values.azure.keyVault.secretIdentifiers.internalKeystorePassword }} ${WSO2_SERVER_HOME}/password-tmp
     {{- else if .Values.aws.enabled }}
     cp /mnt/secrets-store/{{ .Values.aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey }} ${WSO2_SERVER_HOME}/password-tmp
     {{- else if .Values.gcp.enabled }}
     cp /mnt/secrets-store/{{ .Values.gcp.secretsManager.secret.secretName }} ${WSO2_SERVER_HOME}/password-tmp
+    {{- end }}
     {{- end }}
     {{- end }}
 

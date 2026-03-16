@@ -21,6 +21,12 @@ aws:
     # -- AWS Secrets Manager secret provider class name
     secretProviderClass: "wso2am-km-secret-provider-class"
     secretIdentifiers:
+      # -- Symmetric encryption key identifier in secrets manager
+      secretEncryptionKey:
+        # -- AWS Secrets Manager secret name
+        secretName: ""
+        # -- AWS Secrets Manager secret key
+        secretKey: ""
       # -- Internal keystore password identifier in secrets manager
       internalKeystorePassword:
         # -- AWS Secrets Manager secret name
@@ -40,6 +46,8 @@ azure:
     # -- Azure Key vault secret provider class name
     secretProviderClass: "wso2am-km-secret-provider-class"
     secretIdentifiers:
+      # -- Symmetric encryption key identifier in keyvault
+      secretEncryptionKey: ""
       # -- Internal keystore password identifier in keyvault
       internalKeystorePassword: ""
       # -- Internal keystore key password identifier in keyvault
@@ -72,6 +80,12 @@ gcp:
     projectId: ""
     # -- Secret provider class
     secretProviderClass: ""
+    # -- Symmetric encryption key identifier in keyvault
+    secretEncryptionKey:
+      # -- Name of the encryption key secret
+      secretName: ""
+      # -- Version of the encryption key secret
+      secretVersion: ""
     secret:
       # -- Name of the secret
       secretName: ""
@@ -156,6 +170,13 @@ wso2:
     mountStartupScript: false
     # TOML configurations
     configurations:
+      encryption:
+        # -- Symmetric encryption key shared by all nodes. Need to be the same across all nodes in a deployment for proper functioning of encryption.
+        key: ""
+        # -- Symmetric cipher transformation. AES/GCM/NoPadding is used as the symmetric cipher transformation.
+        cipherTransformation: "AES/GCM/NoPadding"
+        # -- Internal crypto provider implementation used for symmetric encryption.
+        internalCryptoProvider: "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider"
       userStore:
         # -- User store type. 
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
