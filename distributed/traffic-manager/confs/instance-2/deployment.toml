@@ -56,6 +56,13 @@ driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
 {{ $key }} = "{{ $value }}"
 {{- end }}
 
+[keystore]
+{{- if eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.KeyStoreBasedInternalCryptoProvider" }}
+userstore_password_encryption = "InternalKeyStore"
+{{- else }}
+userstore_password_encryption = ""
+{{- end }}
+
 {{- if .Values.wso2.apim.configurations.security.keystores.primary.enabled }}
 [keystore.primary]
 type = "JKS"
@@ -178,9 +185,28 @@ sp_name_regex = "^[\\sa-zA-Z0-9._-]*$"
 [database.local]
 url = "jdbc:h2:./repository/database/WSO2CARBON_DB;DB_CLOSE_ON_EXIT=FALSE"
 
+[system.parameter]
+"org.wso2.CipherTransformation" = {{ .Values.wso2.apim.configurations.encryption.cipherTransformation | quote }}
+
+[encryption]
+internal_crypto_provider = {{ .Values.wso2.apim.configurations.encryption.internalCryptoProvider | quote }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+{{- if and (eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider") (eq (trim .Values.wso2.apim.configurations.encryption.key) "") }}
+{{- fail "Encryption key is required when secureVault is enabled with symmetric encryption." }}
+{{- end }}
+key = "$secret{encryption_key}"
+{{- else if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.encryptionKeyKey }}
+key = "$env{WSO2_ENCRYPTION_KEY}"
+{{- else if ne (trim .Values.wso2.apim.configurations.encryption.key) "" }}
+key = {{ .Values.wso2.apim.configurations.encryption.key | quote }}
+{{- else if eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider" }}
+{{- fail "Encryption key is required for symmetric encryption. Configure one of: wso2.apim.configurations.encryption.key, wso2.apim.configurations.existingSecret.secretName + wso2.apim.configurations.existingSecret.encryptionKeyKey, or secureVault." }}
+{{- end }}
+
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 [secrets]
 admin_password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
+encryption_key = {{ .Values.wso2.apim.configurations.encryption.key | quote }}
 keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
 keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.keyPassword | quote }}
 ssl_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.password | quote }}

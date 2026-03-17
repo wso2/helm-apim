@@ -106,6 +106,13 @@ spec:
               name: {{ .Values.wso2.apim.configurations.existingSecret.secretName }}
               key:  {{ .Values.wso2.apim.configurations.existingSecret.sharedDBPasswordKey }}
         {{- end }}
+        {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.encryptionKeyKey (eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider") }}
+        - name: WSO2_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.existingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.existingSecret.encryptionKeyKey }}
+        {{- end }}
         {{- if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.primaryKeystorePasswordKey .Values.wso2.apim.configurations.security.jksExistingSecret.primaryKeystoreKeyPasswordKey }}
         - name: WSO2_PRIMARY_KEYSTORE_PASSWORD
           valueFrom:
