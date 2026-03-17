@@ -153,6 +153,8 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
   kubectl apply -f docs/assets/sample-gateway.yaml -n apim
   ```
 
+- Before running the Helm install command, edit `default_values.yaml` and set `wso2.apim.configurations.encryption.key` to a shared value that is used consistently across all API-M nodes.
+
 - Run the following command to deploy the Helm charts for the All-in-One HA:
 
   ```bash

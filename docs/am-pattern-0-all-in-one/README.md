@@ -87,6 +87,8 @@ If you want to try WSO2 API Manager with minimal configuration, you do not need 
   kubectl apply -f docs/assets/sample-gateway.yaml -n apim
   ```
 
+- Before running the Helm install command, edit `default_values.yaml` and set `wso2.apim.configurations.encryption.key` to a shared value that is used consistently across all API-M nodes.
+
 - Then deploy the Helm chart using the following command:
 
   ```bash
