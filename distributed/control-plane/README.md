@@ -148,7 +148,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.configurations.distributedThrottling | object | `{"corePoolSize":5,"enable":false,"keyvalueStore":{"blockWhenExhausted":true,"host":"","maxIdle":20,"maxTotal":20,"minEvictableIdleTimeMillis":3000,"minIdle":4,"password":"","port":6379,"testWhileIdle":true,"timeBetweenEvictionRunsMillis":1200,"user":""},"syncInterval":1,"type":"redis"}` | APIM distributed throttling configurations |
 | wso2.apim.configurations.encryption.cipherTransformation | string | `"AES/GCM/NoPadding"` | Symmetric cipher transformation. AES/GCM/NoPadding is used as the symmetric cipher transformation. |
 | wso2.apim.configurations.encryption.internalCryptoProvider | string | `"org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider"` | Internal crypto provider implementation used for symmetric encryption. |
-| wso2.apim.configurations.encryption.key | string | `""` | Symmetric encryption key shared by all nodes. Leave empty only if you want the runtime to auto-generate one. |
+| wso2.apim.configurations.encryption.key | string | `""` | Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup. |
 | wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","encryptionKeyKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
 | wso2.apim.configurations.existingSecret.encryptionKeyKey | string | `""` | Key in the existing secret that stores the symmetric encryption key |
 | wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |

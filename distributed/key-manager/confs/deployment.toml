@@ -157,6 +157,9 @@ event_listening_endpoints = [{{ range $index, $element := .Values.wso2.apim.conf
 [encryption]
 internal_crypto_provider = {{ .Values.wso2.apim.configurations.encryption.internalCryptoProvider | quote }}
 {{- if .Values.wso2.apim.secureVaultEnabled }}
+{{- if and (eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider") (eq (trim .Values.wso2.apim.configurations.encryption.key) "") }}
+{{- fail "Encryption key is required when secureVault is enabled with symmetric encryption." }}
+{{- end }}
 key = "$secret{encryption_key}"
 {{- else if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.encryptionKeyKey }}
 key = "$env{WSO2_ENCRYPTION_KEY}"

@@ -368,7 +368,7 @@ wso2:
     # TOML configurations
     configurations:
       encryption:
-        # -- Symmetric encryption key shared by all nodes. Need to be the same across all nodes in a deployment for proper functioning of encryption.
+        # -- Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup.
         key: ""
         # -- Symmetric cipher transformation. AES/GCM/NoPadding is used as the symmetric cipher transformation.
         cipherTransformation: "AES/GCM/NoPadding"

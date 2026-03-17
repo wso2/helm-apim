@@ -72,7 +72,7 @@ oc login <API server URL> -u <user> -p <password>
 kubectl create secret generic apim-keystore-secret --from-file=wso2carbon.jks --from-file=client-truststore.jks
 ```
 
-If secure vault is enabled, configure the cloud provider secret store used by your OpenShift environment as well. The default deployment uses the symmetric-key based secret resolution flow, so `secretEncryptionKey` must be available through the secret store integration to resolve encrypted secrets, including an encrypted internal encryption key, at runtime. If you explicitly use a keystore-based setup instead, make `internalKeystorePassword` available through the secret store integration.
+If secure vault is enabled, configure the cloud provider secret store used by your OpenShift environment as well. The default deployment uses the symmetric-key based secret resolution flow, so the provider-specific `secretEncryptionKey` entry must be available through the secret store integration to resolve encrypted secrets, including an encrypted internal encryption key, at runtime. If you explicitly use a keystore-based setup instead, configure the provider-specific keystore secret reference: `aws.secretsManager.secretIdentifiers.internalKeystorePassword` for AWS, `azure.keyVault.secretIdentifiers.internalKeystorePassword` for Azure, and `gcp.secretsManager.secret` for GCP.
 
 #### Clone helm-apim
 ```bash
@@ -121,7 +121,7 @@ Ex:
   - Change the DB related info(Type,URL, Credentials, etc.) and the container image related info(repositoy, digest, etc.) if needed in the values.yaml
 
   - Change the `wso2.apim.configurations.security.jksSecretName` to the secret name created earlier.
-  - Set the mandatory internal encryption key under `wso2.apim.configurations.encryption.key`. If you enable secure vault, configure `secretEncryptionKey` in the cloud provider secret store as the default symmetric-key based approach. Use `internalKeystorePassword` only if you explicitly choose a keystore-based setup instead.
+  - Set the mandatory internal encryption key under `wso2.apim.configurations.encryption.key`. If you enable secure vault, configure the provider-specific `secretEncryptionKey` entry in the cloud provider secret store as the default symmetric-key based approach.
 
 - Apply the helm chart using
  ```helm install <deoplyment-name> . -f default_values.yaml```
@@ -131,4 +131,4 @@ Ex:
 
 ## Distributed Setup
 
-Helm charts for distributed setup can be found inside the  ```apim-helm/distributed``` folder. In each chart, change the DB related info(Type,URL, Credentials, etc.) and the container image related info(repositoy, digest, etc.) if needed in the values.yaml. In addition, set the same mandatory internal encryption key under `wso2.apim.configurations.encryption.key` for every node. If secure vault is enabled, configure `secretEncryptionKey` in the cloud provider secret store as the default symmetric-key based approach. Use `internalKeystorePassword` only if you explicitly choose a keystore-based setup instead. Please refer deployment patterns section to find the suitable deployment pattern and follow the deployment guide to do the neccessary changes to the values.yaml.
+Helm charts for distributed setup can be found inside the  ```apim-helm/distributed``` folder. In each chart, change the DB related info(Type,URL, Credentials, etc.) and the container image related info(repositoy, digest, etc.) if needed in the values.yaml. In addition, set the same mandatory internal encryption key under `wso2.apim.configurations.encryption.key` for every node. If secure vault is enabled, configure the provider-specific `secretEncryptionKey` entry in the cloud provider secret store as the default symmetric-key based approach. Please refer deployment patterns section to find the suitable deployment pattern and follow the deployment guide to do the neccessary changes to the values.yaml.

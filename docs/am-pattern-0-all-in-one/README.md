@@ -254,11 +254,14 @@ This section is for the internal encryption key (`wso2.apim.configurations.encry
 - Then, the encrypted values should be filled in the relevant fields of `values.yaml`.
 - Since the encryption key is required to resolve the encrypted value at runtime, you need to store the value in the cloud provider's secret manager. You can use the cloud provider's secret store to store the encryption key. The following section can be used to add the cloud provider's credentials to fetch the encryption key. Configuration for AWS can be as below:
   ```yaml
-  secretEncryptionKey:
-    # -- AWS Secrets Manager secret name
-    secretName: ""
-    # -- AWS Secrets Manager secret key
-    secretKey: ""
+  aws:
+    secretsManager:
+      secretIdentifiers:
+        secretEncryptionKey:
+          # -- AWS Secrets Manager secret name
+          secretName: ""
+          # -- AWS Secrets Manager secret key
+          secretKey: ""
   ```
   > Please note that currently AWS, Azure, and GCP Secrets Managers are only supported for this.
 
