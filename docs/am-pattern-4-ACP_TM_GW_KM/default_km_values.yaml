@@ -80,7 +80,7 @@ gcp:
     projectId: ""
     # -- Secret provider class
     secretProviderClass: ""
-    # -- Symmetric encryption key identifier in keyvault
+    # -- Symmetric encryption key identifier in Secret Manager
     secretEncryptionKey:
       # -- Name of the encryption key secret
       secretName: ""

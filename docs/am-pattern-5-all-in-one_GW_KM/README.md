@@ -373,15 +373,15 @@ This section is for the internal encryption key (`wso2.apim.configurations.encry
 
 3. If secrets are encrypted using cipher tool and secure vault according to section 1.4, encrypt the generated internal encryption key and set the encrypted value to `wso2.apim.configurations.encryption.key`.
 
-> **Warning**
-> **Distributed and Cloud Deployments**
+> **Warning:**  
+> **Distributed and Cloud Deployments**  
 > In a distributed or high-availability deployment, all API Manager instances must use the exact same internal encryption key (`wso2.apim.configurations.encryption.key`). Each instance encrypts and decrypts shared registry resources using this key, so a mismatch will cause decryption failures across the cluster. Configure the shared key on every node before the first startup.
 
 #### 1.4 Encrypting Secrets (Cipher Tool and Secure Vault)
 
 - If you need to use the cipher tool to encrypt the passwords in the secret, first you need to encrypt the passwords using the cipher tool. The cipher tool can be found in the `bin` directory of the product pack. The following command can be used to encrypt the password:
   ```bash
-  sh cipher-tool.sh -Dconfigure -Dsymmetric -Dkey.based.encryption
+  sh ciphertool.sh -Dconfigure -Dsymmetric -Dkey.based.encryption
   ```
 - Also, the apictl can be used to encrypt passwords as well. Reference can be found in the [documentation](https://apim.docs.wso2.com/en/latest/install-and-setup/setup/api-controller/encrypting-secrets-with-ctl/).
 - Then, the encrypted values should be filled in the relevant fields of `values.yaml`.
@@ -398,11 +398,11 @@ This section is for the internal encryption key (`wso2.apim.configurations.encry
   ```
   > Please note that currently AWS, Azure, and GCP Secrets Managers are only supported for this.
 
-> **Warning**
-> **Use the Same Secret Encryption Key Across All Nodes**
+> **Warning:**  
+> **Use the Same Secret Encryption Key Across All Nodes**  
 > If secure vault is enabled, all API-M nodes must use the same `secretEncryptionKey` reference and underlying key material. A mismatch will cause secret resolution and decryption failures across nodes.
 
-> **Note**
+> **Note:**  
 > These are two different keys serving distinct purposes. The internal encryption key (`wso2.apim.configurations.encryption.key`) defined in section 1.3 is **mandatory** and is used by API Manager for internal encryption of data such as registry resources and shared configuration. The secret encryption key (`secretEncryptionKey` under AWS/Azure/GCP) is a separate key used **only** when secure vault is enabled, allowing the runtime to fetch and decrypt secrets stored in a cloud provider's secret manager (which may itself include an encrypted copy of the internal encryption key).
 
 #### 1.5 Configure Docker Image and Databases

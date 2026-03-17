@@ -121,7 +121,7 @@ Ex:
   - Change the DB related info(Type,URL, Credentials, etc.) and the container image related info(repositoy, digest, etc.) if needed in the values.yaml
 
   - Change the `wso2.apim.configurations.security.jksSecretName` to the secret name created earlier.
-  - Set the mandatory internal encryption key under `wso2.apim.configurations.encryption.key`. If you enable secure vault, configure the provider-specific `secretEncryptionKey` entry in the cloud provider secret store as the default symmetric-key based approach.
+  - If you use the symmetric internal encryption, set `wso2.apim.configurations.encryption.key`. If you enable secure vault for that flow, also configure the provider-specific `secretEncryptionKey` entry in the cloud provider secret store.
 
 - Apply the helm chart using
  ```helm install <deoplyment-name> . -f default_values.yaml```
@@ -131,4 +131,4 @@ Ex:
 
 ## Distributed Setup
 
-Helm charts for distributed setup can be found inside the  ```apim-helm/distributed``` folder. In each chart, change the DB related info(Type,URL, Credentials, etc.) and the container image related info(repositoy, digest, etc.) if needed in the values.yaml. In addition, set the same mandatory internal encryption key under `wso2.apim.configurations.encryption.key` for every node. If secure vault is enabled, configure the provider-specific `secretEncryptionKey` entry in the cloud provider secret store as the default symmetric-key based approach. Please refer deployment patterns section to find the suitable deployment pattern and follow the deployment guide to do the neccessary changes to the values.yaml.
+Helm charts for distributed setup can be found inside the  ```apim-helm/distributed``` folder. In each chart, change the DB related info(Type,URL, Credentials, etc.) and the container image related info(repositoy, digest, etc.) if needed in the values.yaml. In addition, if you use the symmetric internal encryption, set the same `wso2.apim.configurations.encryption.key` for every node. If secure vault is enabled for that flow, configure the provider-specific `secretEncryptionKey` entry in the cloud provider secret store. Please refer deployment patterns section to find the suitable deployment pattern and follow the deployment guide to do the neccessary changes to the values.yaml.
