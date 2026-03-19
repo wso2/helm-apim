@@ -156,8 +156,9 @@ event_listening_endpoints = [{{ range $index, $element := .Values.wso2.apim.conf
 
 [encryption]
 internal_crypto_provider = {{ .Values.wso2.apim.configurations.encryption.internalCryptoProvider | quote }}
+{{- if eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider" }}
 {{- if .Values.wso2.apim.secureVaultEnabled }}
-{{- if and (eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider") (eq (trim .Values.wso2.apim.configurations.encryption.key) "") }}
+{{- if eq (trim .Values.wso2.apim.configurations.encryption.key) "" }}
 {{- fail "Encryption key is required when secureVault is enabled with symmetric encryption." }}
 {{- end }}
 key = "$secret{encryption_key}"
@@ -165,14 +166,17 @@ key = "$secret{encryption_key}"
 key = "$env{WSO2_ENCRYPTION_KEY}"
 {{- else if ne (trim .Values.wso2.apim.configurations.encryption.key) "" }}
 key = {{ .Values.wso2.apim.configurations.encryption.key | quote }}
-{{- else if eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider" }}
+{{- else }}
 {{- fail "Encryption key is required for symmetric encryption. Configure one of: wso2.apim.configurations.encryption.key, wso2.apim.configurations.existingSecret.secretName + wso2.apim.configurations.existingSecret.encryptionKeyKey, or secureVault." }}
+{{- end }}
 {{- end }}
 
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 [secrets]
 admin_password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
+{{- if eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider" }}
 encryption_key = {{ .Values.wso2.apim.configurations.encryption.key | quote }}
+{{- end }}
 keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
 keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.keyPassword | quote }}
 ssl_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.password | quote }}
