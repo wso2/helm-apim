@@ -35,6 +35,9 @@ spec:
         deployment: {{ template "am-all-in-one.fullname" . }}-am
         node: {{ template "am-all-in-one.fullname" . }}-am-1
         product: apim
+        {{- if .Values.wso2.deployment.pod.labels }}
+        {{- toYaml .Values.wso2.deployment.pod.labels | nindent 8 }}
+        {{- end }}
     spec:
       affinity:
         podAntiAffinity:

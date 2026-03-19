@@ -385,6 +385,8 @@ wso2:
     pod:
       # -- Annotations for pods
       annotations: {}
+      # -- Labels for pods
+      labels: {}
 
     # Kubernetes RollingUpdate strategy configurations
     strategy:
