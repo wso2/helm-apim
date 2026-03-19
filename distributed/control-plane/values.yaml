@@ -610,6 +610,8 @@ wso2:
     pod:
       # -- Annotations for pods
       annotations: {}
+      # -- Labels for pods
+      labels: {}
 
     # -- Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed.
     # This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM.
