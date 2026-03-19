@@ -63,6 +63,8 @@ spec:
       {{- else if .Values.azure.enabled }}
       serviceAccount: {{ .Values.azure.serviceAccountName }}
       {{- end }}
+      {{- else if .Values.wso2.deployment.serviceAccountName }}
+      serviceAccount: {{ .Values.wso2.deployment.serviceAccountName }}
       {{- end }}
       securityContext:
         seccompProfile:
@@ -72,11 +74,18 @@ spec:
           {{- end }}
       {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
       imagePullSecrets:
-      - name: {{ template "apim-helm-tm.fullname" . }}-docker-registry-auth
-      {{- end }}
+        {{- if .Values.wso2.deployment.image.imagePullSecrets.enabled }}
+        - name: {{ template "apim-helm-tm.fullname" . }}-docker-registry-auth
+        {{- end }}
+        {{- if .Values.wso2.deployment.image.imagePullSecrets.secrets }}
+        {{- range .Values.wso2.deployment.image.imagePullSecrets.secrets }}
+        - name: {{ . }}
+        {{- end }}
+        {{- end }}
       containers:
       - name: wso2am-traffic-manager
-        image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
+        image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}{{ if .Values.wso2.deployment.image.tag }}:{{ .Values.wso2.deployment.image.tag }}{{ else }}@{{ .Values.wso2.deployment.image.digest }}{{ end }}
+
         imagePullPolicy: {{ .Values.wso2.deployment.image.imagePullPolicy }}
         env:
         - name: PROFILE_NAME
@@ -88,6 +97,12 @@ spec:
               fieldPath: status.podIP
         - name: JVM_MEM_OPTS
           value: "-Xms{{ .Values.wso2.deployment.resources.jvm.memory.xms }} -Xmx{{ .Values.wso2.deployment.resources.jvm.memory.xmx }}"
+        {{- if .Values.wso2.deployment.envs }}
+        {{- range $name, $value := .Values.wso2.deployment.envs }}
+        - name: {{ $name }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
         {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.adminPasswordKey }}
         - name: WSO2_ADMIN_PASSWORD
           valueFrom:
@@ -214,6 +229,12 @@ spec:
             protocol: "TCP"
           - containerPort: 5672
             protocol: "TCP"
+          {{- if .Values.wso2.apim.configurations.jmx.enabled }}
+          - containerPort: {{ .Values.wso2.apim.configurations.jmx.rmiRegistryPort }}
+            protocol: "TCP"
+          - containerPort: {{ .Values.wso2.apim.configurations.jmx.rmiServerPort }}
+            protocol: "TCP"
+          {{- end }}
         volumeMounts:
         - name: wso2am-traffic-manager-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml

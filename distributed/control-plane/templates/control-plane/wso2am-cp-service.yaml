@@ -26,3 +26,11 @@ spec:
     - name: servlet-https
       protocol: TCP
       port: {{ add 9443 .Values.wso2.apim.portOffset }}
+    {{- if .Values.wso2.apim.configurations.jmx.enabled }}
+    - name: jmx-rmi-registry
+      protocol: TCP
+      port: {{ .Values.wso2.apim.configurations.jmx.rmiRegistryPort }}
+    - name: jmx-rmi-server
+      protocol: TCP
+      port: {{ .Values.wso2.apim.configurations.jmx.rmiServerPort }}
+    {{- end }}

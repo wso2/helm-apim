@@ -197,12 +197,13 @@ type = "loadbalance"
 
 {{- if .Values.wso2.apim.configurations.eventhub.enabled }}
 [apim.event_hub]
-enable = true
+enable = {{ .Values.wso2.apim.configurations.eventhub.enabled }}
 username = "$ref{super_admin.username}"
 password = "$ref{super_admin.password}"
 service_url = "https://{{ .Values.wso2.apim.configurations.eventhub.serviceUrl }}:{{ .Values.wso2.apim.configurations.eventhub.servicePort }}/services/"
-{{- $len := add (len .Values.wso2.apim.configurations.eventhub.urls) -1 }}
-event_listening_endpoints = [{{ range $index, $element := .Values.wso2.apim.configurations.eventhub.urls }}"tcp://{{ $element }}:{{ add 5672 $.Values.wso2.apim.configurations.throttling.portOffset }}"{{ if ne $index $len }},{{ end }}{{ end}}]
+{{- $len := (len .Values.wso2.apim.configurations.eventhub.urls) }}
+{{- $len := (add $len -1) }}
+event_listening_endpoints = [{{ range $index, $element := .Values.wso2.apim.configurations.eventhub.urls }}"tcp://{{ $element }}"{{ if ne $index $len }},{{ end }}{{ end}}]
 {{- end }}
 
 [apim.analytics]
@@ -266,6 +267,12 @@ remote_tracer.hostname = {{ .Values.wso2.apim.configurations.openTelemetry.hostn
 remote_tracer.port = {{ .Values.wso2.apim.configurations.openTelemetry.port | quote }}
 {{- end }}
 
+{{- if .Values.wso2.apim.configurations.jmx.enabled }}
+[monitoring.jmx]
+rmi_registry_port = {{ .Values.wso2.apim.configurations.jmx.rmiRegistryPort }}
+rmi_server_port = {{ .Values.wso2.apim.configurations.jmx.rmiServerPort }}
+{{- end }}
+
 [transport.passthru_https.sender.parameters]
 HostnameVerifier = {{ .Values.wso2.apim.configurations.transport.passthru_https.sender.parameters.hostnameVerifier | quote }}
 
@@ -308,3 +315,4 @@ retry_progression_factor = {{ .Values.wso2.apim.configurations.gatewayNotificati
 {{- if .Values.wso2.apim.configurations.extraConfigs }}
 {{ .Values.wso2.apim.configurations.extraConfigs }}
 {{- end }}
+

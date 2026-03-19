@@ -56,7 +56,9 @@ spec:
                   - {{ template "apim-helm-km.fullname" . }}
               topologyKey: "topology.kubernetes.io/zone"
             weight: 100
-      {{- if .Values.wso2.apim.secureVaultEnabled }} 
+      {{- if .Values.wso2.deployment.serviceAccountName }}
+      serviceAccountName: {{ .Values.wso2.deployment.serviceAccountName }}
+      {{- else if .Values.wso2.apim.secureVaultEnabled }} 
       {{- if .Values.aws.enabled }}
       serviceAccount: {{ .Values.aws.serviceAccountName }}
       {{- else if .Values.gcp.enabled }}
@@ -71,13 +73,18 @@ spec:
           {{- if eq .Values.kubernetes.securityContext.seccompProfile.type "Localhost" }}
           localhostProfile: {{ .Values.kubernetes.securityContext.seccompProfile.localhostProfile }}
           {{- end }}
-      {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
       imagePullSecrets:
-      - name: {{ template "apim-helm-km.fullname" . }}-docker-registry-auth
-      {{- end }}
+        {{- if .Values.wso2.deployment.image.imagePullSecrets.enabled }}
+        - name: {{ template "apim-helm-cp.fullname" . }}-docker-registry-auth
+        {{- end }}
+        {{- if .Values.wso2.deployment.image.imagePullSecrets.secrets }}
+        {{- range .Values.wso2.deployment.image.imagePullSecrets.secrets }}
+        - name: {{ . }}
+        {{- end }}
+        {{- end }}
       containers:
       - name: wso2am-km
-        image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
+        image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}{{ if .Values.wso2.deployment.image.tag }}:{{ .Values.wso2.deployment.image.tag }}{{ else }}@{{ .Values.wso2.deployment.image.digest }}{{ end }}
         imagePullPolicy: {{ .Values.wso2.deployment.image.imagePullPolicy }}
         env:
         - name: PROFILE_NAME
@@ -89,6 +96,12 @@ spec:
               fieldPath: status.podIP
         - name: JVM_MEM_OPTS
           value: "-Xms{{ .Values.wso2.deployment.resources.jvm.memory.xms }} -Xmx{{ .Values.wso2.deployment.resources.jvm.memory.xmx }}"
+        {{- if .Values.wso2.deployment.envs }}
+        {{- range $name, $value := .Values.wso2.deployment.envs }}
+        - name: {{ $name }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
         {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.adminPasswordKey }}
         - name: WSO2_ADMIN_PASSWORD
           valueFrom:
@@ -153,6 +166,12 @@ spec:
               name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
               key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.truststorePasswordKey }}
         {{- end }}
+        {{- if .Values.wso2.deployment.envs }}
+        {{- range $name, $value := .Values.wso2.deployment.envs }}
+        - name: {{ $name }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
         livenessProbe:
           httpGet:
               path: /services/Version
@@ -200,6 +219,14 @@ spec:
           protocol: TCP
         - containerPort: {{ add 9443 .Values.wso2.apim.portOffset }}
           protocol: TCP
+        {{- if .Values.wso2.apim.configurations.jmx.enabled }}
+        - containerPort: {{ .Values.wso2.apim.configurations.jmx.rmiRegistryPort }}
+          name: jmx-registry
+          protocol: TCP
+        - containerPort: {{ .Values.wso2.apim.configurations.jmx.rmiServerPort }}
+          name: jmx-server
+          protocol: TCP
+        {{- end }}
         volumeMounts:
         - name: wso2am-km-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml

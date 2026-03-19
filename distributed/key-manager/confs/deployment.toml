@@ -161,3 +161,9 @@ shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.pas
 {{- if .Values.wso2.apim.configurations.extraConfigs }}
 {{ .Values.wso2.apim.configurations.extraConfigs }}
 {{- end }}
+
+{{- if .Values.wso2.apim.configurations.jmx.enabled }}
+[monitoring.jmx]
+rmi_registry_port = {{ .Values.wso2.apim.configurations.jmx.rmiRegistryPort }}
+rmi_server_port = {{ .Values.wso2.apim.configurations.jmx.rmiServerPort }}
+{{- end }}

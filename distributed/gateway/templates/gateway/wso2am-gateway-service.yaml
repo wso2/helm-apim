@@ -40,7 +40,15 @@ spec:
       port: {{ add 8099 .Values.wso2.apim.portOffset }}
     - name: websub
       protocol: TCP
-      port: {{ add 9021 .Values.wso2.apim.portOffset }}
+      port: 8081
+    {{- if .Values.wso2.apim.configurations.jmx.enabled }}
+    - name: jmx-rmi-registry
+      protocol: TCP
+      port: {{ .Values.wso2.apim.configurations.jmx.rmiRegistryPort }}
+    - name: jmx-rmi-server
+      protocol: TCP
+      port: {{ .Values.wso2.apim.configurations.jmx.rmiServerPort }}
+    {{- end }}
     - name: websub-secure
       protocol: TCP
       port: {{ add 8021 .Values.wso2.apim.portOffset }}

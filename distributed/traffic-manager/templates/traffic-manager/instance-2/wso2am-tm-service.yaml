@@ -34,4 +34,12 @@ spec:
     - name: servlet-https
       protocol: TCP
       port: 9443
+    {{- if .Values.wso2.apim.configurations.jmx.enabled }}
+    - name: jmx-registry-port
+      protocol: TCP
+      port: {{ .Values.wso2.apim.configurations.jmx.rmiRegistryPort }}
+    - name: jmx-server-port
+      protocol: TCP
+      port: {{ .Values.wso2.apim.configurations.jmx.rmiServerPort }}
+    {{- end }}
 {{- end }}

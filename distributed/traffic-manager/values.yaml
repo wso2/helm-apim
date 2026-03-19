@@ -125,10 +125,31 @@ wso2:
     secureVaultEnabled: false
     # Logging related configurations
     log4j2:
-        # -- Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE
+        # -- Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE or loggers defined in loggersConfig. This should be a comma separated string. For example, if you want to enable audit log and http access log in the console, you can specify the following:
         loggers: ""
-        # -- Appenders
+        # example
+        # loggers: "AUDIT_LOG_CONSOLE,HTTP_ACCESS_CONSOLE, gateway-debug"
+        # -- Custom loggers that can be added to log4j2.properties. This should be in the format of log4j2 properties file without the Loggers/Appenders/Properties sections. For example, if you want to add a logger named "gateway-debug" with DEBUG level, you can specify the following:
+        loggersConfig: ""        
+        # example
+        # loggersConfig: |
+        #   # -- Add custom loggers to log4j2.properties. This will be added under the Loggers section of log4j2.properties
+        #   logger.gateway-debug.name = org.wso2.carbon.apimgt.gateway
+        #   logger.gateway-debug.level = DEBUG
+
+        # -- Appenders that can be enabled. Allowed values are appenders defined in appendersConfig. This should be a comma separated string. For example, if you want to enable a file appender named "GatewayFileAppender", you can specify the following:
+        # appenders: "GatewayFileAppender"
         appenders: ""
+
+        # -- Custom appenders that can be added to log4j2.properties. This should be in the format of log4j2 properties file without the Loggers/Appenders/Properties sections. For example, if you want to add a file appender named "GatewayFileAppender" that logs gateway logs to a file, you can specify the following:
+        # appendersConfig: |
+        #   # -- Add custom appenders to log4j2.properties. This will be added under the Appenders section of log4j2.properties
+        #   appender.GatewayFileAppender.type = File
+        #   appender.GatewayFileAppender.name = GatewayFileAppender
+        #   appender.GatewayFileAppender.fileName = /home/wso2carbon/logs/gateway.log
+        #   appender.GatewayFileAppender.layout.type = PatternLayout
+        #   appender.GatewayFileAppender.layout.pattern = [%d] %p %c - %m%n
+        appendersConfig: ""
     # -- Startup arguments for APIM
     startupArgs: ""
     # -- Startup script mount status
@@ -142,7 +163,7 @@ wso2:
         apimDBPasswordKey: "" # e.g apimDBPassword
         sharedDBPasswordKey: "" # e.g sharedDBPassword
       userStore:
-        # -- User store type. 
+        # -- User store type.
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
         type: "database_unique_id"
         # -- User store properties
@@ -250,7 +271,7 @@ wso2:
         # -- Key manager service name if default Resident KM is used
         serviceUrl: "wso2am-cp-service"
         # -- Key Manager service port
-        servicePort: 9443        
+        servicePort: 9443
 
       iskm:
         # If Identity Server is used as the Resident KM
@@ -261,10 +282,12 @@ wso2:
       eventhub:
         # -- Event hub (control plane) loadbalancer service url
         serviceUrl: "wso2am-cp-service"
+        # -- Key Manager service port
+        servicePort: 9443
         # -- Event hub service urls
         urls:
-          - "wso2am-cp-1-service"
-          - "wso2am-cp-2-service"
+          - "wso2am-cp-1-service:5672"
+          - "wso2am-cp-2-service:5672"
 
       # APIM OAuth configurations
       oauth_config:
@@ -295,6 +318,11 @@ wso2:
         hostname: ""
         # -- Remote tracer port
         port: ""
+      # JMX
+      jmx:
+        enabled: false
+        rmiRegistryPort: 9999
+        rmiServerPort: 11111
 
       # -- APIM distributed throttling configurations
       distributedThrottling:
@@ -322,8 +350,10 @@ wso2:
     # Container image configurations
     image:
       # -- Container registry credentials.
-      # Specify image pull secrets for private registries
-      imagePullSecrets:
+      imagePullSecrets: 
+        # -- Specify image pull secrets for private registries
+        secrets: []
+        # -- Specify private registry credentials (upload credentials to values is not recommended)
         enabled: false
         username: ""
         password: ""
@@ -331,6 +361,8 @@ wso2:
       registry: ""
       # -- Azure ACR repository name consisting the image
       repository: ""
+      # -- Docker image tag: if specified, digest is ignored
+      tag: ""
       # -- Docker image digest
       digest: ""
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
@@ -355,6 +387,12 @@ wso2:
           xms: "2048m"
           # -- JVM heap memory Xmx
           xmx: "2048m"
+
+    # Custom environment variables for the container
+    envs: {}
+    # envs:
+    #   TZ: "Europe/Paris"
+    #   OTEL_RESOURCE_ATTRIBUTES: "deployment.environment=Production,service.name=MyService"
 
     # Kubernetes Probes
     # Indicates whether the container starting
@@ -412,3 +450,6 @@ wso2:
     # -- Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed.
     # This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM.
     highAvailability: true
+
+    # -- Use a kubernetes serviceAccount. If empty will use default sa.
+    serviceAccountName: ""
