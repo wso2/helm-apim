@@ -186,6 +186,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.deployment.minReplicas | int | `2` | Minimum replicas for HPA |
 | wso2.deployment.nodeSelector | string | `nil` | Node selector to deploy pod in selected node. Add label to the node and specify the label here. |
 | wso2.deployment.pod.annotations | object | `{}` | Annotations for pods |
+| wso2.deployment.pod.labels | object | `{}` | Labels for pods |
 | wso2.deployment.readinessProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.readinessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before readiness probes are initiated |
 | wso2.deployment.readinessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
