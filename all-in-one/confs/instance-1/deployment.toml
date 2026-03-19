@@ -322,7 +322,7 @@ claims_extractor_impl = {{ .Values.wso2.apim.configurations.jwt.claimsExtractorI
 {{- end }}
 
 [apim.oauth_config]
-remove_outbound_auth_header = {{ .Values.wso2.apim.configurations.oauth_config.removeOutboundAuthHeader }}
+enable_outbound_auth_header = {{ .Values.wso2.apim.configurations.oauth_config.enableOutboundAuthHeader }}
 auth_header = {{ .Values.wso2.apim.configurations.oauth_config.authHeader | quote }}
 revoke_endpoint = {{ .Values.wso2.apim.configurations.oauth_config.revokeEndpoint | quote }}
 enable_token_encryption = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenEncryption }}
