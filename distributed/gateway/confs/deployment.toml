@@ -1,5 +1,5 @@
 [server]
-hostname = "{{ .Values.kubernetes.ingress.gateway.hostname }}"
+hostname = "{{- if .Values.kubernetes.ingress.enabled -}}{{ .Values.kubernetes.ingress.gateway.hostname }}{{- else -}}{{ .Values.kubernetes.gatewayAPI.gateway.hostname }}{{- end -}}"
 node_ip = "$env{NODE_IP}"
 server_role = "gateway-worker"
 offset = {{ .Values.wso2.apim.portOffset }}
