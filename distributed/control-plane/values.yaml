@@ -171,6 +171,45 @@ kubernetes:
         nginx.ingress.kubernetes.io/session-cookie-name: "route"
         nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
 
+  # -- Kubernetes Gateway API configurations (alternative to Ingress)
+  # Requires Gateway API CRDs to be installed in the cluster
+  # The Gateway resource must be created externally before deploying this chart
+  # See docs/assets/gateway.sample-gateway.yaml for an example Gateway manifest
+  gatewayAPI:
+    # -- Enable Gateway API resources (HTTPRoutes and policies)
+    enabled: false
+    # -- Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
+    # This Gateway must exist in the same namespace before installing the chart
+    gatewayName: ""
+    # -- Create CA certificate ConfigMap for BackendTLSPolicy
+    defaultConfigMapCreation: false
+    controlPlane:
+      # -- Enable HTTPRoute for Control Plane
+      enabled: false
+      # -- Hostname for Control Plane
+      hostname: "am.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    # -- Backend TLS Policy for HTTPS backend connections
+    backendTLSPolicy:
+      # -- Enable BackendTLSPolicy
+      enabled: false
+      # -- CA certificate ConfigMap name for backend TLS verification
+      caCertificateConfigMap: ""
+      # -- Backend hostname for TLS verification
+      hostname: ""
+    # -- Backend Traffic Policy for cookie-based session affinity
+    # Requires Envoy Gateway controller support for BackendTrafficPolicy
+    backendTrafficPolicy:
+      # -- Enable BackendTrafficPolicy
+      enabled: false
+      cookie:
+        # -- Cookie name used for sticky sessions
+        name: "WSO2_CP_STICKY_SESSION"
+        # -- Cookie TTL. Use "0s" for a session cookie (expires when browser closes)
+        ttl: "0s"
   securityContext:
     # -- User ID of the container
     runAsUser: 10001

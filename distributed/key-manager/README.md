@@ -40,9 +40,20 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
-| kubernetes.ingress.km.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
+| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"enabled":false,"gatewayName":"","km":{"annotations":{},"enabled":false,"filters":[],"hostname":"km.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See docs/assets/sample-gateway.yaml for an example Gateway manifest |
+| kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateConfigMap":"","enabled":false,"hostname":""}` | Backend TLS Policy for HTTPS backend connections |
+| kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap | string | `""` | CA certificate ConfigMap name for backend TLS verification |
+| kubernetes.gatewayAPI.backendTLSPolicy.enabled | bool | `false` | Enable BackendTLSPolicy |
+| kubernetes.gatewayAPI.backendTLSPolicy.hostname | string | `""` | Backend hostname for TLS verification |
+| kubernetes.gatewayAPI.enabled | bool | `false` | Enable Gateway API resources (HTTPRoutes and policies) |
+| kubernetes.gatewayAPI.gatewayName | string | `""` | Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed) This Gateway must exist in the same namespace before installing the chart |
+| kubernetes.gatewayAPI.km.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.km.enabled | bool | `false` | Enable HTTPRoute for Key Manager |
+| kubernetes.gatewayAPI.km.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.km.hostname | string | `"km.wso2.com"` | Hostname for Key Manager |
+| kubernetes.ingress.km.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Key Manager pass-through |
 | kubernetes.ingress.km.enabled | bool | `true` | Enable ingress for Key Manager |
-| kubernetes.ingress.km.hostname | string | `"km.wso2.com"` | Ingress hostname for Gateway pass-through |
+| kubernetes.ingress.km.hostname | string | `"km.wso2.com"` | Ingress hostname for Key Manager pass-through |
 | kubernetes.ingress.ratelimit.burstLimit | string | `""` | Ingress ratelimit burst limit |
 | kubernetes.ingress.ratelimit.enabled | bool | `false` | Ingress rate limit |
 | kubernetes.ingress.ratelimit.zoneName | string | `""` | Ingress ratelimit zone name |
