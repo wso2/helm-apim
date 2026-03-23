@@ -156,7 +156,7 @@ websub_event_receiver_http_endpoint = "http://{{ $vhostenv.websubHostname }}"
 websub_event_receiver_https_endpoint = "https://{{ $vhostenv.websubHostname }}"
 {{ end }}
 
-{{ end }}
+{{- end }}
 
 [apim.key_manager]
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
@@ -450,4 +450,3 @@ identity_server_base_url = {{ .Values.wso2.apim.configurations.tenantSharing.pro
 {{- if .Values.wso2.apim.configurations.extraConfigs }}
 {{ .Values.wso2.apim.configurations.extraConfigs }}
 {{- end }}
-

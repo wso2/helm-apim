@@ -94,12 +94,6 @@ spec:
               fieldPath: status.podIP
         - name: JVM_MEM_OPTS
           value: "-Xms{{ .Values.wso2.deployment.resources.jvm.memory.xms }} -Xmx{{ .Values.wso2.deployment.resources.jvm.memory.xmx }}"
-        {{- if .Values.wso2.deployment.envs }}
-        {{- range $name, $value := .Values.wso2.deployment.envs }}
-        - name: {{ $name }}
-          value: {{ $value | quote }}
-        {{- end }}
-        {{- end }}
         {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.adminPasswordKey }}
         - name: WSO2_ADMIN_PASSWORD
           valueFrom:
@@ -164,6 +158,12 @@ spec:
               name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
               key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.truststorePasswordKey }}
         {{- end }}
+        {{- if .Values.wso2.deployment.envs }}
+        {{- range $name, $value := .Values.wso2.deployment.envs }}
+        - name: {{ $name }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
         startupProbe:
           exec:
             command:
@@ -226,6 +226,12 @@ spec:
             protocol: "TCP"
           - containerPort: 5672
             protocol: "TCP"
+          {{- if .Values.wso2.apim.configurations.jmx.enabled }}
+          - containerPort: {{ .Values.wso2.apim.configurations.jmx.rmiRegistryPort }}
+            protocol: "TCP"
+          - containerPort: {{ .Values.wso2.apim.configurations.jmx.rmiServerPort }}
+            protocol: "TCP"
+          {{- end }}
         volumeMounts:
         - name: wso2am-traffic-manager-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml

@@ -144,6 +144,12 @@ service_url = "https://{{ .Values.wso2.apim.configurations.eventhub.serviceUrl }
 {{- $len := add (len .Values.wso2.apim.configurations.eventhub.urls) -1 }}
 event_listening_endpoints = [{{ range $index, $element := .Values.wso2.apim.configurations.eventhub.urls }}"tcp://{{ $element }}:5672"{{ if ne $index $len }},{{ end }}{{ end}}]
 
+{{- if .Values.wso2.apim.configurations.jmx.enabled }}
+[monitoring.jmx]
+rmi_registry_port = {{ .Values.wso2.apim.configurations.jmx.rmiRegistryPort }}
+rmi_server_port = {{ .Values.wso2.apim.configurations.jmx.rmiServerPort }}
+{{- end }}
+
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 [secrets]
 admin_password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
@@ -160,10 +166,4 @@ shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.pas
 
 {{- if .Values.wso2.apim.configurations.extraConfigs }}
 {{ .Values.wso2.apim.configurations.extraConfigs }}
-{{- end }}
-
-{{- if .Values.wso2.apim.configurations.jmx.enabled }}
-[monitoring.jmx]
-rmi_registry_port = {{ .Values.wso2.apim.configurations.jmx.rmiRegistryPort }}
-rmi_server_port = {{ .Values.wso2.apim.configurations.jmx.rmiServerPort }}
 {{- end }}
