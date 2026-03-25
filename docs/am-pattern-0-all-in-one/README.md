@@ -95,6 +95,8 @@ If you want to try WSO2 API Manager with minimal configuration, you do not need 
   helm install apim wso2/wso2am-all-in-one --version 4.7.0 -f default_values.yaml -n apim
   ```
 
+> **Note:** The minimal configuration uses a default ConfigMap. However, for production deployments, it is recommended to create your own.
+
 The Helm chart uses Gateway API by default. If you prefer Ingress instead, follow the steps outlined in [1.1 Add Gateway API controller or Ingress controller](#11-add-gateway-api-controller-or-ingress-controller) to configure and enable it.
 
 ## Configuration
@@ -147,7 +149,8 @@ It is advisable to use the Gateway API with Envoy Gateway instead of NGINX Ingre
   Ensure that the hostnames and Gateway name in your created Gateway manifest match those configured in your Helm chart values. Additionally the TLS secret created above should be correctly referenced in the listeners of the Gateway resource for TLS termination.
 
 - Create a ConfigMap containing the CA certificate for backend TLS verification and reference it under `backendTLSPolicy.caCertificateConfigMap` in the Helm chart values. This is required if you have enabled backend TLS verification in the Gateway configuration.
-  
+  > **Note:** A default ConfigMap with the name `wso2-ca-cert` is created when the `defaultConfigMapCreation` option is enabled in the values.yaml. However, for production deployments, it is recommended to create and manage the ConfigMap with the CA certificate yourself, and set `defaultConfigMapCreation` to false
+
   ```bash
   kubectl create configmap wso2-ca-cert --from-file=ca.crt=/path/to/your/certificate.pem -n <namespace>
   ```
