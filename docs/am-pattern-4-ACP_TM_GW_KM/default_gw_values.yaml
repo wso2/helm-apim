@@ -392,7 +392,7 @@ wso2:
       # APIM OAuth configurations
       oauth_config:
         # -- Remove oauth header from outgoing requests
-        removeOutboundAuthHeader: true
+        enableOutboundAuthHeader: false
         # -- OAuth authorization header name
         authHeader: "Authorization"
         # -- Enable token encryption
