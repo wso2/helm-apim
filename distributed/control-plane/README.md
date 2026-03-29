@@ -68,6 +68,22 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
+| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"backendTrafficPolicy":{"cookie":{"name":"WSO2_CP_STICKY_SESSION","ttl":"0s"},"enabled":false},"controlPlane":{"annotations":{},"enabled":false,"filters":[],"hostname":"am.wso2.com"},"defaultConfigMapCreation":false,"enabled":false,"gatewayName":""}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See docs/assets/gateway.sample-gateway.yaml for an example Gateway manifest |
+| kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateConfigMap":"","enabled":false,"hostname":""}` | Backend TLS Policy for HTTPS backend connections |
+| kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap | string | `""` | CA certificate ConfigMap name for backend TLS verification |
+| kubernetes.gatewayAPI.backendTLSPolicy.enabled | bool | `false` | Enable BackendTLSPolicy |
+| kubernetes.gatewayAPI.backendTLSPolicy.hostname | string | `""` | Backend hostname for TLS verification |
+| kubernetes.gatewayAPI.backendTrafficPolicy | object | `{"cookie":{"name":"WSO2_CP_STICKY_SESSION","ttl":"0s"},"enabled":false}` | Backend Traffic Policy for cookie-based session affinity Requires Envoy Gateway controller support for BackendTrafficPolicy |
+| kubernetes.gatewayAPI.backendTrafficPolicy.cookie.name | string | `"WSO2_CP_STICKY_SESSION"` | Cookie name used for sticky sessions |
+| kubernetes.gatewayAPI.backendTrafficPolicy.cookie.ttl | string | `"0s"` | Cookie TTL. Use "0s" for a session cookie (expires when browser closes) |
+| kubernetes.gatewayAPI.backendTrafficPolicy.enabled | bool | `false` | Enable BackendTrafficPolicy |
+| kubernetes.gatewayAPI.controlPlane.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.controlPlane.enabled | bool | `false` | Enable HTTPRoute for Control Plane |
+| kubernetes.gatewayAPI.controlPlane.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.controlPlane.hostname | string | `"am.wso2.com"` | Hostname for Control Plane |
+| kubernetes.gatewayAPI.defaultConfigMapCreation | bool | `false` | Create CA certificate ConfigMap for BackendTLSPolicy |
+| kubernetes.gatewayAPI.enabled | bool | `false` | Enable Gateway API resources (HTTPRoutes and policies) |
+| kubernetes.gatewayAPI.gatewayName | string | `""` | Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed) This Gateway must exist in the same namespace before installing the chart |
 | kubernetes.ingress.controlPlane.annotations | object | `{"nginx.ingress.kubernetes.io/affinity":"cookie","nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/session-cookie-hash":"sha1","nginx.ingress.kubernetes.io/session-cookie-name":"route"}` | Ingress annotations |
 | kubernetes.ingress.controlPlane.enabled | bool | `true` | Enable ingress for Control Plane |
 | kubernetes.ingress.controlPlane.hostname | string | `"am.wso2.com"` | Ingress hostname |
