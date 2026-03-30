@@ -180,6 +180,9 @@ spec:
           initialDelaySeconds: {{ .Values.wso2.deployment.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.wso2.deployment.livenessProbe.periodSeconds }}
           failureThreshold: {{ .Values.wso2.deployment.livenessProbe.failureThreshold }}
+        {{- $deployment := .Values.wso2.deployment | default dict }}
+        {{- $lifecycle := get $deployment "lifecycle" | default dict }}
+        {{- $preStopHook := get $lifecycle "preStopHook" | default dict }}
         lifecycle:
           preStop:
             exec:
@@ -188,7 +191,7 @@ spec:
                 - "-c"
                 - >
                   echo "Pre stop hook triggered";
-                  sleep {{ .Values.wso2.deployment.lifecycle.preStopHook.sleepSeconds }};
+                  sleep {{ get $preStopHook "sleepSeconds" | default 10 }};
                   echo "Shutdown APIM Server";
                   ${WSO2_SERVER_HOME}/bin/key-manager.sh stop
         resources:

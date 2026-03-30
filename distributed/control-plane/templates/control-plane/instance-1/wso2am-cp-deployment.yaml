@@ -68,7 +68,6 @@ spec:
           {{- if eq .Values.kubernetes.securityContext.seccompProfile.type "Localhost" }}
           localhostProfile: {{ .Values.kubernetes.securityContext.seccompProfile.localhostProfile }}
           {{- end }}
-      {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
       imagePullSecrets:
       {{- if .Values.wso2.deployment.image.imagePullSecrets.enabled }}
       - name: {{ template "apim-helm-cp.fullname" . }}-docker-registry-auth

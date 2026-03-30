@@ -418,5 +418,11 @@ wso2:
     # -- Use a kubernetes serviceAccount. If empty will use default sa.
     serviceAccountName: ""
 
+    # -- Lifecycle hook settings
+    lifecycle:
+      preStopHook:
+        # -- Seconds to wait before stopping Key Manager
+        sleepSeconds: 10
+
     # -- Enable high availability for key manager. If this is enabled, two key manager replicas will be deployed.
     highAvailability: false
