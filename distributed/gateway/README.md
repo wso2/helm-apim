@@ -1,6 +1,6 @@
 # wso2am-universal-gw
 
-![Version: 4.6.0-1](https://img.shields.io/badge/Version-4.6.0--1-informational?style=flat-square) ![AppVersion: 4.6.0](https://img.shields.io/badge/AppVersion-4.6.0-informational?style=flat-square)
+![Version: 4.7.0](https://img.shields.io/badge/Version-4.7.0-informational?style=flat-square) ![AppVersion: 4.7.0](https://img.shields.io/badge/AppVersion-4.7.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 
@@ -10,6 +10,9 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 |-----|------|---------|-------------|
 | aws.enabled | bool | `false` | If AWS is used as the cloud provider |
 | aws.region | string | `""` | AWS region |
+| aws.secretsManager.secretIdentifiers.secretEncryptionKey | object | `{"secretKey":"","secretName":""}` | Symmetric encryption key identifier in secrets manager |
+| aws.secretsManager.secretIdentifiers.secretEncryptionKey.secretKey | string | `""` | AWS Secrets Manager secret key |
+| aws.secretsManager.secretIdentifiers.secretEncryptionKey.secretName | string | `""` | AWS Secrets Manager secret name |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword | object | `{"secretKey":"","secretName":""}` | Internal keystore password identifier in secrets manager |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey | string | `""` | AWS Secrets Manager secret key |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretName | string | `""` | AWS Secrets Manager secret name |
@@ -24,11 +27,14 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | azure.keyVault.name | string | `""` | Azure Key vault used for credential management |
 | azure.keyVault.resourceManager.resourceGroup | string | `""` | Name of the Azure Resource Group to which the target Azure Key Vault belongs |
 | azure.keyVault.resourceManager.subscriptionId | string | `""` | Subscription ID of the target Azure Key Vault |
+| azure.keyVault.secretIdentifiers.secretEncryptionKey | string | `""` | Symmetric encryption key identifier in keyvault |
 | azure.keyVault.secretIdentifiers.internalKeystoreKeyPassword | string | `""` | Internal keystore key password identifier in keyvault |
 | azure.keyVault.secretIdentifiers.internalKeystorePassword | string | `""` | Internal keystore password identifier in keyvault |
 | azure.keyVault.secretProviderClass | string | `"wso2am-gw-secret-provider-class"` | Azure Key vault secret provider class name |
 | gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
-| gcp.secretsManager | object | `{"projectId":"","secret":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
+| gcp.secretsManager | object | `{"secretEncryptionKey":{"secretName":"","secretVersion":""},"projectId":"","secret":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
+| gcp.secretsManager.secretEncryptionKey.secretName | string | `""` | Name of the encryption key secret |
+| gcp.secretsManager.secretEncryptionKey.secretVersion | string | `""` | Version of the encryption key secret |
 | gcp.secretsManager.projectId | string | `""` | Project ID |
 | gcp.secretsManager.secret.secretName | string | `""` | Name of the secret |
 | gcp.secretsManager.secret.secretVersion | string | `""` | Version of the secret  |
@@ -38,20 +44,40 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
+| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"enabled":true,"gateway":{"annotations":{},"enabled":true,"filters":[],"hostname":"gw.wso2.com"},"gatewayName":"","websocket":{"annotations":{},"enabled":true,"filters":[],"hostname":"websocket.wso2.com"},"websub":{"annotations":{},"enabled":true,"filters":[],"hostname":"websub.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See docs/assets/sample-gateway.yaml for an example Gateway manifest |
+| kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateConfigMap":"","enabled":false,"hostname":""}` | Backend TLS Policy for HTTPS backend connections |
+| kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap | string | `""` | CA certificate ConfigMap name for backend TLS verification |
+| kubernetes.gatewayAPI.backendTLSPolicy.enabled | bool | `false` | Enable BackendTLSPolicy |
+| kubernetes.gatewayAPI.backendTLSPolicy.hostname | string | `""` | Backend hostname for TLS verification |
+| kubernetes.gatewayAPI.enabled | bool | `true` | Enable Gateway API resources (HTTPRoutes and policies) |
+| kubernetes.gatewayAPI.gateway.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.gateway.enabled | bool | `true` | Enable HTTPRoute for Gateway pass-through |
+| kubernetes.gatewayAPI.gateway.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.gateway.hostname | string | `"gw.wso2.com"` | Hostname for Gateway pass-through |
+| kubernetes.gatewayAPI.gatewayName | string | `""` | Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed) This Gateway must exist in the same namespace before installing the chart |
+| kubernetes.gatewayAPI.websocket.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.websocket.enabled | bool | `true` | Enable HTTPRoute for Websocket |
+| kubernetes.gatewayAPI.websocket.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.websocket.hostname | string | `"websocket.wso2.com"` | Hostname for Websocket |
+| kubernetes.gatewayAPI.websub.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.websub.enabled | bool | `true` | Enable HTTPRoute for Websub |
+| kubernetes.gatewayAPI.websub.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.websub.hostname | string | `"websub.wso2.com"` | Hostname for Websub |
 | kubernetes.ingress.gateway.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
-| kubernetes.ingress.gateway.enabled | bool | `true` | Enable ingress for Gateway |
+| kubernetes.ingress.gateway.enabled | bool | `false` | Enable ingress for Gateway |
 | kubernetes.ingress.gateway.hostname | string | `"gw.wso2.com"` | Ingress hostname for Gateway pass-through |
 | kubernetes.ingress.ratelimit.burstLimit | string | `""` | Ingress ratelimit burst limit |
 | kubernetes.ingress.ratelimit.enabled | bool | `false` | Ingress rate limit |
 | kubernetes.ingress.ratelimit.zoneName | string | `""` | Ingress ratelimit zone name |
 | kubernetes.ingress.tlsSecret | string | `""` | Kubernetes secret created for Ingress TLS |
 | kubernetes.ingress.websocket.annotations | string | `nil` | Ingress annotations for Websocket |
-| kubernetes.ingress.websocket.enabled | bool | `true` | Enable ingress for Websocket |
+| kubernetes.ingress.websocket.enabled | bool | `false` | Enable ingress for Websocket |
 | kubernetes.ingress.websocket.hostname | string | `"websocket.wso2.com"` | Ingress hostname for Websocket |
 | kubernetes.ingress.websub.annotations | string | `nil` | Ingress annotations for Websub |
-| kubernetes.ingress.websub.enabled | bool | `true` | Enable ingress for Websub |
+| kubernetes.ingress.websub.enabled | bool | `false` | Enable ingress for Websub |
 | kubernetes.ingress.websub.hostname | string | `"websub.wso2.com"` | Ingress hostname for Websub |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
+| kubernetes.openshift | object | `{"enabled":false}` | When deploying on OpenShift. |
 | kubernetes.route | object | `{"gateway":{"annotations":null,"enabled":false,"hostname":"gw.wso2.com"},"tls":{"certificate":"","destinationCACertificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"},"websocket":{"annotations":null,"enabled":false,"hostname":"websocket.wso2.com"},"websub":{"annotations":null,"enabled":false,"hostname":"websub.wso2.com"}}` | OpenShift Route configurations |
 | kubernetes.route.gateway.annotations | string | `nil` | Route annotations for Gateway pass-through |
 | kubernetes.route.gateway.enabled | bool | `false` | Enable route for Gateway |
@@ -101,7 +127,12 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.configurations.eventhub.servicePort | int | `9443` | Event hub (control plane) service port |
 | wso2.apim.configurations.eventhub.serviceUrl | string | `"wso2am-cp-service"` | Event hub (control plane) loadbalancer service url |
 | wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
-| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.encryption.cipherTransformation | string | `"AES/GCM/NoPadding"` | Symmetric cipher transformation. AES/GCM/NoPadding is used as the symmetric cipher transformation. |
+| wso2.apim.configurations.encryption.internalCryptoProvider | string | `"org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider"` | Internal crypto provider implementation used for symmetric encryption. |
+| wso2.apim.configurations.encryption.key | string | `""` | Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup. |
+| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","encryptionKeyKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.existingSecret.encryptionKeyKey | string | `""` | Key in the existing secret that stores the symmetric encryption key |
+| wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.gatewayNotification.deploymentAck.batchInterval | string | `"2s"` |  |
 | wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorKeepAlive | string | `"1m"` |  |
 | wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorMaxThread | int | `8` |  |
@@ -181,13 +212,11 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.log4j2.loggers | string | `""` | Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE |
 | wso2.apim.mountStartupScript | bool | `false` | Startup script mount status |
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
-| wso2.apim.secureVaultEnabled | bool | `false` | Secure vauld enabled |
+| wso2.apim.secureVaultEnabled | bool | `false` | Secure vault enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
-| wso2.apim.version | string | `"4.6.0"` | APIM version |
-| wso2.choreoAnalytics | object | `{"enabled":false,"endpoint":"","onpremKey":""}` | WSO2 Choreo Analytics Parameters If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/). |
-| wso2.choreoAnalytics.endpoint | string | `""` | Choreo Analytics cloud service endpoint |
-| wso2.choreoAnalytics.onpremKey | string | `""` | On-premise key for Choreo Analytics |
+| wso2.apim.version | string | `"4.7.0"` | APIM version |
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
+| wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
 | wso2.deployment.image.imagePullSecrets | object | `{"enabled":false,"password":"","username":""}` | Container registry credentials. Specify image pull secrets for private registries |
@@ -218,7 +247,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
 | wso2.deployment.strategy.rollingUpdate.maxSurge | int | `2` |  |
 | wso2.deployment.strategy.rollingUpdate.maxUnavailable | int | `0` |  |
-| wso2.moesifAnalytics | object | `{"enabled":true,"key":"YOUR_MOESIF_API_KEY_HERE","moesif_base_url":"https://api.moesif.net","send_headers":false}` | Moesif Analytics Parameters |
+| wso2.moesifAnalytics | object | `{"enabled":false,"key":"YOUR_MOESIF_API_KEY_HERE","moesif_base_url":"https://api.moesif.net","send_headers":false}` | Moesif Analytics Parameters |
 | wso2.moesifAnalytics.key | string | `"YOUR_MOESIF_API_KEY_HERE"` | Moesif API key |
 | wso2.moesifAnalytics.moesif_base_url | string | `"https://api.moesif.net"` | Moesif base URL |
 | wso2.moesifAnalytics.send_headers | bool | `false` | Moesif send header |

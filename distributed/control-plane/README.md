@@ -1,6 +1,6 @@
 # wso2am-acp
 
-![Version: 4.6.0-1](https://img.shields.io/badge/Version-4.6.0--1-informational?style=flat-square) ![AppVersion: 4.6.0](https://img.shields.io/badge/AppVersion-4.6.0-informational?style=flat-square)
+![Version: 4.7.0](https://img.shields.io/badge/Version-4.7.0-informational?style=flat-square) ![AppVersion: 4.7.0](https://img.shields.io/badge/AppVersion-4.7.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 
@@ -14,6 +14,9 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | aws.efs.fileSystemId | string | `""` | EFS file system ID for mounting the persistent volume |
 | aws.enabled | bool | `false` | If AWS is used as the cloud provider |
 | aws.region | string | `""` | AWS region |
+| aws.secretsManager.secretIdentifiers.secretEncryptionKey | object | `{"secretKey":"","secretName":""}` | Symmetric encryption key identifier in secrets manager |
+| aws.secretsManager.secretIdentifiers.secretEncryptionKey.secretKey | string | `""` | AWS Secrets Manager secret key |
+| aws.secretsManager.secretIdentifiers.secretEncryptionKey.secretName | string | `""` | AWS Secrets Manager secret name |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword | object | `{"secretKey":"","secretName":""}` | Internal keystore password identifier in secrets manager |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey | string | `""` | AWS Secrets Manager secret key |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretName | string | `""` | AWS Secrets Manager secret name |
@@ -28,6 +31,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | azure.keyVault.name | string | `""` | Azure Key vault used for credential management |
 | azure.keyVault.resourceManager.resourceGroup | string | `""` | Name of the Azure Resource Group to which the target Azure Key Vault belongs |
 | azure.keyVault.resourceManager.subscriptionId | string | `""` | Subscription ID of the target Azure Key Vault |
+| azure.keyVault.secretIdentifiers.secretEncryptionKey | string | `""` | Symmetric encryption key identifier in keyvault |
 | azure.keyVault.secretIdentifiers.internalKeystoreKeyPassword | string | `""` | Internal keystore key password identifier in keyvault |
 | azure.keyVault.secretIdentifiers.internalKeystorePassword | string | `""` | Internal keystore password identifier in keyvault |
 | azure.keyVault.secretProviderClass | string | `"wso2am-cp-secret-provider-class"` | Azure Key vault secret provider class name |
@@ -58,7 +62,9 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | gcp.fs.location | string | `""` | Region of the FileStore |
 | gcp.fs.network | string | `""` | Network of the FileStore |
 | gcp.fs.tier | string | `""` | Tier of the FileStore |
-| gcp.secretsManager | object | `{"projectId":"","secret":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
+| gcp.secretsManager | object | `{"secretEncryptionKey":{"secretName":"","secretVersion":""},"projectId":"","secret":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
+| gcp.secretsManager.secretEncryptionKey.secretName | string | `""` | Name of the encryption key secret |
+| gcp.secretsManager.secretEncryptionKey.secretVersion | string | `""` | Version of the encryption key secret |
 | gcp.secretsManager.projectId | string | `""` | Project ID |
 | gcp.secretsManager.secret.secretName | string | `""` | Name of the secret |
 | gcp.secretsManager.secret.secretVersion | string | `""` | Version of the secret  |
@@ -68,14 +74,31 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
+| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"backendTrafficPolicy":{"cookie":{"name":"WSO2_CP_STICKY_SESSION","ttl":"0s"},"enabled":false},"controlPlane":{"annotations":{},"enabled":true,"filters":[],"hostname":"am.wso2.com"},"defaultConfigMapCreation":false,"enabled":true,"gatewayName":""}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See docs/assets/gateway.sample-gateway.yaml for an example Gateway manifest |
+| kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateConfigMap":"","enabled":false,"hostname":""}` | Backend TLS Policy for HTTPS backend connections |
+| kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap | string | `""` | CA certificate ConfigMap name for backend TLS verification |
+| kubernetes.gatewayAPI.backendTLSPolicy.enabled | bool | `false` | Enable BackendTLSPolicy |
+| kubernetes.gatewayAPI.backendTLSPolicy.hostname | string | `""` | Backend hostname for TLS verification |
+| kubernetes.gatewayAPI.backendTrafficPolicy | object | `{"cookie":{"name":"WSO2_CP_STICKY_SESSION","ttl":"0s"},"enabled":false}` | Backend Traffic Policy for cookie-based session affinity Requires Envoy Gateway controller support for BackendTrafficPolicy |
+| kubernetes.gatewayAPI.backendTrafficPolicy.cookie.name | string | `"WSO2_CP_STICKY_SESSION"` | Cookie name used for sticky sessions |
+| kubernetes.gatewayAPI.backendTrafficPolicy.cookie.ttl | string | `"0s"` | Cookie TTL. Use "0s" for a session cookie (expires when browser closes) |
+| kubernetes.gatewayAPI.backendTrafficPolicy.enabled | bool | `false` | Enable BackendTrafficPolicy |
+| kubernetes.gatewayAPI.controlPlane.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.controlPlane.enabled | bool | `true` | Enable HTTPRoute for Control Plane |
+| kubernetes.gatewayAPI.controlPlane.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.controlPlane.hostname | string | `"am.wso2.com"` | Hostname for Control Plane |
+| kubernetes.gatewayAPI.defaultConfigMapCreation | bool | `false` | Create CA certificate ConfigMap for BackendTLSPolicy |
+| kubernetes.gatewayAPI.enabled | bool | `true` | Enable Gateway API resources (HTTPRoutes and policies) |
+| kubernetes.gatewayAPI.gatewayName | string | `""` | Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed) This Gateway must exist in the same namespace before installing the chart |
 | kubernetes.ingress.controlPlane.annotations | object | `{"nginx.ingress.kubernetes.io/affinity":"cookie","nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/session-cookie-hash":"sha1","nginx.ingress.kubernetes.io/session-cookie-name":"route"}` | Ingress annotations |
-| kubernetes.ingress.controlPlane.enabled | bool | `true` | Enable ingress for Control Plane |
+| kubernetes.ingress.controlPlane.enabled | bool | `false` | Enable ingress for Control Plane |
 | kubernetes.ingress.controlPlane.hostname | string | `"am.wso2.com"` | Ingress hostname |
 | kubernetes.ingress.ratelimit.burstLimit | string | `""` | Ingress ratelimit burst limit |
 | kubernetes.ingress.ratelimit.enabled | bool | `false` | Ingress rate limit |
 | kubernetes.ingress.ratelimit.zoneName | string | `""` | Ingress ratelimit zone name |
 | kubernetes.ingress.tlsSecret | string | `""` | Kubernetes secret created for Ingress TLS |
 | kubernetes.ingressClass | string | `"nginx"` | Ingress class to be used for the ingress resource |
+| kubernetes.openshift | object | `{"enabled":false}` | When deploying on OpenShift. |
 | kubernetes.route | object | `{"controlPlane":{"annotations":null,"enabled":false,"hostname":"am.wso2.com"},"tls":{"certificate":"","destinationCACertificate":"","insecureEdgeTerminationPolicy":"None","key":"","termination":"passthrough"}}` | OpenShift Route configurations |
 | kubernetes.route.controlPlane.annotations | string | `nil` | Route annotations |
 | kubernetes.route.controlPlane.enabled | bool | `false` | Enable route for Control Plane |
@@ -123,7 +146,12 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.configurations.devportal.loginUsernameCaseInsensitive | string | `nil` |  |
 | wso2.apim.configurations.devportal.mode | string | `"HYBRID"` |  |
 | wso2.apim.configurations.distributedThrottling | object | `{"corePoolSize":5,"enable":false,"keyvalueStore":{"blockWhenExhausted":true,"host":"","maxIdle":20,"maxTotal":20,"minEvictableIdleTimeMillis":3000,"minIdle":4,"password":"","port":6379,"testWhileIdle":true,"timeBetweenEvictionRunsMillis":1200,"user":""},"syncInterval":1,"type":"redis"}` | APIM distributed throttling configurations |
-| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.encryption.cipherTransformation | string | `"AES/GCM/NoPadding"` | Symmetric cipher transformation. AES/GCM/NoPadding is used as the symmetric cipher transformation. |
+| wso2.apim.configurations.encryption.internalCryptoProvider | string | `"org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider"` | Internal crypto provider implementation used for symmetric encryption. |
+| wso2.apim.configurations.encryption.key | string | `""` | Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup. |
+| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","encryptionKeyKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.existingSecret.encryptionKeyKey | string | `""` | Key in the existing secret that stores the symmetric encryption key |
+| wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","visibility":null,"websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
 | wso2.apim.configurations.gatewayNotification.cleanUp.dataRetentionPeriod | string | `"30d"` |  |
 | wso2.apim.configurations.gatewayNotification.cleanUp.expiryTime | string | `"2m"` |  |
@@ -201,7 +229,8 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vault enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
-| wso2.apim.version | string | `"4.6.0"` | APIM version |
+| wso2.apim.version | string | `"4.7.0"` | APIM version |
+| wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.highAvailability | bool | `true` | Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed. This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM. |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |

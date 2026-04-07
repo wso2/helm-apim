@@ -1,26 +1,34 @@
 # helm-apim
+
 This repo will be used to maintain APIM related helm charts
 
 ## Prerequisites
 
-- WSO2 Product Docker images required for the deployment.  - It is recommended to push your own images to the cloud provider's container registry (ACR, ECR, etc.) as a best practice. Refer [U2 documentation](https://updates.docs.wso2.com/en/latest/updates/how-to-use-docker-images-to-receive-updates/) for any additional information. 
-    
+- WSO2 Product Docker images required for the deployment.  - It is recommended to push your own images to the cloud provider's container registry (ACR, ECR, etc.) as a best practice. Refer [U2 documentation](https://updates.docs.wso2.com/en/latest/updates/how-to-use-docker-images-to-receive-updates/) for any additional information.
+
     Note that you need a valid WSO2 subscription to obtain the U2 updated docker images from the WSO2 private registry.
 
 - A running Kubernetes cluster (AKS, EKS, etc.)
 
-- Ingress controller for routing traffic. The recommendation is to use [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/) suitable for your cloud environment. Some sample annotations that could be used with the ingress resources are as follows.
+- Configure the mandatory symmetric internal encryption key (`wso2.apim.configurations.encryption.key`) before the first startup. This key is used by API Manager for internal encryption and decryption of shared data, and the same value must be used across all nodes in HA or distributed deployments.
 
-  > The ingress class should be set to `nginx` in the ingress resource if you are using the NGINX Ingress Controller.
+- Controller for routing traffic. You can use either:
+  - **[Envoy Gateway](https://gateway.envoyproxy.io/docs/install/install-helm/)** (enabled by default) - **RECOMMENDED**: Gateway API-based approach for a more modern, role-oriented API.
+  To customize the routing you can use any of the [Gateway API Extensions](https://gateway.envoyproxy.io/docs/api/extension_types/) provided by Envoy
+  - **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** (disabled by default) - **DEPRECATED**: Traditional Ingress-based approach. While still supported, this option is deprecated and will be removed in future releases.
+  
+    Some sample annotations that could be used with the ingress resources are as follows.
 
-  ```
-  nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-  nginx.ingress.kubernetes.io/affinity: "cookie"
-  nginx.ingress.kubernetes.io/session-cookie-name: "route"
-  nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
-  nginx.ingress.kubernetes.io/proxy-buffering: "on"
-  nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
-  ```
+    > The ingress class should be set to `nginx` in the ingress resource if you are using the NGINX Ingress Controller.
+
+    ```yaml
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/session-cookie-name: "route"
+    nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
+    ```
 
   However, if you are deploying the charts in AWS, you can use the [AWS ALB Ingress Controller](https://github.com/kubernetes-sigs/aws-load-balancer-controller/tree/main) as well. If you are using ACM to manage the certificates, using this controller over the nginx ingress controller would be more convenient.
 
@@ -56,7 +64,7 @@ This repo will be used to maintain APIM related helm charts
 
   Please refer the [documentation](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.6/guide/ingress/annotations/) to get more information on these annotations and other annotations that might be useful.
 
-- If you are enabling secure vault configurations for the product, you need to configure the secret manager service of the respective cloud provider. Since the secrets are encrypted using the internal keystore password, that password should be included in the key vault so that it can be resolved using a CSI driver when the helm charts are deployed.
+- If you are enabling secure vault configurations for the product, you need to configure the secret manager service of the respective cloud provider. The default deployment uses the symmetric-key based secret resolution flow, so `secretEncryptionKey` must be available in the cloud secret store for the runtime to resolve encrypted secrets, including an encrypted internal encryption key. If you explicitly use a keystore-based setup instead, make the `internalKeystorePassword` available through the cloud secret store.
 
     For AWS, you need to deploy the `secrets-store-csi-driver-provider` and create the necessary IAM policies, OIDC providers, and IAM service accounts. Please refer the [documentation](https://github.com/aws/secrets-store-csi-driver-provider-aws) for more information and steps to follow.
 
@@ -71,6 +79,12 @@ This repo will be used to maintain APIM related helm charts
 The helm charts inlude cloud provider specific blocks. The parameters in those blocks can be used to configure services that are specific for each cloud provider.
 
 ```yaml
+wso2:
+  apim:
+    configurations:
+      encryption:
+        key: "<generated-64-char-hex-key>"
+
 aws:
   enabled: true
   efs:
@@ -84,10 +98,12 @@ aws:
   secretsManager:
     secretProviderClass: "wso2am-am-secret-provider-class"
     secretIdentifiers:
-      internalKeystorePassword:
+      secretEncryptionKey:
         secretName: "<secret_name>"
         secretKey: "<secret_key>"
   serviceAccountName: ""
 ```
+
+The symmetric internal encryption key shown above is mandatory and is used by API Manager for internal encryption purposes. The `secretEncryptionKey` entry is a separate key reference used by the default symmetric-key based secure-vault flow. If you use a keystore-based setup instead, configure `internalKeystorePassword` in the cloud secret store in addition to the relevant keystore configuration.
 
 For example, if the enabled attribute is set to true under aws, then it is assumed that the helm charts will be deployed in EKS and will be using other AWS services. Refer the [README](all-in-one/README.md) of the charts to get more information on the parameters.

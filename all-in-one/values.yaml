@@ -29,6 +29,12 @@ aws:
     # -- AWS Secrets Manager secret provider class name
     secretProviderClass: "wso2am-am-secret-provider-class"
     secretIdentifiers:
+      # -- Symmetric encryption key identifier in secrets manager
+      secretEncryptionKey:
+        # -- AWS Secrets Manager secret name
+        secretName: ""
+        # -- AWS Secrets Manager secret key
+        secretKey: ""
       # -- Internal keystore password identifier in secrets manager
       internalKeystorePassword:
         # -- AWS Secrets Manager secret name
@@ -47,6 +53,8 @@ azure:
     # -- Azure Key vault secret provider class name
     secretProviderClass: "wso2am-secret-provider-class"
     secretIdentifiers:
+      # -- Symmetric encryption key identifier in keyvault
+      secretEncryptionKey: ""
       # -- Internal keystore password identifier in keyvault
       internalKeystorePassword: ""
       # -- Internal keystore key password identifier in keyvault
@@ -120,6 +128,12 @@ gcp:
     projectId: ""
     # -- Secret provider class
     secretProviderClass: ""
+    # -- Symmetric encryption key identifier in Secret Manager
+    secretEncryptionKey:
+      # -- Name of the encryption key secret
+      secretName: ""
+      # -- Version of the encryption key secret
+      secretVersion: ""
     secret:
       # -- Name of the secret
       secretName: ""
@@ -129,6 +143,10 @@ gcp:
   serviceAccountName: ""
 
 kubernetes:
+  # -- When deploying on OpenShift.
+  openshift:
+    enabled: false
+
   # -- Ingress class to be used for the ingress resource
   ingressClass: "nginx"
   ingress:
@@ -142,7 +160,7 @@ kubernetes:
       # -- Ingress ratelimit burst limit
       burstLimit: ""
     management:
-      enabled: true
+      enabled: false
       # Hostname for API Manager Carbon Management Console, Publisher, DevPortal and Admin Portal
       hostname: "am.wso2.com"
       # Annotations for the API Manager Publisher-DevPortal services Ingress
@@ -152,7 +170,7 @@ kubernetes:
         nginx.ingress.kubernetes.io/session-cookie-name: "route"
         nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
     gateway:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Gateway pass-through
       hostname: "gw.wso2.com"
       # -- Ingress annotations for Gateway pass-through
@@ -161,14 +179,14 @@ kubernetes:
         nginx.ingress.kubernetes.io/proxy-buffering: "on"
         nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
     websocket:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Websocket
       hostname: "websocket.wso2.com"
       # -- Ingress annotations for Websocket
       annotations:
         #todo: add websocket specific annotations
     websub:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Websub
       hostname: "websub.wso2.com"
       # -- Ingress annotations for Websub
@@ -217,6 +235,70 @@ kubernetes:
       # -- Route annotations for Websub
       annotations:
         # key: value
+  # -- Kubernetes Gateway API configurations (alternative to Ingress)
+  # Requires Gateway API CRDs to be installed in the cluster
+  # The Gateway resource must be created externally before deploying this chart
+  # See docs/assets/sample-gateway.yaml for an example Gateway manifest
+  gatewayAPI:
+    # -- Enable Gateway API resources (HTTPRoutes and policies)
+    enabled: true
+    # -- Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed)
+    # This Gateway must exist in the same namespace before installing the chart
+    gatewayName: ""
+    # -- Create CA certificate ConfigMap for BackendTLSPolicy
+    defaultConfigMapCreation: false
+    management:
+      # -- Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal
+      enabled: true
+      # -- Hostname for API Manager Management interfaces
+      hostname: "am.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      filters: []
+    gateway:
+      # -- Enable HTTPRoute for Gateway pass-through
+      enabled: true
+      # -- Hostname for Gateway pass-through
+      hostname: "gw.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    websocket:
+      # -- Enable HTTPRoute for Websocket
+      enabled: true
+      # -- Hostname for Websocket
+      hostname: "websocket.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    websub:
+      # -- Enable HTTPRoute for Websub
+      enabled: true
+      # -- Hostname for Websub
+      hostname: "websub.wso2.com"
+      # -- HTTPRoute annotations
+      annotations: {}
+      # -- HTTPRoute filters (optional)
+      filters: []
+    # -- Backend TLS Policy for HTTPS backend connections
+    backendTLSPolicy:
+      # -- Enable BackendTLSPolicy
+      enabled: false
+      # -- CA certificate ConfigMap name for backend TLS verification
+      caCertificateConfigMap: ""
+      # -- Backend hostname for TLS verification
+      hostname: ""
+    backendTrafficPolicy:
+      # -- Enable BackendTrafficPolicy
+      enabled: false
+      cookie:
+        # -- Cookie name used for sticky sessions
+        name: "WSO2_CP_STICKY_SESSION"
+        # -- Cookie TTL. Use "0s" for a session cookie (expires when browser closes)
+        ttl: "0s"
+    
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
@@ -266,8 +348,8 @@ wso2:
   # TOML configurations
   apim:
     # -- APIM version
-    version: "4.6.0"
-    # -- Secure vauld enabled
+    version: "4.7.0"
+    # -- Secure vault enabled
     secureVaultEnabled: false
     # Logging related configurations
     log4j2:
@@ -285,12 +367,20 @@ wso2:
     mountFrontendConfig: false
     # TOML configurations
     configurations:
+      encryption:
+        # -- Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup.
+        key: ""
+        # -- Symmetric cipher transformation. AES/GCM/NoPadding is used as the symmetric cipher transformation.
+        cipherTransformation: "AES/GCM/NoPadding"
+        # -- Internal crypto provider implementation used for symmetric encryption.
+        internalCryptoProvider: "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider"
       # -- Read passwords from a common secret
       existingSecret:
         secretName: "" # e.g apim-secret
         adminPasswordKey: ""  # e.g adminPassword
         apimDBPasswordKey: "" # e.g apimDBPassword
         sharedDBPasswordKey: "" # e.g sharedDBPassword
+        encryptionKeyKey: "" # e.g encryptionKey
       gatewayType: "Regular,APK,AWS,Azure,Kong"
       userStore:
         # -- User store type.
@@ -824,6 +914,13 @@ wso2:
     pod:
       # -- Annotations for pods
       annotations: {}
+
+    # -- Environment variables for the deployment
+    # Example:
+    #   envs:
+    #     MY_CUSTOM_VAR: "my-value"
+    #     ANOTHER_VAR: "another-value"
+    envs: {}
 
     persistence:
       # -- Persistent runtime artifacts for Apache Solr-based indexing

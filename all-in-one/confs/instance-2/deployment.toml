@@ -1,5 +1,5 @@
 [server]
-hostname = "{{ .Values.kubernetes.ingress.management.hostname }}"
+hostname = "{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.management.hostname }}{{- else -}}{{ .Values.kubernetes.ingress.management.hostname }}{{- end -}}"
 node_ip = "$env{NODE_IP}"
 offset = {{ .Values.wso2.apim.portOffset }}
 mode = "single" #single or ha
@@ -62,6 +62,13 @@ driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
 
 [apim]
 gateway_type = "{{ .Values.wso2.apim.configurations.gatewayType }}"
+
+[keystore]
+{{- if eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.KeyStoreBasedInternalCryptoProvider" }}
+userstore_password_encryption = "InternalKeyStore"
+{{- else }}
+userstore_password_encryption = ""
+{{- end }}
 
 {{- if .Values.wso2.apim.configurations.security.keystores.primary.enabled }}
 [keystore.primary]
@@ -338,7 +345,7 @@ remote_tracer.port = {{ .Values.wso2.apim.configurations.openTelemetry.port | qu
 {{- end }}
 
 [apim.devportal]
-url = "https://{{ .Values.kubernetes.ingress.management.hostname }}/devportal"
+url = "https://{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.management.hostname }}{{- else -}}{{ .Values.kubernetes.ingress.management.hostname }}{{- end -}}/devportal"
 mode = {{ .Values.wso2.apim.configurations.devportal.mode | quote }}
 {{- if .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}
 enable_application_sharing = {{ .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}
@@ -507,6 +514,26 @@ subscriptions = [{{ range .subscriptions }}"{{ . }}", {{ end }}]
 [service_provider]
 sp_name_regex = {{ .Values.wso2.apim.configurations.serviceProvider.spNameRegex | quote }}
 
+[system.parameter]
+"org.wso2.CipherTransformation" = {{ .Values.wso2.apim.configurations.encryption.cipherTransformation | quote }}
+
+[encryption]
+internal_crypto_provider = {{ .Values.wso2.apim.configurations.encryption.internalCryptoProvider | quote }}
+{{- if eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider" }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+{{- if eq (trim .Values.wso2.apim.configurations.encryption.key) "" }}
+{{- fail "Encryption key is required when secureVault is enabled with symmetric encryption." }}
+{{- end }}
+key = "$secret{encryption_key}"
+{{- else if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.encryptionKeyKey }}
+key = "$env{WSO2_ENCRYPTION_KEY}"
+{{- else if ne (trim .Values.wso2.apim.configurations.encryption.key) "" }}
+key = {{ .Values.wso2.apim.configurations.encryption.key | quote }}
+{{- else }}
+{{- fail "Encryption key is required for symmetric encryption. Configure one of: wso2.apim.configurations.encryption.key, wso2.apim.configurations.existingSecret.secretName + wso2.apim.configurations.existingSecret.encryptionKeyKey, or secureVault." }}
+{{- end }}
+{{- end }}
+
 {{- if not .Values.wso2.apim.configurations.iskm.enabled }}
 {{ range .Values.wso2.apim.configurations.eventListeners }}
 [[event_listener]]
@@ -537,6 +564,9 @@ url = "jdbc:h2:./repository/database/WSO2CARBON_DB;DB_CLOSE_ON_EXIT=FALSE"
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 [secrets]
 admin_password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
+{{- if eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider" }}
+encryption_key = {{ .Values.wso2.apim.configurations.encryption.key | quote }}
+{{- end }}
 keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
 keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.keyPassword | quote }}
 ssl_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.password | quote }}

@@ -1,0 +1,30 @@
+# -------------------------------------------------------------------------------------
+#
+# Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+#
+# This software is the property of WSO2 LLC. and its suppliers, if any.
+# Dissemination of any information or reproduction of any material contained 
+# herein is strictly forbidden, unless permitted by WSO2 in accordance with the 
+# WSO2 Commercial License available at https://wso2.com/licenses/eula/3.2
+#
+# --------------------------------------------------------------------------------------
+
+{{- if and .Values.kubernetes.gatewayAPI.enabled .Values.kubernetes.gatewayAPI.management.enabled .Values.kubernetes.gatewayAPI.backendTrafficPolicy.enabled }}
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-backend-traffic-policy
+  namespace: {{ .Release.Namespace }}
+spec:
+  targetRefs:
+  - group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: {{ template "am-all-in-one.fullname" . }}-management-httproute
+  loadBalancer:
+    type: ConsistentHash
+    consistentHash:
+      type: Cookie
+      cookie:
+        name: {{ .Values.kubernetes.gatewayAPI.backendTrafficPolicy.cookie.name | default "WSO2_CP_STICKY_SESSION" | quote }}
+        ttl: {{ .Values.kubernetes.gatewayAPI.backendTrafficPolicy.cookie.ttl | default "0s" | quote }}
+{{- end }}
