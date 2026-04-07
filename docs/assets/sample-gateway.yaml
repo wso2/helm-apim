@@ -1,0 +1,94 @@
+# Sample Gateway resource for use with WSO2 APIM Helm charts (4.3.x)
+# This resource must be created in the cluster before enabling Gateway API in Helm values.
+#
+# Prerequisites:
+#   - Envoy Gateway installed and running in the cluster
+#     (https://gateway.envoyproxy.io/docs/install/install-helm/)
+#   - Install the CRDs from Envoy Gateway (BackendTLSPolicy, BackendTrafficPolicy, etc.)
+#
+# Usage:
+#   kubectl apply -f sample-gateway.yaml
+#
+# Then set the following in your Helm values:
+#   kubernetes:
+#     gatewayAPI:
+#       enabled: true
+#       gatewayName: wso2-apim-gateway
+#       management:
+#         enabled: true
+#         hostname: am.wso2.com
+#       gateway:
+#         enabled: true
+#         hostname: gw.wso2.com
+#       ...
+
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: eg
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: wso2-apim-gateway
+  namespace: wso2
+spec:
+  gatewayClassName: eg
+  listeners:
+  - name: control-plane-https
+    protocol: HTTPS
+    port: 443
+    hostname: "am.wso2.com"
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: am-tls-secret
+    allowedRoutes:
+      namespaces:
+        from: Same
+  - name: gateway-https
+    protocol: HTTPS
+    port: 443
+    hostname: "gw.wso2.com"
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: gw-tls-secret
+    allowedRoutes:
+      namespaces:
+        from: Same
+  - name: websocket-https
+    protocol: HTTPS
+    port: 443
+    hostname: "websocket.wso2.com"
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: websocket-tls-secret
+    allowedRoutes:
+      namespaces:
+        from: Same
+  - name: websub-https
+    protocol: HTTPS
+    port: 443
+    hostname: "websub.wso2.com"
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: websub-tls-secret
+    allowedRoutes:
+      namespaces:
+        from: Same
+  - name: keymanager-https
+    protocol: HTTPS
+    port: 443
+    hostname: "km.wso2.com"
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: km-tls-secret
+    allowedRoutes:
+      namespaces:
+        from: Same
