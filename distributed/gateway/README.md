@@ -137,7 +137,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.configurations.oauth_config.authHeader | string | `"Authorization"` | OAuth authorization header name |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
-| wso2.apim.configurations.oauth_config.removeOutboundAuthHeader | bool | `true` | Remove oauth header from outgoing requests |
+| wso2.apim.configurations.oauth_config.enableOutboundAuthHeader | bool | `false` | Preserves auth header in outgoing requests |
 | wso2.apim.configurations.openTelemetry.enabled | bool | `false` | Open Telemetry enabled |
 | wso2.apim.configurations.openTelemetry.hostname | string | `""` | Remote tracer hostname |
 | wso2.apim.configurations.openTelemetry.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin, OTLP |
