@@ -84,9 +84,9 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | wso2.apim.configurations.km.servicePort | int | `9443` | Key Manager service port |
 | wso2.apim.configurations.km.serviceUrl | string | `"wso2am-cp-service"` | Key manager service name if default Resident KM is used |
 | wso2.apim.configurations.oauth_config.authHeader | string | `"Authorization"` | OAuth authorization header name |
+| wso2.apim.configurations.oauth_config.enableOutboundAuthHeader | bool | `false` | Preserves auth header in outgoing requests |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
-| wso2.apim.configurations.oauth_config.removeOutboundAuthHeader | bool | `true` | Remove oauth header from outgoing requests |
 | wso2.apim.configurations.openTelemetry.enabled | bool | `false` | Open Telemetry enabled |
 | wso2.apim.configurations.openTelemetry.hostname | string | `""` | Remote tracer hostname |
 | wso2.apim.configurations.openTelemetry.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin, OTLP |
