@@ -156,10 +156,10 @@ A Helm chart for the deployment of WSO2 API Manager Single Node.
 | wso2.apim.configurations.notification.signature | string | `nil` |  |
 | wso2.apim.configurations.notification.username | string | `nil` |  |
 | wso2.apim.configurations.oauth_config.authHeader | string | `"Authorization"` | OAuth authorization header name |
+| wso2.apim.configurations.oauth_config.enableOutboundAuthHeader | bool | `false` | Preserves auth header in outgoing requests |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
 | wso2.apim.configurations.oauth_config.oauth2JWKSUrl | string | `""` |  |
-| wso2.apim.configurations.oauth_config.removeOutboundAuthHeader | bool | `true` | Remove auth header from outgoing requests |
 | wso2.apim.configurations.oauth_config.revokeEndpoint | string | `""` | OAuth revoke endpoint |
 | wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode | bool | `false` |  |
 | wso2.apim.configurations.publisher.internalKeyIssuer | string | `""` |  |
