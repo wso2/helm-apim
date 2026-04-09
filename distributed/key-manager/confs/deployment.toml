@@ -151,6 +151,30 @@ service_url = "https://{{ .Values.wso2.apim.configurations.eventhub.serviceUrl }
 {{- $len := add (len .Values.wso2.apim.configurations.eventhub.urls) -1 }}
 event_listening_endpoints = [{{ range $index, $element := .Values.wso2.apim.configurations.eventhub.urls }}"tcp://{{ $element }}:5672"{{ if ne $index $len }},{{ end }}{{ end}}]
 
+[apim.oauth_config]
+enable_token_encryption = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenEncryption }}
+enable_token_hashing = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenHashing }}
+{{- if .Values.wso2.apim.configurations.oauth_config.multipleClientSecrets }}
+
+[oauth.multiple_client_secrets]
+enable = {{ .Values.wso2.apim.configurations.oauth_config.multipleClientSecrets.enable }}
+{{- if .Values.wso2.apim.configurations.oauth_config.multipleClientSecrets.secretCount }}
+secret_count = {{ .Values.wso2.apim.configurations.oauth_config.multipleClientSecrets.secretCount }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.oauth_config.tokenPersistenceOptimization }}
+[[oauth.extensions.token_types]]
+name = "JWT"
+issuer = "org.wso2.is.key.manager.tokenpersistence.issuer.ExtendedJWTTokenIssuer"
+{{- else }}
+[oauth.token_persistence]
+enable = true
+
+[oauth.revoked_token_headers_in_response]
+enable = true
+{{- end }}
+
 [system.parameter]
 "org.wso2.CipherTransformation" = {{ .Values.wso2.apim.configurations.encryption.cipherTransformation | quote }}
 
