@@ -76,7 +76,13 @@ spec:
       {{- end }}
       containers:
       - name: wso2am-traffic-manager
-        image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}{{- if .Values.wso2.deployment.image.tag }}:{{ .Values.wso2.deployment.image.tag }}{{- end }}{{- if .Values.wso2.deployment.image.digest }}@{{ .Values.wso2.deployment.image.digest }}{{- end }}
+        {{- if .Values.wso2.deployment.image.digest }}
+        image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
+        {{- else if .Values.wso2.deployment.image.tag }}
+        image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}:{{ .Values.wso2.deployment.image.tag }}
+        {{- else }}
+        image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}
+        {{- end }}
         imagePullPolicy: {{ .Values.wso2.deployment.image.imagePullPolicy }}
         env:
         - name: PROFILE_NAME
