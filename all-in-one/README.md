@@ -14,12 +14,12 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | aws.efs.fileSystemId | string | `""` | EFS file system ID for mounting the persistent volume |
 | aws.enabled | bool | `false` | If AWS is used as the cloud provider |
 | aws.region | string | `""` | AWS region |
-| aws.secretsManager.secretIdentifiers.internalKeystorePassword | object | `{"secretKey":"","secretName":""}` | Internal keystore password identifier in secrets manager |
-| aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey | string | `""` | AWS Secrets Manager secret key |
-| aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretName | string | `""` | AWS Secrets Manager secret name |
 | aws.secretsManager.secretIdentifiers.secretEncryptionKey | object | `{"secretKey":"","secretName":""}` | Symmetric encryption key identifier in secrets manager |
 | aws.secretsManager.secretIdentifiers.secretEncryptionKey.secretKey | string | `""` | AWS Secrets Manager secret key |
 | aws.secretsManager.secretIdentifiers.secretEncryptionKey.secretName | string | `""` | AWS Secrets Manager secret name |
+| aws.secretsManager.secretIdentifiers.internalKeystorePassword | object | `{"secretKey":"","secretName":""}` | Internal keystore password identifier in secrets manager |
+| aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey | string | `""` | AWS Secrets Manager secret key |
+| aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretName | string | `""` | AWS Secrets Manager secret name |
 | aws.secretsManager.secretProviderClass | string | `"wso2am-am-secret-provider-class"` | AWS Secrets Manager secret provider class name |
 | aws.serviceAccountName | string | `""` |  |
 | azure.enabled | bool | `false` | If Azure is used as the cloud provider |
@@ -31,9 +31,9 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | azure.keyVault.name | string | `""` | Azure Key vault used for credential management |
 | azure.keyVault.resourceManager.resourceGroup | string | `""` | Name of the Azure Resource Group to which the target Azure Key Vault belongs |
 | azure.keyVault.resourceManager.subscriptionId | string | `""` | Subscription ID of the target Azure Key Vault |
+| azure.keyVault.secretIdentifiers.secretEncryptionKey | string | `""` | Symmetric encryption key identifier in keyvault |
 | azure.keyVault.secretIdentifiers.internalKeystoreKeyPassword | string | `""` | Internal keystore key password identifier in keyvault |
 | azure.keyVault.secretIdentifiers.internalKeystorePassword | string | `""` | Internal keystore password identifier in keyvault |
-| azure.keyVault.secretIdentifiers.secretEncryptionKey | string | `""` | Symmetric encryption key identifier in keyvault |
 | azure.keyVault.secretProviderClass | string | `"wso2am-secret-provider-class"` | Azure Key vault secret provider class name |
 | azure.persistence.capacity | string | `""` | Persistent volume capacity |
 | azure.persistence.fileShare | string | `""` | Azure fileshare name |
@@ -55,13 +55,12 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | gcp.fs.location | string | `""` | Region of the FileStore |
 | gcp.fs.network | string | `""` | Network of the FileStore |
 | gcp.fs.tier | string | `""` | Tier of the FileStore |
-| gcp.secretsManager | object | `{"projectId":"","secret":{"secretName":"","secretVersion":""},"secretEncryptionKey":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
+| gcp.secretsManager | object | `{"secretEncryptionKey":{"secretName":"","secretVersion":""},"projectId":"","secret":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
+| gcp.secretsManager.secretEncryptionKey.secretName | string | `""` | Name of the encryption key secret |
+| gcp.secretsManager.secretEncryptionKey.secretVersion | string | `""` | Version of the encryption key secret |
 | gcp.secretsManager.projectId | string | `""` | Project ID |
 | gcp.secretsManager.secret.secretName | string | `""` | Name of the secret |
 | gcp.secretsManager.secret.secretVersion | string | `""` | Version of the secret |
-| gcp.secretsManager.secretEncryptionKey | object | `{"secretName":"","secretVersion":""}` | Symmetric encryption key identifier in Secret Manager |
-| gcp.secretsManager.secretEncryptionKey.secretName | string | `""` | Name of the encryption key secret |
-| gcp.secretsManager.secretEncryptionKey.secretVersion | string | `""` | Version of the encryption key secret |
 | gcp.secretsManager.secretProviderClass | string | `""` | Secret provider class |
 | gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
 | kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
@@ -185,9 +184,6 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.devportal.enableRatings | string | `nil` | Whether to display ratings for API |
 | wso2.apim.configurations.devportal.loginUsernameCaseInsensitive | string | `nil` |  |
 | wso2.apim.configurations.devportal.mode | string | `"HYBRID"` |  |
-| wso2.apim.configurations.encryption.cipherTransformation | string | `"AES/GCM/NoPadding"` | Symmetric cipher transformation. AES/GCM/NoPadding is used as the symmetric cipher transformation. |
-| wso2.apim.configurations.encryption.internalCryptoProvider | string | `"org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider"` | Internal crypto provider implementation used for symmetric encryption. |
-| wso2.apim.configurations.encryption.key | string | `""` | Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup. |
 | wso2.apim.configurations.eventHandlers[0].name | string | `"userPostSelfRegistration"` |  |
 | wso2.apim.configurations.eventHandlers[0].subscriptions[0] | string | `"POST_ADD_USER"` |  |
 | wso2.apim.configurations.eventListeners[0].id | string | `"token_revocation"` |  |
@@ -195,7 +191,11 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.eventListeners[0].order | int | `1` |  |
 | wso2.apim.configurations.eventListeners[0].properties.notificationEndpoint | string | `"https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"` |  |
 | wso2.apim.configurations.eventListeners[0].type | string | `"org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"` |  |
+| wso2.apim.configurations.encryption.cipherTransformation | string | `"AES/GCM/NoPadding"` | Symmetric cipher transformation. AES/GCM/NoPadding is used as the symmetric cipher transformation. |
+| wso2.apim.configurations.encryption.internalCryptoProvider | string | `"org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider"` | Internal crypto provider implementation used for symmetric encryption. |
+| wso2.apim.configurations.encryption.key | string | `""` | Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup. |
 | wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","encryptionKeyKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.existingSecret.encryptionKeyKey | string | `""` | Key in the existing secret that stores the symmetric encryption key |
 | wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","visibility":null,"websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
 | wso2.apim.configurations.gatewayNotification.cleanUp.dataRetentionPeriod | string | `"30d"` |  |
@@ -241,10 +241,10 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.notification.signature | string | `nil` |  |
 | wso2.apim.configurations.notification.username | string | `nil` |  |
 | wso2.apim.configurations.oauth_config.authHeader | string | `"Authorization"` | OAuth authorization header name |
-| wso2.apim.configurations.oauth_config.enableOutboundAuthHeader | bool | `false` | Preserves auth header in outgoing requests |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
 | wso2.apim.configurations.oauth_config.oauth2JWKSUrl | string | `""` |  |
+| wso2.apim.configurations.oauth_config.enableOutboundAuthHeader | bool | `false` | Preserves auth header in outgoing requests |
 | wso2.apim.configurations.oauth_config.revokeEndpoint | string | `""` | OAuth revoke endpoint |
 | wso2.apim.configurations.openTelemetry.enabled | bool | `false` | Open Telemetry enabled |
 | wso2.apim.configurations.openTelemetry.hostname | string | `""` | Remote tracer hostname |
@@ -368,7 +368,6 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.deployment.image.imagePullSecrets | object | `{"enabled":false,"password":"","username":""}` | Container registry credentials. Specify image pull secrets for private registries |
 | wso2.deployment.image.registry | string | `""` | Registry containing the image |
 | wso2.deployment.image.repository | string | `""` | Repository name consisting the image |
-| wso2.deployment.image.tag | string | `""` | Docker image tag |
 | wso2.deployment.lifecycle.preStopHook.sleepSeconds | int | `10` | Time to wait until the apim is terminated gracefully |
 | wso2.deployment.livenessProbe.failureThreshold | int | `5` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.livenessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before liveness probes are initiated |

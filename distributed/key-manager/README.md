@@ -11,12 +11,12 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | aws.ecr.registry | string | `""` | AWS Elastic Container Registry name |
 | aws.enabled | bool | `false` | If AWS is used as the cloud provider |
 | aws.region | string | `""` | AWS region |
-| aws.secretsManager.secretIdentifiers.internalKeystorePassword | object | `{"secretKey":"","secretName":""}` | Internal keystore password identifier in secrets manager |
-| aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey | string | `""` | AWS Secrets Manager secret key |
-| aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretName | string | `""` | AWS Secrets Manager secret name |
 | aws.secretsManager.secretIdentifiers.secretEncryptionKey | object | `{"secretKey":"","secretName":""}` | Symmetric encryption key identifier in secrets manager |
 | aws.secretsManager.secretIdentifiers.secretEncryptionKey.secretKey | string | `""` | AWS Secrets Manager secret key |
 | aws.secretsManager.secretIdentifiers.secretEncryptionKey.secretName | string | `""` | AWS Secrets Manager secret name |
+| aws.secretsManager.secretIdentifiers.internalKeystorePassword | object | `{"secretKey":"","secretName":""}` | Internal keystore password identifier in secrets manager |
+| aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretKey | string | `""` | AWS Secrets Manager secret key |
+| aws.secretsManager.secretIdentifiers.internalKeystorePassword.secretName | string | `""` | AWS Secrets Manager secret name |
 | aws.secretsManager.secretProviderClass | string | `"wso2am-km-secret-provider-class"` | AWS Secrets Manager secret provider class name |
 | aws.serviceAccountName | string | `""` |  |
 | azure.acr.registry | string | `""` | Azure container registry name |
@@ -29,18 +29,17 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | azure.keyVault.name | string | `""` | Azure Key vault used for credential management |
 | azure.keyVault.resourceManager.resourceGroup | string | `""` | Name of the Azure Resource Group to which the target Azure Key Vault belongs |
 | azure.keyVault.resourceManager.subscriptionId | string | `""` | Subscription ID of the target Azure Key Vault |
+| azure.keyVault.secretIdentifiers.secretEncryptionKey | string | `""` | Symmetric encryption key identifier in keyvault |
 | azure.keyVault.secretIdentifiers.internalKeystoreKeyPassword | string | `""` | Internal keystore key password identifier in keyvault |
 | azure.keyVault.secretIdentifiers.internalKeystorePassword | string | `""` | Internal keystore password identifier in keyvault |
-| azure.keyVault.secretIdentifiers.secretEncryptionKey | string | `""` | Symmetric encryption key identifier in keyvault |
 | azure.keyVault.secretProviderClass | string | `"wso2am-km-secret-provider-class"` | Azure Key vault secret provider class name |
 | gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
-| gcp.secretsManager | object | `{"projectId":"","secret":{"secretName":"","secretVersion":""},"secretEncryptionKey":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
+| gcp.secretsManager | object | `{"secretEncryptionKey":{"secretName":"","secretVersion":""},"projectId":"","secret":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
+| gcp.secretsManager.secretEncryptionKey.secretName | string | `""` | Name of the encryption key secret |
+| gcp.secretsManager.secretEncryptionKey.secretVersion | string | `""` | Version of the encryption key secret |
 | gcp.secretsManager.projectId | string | `""` | Project ID |
 | gcp.secretsManager.secret.secretName | string | `""` | Name of the secret |
 | gcp.secretsManager.secret.secretVersion | string | `""` | Version of the secret  |
-| gcp.secretsManager.secretEncryptionKey | object | `{"secretName":"","secretVersion":""}` | Symmetric encryption key identifier in Secret Manager |
-| gcp.secretsManager.secretEncryptionKey.secretName | string | `""` | Name of the encryption key secret |
-| gcp.secretsManager.secretEncryptionKey.secretVersion | string | `""` | Version of the encryption key secret |
 | gcp.secretsManager.secretProviderClass | string | `""` | Secret provider class |
 | gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
 | kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
@@ -95,12 +94,13 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.databases.shared_db.url | string | `""` | APIM SharedDB URL |
 | wso2.apim.configurations.databases.shared_db.username | string | `""` | APIM SharedDB username |
 | wso2.apim.configurations.databases.type | string | `""` | Database type. eg: mysql, oracle, mssql, postgres |
+| wso2.apim.configurations.eventhub.serviceUrl | string | `"wso2am-cp-service"` | Event hub (control plane) loadbalancer service url |
+| wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
 | wso2.apim.configurations.encryption.cipherTransformation | string | `"AES/GCM/NoPadding"` | Symmetric cipher transformation. AES/GCM/NoPadding is used as the symmetric cipher transformation. |
 | wso2.apim.configurations.encryption.internalCryptoProvider | string | `"org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider"` | Internal crypto provider implementation used for symmetric encryption. |
 | wso2.apim.configurations.encryption.key | string | `""` | Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup. |
-| wso2.apim.configurations.eventhub.serviceUrl | string | `"wso2am-cp-service"` | Event hub (control plane) loadbalancer service url |
-| wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
 | wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","encryptionKeyKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.existingSecret.encryptionKeyKey | string | `""` | Key in the existing secret that stores the symmetric encryption key |
 | wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
@@ -148,7 +148,6 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.deployment.image.imagePullSecrets | object | `{"enabled":false,"password":"","username":""}` | Container registry credentials. Specify image pull secrets for private registries |
 | wso2.deployment.image.registry | string | `""` | Container registry hostname |
 | wso2.deployment.image.repository | string | `""` | Azure ACR repository name consisting the image |
-| wso2.deployment.image.tag | string | `""` | Docker image tag |
 | wso2.deployment.lifecycle.preStopHook.sleepSeconds | int | `10` | Number of seconds to sleep before sending SIGTERM to the pod |
 | wso2.deployment.livenessProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.livenessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before liveness probes are initiated |
