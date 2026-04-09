@@ -70,7 +70,7 @@ spec:
       {{- end }}
       containers:
         - name: wso2am
-          image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
+          image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}{{- if .Values.wso2.deployment.image.digest }}@{{ .Values.wso2.deployment.image.digest }}{{- end }}
           imagePullPolicy: {{ .Values.wso2.deployment.image.imagePullPolicy }}
           env:
             - name: NODE_IP
