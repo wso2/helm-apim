@@ -94,6 +94,8 @@ kubernetes:
       # -- Ingress ratelimit burst limit
       burstLimit: ""
     km:
+      # -- Enable Ingress for Key Manager
+      enabled: true
       # -- Ingress hostname for Key Manager pass-through
       hostname: "km.wso2.com"
       # -- Ingress annotations for Key Manager pass-through

@@ -66,6 +66,93 @@ This repo will be used to maintain APIM related helm charts
 
 - Make sure the RDS is up and running. You need to create the relevant databases in the RDS system before deploying the chart. Also, it is recommended to include the database JDBC driver in your Docker image so that APIM can connect to the databases without any issues. If you are not adding the driver to the image itself, you might have to modify the helm charts and mount the driver to the deplyoments.
 
+## Configure Gateway API (Recommended)
+
+The charts support both Gateway API and Ingress-based routing. For new deployments, use Gateway API with Envoy Gateway.
+
+### 1. Create TLS Secret
+
+Create a TLS secret that will be used by your Gateway listeners.
+
+```bash
+kubectl create secret tls my-tls-secret --key <private-key-file> --cert <certificate-file> -n <namespace>
+```
+
+When you create your Gateway manifest, reference this secret in each HTTPS listener so TLS is terminated at the Gateway/load balancer layer.
+
+### 2. Install Envoy Gateway
+
+Install Envoy Gateway in the cluster.
+
+```bash
+helm install envoy-gateway oci://docker.io/envoyproxy/gateway-helm \
+  --version v1.7.0 -n envoy-gateway-system \
+  --set config.envoyGateway.extensionApis.enableBackend=true \
+  --set envoyGateway.gateway.experimentalFeatures.enabled=true \
+  --create-namespace
+```
+
+### 3. Apply Gateway and GatewayClass
+
+A sample manifest is available at `docs/assets/sample-gateway.yaml`.
+
+```bash
+kubectl apply -f docs/assets/sample-gateway.yaml -n <namespace>
+```
+
+Make sure the hostnames and listeners in the Gateway manifest match the values used in your Helm chart.
+
+### 4. Update Helm Values
+
+Enable Gateway API and configure hostnames in your values files.
+
+```yaml
+kubernetes:
+  gatewayAPI:
+    enabled: true
+    gatewayName: "wso2-apim-gateway"
+    defaultConfigMapCreation: false
+    management:
+      enabled: true
+      hostname: "am.wso2.com"
+    gateway:
+      enabled: true
+      hostname: "gw.wso2.com"
+    websocket:
+      enabled: true
+      hostname: "websocket.wso2.com"
+    websub:
+      enabled: true
+      hostname: "websub.wso2.com"
+    backendTLSPolicy:
+      enabled: true
+      caCertificateConfigMap: "wso2-ca-cert"
+      hostname: "<hostname-used-in-certificate>"
+    backendTrafficPolicy:
+      enabled: true
+      cookie:
+        name: "WSO2_CP_STICKY_SESSION"
+        ttl: "0s"
+```
+
+If backend TLS verification is enabled, create a ConfigMap with your CA certificate and reference it in values.
+
+```bash
+kubectl create configmap wso2-ca-cert --from-file=ca.crt=/path/to/your/certificate.pem -n <namespace>
+```
+
+Set `defaultConfigMapCreation` to false when you manage the CA ConfigMap yourself (recommended for production).
+
+### 5. Configure the DNS Records
+
+You can find out the external IP (ADDRESS) of the Gateway by checking the status of the Gateway resource.
+
+```bash
+kubectl get gateways -n <namespace>'
+```
+
+Then, create the necessary DNS records to point your hostnames (e.g., `gw.wso2.com`) to the Gateway's external IP.
+
 ## Sample Configurations
 
 The helm charts inlude cloud provider specific blocks. The parameters in those blocks can be used to configure services that are specific for each cloud provider.
