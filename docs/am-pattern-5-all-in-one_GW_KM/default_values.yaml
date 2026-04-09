@@ -289,7 +289,7 @@ wso2:
     configurations:
       encryption:
         # -- Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup.
-        key: ""
+        key: "s"
         # -- Symmetric cipher transformation. AES/GCM/NoPadding is used as the symmetric cipher transformation.
         cipherTransformation: "AES/GCM/NoPadding"
         # -- Internal crypto provider implementation used for symmetric encryption.
@@ -500,6 +500,14 @@ wso2:
         # -- Enable token hashing
         enableTokenHashing: false
         oauth2JWKSUrl: "https://apim-km-wso2am-km-service.apim.svc.cluster.local:9443/oauth2/jwks"
+        # -- Multiple client secrets configuration
+        multipleClientSecrets:
+          # -- Enable multiple client secrets for OAuth applications
+          enable: true
+          # -- Maximum number of secrets allowed per application (optional, leave empty for unlimited)
+          secretCount: ""
+        # -- Enable OAuth token persistence optimization. When enabled, JWT extension is used. When disabled, token persistence and revoked token headers configuration is used.
+        tokenPersistenceOptimization: true
 
       # APIM Devportal configurations
       devportal:
@@ -524,6 +532,7 @@ wso2:
         create_default_application: 
         loginUsernameCaseInsensitive:
         enableKeyProvisioning:
+        enableLegacyApiKeys: false
 
       publisher:
         # -- Supported document types in Publisher. 
