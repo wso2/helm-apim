@@ -266,6 +266,8 @@ wso2:
       registry: "<DOCKER_REGISTRY>"
       # -- Azure ACR repository name consisting the image
       repository: "<TM_DOCKER_IMAGE>"
+      # -- Docker image tag
+      tag: "<TM_IMAGE_TAG>"
       # -- Docker image digest
       digest: "<TM_IMAGE_DIGEST>"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)

@@ -214,10 +214,10 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.notification.signature | string | `nil` |  |
 | wso2.apim.configurations.notification.username | string | `nil` |  |
 | wso2.apim.configurations.oauth_config.authHeader | string | `"Authorization"` | OAuth authorization header name |
+| wso2.apim.configurations.oauth_config.enableOutboundAuthHeader | bool | `false` | Preserves auth header in outgoing requests |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
 | wso2.apim.configurations.oauth_config.oauth2JWKSUrl | string | `""` |  |
-| wso2.apim.configurations.oauth_config.enableOutboundAuthHeader | bool | `false` | Preserves auth header in outgoing requests |
 | wso2.apim.configurations.oauth_config.revokeEndpoint | string | `""` | OAuth revoke endpoint |
 | wso2.apim.configurations.openTelemetry.enabled | bool | `false` | Open Telemetry enabled |
 | wso2.apim.configurations.openTelemetry.hostname | string | `""` | Remote tracer hostname |
@@ -340,6 +340,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.deployment.image.imagePullSecrets | object | `{"enabled":false,"password":"","username":""}` | Container registry credentials. Specify image pull secrets for private registries |
 | wso2.deployment.image.registry | string | `""` | Registry containing the image |
 | wso2.deployment.image.repository | string | `""` | Repository name consisting the image |
+| wso2.deployment.image.tag | string | `""` | Docker image tag |
 | wso2.deployment.lifecycle.preStopHook.sleepSeconds | int | `10` | Time to wait until the apim is terminated gracefully |
 | wso2.deployment.livenessProbe.failureThreshold | int | `5` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.livenessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before liveness probes are initiated |
