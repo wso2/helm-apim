@@ -212,9 +212,19 @@ wso2:
     # Logging related configurations
     log4j2:
         # -- Console loggers that can be enabled. Allowed values are AUDIT_LOG_CONSOLE, HTTP_ACCESS_CONSOLE, TRANSACTION_CONSOLE, CORRELATION_CONSOLE
+        # -- To add loggers, add the logger name to the loggers list and add the logger configuration to extraProperties with logger.<logger_name> as the key.
+        # loggers: "auth-framework"
         loggers: ""
         # -- Appenders
         appenders: ""
+        # -- Extra log4j2 properties to be added to log4j2.properties file
+        # extraProperties:
+        #   logger.auth-framework.name: org.wso2.carbon.identity.application.authentication.framework
+        #   logger.auth-framework.level: DEBUG
+        #   logger.auth-framework.appenderRef.CARBON_LOGFILE.ref: CARBON_LOGFILE
+        extraProperties: {}
+        # -- Console log layout type. Allowed values are PatternLayout and JsonLayout
+        consoleLogType: "PatternLayout"
     # -- Startup arguments for APIM
     startupArgs: ""
     # -- Port Offset for APIM deployment
@@ -460,16 +470,21 @@ wso2:
           hostname: ""
           # -- Remote tracer port
           port: ""
-      # APIM Open Telemetry configurations
+      # APIM OpenTelemetry configurations
       openTelemetry:
-        # -- Open Telemetry enabled
+        # -- OpenTelemetry enabled
         enabled: false
-        # -- Remote tracer name. e.g. jaeger, zipkin, OTLP
-        name: ""
-        # -- Remote tracer hostname
-        hostname: ""
-        # -- Remote tracer port
-        port: ""
+        # -- Remote OpenTelemetry name. e.g. otlp
+        name: "otlp"
+        # -- Remote GRPC OpenTelemetry endpoint
+        url: ""
+        # -- Resource attributes to be sent in the OpenTelemetry spans. This should be in the format of key=value pairs separated by commas. e.g. deployment.environment=Production,service.name=MyService
+        # resourceAttributes:
+        #   - name: "service.name"
+        #     value: "apim-gw"
+        #   - name: "development.environment"
+        #     value: "dev"
+        resourceAttributes: []
       # JMX
       jmx:
         enabled: false
