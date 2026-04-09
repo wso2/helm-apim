@@ -1,26 +1,32 @@
 # helm-apim
+
 This repo will be used to maintain APIM related helm charts
 
 ## Prerequisites
 
-- WSO2 Product Docker images required for the deployment.  - It is recommended to push your own images to the cloud provider's container registry (ACR, ECR, etc.) as a best practice. Refer [U2 documentation](https://updates.docs.wso2.com/en/latest/updates/how-to-use-docker-images-to-receive-updates/) for any additional information. 
-    
+- WSO2 Product Docker images required for the deployment.  - It is recommended to push your own images to the cloud provider's container registry (ACR, ECR, etc.) as a best practice. Refer [U2 documentation](https://updates.docs.wso2.com/en/latest/updates/how-to-use-docker-images-to-receive-updates/) for any additional information.
+
     Note that you need a valid WSO2 subscription to obtain the U2 updated docker images from the WSO2 private registry.
 
 - A running Kubernetes cluster (AKS, EKS, etc.)
 
-- Ingress controller for routing traffic. The recommendation is to use [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/) suitable for your cloud environment. Some sample annotations that could be used with the ingress resources are as follows.
+- Controller for routing traffic. You can use either:
+  - **[Envoy Gateway](https://gateway.envoyproxy.io/docs/install/install-helm/)**  - **RECOMMENDED**: Gateway API-based approach for a more modern, role-oriented API.
+  To customize the routing you can use any of the [Gateway API Extensions](https://gateway.envoyproxy.io/docs/api/extension_types/) provided by Envoy
+  - **[NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)** - **DEPRECATED**: Traditional Ingress-based approach.
+  
+    Some sample annotations that could be used with the ingress resources are as follows.
 
-  > The ingress class should be set to `nginx` in the ingress resource if you are using the NGINX Ingress Controller.
+    > The ingress class should be set to `nginx` in the ingress resource if you are using the NGINX Ingress Controller.
 
-  ```
-  nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-  nginx.ingress.kubernetes.io/affinity: "cookie"
-  nginx.ingress.kubernetes.io/session-cookie-name: "route"
-  nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
-  nginx.ingress.kubernetes.io/proxy-buffering: "on"
-  nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
-  ```
+    ```yaml
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/session-cookie-name: "route"
+    nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
+    ```
 
   However, if you are deploying the charts in AWS, you can use the [AWS ALB Ingress Controller](https://github.com/kubernetes-sigs/aws-load-balancer-controller/tree/main) as well. If you are using ACM to manage the certificates, using this controller over the nginx ingress controller would be more convenient.
 

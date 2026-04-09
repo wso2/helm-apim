@@ -2,40 +2,64 @@ Thank you for installing WSO2 API Manager.
 
 Please follow these steps to access API Manager Publisher, DevPortal consoles.
 
+{{- if .Values.kubernetes.gatewayAPI.enabled }}
+1. Obtain the external IP (`ADDRESS`) of the Gateway resource.
+
+   kubectl get gateway -n {{ .Release.Namespace }}
+
+   The output under the relevant column stands for the following.
+
+   API Manager Gateway API
+
+   - NAME: Metadata name of the Gateway resource (configured as {{ .Values.kubernetes.gatewayAPI.gatewayName }})
+   - ADDRESS: External IP exposing the API Manager services to outside of the Kubernetes environment
+   - PROGRAMMED: Indicates whether the Gateway has been programmed by the Gateway controller
+
+{{- else }}
 1. Obtain the external IP (`EXTERNAL-IP`) of the API Manager Ingress resources, by listing down the Kubernetes Ingresses.
 
-  kubectl get ing -n {{ .Release.Namespace }}
+   kubectl get ing -n {{ .Release.Namespace }}
 
-  The output under the relevant column stands for the following.
+   The output under the relevant column stands for the following.
 
-  API Manager Publisher-DevPortal
+   API Manager Publisher-DevPortal
 
-  - NAME: Metadata name of the Kubernetes Ingress resource (defaults to {{ template "am-all-in-one.fullname" . }}-am-ingress)
-  - HOSTS: Hostname of the WSO2 API Manager service ({{ .Values.kubernetes.ingress.management.hostname }})
-  - ADDRESS: External IP (`EXTERNAL-IP`) exposing the API Manager service to outside of the Kubernetes environment
-  - PORTS: Externally exposed service ports of the API Manager service
+   - NAME: Metadata name of the Kubernetes Ingress resource (defaults to {{ template "am-all-in-one.fullname" . }}-am-ingress)
+   - HOSTS: Hostname of the WSO2 API Manager service ({{ .Values.kubernetes.ingress.management.hostname }})
+   - ADDRESS: External IP (`EXTERNAL-IP`) exposing the API Manager service to outside of the Kubernetes environment
+   - PORTS: Externally exposed service ports of the API Manager service
 
-  API Manager Gateway
+    API Manager Gateway
 
-  - NAME: Metadata name of the Kubernetes Ingress resource (defaults to {{ template "am-all-in-one.fullname" . }}-am-gateway-ingress)
-  - HOSTS: Hostname of the WSO2 API Manager's Gateway service ({{ .Values.kubernetes.ingress.gateway.hostname }})
-  - ADDRESS: External IP (`EXTERNAL-IP`) exposing the API Manager's Gateway service to outside of the Kubernetes environment
-  - PORTS: Externally exposed service ports of the API Manager' Gateway service
+    - NAME: Metadata name of the Kubernetes Ingress resource (defaults to {{ template "am-all-in-one.fullname" . }}-am-gateway-ingress)
+    - HOSTS: Hostname of the WSO2 API Manager's Gateway service ({{ .Values.kubernetes.ingress.gateway.hostname }})
+    - ADDRESS: External IP (`EXTERNAL-IP`) exposing the API Manager's Gateway service to outside of the Kubernetes environment
+    - PORTS: Externally exposed service ports of the API Manager' Gateway service
+{{- end }}
 
 
 2. Add a DNS record mapping the hostnames (in step 1) and the external IP.
 
    If the defined hostnames (in step 1) are backed by a DNS service, add a DNS record mapping the hostnames and
-   the external IP (`EXTERNAL-IP`) in the relevant DNS service.
+   the external IP (`ADDRESS`/`EXTERNAL-IP`) in the relevant DNS service.
 
    If the defined hostnames are not backed by a DNS service, for the purpose of evaluation you may add an entry mapping the
    hostnames and the external IP in the `/etc/hosts` file at the client-side.
 
+{{- if .Values.kubernetes.gatewayAPI.enabled }}
+   <EXTERNAL-IP> {{ .Values.kubernetes.gatewayAPI.management.hostname }} {{ .Values.kubernetes.gatewayAPI.gateway.hostname }} {{ .Values.kubernetes.gatewayAPI.websub.hostname }} {{ .Values.kubernetes.gatewayAPI.websocket.hostname }}
+{{- else }}
    <EXTERNAL-IP> {{ .Values.kubernetes.ingress.management.hostname }} {{ .Values.kubernetes.ingress.gateway.hostname }}
+{{- end }}
 
 3. Navigate to the consoles in your browser of choice.
 
+{{- if .Values.kubernetes.gatewayAPI.enabled }}
+   API Manager Publisher: https://{{ .Values.kubernetes.gatewayAPI.management.hostname }}/publisher
+   API Manager DevPortal: https://{{ .Values.kubernetes.gatewayAPI.management.hostname }}/devportal
+{{- else }}
    API Manager Publisher: https://{{ .Values.kubernetes.ingress.management.hostname }}/publisher
    API Manager DevPortal: https://{{ .Values.kubernetes.ingress.management.hostname }}/devportal
+{{- end }}
 
 Please refer the official documentation at https://apim.docs.wso2.com/en/latest/ for additional information on WSO2 API Manager.

@@ -419,8 +419,8 @@ wso2:
 
       # APIM OAuth configurations
       oauth_config:
-        # -- Remove auth header from outgoing requests
-        removeOutboundAuthHeader: true
+        # -- Preserves auth header in outgoing requests
+        enableOutboundAuthHeader: false
         # -- OAuth authorization header name
         authHeader: "Authorization"
         # -- OAuth revoke endpoint
@@ -664,6 +664,13 @@ wso2:
 
     # -- Node selector to deploy pod in selected node. Add label to the node and specify the label here.
     nodeSelector:
+
+    # -- Environment variables for the deployment
+    # Example:
+    #   envs:
+    #     MY_CUSTOM_VAR: "my-value"
+    #     ANOTHER_VAR: "another-value"
+    envs: {}
 
     persistence:
       # -- Persistent runtime artifacts for Apache Solr-based indexing

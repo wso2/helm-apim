@@ -1,5 +1,5 @@
 [server]
-hostname = "{{ .Values.kubernetes.ingress.gateway.hostname }}"
+hostname = "{{- if .Values.kubernetes.ingress.enabled -}}{{ .Values.kubernetes.ingress.gateway.hostname }}{{- else -}}{{ .Values.kubernetes.gatewayAPI.gateway.hostname }}{{- end -}}"
 node_ip = "$env{NODE_IP}"
 server_role = "gateway-worker"
 offset = {{ .Values.wso2.apim.portOffset }}
@@ -205,7 +205,7 @@ enable = {{ .Values.wso2.apim.configurations.cache.jwt_claim.enabled }}
 expiry_time = {{ .Values.wso2.apim.configurations.cache.jwt_claim.expiryTime }}
 
 [apim.oauth_config]
-remove_outbound_auth_header = {{ .Values.wso2.apim.configurations.oauth_config.removeOutboundAuthHeader }}
+enable_outbound_auth_header = {{ .Values.wso2.apim.configurations.oauth_config.enableOutboundAuthHeader }}
 auth_header = {{ .Values.wso2.apim.configurations.oauth_config.authHeader | quote }}
 enable_token_encryption = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenEncryption }}
 enable_token_hashing = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenHashing }}

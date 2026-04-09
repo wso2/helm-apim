@@ -1,6 +1,6 @@
 # wso2am-all-in-one
 
-![Version: 4.5.0-8](https://img.shields.io/badge/Version-4.5.0--8-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
+![Version: 4.5.0-9](https://img.shields.io/badge/Version-4.5.0--9-informational?style=flat-square) ![AppVersion: 4.5.0](https://img.shields.io/badge/AppVersion-4.5.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
@@ -60,6 +60,32 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
+| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"backendTrafficPolicy":{"cookie":{"name":"WSO2_CP_STICKY_SESSION","ttl":"0s"},"enabled":false},"defaultConfigMapCreation":false,"enabled":false,"gateway":{"annotations":{},"enabled":false,"filters":[],"hostname":"gw.wso2.com"},"gatewayName":"","management":{"annotations":{},"enabled":false,"filters":[],"hostname":"am.wso2.com"},"websocket":{"annotations":{},"enabled":false,"filters":[],"hostname":"websocket.wso2.com"},"websub":{"annotations":{},"enabled":false,"filters":[],"hostname":"websub.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See docs/assets/sample-gateway.yaml for an example Gateway manifest |
+| kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateConfigMap":"","enabled":false,"hostname":""}` | Backend TLS Policy for HTTPS backend connections |
+| kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap | string | `""` | CA certificate ConfigMap name for backend TLS verification |
+| kubernetes.gatewayAPI.backendTLSPolicy.enabled | bool | `false` | Enable BackendTLSPolicy |
+| kubernetes.gatewayAPI.backendTLSPolicy.hostname | string | `""` | Backend hostname for TLS verification |
+| kubernetes.gatewayAPI.backendTrafficPolicy.cookie.name | string | `"WSO2_CP_STICKY_SESSION"` | Cookie name used for sticky sessions |
+| kubernetes.gatewayAPI.backendTrafficPolicy.cookie.ttl | string | `"0s"` | Cookie TTL. Use "0s" for a session cookie (expires when browser closes) |
+| kubernetes.gatewayAPI.backendTrafficPolicy.enabled | bool | `false` | Enable BackendTrafficPolicy |
+| kubernetes.gatewayAPI.defaultConfigMapCreation | bool | `false` | Create CA certificate ConfigMap for BackendTLSPolicy |
+| kubernetes.gatewayAPI.enabled | bool | `false` | Enable Gateway API resources (HTTPRoutes and policies) |
+| kubernetes.gatewayAPI.gateway.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.gateway.enabled | bool | `false` | Enable HTTPRoute for Gateway pass-through |
+| kubernetes.gatewayAPI.gateway.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.gateway.hostname | string | `"gw.wso2.com"` | Hostname for Gateway pass-through |
+| kubernetes.gatewayAPI.gatewayName | string | `""` | Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed) This Gateway must exist in the same namespace before installing the chart |
+| kubernetes.gatewayAPI.management.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.management.enabled | bool | `false` | Enable HTTPRoute for Management Console, Publisher, DevPortal and Admin Portal |
+| kubernetes.gatewayAPI.management.hostname | string | `"am.wso2.com"` | Hostname for API Manager Management interfaces |
+| kubernetes.gatewayAPI.websocket.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.websocket.enabled | bool | `false` | Enable HTTPRoute for Websocket |
+| kubernetes.gatewayAPI.websocket.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.websocket.hostname | string | `"websocket.wso2.com"` | Hostname for Websocket |
+| kubernetes.gatewayAPI.websub.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.websub.enabled | bool | `false` | Enable HTTPRoute for Websub |
+| kubernetes.gatewayAPI.websub.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.websub.hostname | string | `"websub.wso2.com"` | Hostname for Websub |
 | kubernetes.ingress.gateway.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
 | kubernetes.ingress.gateway.enabled | bool | `true` |  |
 | kubernetes.ingress.gateway.hostname | string | `"gw.wso2.com"` | Ingress hostname for Gateway pass-through |
@@ -171,8 +197,16 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
 | wso2.apim.configurations.oauth_config.oauth2JWKSUrl | string | `""` |  |
-| wso2.apim.configurations.oauth_config.removeOutboundAuthHeader | bool | `true` | Remove auth header from outgoing requests |
+| wso2.apim.configurations.oauth_config.enableOutboundAuthHeader | bool | `false` | Preserves auth header in outgoing requests |
 | wso2.apim.configurations.oauth_config.revokeEndpoint | string | `""` | OAuth revoke endpoint |
+| wso2.apim.configurations.openTelemetry.enabled | bool | `false` | Open Telemetry enabled |
+| wso2.apim.configurations.openTelemetry.hostname | string | `""` | Remote tracer hostname |
+| wso2.apim.configurations.openTelemetry.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin, OTLP |
+| wso2.apim.configurations.openTelemetry.port | string | `""` | Remote tracer port |
+| wso2.apim.configurations.openTracer.enabled | bool | `false` | Open Tracing enabled |
+| wso2.apim.configurations.openTracer.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin |
+| wso2.apim.configurations.openTracer.properties.hostname | string | `""` | Remote tracer hostname |
+| wso2.apim.configurations.openTracer.properties.port | string | `""` | Remote tracer port |
 | wso2.apim.configurations.organization_based_access_control.enabled | bool | `true` |  |
 | wso2.apim.configurations.organization_based_access_control.organization_id_local_claim | string | `"http://wso2.org/claims/organizationId"` |  |
 | wso2.apim.configurations.organization_based_access_control.organization_name_local_claim | string | `"http://wso2.org/claims/organization"` |  |
@@ -273,6 +307,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.choreoAnalytics | object | `{"enabled":false,"endpoint":"","onpremKey":""}` | WSO2 Choreo Analytics Parameters If provided, these parameters will be used publish analytics data to Choreo Analytics environment (https://apim.docs.wso2.com/en/latest/observe/api-manager-analytics/configure-analytics/register-for-analytics/). |
 | wso2.choreoAnalytics.endpoint | string | `""` | Choreo Analytics cloud service endpoint |
 | wso2.choreoAnalytics.onpremKey | string | `""` | On-premise key for Choreo Analytics |
+| wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.highAvailability | bool | `false` |  |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
