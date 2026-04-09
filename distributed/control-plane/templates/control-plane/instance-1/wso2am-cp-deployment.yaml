@@ -72,7 +72,7 @@ spec:
       {{- end }}
       containers:
       - name: wso2am-control-plane
-        image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}:{{ .Values.wso2.deployment.image.tag }}{{- if .Values.wso2.deployment.image.digest }}@{{ .Values.wso2.deployment.image.digest }}{{- end }}
+        image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}{{- if .Values.wso2.deployment.image.tag }}:{{ .Values.wso2.deployment.image.tag }}{{- end }}{{- if .Values.wso2.deployment.image.digest }}@{{ .Values.wso2.deployment.image.digest }}{{- end }}
         imagePullPolicy: {{ .Values.wso2.deployment.image.imagePullPolicy }}
         env:
         - name: PROFILE_NAME
