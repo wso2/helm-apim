@@ -667,6 +667,8 @@ wso2:
       registry: "<DOCKER_REGISTRY>"
       # -- Repository name consisting the image
       repository: "<ALL-IN-ONE_DOCKER_IMAGE>"
+      # -- Docker image tag
+      tag: "<ALL-IN-ONE_IMAGE_TAG>"
       # -- Docker image digest
       digest: "<ALL-IN-ONE_IMAGE_DIGEST>"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)

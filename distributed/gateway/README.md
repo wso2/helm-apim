@@ -118,9 +118,9 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.configurations.km.servicePort | int | `9443` | Key Manager service port |
 | wso2.apim.configurations.km.serviceUrl | string | `"wso2am-cp-service"` | Key manager service name if default Resident KM is used |
 | wso2.apim.configurations.oauth_config.authHeader | string | `"Authorization"` | OAuth authorization header name |
+| wso2.apim.configurations.oauth_config.enableOutboundAuthHeader | bool | `false` | Preserves auth header in outgoing requests |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
-| wso2.apim.configurations.oauth_config.enableOutboundAuthHeader | bool | `false` | Preserves auth header in outgoing requests |
 | wso2.apim.configurations.openTelemetry.enabled | bool | `false` | Open Telemetry enabled |
 | wso2.apim.configurations.openTelemetry.hostname | string | `""` | Remote tracer hostname |
 | wso2.apim.configurations.openTelemetry.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin, OTLP |
@@ -178,6 +178,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.deployment.image.imagePullSecrets | object | `{"enabled":false,"password":"","username":""}` | Container registry credentials. Specify image pull secrets for private registries |
 | wso2.deployment.image.registry | string | `""` | Container registry hostname |
 | wso2.deployment.image.repository | string | `""` | Azure ACR repository name consisting the image |
+| wso2.deployment.image.tag | string | `""` | Docker image tag |
 | wso2.deployment.lifecycle.preStopHook.sleepSeconds | int | `10` | Number of seconds to sleep before sending SIGTERM to the pod |
 | wso2.deployment.livenessProbe.failureThreshold | int | `3` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.livenessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before liveness probes are initiated |
