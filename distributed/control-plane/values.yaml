@@ -646,6 +646,25 @@ wso2:
     pod:
       # -- Annotations for pods
       annotations: {}
+      # -- Generic sidecars to inject into the gateway pod
+      # sidecars:
+      #   - name: jmx-metrics
+      #     image: your-registry/otel-jmx-metrics:latest
+      #     imagePullPolicy: IfNotPresent
+      #     env:
+      #       - name: OTEL_EXPORTER_OTLP_ENDPOINT
+      #         value: "http://otel-collector:4317"
+      #       - name: OTEL_EXPORTER_OTLP_PROTOCOL
+      #         value: "grpc"
+      #       - name: OTEL_METRIC_EXPORT_INTERVAL
+      #         value: "30000"
+      #       - name: OTEL_SERVICE_NAME
+      #         value: "apim-gateway"
+      #       - name: OTEL_JMX_TARGET_SYSTEM
+      #         value: "jvm"
+      #       - name: OTEL_JMX_SERVICE_URL
+      #         value: "service:jmx:rmi:///jndi/rmi://127.0.0.1:9999/jmxrmi"
+      sidecars: []
 
     # -- Enable high availability for traffic manager. If this is enabled, two traffic manager instances will be deployed.
     # This is not relavant to HA in Kubernetes. Multiple replicas of the same instance will not count as HA for TM.
