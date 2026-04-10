@@ -51,14 +51,12 @@ spec:
                   - {{ template "am-all-in-one.fullname" . }}
               topologyKey: "topology.kubernetes.io/zone"
             weight: 100
-      {{- if .Values.wso2.apim.secureVaultEnabled }}
       {{- if .Values.aws.enabled }}
-      serviceAccount: {{ .Values.aws.serviceAccountName }}
+      serviceAccountName: {{ .Values.aws.serviceAccountName }}
       {{- else if .Values.gcp.enabled }}
-      serviceAccount: {{ .Values.gcp.serviceAccountName }}
+      serviceAccountName: {{ .Values.gcp.serviceAccountName }}
       {{- else if .Values.azure.enabled }}
-      serviceAccount: {{ .Values.azure.serviceAccountName }}
-      {{- end }}
+      serviceAccountName: {{ .Values.azure.serviceAccountName }}
       {{- end }}
       securityContext:
         seccompProfile:
