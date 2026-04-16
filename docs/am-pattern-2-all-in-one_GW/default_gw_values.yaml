@@ -319,6 +319,14 @@ wso2:
         gateway:
           # -- Gateway label used to filter out artifact retrieval
           labels: ["Default"]
+          # -- Enable on-demand artifact loading in the gateway
+          onDemandLoading:
+            enabled: false
+        tenantLoading:
+          # -- Enable tenant loading in the gateway for artifacts
+          enabled: false
+          # -- Tenants to be loaded in the gateway for artifacts.
+          tenants: "*"
       
       jwt:
         # Enable backend JWT generation in gateway
