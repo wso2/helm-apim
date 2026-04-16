@@ -174,6 +174,8 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.configurations.openTelemetry.hostname | string | `""` | Remote tracer hostname |
 | wso2.apim.configurations.openTelemetry.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin, OTLP |
 | wso2.apim.configurations.openTelemetry.port | string | `""` | Remote tracer port |
+| wso2.apim.configurations.openTelemetry.url | string | `""` | Remote tracer URL. This should be used when name is OTLP |
+| wso2.apim.configurations.openTelemetry.resourceAttributes | list | `[]` | Open Telemetry resource attributes |
 | wso2.apim.configurations.openTracer.enabled | bool | `false` | Open Tracing enabled |
 | wso2.apim.configurations.openTracer.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin |
 | wso2.apim.configurations.openTracer.properties.hostname | string | `""` | Remote tracer hostname |
