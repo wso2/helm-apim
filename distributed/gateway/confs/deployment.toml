@@ -167,6 +167,9 @@ claims_extractor_impl = {{ .Values.wso2.apim.configurations.jwt.claimsExtractorI
 
 [apim.sync_runtime_artifacts.gateway]
 gateway_labels = {{ toJson .Values.wso2.apim.configurations.syncRuntimeArtifacts.gateway.labels }}
+{{- if .Values.wso2.apim.configurations.syncRuntimeArtifacts.gateway.onDemandLoading.enabled }}
+enable_on_demand_loading = true
+{{- end }}
 
 {{- if .Values.wso2.apim.configurations.syncRuntimeArtifacts.tenantLoading.enabled }}
 [apim.sync_runtime_artifacts.tenant_loading]

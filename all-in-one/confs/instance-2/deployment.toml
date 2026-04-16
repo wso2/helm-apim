@@ -2,7 +2,6 @@
 hostname = "{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.management.hostname }}{{- else -}}{{ .Values.kubernetes.ingress.management.hostname }}{{- end -}}"
 node_ip = "$env{NODE_IP}"
 offset = {{ .Values.wso2.apim.portOffset }}
-mode = "single" #single or ha
 base_path = "${carbon.protocol}://${carbon.host}:${carbon.management.port}"
 #discard_empty_caches = false
 server_role = "default"
@@ -328,6 +327,29 @@ revoke_endpoint = {{ .Values.wso2.apim.configurations.oauth_config.revokeEndpoin
 enable_token_encryption = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenEncryption }}
 enable_token_hashing = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenHashing }}
 
+{{- if .Values.wso2.apim.configurations.oauth_config.multipleClientSecrets }}
+
+[oauth.multiple_client_secrets]
+enable = {{ .Values.wso2.apim.configurations.oauth_config.multipleClientSecrets.enable }}
+{{- if .Values.wso2.apim.configurations.oauth_config.multipleClientSecrets.secretCount }}
+secret_count = {{ .Values.wso2.apim.configurations.oauth_config.multipleClientSecrets.secretCount }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.oauth_config.tokenPersistenceOptimization }}
+
+[[oauth.extensions.token_types]]
+name = "JWT"
+issuer = "org.wso2.is.key.manager.tokenpersistence.issuer.ExtendedJWTTokenIssuer"
+{{- else }}
+
+[oauth.token_persistence]
+enable = true
+
+[oauth.revoked_token_headers_in_response]
+enable = true
+{{- end }}
+
 {{- if .Values.wso2.apim.configurations.openTracer.enabled }}
 [apim.open_tracer]
 remote_tracer.enable = {{ .Values.wso2.apim.configurations.openTracer.enabled }}
@@ -385,6 +407,9 @@ login_username_case_insensitive = {{ .Values.wso2.apim.configurations.devportal.
 {{- end }}
 {{- if .Values.wso2.apim.configurations.devportal.enableKeyProvisioning }}
 enable_key_provisioning = {{ .Values.wso2.apim.configurations.devportal.enableKeyProvisioning }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.devportal.enableLegacyApiKeys }}
+enable_legacy_api_keys = {{ .Values.wso2.apim.configurations.devportal.enableLegacyApiKeys }}
 {{- end }}
 
 [apim.publisher]

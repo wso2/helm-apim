@@ -499,6 +499,14 @@ wso2:
         # -- Enable token hashing
         enableTokenHashing: false
         oauth2JWKSUrl: "https://apim-wso2am-all-in-one-am-service:9443/oauth2/jwks"
+        # -- Multiple client secrets configuration
+        multipleClientSecrets:
+          # -- Enable multiple client secrets for OAuth applications
+          enable: true
+          # -- Maximum number of secrets allowed per application (optional, leave empty for unlimited)
+          secretCount: ""
+        # -- Enable OAuth token persistence optimization. When enabled, JWT extension is used. When disabled, token persistence and revoked token headers configuration is used.
+        tokenPersistenceOptimization: true
 
       # APIM Devportal configurations
       devportal:
@@ -523,6 +531,7 @@ wso2:
         create_default_application: 
         loginUsernameCaseInsensitive:
         enableKeyProvisioning:
+        enableLegacyApiKeys: false
 
       publisher:
         # -- Supported document types in Publisher. 

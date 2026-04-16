@@ -234,6 +234,7 @@ host = "{{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.
 port = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.port }}
 user = "{{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.user }}"
 password = "{{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.password }}"
+ssl = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.ssl }}
 maxTotal = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.maxTotal }}
 maxIdle = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.maxIdle }}
 minIdle = {{ .Values.wso2.apim.configurations.distributedThrottling.keyvalueStore.minIdle }}
