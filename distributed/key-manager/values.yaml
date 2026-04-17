@@ -390,6 +390,7 @@ wso2:
       # Specify image pull secrets for private registries
       imagePullSecrets:
         enabled: false
+        namme: ""
         username: ""
         password: ""
       # -- Container registry hostname

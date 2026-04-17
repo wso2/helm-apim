@@ -69,7 +69,11 @@ spec:
           {{- end }}
       {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
       imagePullSecrets:
+        {{- if .Values.wso2.deployment.image.imagePullSecrets.name }}
+      - name: {{ .Values.wso2.deployment.image.imagePullSecrets.name }}
+        {{- else }}
       - name: {{ template "apim-helm-tm.fullname" . }}-docker-registry-auth
+        {{- end }}
       {{- end }}
       containers:
       - name: wso2am-traffic-manager
