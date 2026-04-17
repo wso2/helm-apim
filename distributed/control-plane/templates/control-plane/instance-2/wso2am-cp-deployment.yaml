@@ -67,7 +67,11 @@ spec:
           {{- end }}
       {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
       imagePullSecrets:
+        {{- if .Values.wso2.deployment.image.imagePullSecrets.name }}
+      - name: {{ .Values.wso2.deployment.image.imagePullSecrets.name }}
+        {{- else }}
       - name: {{ template "apim-helm-cp.fullname" . }}-docker-registry-auth
+        {{- end }}
       {{- end }}
       containers:
       - name: wso2am-control-plane

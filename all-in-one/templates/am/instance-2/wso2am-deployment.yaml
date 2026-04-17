@@ -64,7 +64,11 @@ spec:
           {{- end }}
       {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
       imagePullSecrets:
+        {{- if .Values.wso2.deployment.image.imagePullSecrets.name }}
+      - name: {{ .Values.wso2.deployment.image.imagePullSecrets.name }}
+        {{- else }}
       - name: {{ template "am-all-in-one.fullname" . }}-docker-registry-auth
+        {{- end }}
       {{- end }}
       containers:
         - name: wso2am
