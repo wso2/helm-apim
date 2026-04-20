@@ -142,13 +142,14 @@ kubectl create configmap wso2-ca-cert --from-file=ca.crt=/path/to/your/certifica
 ```
 
 Set `defaultConfigMapCreation` to false when you manage the CA ConfigMap yourself (recommended for production).
+ > **Note:** A default ConfigMap with the name `wso2-ca-cert` is created when the `defaultConfigMapCreation` option is enabled in the values.yaml. This default ConfigMap uses the default certificates provided in the APIM truststore.
 
 ### 5. Configure the DNS Records
 
 You can find out the external IP (ADDRESS) of the Gateway by checking the status of the Gateway resource.
 
 ```bash
-kubectl get gateways -n <namespace>'
+kubectl get gateways -n <namespace>
 ```
 
 Then, create the necessary DNS records to point your hostnames (e.g., `gw.wso2.com`) to the Gateway's external IP.
