@@ -174,13 +174,13 @@ The Helm chart uses NGINX Ingress by default. If you prefer the Gateway API, con
   1. Deploy All-in-one
 
       ```bash
-      helm install apim wso2/wso2am-all-in-one --version 4.6.0-3 -f default_values.yaml -n apim
+      helm install apim wso2/wso2am-all-in-one --version 4.6.0-4 -f default_values.yaml -n apim
       ```
 
   2. Deploy GW
 
       ```bash
-      helm install apim-gw wso2/wso2am-gw --version 4.6.0-3 -f default_gw_values.yaml -n apim
+      helm install apim-gw wso2/wso2am-gw --version 4.6.0-4 -f default_gw_values.yaml -n apim
       ```
 
 ## Configuration
@@ -453,7 +453,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
   
   ```bash
   kubectl create namespace <namespace>
-  helm install <release-name> <helm-chart-path> --version 4.6.0-3 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.6.0-4 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 #### 2.6 Enable High Availability
@@ -511,7 +511,7 @@ wso2:
 Replace `<release-name>` and `<namespace>` with appropriate values. Replace `<helm-chart-path>` with the path to the Helm deployment.
   
   ```bash
-  helm install <release-name> <helm-chart-path> --version 4.6.0-3 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.6.0-4 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 4. Add a DNS Record Mapping the Hostnames and the External IP
