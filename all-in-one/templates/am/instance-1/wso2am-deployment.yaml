@@ -48,14 +48,12 @@ spec:
                   - {{ template "am-all-in-one.fullname" . }}
               topologyKey: "topology.kubernetes.io/zone"
             weight: 100
-      {{- if .Values.wso2.apim.secureVaultEnabled }}
       {{- if .Values.aws.enabled }}
-      serviceAccount: {{ .Values.aws.serviceAccountName }}
+      serviceAccountName: {{ .Values.aws.serviceAccountName }}
       {{- else if .Values.gcp.enabled }}
-      serviceAccount: {{ .Values.gcp.serviceAccountName }}
+      serviceAccountName: {{ .Values.gcp.serviceAccountName }}
       {{- else if .Values.azure.enabled }}
-      serviceAccount: {{ .Values.azure.serviceAccountName }}
-      {{- end }}
+      serviceAccountName: {{ .Values.azure.serviceAccountName }}
       {{- end }}
       securityContext:
         seccompProfile:
@@ -69,7 +67,13 @@ spec:
       {{- end }}
       containers:
         - name: wso2am
+          {{- if .Values.wso2.deployment.image.digest }}
           image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}@{{ .Values.wso2.deployment.image.digest }}
+          {{- else if .Values.wso2.deployment.image.tag }}
+          image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}:{{ .Values.wso2.deployment.image.tag }}
+          {{- else }}
+          image: {{ .Values.wso2.deployment.image.registry }}/{{ .Values.wso2.deployment.image.repository }}
+          {{- end }}
           imagePullPolicy: {{ .Values.wso2.deployment.image.imagePullPolicy }}
           env:
             - name: NODE_IP
@@ -284,6 +288,10 @@ spec:
             - name: wso2am-solr
               mountPath: /home/wso2carbon/solr/indexed-data
             {{ end }}
+            {{- if .Values.kubernetes.openshift.enabled }}
+            - name: wso2am-security-dir
+              mountPath: /home/wso2carbon/tmp-security
+            {{- end }}
       {{- if .Values.wso2.deployment.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.wso2.deployment.nodeSelector | nindent 8 }}
@@ -357,3 +365,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ template "am-all-in-one.fullname" . }}-am-solr-indexed-data-volume-claim
         {{ end }}
+        {{- if .Values.kubernetes.openshift.enabled }}
+        - name: wso2am-security-dir
+          emptyDir: {}
+        {{- end }}

@@ -63,15 +63,18 @@ data:
     {{- end }}
     {{- end }}
 
-    # For permission configuration on OpenShift.
     {{- if .Values.kubernetes.openshift.enabled }}
-    SECURITY_DIR="${WSO2_SERVER_HOME}/repository/resources/security"
-
-    if [ -d "${SECURITY_DIR}" ]; then
-    echo "Recreating ${SECURITY_DIR} in writable layer to allow runtime modifications..."
-    TMP_DIR="${SECURITY_DIR}_tmp_copyup"
-    cp -a "${SECURITY_DIR}/." "${TMP_DIR}" && rm -rf "${SECURITY_DIR}" && mv "${TMP_DIR}" "${SECURITY_DIR}"
-    chgrp -R 0 "${SECURITY_DIR}" && chmod -R g+rwX "${SECURITY_DIR}" || true
+    # For permission configuration on OpenShift.
+    echo "Openshift deployment detected."
+    # Copy security dir to writable emptyDir and symlink
+    SRC_SECURITY="${WSO2_SERVER_HOME}/repository/resources/security"
+    CONFIG_SECURITY="/home/wso2carbon/tmp-security"
+    
+    if [ -d "${SRC_SECURITY}" ] && [ -d "${CONFIG_SECURITY}" ] && [ ! -L "${SRC_SECURITY}" ]; then
+      # Clean up before copying
+      find "${CONFIG_SECURITY}" -mindepth 1 -delete 2>/dev/null || rm -rf "${CONFIG_SECURITY:?}"/* "${CONFIG_SECURITY:?}"/.[!.]* 2>/dev/null
+      cp -dR "${SRC_SECURITY}/." "${CONFIG_SECURITY}/" && \
+      rm -rf "${SRC_SECURITY}" && cp -dR "${CONFIG_SECURITY}/." "${SRC_SECURITY}/"
     fi
     {{- end }}
 

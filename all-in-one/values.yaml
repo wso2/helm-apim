@@ -621,8 +621,8 @@ wso2:
 
       # APIM OAuth configurations
       oauth_config:
-        # -- Remove auth header from outgoing requests
-        removeOutboundAuthHeader: true
+        # -- Preserves auth header in outgoing requests
+        enableOutboundAuthHeader: false
         # -- OAuth authorization header name
         authHeader: "Authorization"
         # -- OAuth revoke endpoint
@@ -849,6 +849,8 @@ wso2:
       registry: ""
       # -- Repository name consisting the image
       repository: ""
+      # -- Docker image tag
+      tag: ""
       # -- Docker image digest
       digest: ""
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
