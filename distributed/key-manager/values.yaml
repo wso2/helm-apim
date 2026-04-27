@@ -85,6 +85,13 @@ kubernetes:
   openshift:
     enabled: false
 
+  # -- ulimit settings for the container entrypoint (leave empty to skip). For AWS Fargate, you must override the default limit of 1024 for nofile and nproc to meet the WSO2 recommendation of 20000.
+  ulimits:
+    # -- Soft limit for open file descriptors (ulimit -Sn). e.g., 20000
+    nofile: ""
+    # -- Soft limit for number of processes (ulimit -Su). e.g., 20000
+    nproc: ""
+
   # -- Ingress class to be used for the ingress resource
   ingressClass: "nginx"
   ingress:
