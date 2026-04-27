@@ -112,6 +112,9 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.securityContext.seLinux | object | `{"enabled":false,"level":""}` | SELinux context for the container |
 | kubernetes.securityContext.seccompProfile | object | `{"localhostProfile":"","type":"RuntimeDefault"}` | Seccomp profile for the container |
 | kubernetes.securityContext.seccompProfile.type | string | `"RuntimeDefault"` | Seccomp profile type(RuntimeDefault, Unconfined or Localhost) |
+| kubernetes.ulimits | object | `{"nofile":"","nproc":""}` | ulimit settings for the container entrypoint (leave empty to skip). For AWS Fargate, you must override the default limit of 1024 for nofile and nproc to meet the WSO2 recommendation of 20000. |
+| kubernetes.ulimits.nofile | string | `""` | Soft limit for open file descriptors (ulimit -Sn). e.g., 20000 |
+| kubernetes.ulimits.nproc | string | `""` | Soft limit for number of processes (ulimit -Su). e.g., 20000 |
 | wso2.ELKAnalytics | object | `{"enabled":false}` | ELK Analytics Parameters |
 | wso2.apim.configurations.adminPassword | string | `"admin"` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `"admin"` | Super admin username |
