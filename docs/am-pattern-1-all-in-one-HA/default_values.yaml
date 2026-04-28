@@ -547,7 +547,7 @@ wso2:
         create_default_application: 
         loginUsernameCaseInsensitive:
         enableKeyProvisioning:
-        enableLegacyApiKeys: true
+        enableLegacyApiKeys: false
 
       publisher:
         # -- Supported document types in Publisher. 
