@@ -329,6 +329,7 @@ wso2:
           port: 6379
           user: ""
           password: ""
+          ssl: false
           maxTotal: 20
           maxIdle: 20
           minIdle: 4
