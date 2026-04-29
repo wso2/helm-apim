@@ -45,6 +45,9 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | kubernetes.securityContext.seLinux | object | `{"enabled":false,"level":""}` | SELinux context for the container |
 | kubernetes.securityContext.seccompProfile | object | `{"localhostProfile":"","type":"RuntimeDefault"}` | Seccomp profile for the container |
 | kubernetes.securityContext.seccompProfile.type | string | `"RuntimeDefault"` | Seccomp profile type(RuntimeDefault, Unconfined or Localhost) |
+| kubernetes.ulimits | object | `{"nofile":"","nproc":""}` | ulimit settings for the container entrypoint (leave empty to skip). For AWS Fargate, you must override the default limit of 1024 for nofile and nproc to meet the WSO2 recommendation of 20000. |
+| kubernetes.ulimits.nofile | string | `""` | Soft limit for open file descriptors (ulimit -Sn). e.g., 20000 |
+| kubernetes.ulimits.nproc | string | `""` | Soft limit for number of processes (ulimit -Su). e.g., 20000 |
 | wso2.apim.configurations.adminPassword | string | `""` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `""` | Super admin username |
 | wso2.apim.configurations.databases.apim_db | object | `{"password":"","poolParameters":{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM AM_DB configurations. |

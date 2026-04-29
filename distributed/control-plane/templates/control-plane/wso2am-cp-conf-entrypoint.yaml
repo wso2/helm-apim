@@ -71,6 +71,12 @@ data:
       rm -rf "${SRC_SECURITY}" && cp -dR "${CONFIG_SECURITY}/." "${SRC_SECURITY}/"
     fi
     {{- end }}
+    {{- if .Values.kubernetes.ulimits.nofile }}
+    ulimit -Sn {{ .Values.kubernetes.ulimits.nofile }}
+    {{- end }}
+    {{- if .Values.kubernetes.ulimits.nproc }}
+    ulimit -Su {{ .Values.kubernetes.ulimits.nproc }}
+    {{- end }}
 
     # start WSO2 Carbon server
     echo "Start WSO2 Carbon server" >&2
