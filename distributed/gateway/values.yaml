@@ -292,8 +292,6 @@ wso2:
       existingSecret:
         secretName: "" # e.g apim-secret
         adminPasswordKey: ""  # e.g adminPassword
-        apimDBPasswordKey: "" # e.g apimDBPassword
-        sharedDBPasswordKey: "" # e.g sharedDBPassword
         encryptionKeyKey: "" # e.g encryptionKey
       userStore:
         # -- User store type. 
@@ -306,29 +304,6 @@ wso2:
       adminUsername: ""
       # -- Super admin password
       adminPassword: ""
-      databases:
-        # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: ""
-        jdbc:
-          # -- JDBC driver class name
-          driver: ""
-        # -- APIM SharedDB configurations. This is required for gateway only in a multi-tenancy scenario
-        shared_db:
-          # -- APIM SharedDB URL
-          url: ""
-          # -- APIM SharedDB username
-          username: ""
-          # -- APIM SharedDB password
-          password: ""
-          # -- APIM database JDBC pool parameters
-          poolParameters:
-            defaultAutoCommit: true
-            testOnBorrow: true
-            testWhileIdle: true
-            validationInterval: 30000
-            maxActive: 100
-            maxWait: 60000
-            minIdle: 5
 
       # -- APIM AI related configurations
       ai:

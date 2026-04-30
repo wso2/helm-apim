@@ -20,6 +20,9 @@ password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
 {{- end }}
 create_admin_account = true
 
+{{- if .Values.wso2.apim.configurations.databases }}
+{{- if .Values.wso2.apim.configurations.databases.apim_db }}
+
 [database.apim_db]
 type = "{{ .Values.wso2.apim.configurations.databases.type }}"
 url = "{{ .Values.wso2.apim.configurations.databases.apim_db.url }}"
@@ -37,6 +40,9 @@ driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
 {{- range $key, $value := .Values.wso2.apim.configurations.databases.apim_db.poolParameters }}
 {{ $key }} = "{{ $value }}"
 {{- end }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.databases.shared_db }}
 
 [database.shared_db]
 type = "{{ .Values.wso2.apim.configurations.databases.type }}"
@@ -54,6 +60,8 @@ driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
 [database.shared_db.pool_options]
 {{- range $key, $value := .Values.wso2.apim.configurations.databases.shared_db.poolParameters }}
 {{ $key }} = "{{ $value }}"
+{{- end }}
+{{- end }}
 {{- end }}
 
 [keystore]
@@ -220,9 +228,15 @@ ssl_key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.ke
 internal_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
 internal_keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.keyPassword | quote }}
 truststore_password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
+{{- if .Values.wso2.apim.configurations.databases }}
+{{- if .Values.wso2.apim.configurations.databases.apim_db }}
 apim_db_password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote}}
-shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote}}
 {{- end}}
+{{- if .Values.wso2.apim.configurations.databases.shared_db }}
+shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote}}
+{{- end }}
+{{- end }}
+{{- end }}
 
 {{- if .Values.wso2.apim.configurations.distributedThrottling.enable }}
 [apim.distributed_throttling]
