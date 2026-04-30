@@ -22,6 +22,7 @@ password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
 create_admin_account = true
 
 {{- if and .Values.wso2.apim.configurations.databases .Values.wso2.apim.configurations.databases.shared_db }}
+
 [database.shared_db]
 type = "{{ .Values.wso2.apim.configurations.databases.type }}"
 url = "{{ .Values.wso2.apim.configurations.databases.shared_db.url }}"

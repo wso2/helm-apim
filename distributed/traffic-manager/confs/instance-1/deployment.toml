@@ -22,6 +22,7 @@ create_admin_account = true
 
 {{- if .Values.wso2.apim.configurations.databases }}
 {{- if .Values.wso2.apim.configurations.databases.apim_db }}
+
 [database.apim_db]
 type = "{{ .Values.wso2.apim.configurations.databases.type }}"
 url = "{{ .Values.wso2.apim.configurations.databases.apim_db.url }}"
@@ -41,7 +42,8 @@ driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
 {{- end }}
 {{- end }}
 
-{{- if Values.wso2.apim.configurations.databases.shared_db }}
+{{- if .Values.wso2.apim.configurations.databases.shared_db }}
+
 [database.shared_db]
 type = "{{ .Values.wso2.apim.configurations.databases.type }}"
 url = "{{ .Values.wso2.apim.configurations.databases.shared_db.url }}"
