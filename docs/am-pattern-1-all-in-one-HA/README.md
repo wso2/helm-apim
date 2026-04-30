@@ -158,7 +158,7 @@ This document provides comprehensive instructions for deploying WSO2 API Manager
 - Run the following command to deploy the Helm charts for the All-in-One HA:
 
   ```bash
-  helm install apim wso2/wso2am-all-in-one --version 4.7.0 -f default_values.yaml -n apim
+  helm install apim wso2/wso2am-all-in-one --version 4.7.0-1 -f default_values.yaml -n apim
   ```
 
 The Helm chart uses Gateway API by default. If you prefer Ingress instead, follow the steps outlined in [1.1 Add Gateway API controller or Ingress controller](#11-add-gateway-api-controller-or-ingress-controller) to configure and enable it.
@@ -470,7 +470,7 @@ Now deploy the Helm chart using the following command after creating a namespace
   
   ```bash
   kubectl create namespace <namespace>
-  helm install <release-name> <helm-chart-path> --version 4.7.0 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.7.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 #### 2.6 Enable High Availability
