@@ -218,8 +218,12 @@ ssl_key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.ke
 internal_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
 internal_keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.keyPassword | quote }}
 truststore_password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
+{{- if and .Values.wso2.apim.configurations.databases .Values.wso2.apim.configurations.databases.apim_db }}
 apim_db_password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote}}
+{{- end}}
+{{- if and .Values.wso2.apim.configurations.databases .Values.wso2.apim.configurations.databases.shared_db }}
 shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote}}
+{{- end}}
 {{- end}}
 
 {{- if .Values.wso2.apim.configurations.distributedThrottling.enable }}

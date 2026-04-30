@@ -92,7 +92,7 @@ If you want to try WSO2 API Manager with minimal configuration, you do not need 
 - Then deploy the Helm chart using the following command:
 
   ```bash
-  helm install apim wso2/wso2am-all-in-one --version 4.7.0 -f default_values.yaml -n apim
+  helm install apim wso2/wso2am-all-in-one --version 4.7.0-1 -f default_values.yaml -n apim
   ```
 
 > **Note:** The minimal configuration uses a default ConfigMap. However, for production deployments, it is recommended to create your own.
@@ -402,7 +402,7 @@ Now deploy the Helm Chart using the following command after creating a namespace
   
   ```bash
   kubectl create namespace <namespace>
-  helm install <release-name> <helm-chart-path> --version 4.7.0 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
+  helm install <release-name> <helm-chart-path> --version 4.7.0-1 --namespace <namespace> --dependency-update -f values.yaml --create-namespace
   ```
 
 ### 3. Add a DNS record mapping the hostnames and the external IP

@@ -230,29 +230,6 @@ wso2:
       adminUsername: "admin"
       # -- Super admin password
       adminPassword: "admin"
-      databases:
-        # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: "mysql"
-        jdbc:
-          # -- JDBC driver class name
-          driver: "com.mysql.cj.jdbc.Driver"
-        # -- APIM SharedDB configurations. This is required for gateway only in a multi-tenancy scenario
-        shared_db:
-          # -- APIM SharedDB URL
-          url: "jdbc:mysql://<DB_URL>:3306/shared_db?useSSL=false"
-          # -- APIM SharedDB username
-          username: "sharedadmin"
-          # -- APIM SharedDB password
-          password: "sharedadmin"
-          # -- APIM database JDBC pool parameters
-          poolParameters:
-            defaultAutoCommit: true
-            testOnBorrow: true
-            testWhileIdle: true
-            validationInterval: 30000
-            maxActive: 100
-            maxWait: 60000
-            minIdle: 5
 
       # -- APIM AI related configurations
       ai:
