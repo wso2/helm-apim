@@ -139,6 +139,8 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vault enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
+| wso2.apim.ulimits.nproc | string | `nil` | Maximum number of processes (nproc). Set to meet WSO2 recommended requirements. |
+| wso2.apim.ulimits.nofile | string | `nil` | Maximum number of open files (nofile). Set to meet WSO2 recommended requirements. |
 | wso2.apim.version | string | `"4.7.0"` | APIM version |
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
 | wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |

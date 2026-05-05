@@ -85,6 +85,16 @@ data:
     fi
     {{- end }}
 
+    {{- if or .Values.wso2.apim.ulimits.nproc .Values.wso2.apim.ulimits.nofile }}
+    # set ulimits
+    {{- if .Values.wso2.apim.ulimits.nproc }}
+    ulimit -u {{ .Values.wso2.apim.ulimits.nproc }}
+    {{- end }}
+    {{- if .Values.wso2.apim.ulimits.nofile }}
+    ulimit -n {{ .Values.wso2.apim.ulimits.nofile }}
+    {{- end }}
+    {{- end }}
+
     # start WSO2 Carbon server
     echo "Start WSO2 Carbon server" >&2
     sh ${WSO2_SERVER_HOME}/bin/api-cp.sh "$@" {{ .Values.wso2.apim.startupArgs }}
