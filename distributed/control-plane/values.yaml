@@ -294,6 +294,13 @@ wso2:
     startupArgs: ""
     # -- Port Offset for APIM deployment
     portOffset: 0
+    # -- ulimit settings for the APIM container. Required when running on platforms like AWS Fargate
+    # where the default nproc and nofile limits (1024) are insufficient.
+    ulimits:
+      # -- Maximum number of processes (nproc). Set to meet WSO2 recommended requirements.
+      nproc:
+      # -- Maximum number of open files (nofile). Set to meet WSO2 recommended requirements.
+      nofile:
     # -- Startup script mount status
     mountStartupScript: false
     # -- Frontend settings.json mount status
