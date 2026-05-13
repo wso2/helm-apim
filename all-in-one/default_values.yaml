@@ -599,7 +599,7 @@ wso2:
       publisher:
         # -- Supported document types in Publisher. 
         # This should be used only if there are additional document types to be supported.
-        enableApiDocVisibility: false
+        enable_api_doc_visibility: false
         supportedDocumentTypes: ""
         enablePortalConfigurationOnlyMode: false
         internalKeyIssuer: ""
