@@ -744,7 +744,14 @@ wso2:
           password: ""
           identityServerBaseUrl: ""
 
+      # -- Add custom configurations to deployment.toml.
+      extraConfigs: #|
+        # [tenant_mgt]
+        # enable_email_domain = true
+
   deployment:
+    # Configure High Availability
+    highAvailability: false
     # Container image configurations
     image:
       # -- Container registry credentials.
@@ -756,7 +763,9 @@ wso2:
       # -- Registry containing the image
       registry: "docker.io"
       # -- Repository name consisting the image
-      repository: "wso2/wso2am:4.7.0"
+      repository: "wso2/wso2am"
+      # -- Docker image tag
+      tag: "4.7.0"
       # -- Docker image digest
       digest: "sha256:4de3aabbb11d16a1c00d122312503070ea8617e0829133cbcc83f35d6868b889"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
