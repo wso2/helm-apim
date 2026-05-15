@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+# Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
 #
 # This software is the property of WSO2 LLC. and its suppliers, if any.
 # Dissemination of any information or reproduction of any material contained 
@@ -130,7 +130,7 @@ kubernetes:
   # -- Kubernetes Gateway API configurations (alternative to Ingress)
   # Requires Gateway API CRDs to be installed in the cluster
   # The Gateway resource must be created externally before deploying this chart
-  # See docs/assets/sample-gateway.yaml for an example Gateway manifest
+  # See resources/assets/sample-gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
     enabled: true
@@ -282,7 +282,7 @@ wso2:
 
       km:
         # -- Key manager service name if default Resident KM is used
-        serviceUrl: "apim-wso2am-all-in-one-am-service"
+        serviceUrl: "apim-km-wso2am-km-service"
         # -- Key Manager service port
         servicePort: 9443        
 
@@ -326,13 +326,14 @@ wso2:
       throttling:
         # -- Traffic manager loadbalancer service url for throttling.
         # If the traffic manager is separated from control-plane, all urls should be pointed to traffic-manager ones.
-        serviceUrl: "apim-wso2am-all-in-one-am-service"
+        serviceUrl: "apim-tm-wso2am-tm-service"
         portOffset: 0
         # -- Port of the service URL
         servicePort: 9443
         # -- Traffic manager service urls. You only need to define one if the TM is not in HA.
         urls:
-          - "apim-wso2am-all-in-one-am-service"
+          - "apim-tm-wso2am-tm-1-service"
+          - "apim-tm-wso2am-tm-2-service"
         # -- Enable unlimited throttling tier
         unlimitedTier: true
         # -- Enable header based throttling
@@ -347,12 +348,13 @@ wso2:
         # This should be enabled if the traffic manager is separated from the control-plane.
         enabled: true
         # -- Event hub (control plane) loadbalancer service url
-        serviceUrl: "apim-wso2am-all-in-one-am-service"
+        serviceUrl: "apim-acp-wso2am-acp-service"
         # -- Event hub (control plane) service port
         servicePort: 9443
         # -- Event hub service urls
         urls:
-          - "apim-wso2am-all-in-one-am-service"
+          - "apim-acp-wso2am-acp-1-service"
+          - "apim-acp-wso2am-acp-2-service"
         
       # APIM cache related configurations
       cache:
@@ -513,7 +515,7 @@ wso2:
     # -- Minimum replicas for HPA
     minReplicas: 1
     # -- Maximum replicas for HPA
-    maxReplicas: 3
+    maxReplicas: 2
     # -- Target CPU utilization percentage for HPA
     cpuUtilizationPercentage: 75
     # -- Target memory utilization percentage for HPA

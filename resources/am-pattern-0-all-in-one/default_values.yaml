@@ -191,7 +191,7 @@ kubernetes:
   # -- Kubernetes Gateway API configurations (alternative to Ingress)
   # Requires Gateway API CRDs to be installed in the cluster
   # The Gateway resource must be created externally before deploying this chart
-  # See docs/assets/sample-gateway.yaml for an example Gateway manifest
+  # See resources/assets/sample-gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
     enabled: true
@@ -244,8 +244,6 @@ kubernetes:
       caCertificateConfigMap: "wso2-ca-cert"
       # -- Backend hostname for TLS verification
       hostname: "localhost"
-    # -- Backend Traffic Policy for cookie-based session affinity
-    # Requires Envoy Gateway controller support for BackendTrafficPolicy
     backendTrafficPolicy:
       # -- Enable BackendTrafficPolicy
       enabled: true
@@ -264,6 +262,15 @@ wso2:
   # -- ELK Analytics Parameters
   ELKAnalytics:
     enabled: false
+  # -- Moesif Analytics Parameters
+  moesifAnalytics:
+    enabled: false
+    # -- Moesif API key
+    key: "YOUR_MOESIF_API_KEY_HERE"
+    # -- Moesif base URL
+    moesif_base_url: "https://api.moesif.net"
+    # -- Moesif send header
+    send_headers: false
 
   # TOML configurations
   apim:
@@ -308,18 +315,18 @@ wso2:
       adminPassword: "admin"
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: "mysql"
+        type: "h2"
         jdbc:
           # -- JDBC driver class name
-          driver: "com.mysql.cj.jdbc.Driver"
-        # -- APIM AM_DB configurations.
+          driver: "org.h2.Driver"
+        # -- APIM APIMDB configurations. This is required for gateway only in a multi-tenancy scenario
         apim_db:
-          # -- APIM AM_DB URL
-          url: "jdbc:mysql://<DB_URL>:3306/apim_db?useSSL=false"
-          # -- APIM AM_DB username
-          username: "apimadmin"
-          # -- APIM AM_DB password
-          password: "apimadmin"
+          # -- APIM APIMDB URL
+          url: "jdbc:h2:./repository/database/WSO2AM_DB;DB_CLOSE_ON_EXIT=FALSE"
+          # -- APIM APIMDB username
+          username: "wso2carbon"
+          # -- APIM APIMDB password
+          password: "wso2carbon"
           # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
@@ -329,15 +336,14 @@ wso2:
             maxActive: 100
             maxWait: 60000
             minIdle: 5
-        # -- APIM SharedDB configurations.
         shared_db:
           # -- APIM SharedDB URL
-          url: "jdbc:mysql://<DB_URL>:3306/shared_db?useSSL=false"
+          url: "jdbc:h2:./repository/database/WSO2SHARED_DB;DB_CLOSE_ON_EXIT=FALSE"
           # -- APIM SharedDB username
-          username: "sharedadmin"
+          username: "wso2carbon"
           # -- APIM SharedDB password
-          password: "sharedadmin"
-          # -- APIM shared database JDBC pool parameters
+          password: "wso2carbon"
+          # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
             testOnBorrow: true
@@ -357,7 +363,7 @@ wso2:
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
-        jksSecretName: "apim-keystore-secret"
+        jksSecretName: ""
         keystores:
           primary:
             # -- Primary keystore enabled
@@ -409,7 +415,7 @@ wso2:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
-          serviceName: "apim-gw-wso2am-gateway-service"
+          serviceName: "localhost"
           servicePort: 9443
           wsHostname: "websocket.wso2.com"
           httpHostname: "gw.wso2.com"
@@ -662,13 +668,14 @@ wso2:
         enabled: true
         organization_name_local_claim: "http://wso2.org/claims/organization"
         organization_id_local_claim: "http://wso2.org/claims/organizationId" 
-        
+
       # -- Add custom configurations to deployment.toml.
       extraConfigs: #|
         # [tenant_mgt]
         # enable_email_domain = true
 
   deployment:
+    # Configure High Availability
     highAvailability: false
     # Container image configurations
     image:
@@ -679,13 +686,13 @@ wso2:
         username: ""
         password: ""
       # -- Registry containing the image
-      registry: "<DOCKER_REGISTRY>"
+      registry: "docker.io"
       # -- Repository name consisting the image
-      repository: "<ALL-IN-ONE_DOCKER_IMAGE>"
+      repository: "wso2/wso2am"
       # -- Docker image tag
-      tag: "<ALL-IN-ONE_IMAGE_TAG>"
+      tag: "4.7.0"
       # -- Docker image digest
-      digest: "<ALL-IN-ONE_IMAGE_DIGEST>"
+      digest: "sha256:4de3aabbb11d16a1c00d122312503070ea8617e0829133cbcc83f35d6868b889"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 
