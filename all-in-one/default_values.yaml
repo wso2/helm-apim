@@ -362,6 +362,7 @@ wso2:
         embeddingProvider:
           type: ""
           properties:
+            authType: ""
             apikey: ""
             embeddingEndpoint: ""
             embeddingModel: ""

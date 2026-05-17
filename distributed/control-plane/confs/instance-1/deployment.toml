@@ -298,7 +298,12 @@ enable = false
 [apim.ai.embedding_provider]
 type = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.type }}"
 [apim.ai.embedding_provider.properties]
+{{- if .Values.wso2.apim.configurations.ai.embeddingProvider.properties.authType }}
+auth_type = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties.authType }}"
+{{- end }}
+{{- if .Values.wso2.apim.configurations.ai.embeddingProvider.properties.apikey }}
 apikey = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties.apikey }}"
+{{- end }}
 embedding_endpoint = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties.embeddingEndpoint }}"
 embedding_model = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties.embeddingModel }}"
 {{- end }}
