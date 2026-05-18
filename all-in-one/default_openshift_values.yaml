@@ -145,7 +145,7 @@ gcp:
 kubernetes:
   # -- When deploying on OpenShift.
   openshift:
-    enabled: false
+    enabled: true
 
   # -- Ingress class to be used for the ingress resource
   ingressClass: "nginx"
@@ -160,7 +160,7 @@ kubernetes:
       # -- Ingress ratelimit burst limit
       burstLimit: ""
     management:
-      enabled: true
+      enabled: false
       # Hostname for API Manager Carbon Management Console, Publisher, DevPortal and Admin Portal
       hostname: "am.wso2.com"
       # Annotations for the API Manager Publisher-DevPortal services Ingress
@@ -170,7 +170,7 @@ kubernetes:
         nginx.ingress.kubernetes.io/session-cookie-name: "route"
         nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
     gateway:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Gateway pass-through
       hostname: "gw.wso2.com"
       # -- Ingress annotations for Gateway pass-through
@@ -179,18 +179,59 @@ kubernetes:
         nginx.ingress.kubernetes.io/proxy-buffering: "on"
         nginx.ingress.kubernetes.io/proxy-buffer-size: "8k"
     websocket:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Websocket
       hostname: "websocket.wso2.com"
       # -- Ingress annotations for Websocket
       annotations:
         #todo: add websocket specific annotations
     websub:
-      enabled: true
+      enabled: false
       # -- Ingress hostname for Websub
       hostname: "websub.wso2.com"
       # -- Ingress annotations for Websub
       annotations:
+  # -- OpenShift Route configurations
+  route:
+    tls:
+      # -- TLS termination type (passthrough, edge, reencrypt)
+      termination: "passthrough"
+      # -- Insecure Edge Termination Policy
+      insecureEdgeTerminationPolicy: "None"
+      # -- TLS certificate for edge/reencrypt termination
+      certificate: ""
+      # -- TLS private key for edge/reencrypt termination
+      key: ""
+      # -- Destination CA certificate for reencrypt termination
+      destinationCACertificate: ""
+    management:
+      # -- Enable Route for Management Console, Publisher, DevPortal and Admin Portal
+      enabled: true
+      # -- Hostname for API Manager Management interfaces
+      hostname: "am.wso2.com"
+      annotations:
+        # key: value
+    gateway:
+      # -- Enable Route for Gateway pass-through
+      enabled: true
+      # -- Route hostname for Gateway pass-through
+      hostname: "gw.wso2.com"
+      annotations:
+        # key: value
+    websocket:
+      # -- Enable Route for Websocket
+      enabled: true
+      # -- Route hostname for Websocket
+      hostname: "websocket.wso2.com"
+      annotations:
+        # key: value
+    websub:
+      # -- Enable Route for Websub
+      enabled: true
+      # -- Route hostname for Websub
+      hostname: "websub.wso2.com"
+      annotations:
+        # key: value
   securityContext:
     # -- User ID of the container
     runAsUser: null
