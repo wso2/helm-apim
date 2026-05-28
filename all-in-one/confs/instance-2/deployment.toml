@@ -232,6 +232,9 @@ auth_type = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties
 {{- if .Values.wso2.apim.configurations.ai.embeddingProvider.properties.apikey }}
 apikey = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties.apikey }}"
 {{- end }}
+{{- if .Values.wso2.apim.configurations.ai.embeddingProvider.properties.azureUmiScope }}
+azure_umi_scope = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties.azureUmiScope }}"
+{{- end }}
 embedding_endpoint = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties.embeddingEndpoint }}"
 embedding_model = "{{ .Values.wso2.apim.configurations.ai.embeddingProvider.properties.embeddingModel }}"
 {{- end }}
