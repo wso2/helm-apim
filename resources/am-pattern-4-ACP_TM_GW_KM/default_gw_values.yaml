@@ -12,6 +12,8 @@
 aws:
   # -- If AWS is used as the cloud provider
   enabled: false
+  # -- Whether to automatically mount the aws service account token to the pod
+  automountServiceAccountToken: true
   # -- AWS region
   region: ""
   secretsManager:
@@ -34,6 +36,8 @@ aws:
 azure:
   # -- If Azure is used as the cloud provider
   enabled: true
+  # -- Whether to automatically mount the azure service account token to the pod
+  automountServiceAccountToken: true
   keyVault:
     # -- Azure Key vault used for credential management
     name: ""
@@ -68,6 +72,8 @@ azure:
 gcp:
   # -- If GCP is used as the cloud provider
   enabled: false
+  # -- Whether to automatically mount the gcp service account token to the pod
+  automountServiceAccountToken: true
   # -- Secrets Manager configuration parameters
   secretsManager:
     # -- Project ID

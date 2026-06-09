@@ -53,10 +53,13 @@ spec:
             weight: 100
       {{- if .Values.aws.enabled }}
       serviceAccountName: {{ .Values.aws.serviceAccountName }}
+      automountServiceAccountToken: {{ .Values.aws.automountServiceAccountToken }}
       {{- else if .Values.gcp.enabled }}
       serviceAccountName: {{ .Values.gcp.serviceAccountName }}
+      automountServiceAccountToken: {{ .Values.gcp.automountServiceAccountToken }}
       {{- else if .Values.azure.enabled }}
       serviceAccountName: {{ .Values.azure.serviceAccountName }}
+      automountServiceAccountToken: {{ .Values.azure.automountServiceAccountToken }}
       {{- end }}
       securityContext:
         seccompProfile:
