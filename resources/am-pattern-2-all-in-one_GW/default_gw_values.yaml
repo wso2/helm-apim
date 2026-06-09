@@ -38,6 +38,8 @@ azure:
   enabled: true
   # -- Whether to automatically mount the azure service account token to the pod
   automountServiceAccountToken: true
+  # -- Name of the Azure Kubernetes service account
+  serviceAccountName: ""
   keyVault:
     # -- Azure Key vault used for credential management
     name: ""

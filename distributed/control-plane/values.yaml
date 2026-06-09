@@ -404,6 +404,7 @@ wso2:
           properties:
             authType: ""
             apikey: ""
+            azureUmiScope: ""
             embeddingEndpoint: ""
             embeddingModel: ""
         vectorDbProvider:

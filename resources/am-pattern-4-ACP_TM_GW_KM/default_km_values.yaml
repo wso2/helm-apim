@@ -41,6 +41,8 @@ azure:
   enabled: true
   # -- Whether to automatically mount the azure service account token to the pod
   automountServiceAccountToken: true
+  # -- Name of the Azure Kubernetes service account
+  serviceAccountName: ""
   acr:
     # -- Azure container registry name
     registry: ""
