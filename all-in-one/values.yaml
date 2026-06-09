@@ -956,3 +956,4 @@ wso2:
           # -- For persisting the indexed solr data
           solrIndexedData: 50M
 
+    sidecar: {}
