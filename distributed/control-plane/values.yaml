@@ -396,7 +396,9 @@ wso2:
         embeddingProvider:
           type: ""
           properties:
+            authType: ""
             apikey: ""
+            azureUmiScope: ""
             embeddingEndpoint: ""
             embeddingModel: ""
         vectorDbProvider:
