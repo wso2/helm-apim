@@ -106,7 +106,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
 | wso2.apim.configurations.oauth_config.multipleClientSecrets | object | `{"enable":true,"secretCount":""}` | Multiple client secrets configuration |
 | wso2.apim.configurations.oauth_config.multipleClientSecrets.enable | bool | `true` | Enable multiple client secrets for OAuth applications |
-| wso2.apim.configurations.oauth_config.multipleClientSecrets.secretCount | string | `""` | Maximum number of secrets per application. Leave empty for unlimited; if set, must be a digits-only string (e.g. `"5"`). |
+| wso2.apim.configurations.oauth_config.multipleClientSecrets.secretCount | string | `""` | Maximum number of secrets allowed per application (optional, leave empty for unlimited) |
 | wso2.apim.configurations.oauth_config.tokenPersistenceOptimization | bool | `true` | Enable OAuth token persistence optimization. When enabled, JWT extension is used. When disabled, token persistence and revoked token headers configuration is used. |
 | wso2.apim.configurations.openTelemetry.enabled | bool | `false` | Open Telemetry enabled |
 | wso2.apim.configurations.openTelemetry.hostname | string | `""` | Remote tracer hostname |
