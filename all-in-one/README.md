@@ -42,6 +42,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | azure.persistence.secretName | string | `""` | Azure file secret name |
 | azure.persistence.storageClass | string | `""` | Persistent volume storage class |
 | azure.serviceAccount | string | `"wso2am-all-in-one-svc-account"` |  |
+| azure.serviceAccountName | string | `""` | Name of the Azure Kubernetes service account |
 | gcp.automountServiceAccountToken | bool | `true` | Whether to automatically mount the gcp service account token to the pod |
 | gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
 | gcp.fs | object | `{"capacity":"","fileshares":{"carbonDB":{"fileShareName":"","fileStoreName":"","ip":""},"solr":{"fileShareName":"","fileStoreName":"","ip":""}},"location":"","network":"","tier":""}` | File Store configuration parameters |

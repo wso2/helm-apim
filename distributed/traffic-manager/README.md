@@ -35,6 +35,7 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | azure.keyVault.secretIdentifiers.internalKeystorePassword | string | `""` | Internal keystore password identifier in keyvault |
 | azure.keyVault.secretIdentifiers.secretEncryptionKey | string | `""` | Symmetric encryption key identifier in keyvault |
 | azure.keyVault.secretProviderClass | string | `"wso2am-tm-secret-provider-class"` | Azure Key vault secret provider class name |
+| azure.serviceAccountName | string | `""` | Name of the Azure Kubernetes service account |
 | gcp.automountServiceAccountToken | bool | `true` | Whether to automatically mount the gcp service account token to the pod |
 | gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
 | gcp.secretsManager | object | `{"projectId":"","secret":{"secretName":"","secretVersion":""},"secretEncryptionKey":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |

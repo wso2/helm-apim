@@ -12,8 +12,6 @@
 aws:
   # -- If AWS is used as the cloud provider
   enabled: false
-  # -- Whether to automatically mount the aws service account token to the pod
-  automountServiceAccountToken: true
   ecr:
     # -- AWS Elastic Container Registry name
     registry: ""
@@ -36,13 +34,15 @@ aws:
         # -- AWS Secrets Manager secret key
         secretKey: ""
   serviceAccountName: ""
+  # -- Whether to automatically mount the aws service account token to the pod
+  automountServiceAccountToken: true
 azure:
   # -- If Azure is used as the cloud provider
   enabled: true
-  # -- Whether to automatically mount the azure service account token to the pod
-  automountServiceAccountToken: true
   # -- Name of the Azure Kubernetes service account
   serviceAccountName: ""
+  # -- Whether to automatically mount the azure service account token to the pod
+  automountServiceAccountToken: true
   acr:
     # -- Azure container registry name
     registry: ""
@@ -80,8 +80,6 @@ azure:
 gcp:
   # -- If GCP is used as the cloud provider
   enabled: false
-  # -- Whether to automatically mount the gcp service account token to the pod
-  automountServiceAccountToken: true
   # -- Secrets Manager configuration parameters
   secretsManager:
     # -- Project ID
@@ -101,6 +99,8 @@ gcp:
       secretVersion: ""
   # -- Service Account with access to read secrets
   serviceAccountName: ""
+  # -- Whether to automatically mount the gcp service account token to the pod
+  automountServiceAccountToken: true
 
 kubernetes:
   securityContext:
