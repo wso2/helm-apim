@@ -172,7 +172,7 @@ kubernetes:
   # -- Kubernetes Gateway API configurations (alternative to Ingress)
   # Requires Gateway API CRDs to be installed in the cluster
   # The Gateway resource must be created externally before deploying this chart
-  # See docs/assets/sample-gateway.yaml for an example Gateway manifest
+  # See resources/assets/sample-gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
     enabled: true
@@ -277,6 +277,13 @@ wso2:
     portOffset: 0
     # -- Startup arguments for APIM
     startupArgs: ""
+    # -- ulimit settings for the APIM container. Required when running on platforms like AWS Fargate
+    # where the default nproc and nofile limits (1024) are insufficient.
+    ulimits:
+      # -- Maximum number of processes (nproc). Set to meet WSO2 recommended requirements.
+      nproc:
+      # -- Maximum number of open files (nofile). Set to meet WSO2 recommended requirements.
+      nofile:
     # -- Startup script mount status
     mountStartupScript: false
     # TOML configurations
@@ -292,8 +299,6 @@ wso2:
       existingSecret:
         secretName: "" # e.g apim-secret
         adminPasswordKey: ""  # e.g adminPassword
-        apimDBPasswordKey: "" # e.g apimDBPassword
-        sharedDBPasswordKey: "" # e.g sharedDBPassword
         encryptionKeyKey: "" # e.g encryptionKey
       userStore:
         # -- User store type. 
@@ -306,29 +311,6 @@ wso2:
       adminUsername: ""
       # -- Super admin password
       adminPassword: ""
-      databases:
-        # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: ""
-        jdbc:
-          # -- JDBC driver class name
-          driver: ""
-        # -- APIM SharedDB configurations. This is required for gateway only in a multi-tenancy scenario
-        shared_db:
-          # -- APIM SharedDB URL
-          url: ""
-          # -- APIM SharedDB username
-          username: ""
-          # -- APIM SharedDB password
-          password: ""
-          # -- APIM database JDBC pool parameters
-          poolParameters:
-            defaultAutoCommit: true
-            testOnBorrow: true
-            testWhileIdle: true
-            validationInterval: 30000
-            maxActive: 100
-            maxWait: 60000
-            minIdle: 5
 
       # -- APIM AI related configurations
       ai:
@@ -405,6 +387,9 @@ wso2:
         gateway:
           # -- Gateway label used to filter out artifact retrieval
           labels: ["Default"]
+          # -- Enable on-demand artifact loading in the gateway
+          onDemandLoading:
+            enabled: false
         tenantLoading:
           # -- Enable tenant loading in the gateway for artifacts
           enabled: false

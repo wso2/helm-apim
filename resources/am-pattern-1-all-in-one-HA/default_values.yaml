@@ -191,7 +191,7 @@ kubernetes:
   # -- Kubernetes Gateway API configurations (alternative to Ingress)
   # Requires Gateway API CRDs to be installed in the cluster
   # The Gateway resource must be created externally before deploying this chart
-  # See docs/assets/sample-gateway.yaml for an example Gateway manifest
+  # See resources/assets/sample-gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
     enabled: true
@@ -258,12 +258,34 @@ kubernetes:
     # -- User ID of the container
     runAsUser: 10001
     runAsGroup: 10001
+    # -- SELinux context for the container
+    seLinux:
+      enabled: false
+      level: ""
+    # -- Seccomp profile for the container
+    seccompProfile:
+      # -- Seccomp profile type(RuntimeDefault, Unconfined or Localhost)
+      type: RuntimeDefault
+      localhostProfile: ""
+  # -- Set UNIX permissions over the executable scripts
+  configMaps:
+    scripts:
+      defaultMode: "0407"
 
 
 wso2:  
   # -- ELK Analytics Parameters
   ELKAnalytics:
     enabled: false
+  # -- Moesif Analytics Parameters
+  moesifAnalytics:
+    enabled: false
+    # -- Moesif API key
+    key: "YOUR_MOESIF_API_KEY_HERE"
+    # -- Moesif base URL
+    moesif_base_url: "https://api.moesif.net"
+    # -- Moesif send header
+    send_headers: false
 
   # TOML configurations
   apim:
@@ -409,7 +431,7 @@ wso2:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
-          serviceName: "apim-gw-wso2am-gateway-service"
+          serviceName: "apim-wso2am-all-in-one-am-service"
           servicePort: 9443
           wsHostname: "websocket.wso2.com"
           httpHostname: "gw.wso2.com"
@@ -427,13 +449,6 @@ wso2:
         serviceName: ""
         # Revoke URL of Identity Server
         revokeURL: ""
-      km:
-        # -- If Key Manager profile is separated
-        enabled: true
-        # -- Kubernetes service name exposing Key Manager
-        serviceName: "apim-km-wso2am-km-service"
-        # -- Kubernetes service port exposing Key Manager
-        servicePort: 9443
       
       jwt:
         # Enable backend JWT generation in gateway
@@ -499,7 +514,15 @@ wso2:
         enableTokenEncryption: false
         # -- Enable token hashing
         enableTokenHashing: false
-        oauth2JWKSUrl: "https://apim-km-wso2am-km-service.apim.svc.cluster.local:9443/oauth2/jwks"
+        oauth2JWKSUrl: "https://apim-wso2am-all-in-one-am-service:9443/oauth2/jwks"
+        # -- Multiple client secrets configuration
+        multipleClientSecrets:
+          # -- Enable multiple client secrets for OAuth applications
+          enable: true
+          # -- Maximum number of secrets allowed per application (optional, leave empty for unlimited)
+          secretCount: ""
+        # -- Enable OAuth token persistence optimization. When enabled, JWT extension is used. When disabled, token persistence and revoked token headers configuration is used.
+        tokenPersistenceOptimization: true
 
       # APIM Devportal configurations
       devportal:
@@ -524,6 +547,7 @@ wso2:
         create_default_application: 
         loginUsernameCaseInsensitive:
         enableKeyProvisioning:
+        enableLegacyApiKeys: false
 
       publisher:
         # -- Supported document types in Publisher. 
@@ -549,11 +573,14 @@ wso2:
         enableForWS: false
 
       throttling:
+        portOffset: 0
         enableDataPublishing: true
         enablePolicyDeploy: true
         enableBlacklistCondition: true
         enablePersistence: true
-        throttleDecisionEndpoints: []
+        throttleDecisionEndpoints: 
+          - "tcp://apim-wso2am-all-in-one-am-service:9611"
+          - "ssl://apim-wso2am-all-in-one-am-service:9711"
         enableUnlimitedTier: true
         enableHeaderBasedThrottling: false
         enableJwtClaimBasedThrottling: false
@@ -564,11 +591,11 @@ wso2:
         jms:
           startDelay: 
         eventSync:
-          hostname: 
-          port: 
+          hostname: "apim-wso2am-all-in-one-am-service"
+          port:  5672
         eventManagement:
-          hostname: 
-          port: 
+          hostname: "apim-wso2am-all-in-one-am-service"
+          port: 5672
 
       workflow:
         enable: false
@@ -677,14 +704,14 @@ wso2:
         enabled: false
         username: ""
         password: ""
-      # -- Registry containing the image
+      # -- Container registry hostname
       registry: "<DOCKER_REGISTRY>"
-      # -- Repository name consisting the image
-      repository: "<ALL-IN-ONE_DOCKER_IMAGE>"
+      # -- Azure ACR repository name consisting the image
+      repository: "<GW_DOCKER_IMAGE>"
       # -- Docker image tag
-      tag: "<ALL-IN-ONE_IMAGE_TAG>"
+      tag: "<GW_IMAGE_TAG>"
       # -- Docker image digest
-      digest: "<ALL-IN-ONE_IMAGE_DIGEST>"
+      digest: "<GW_IMAGE_DIGEST>"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 

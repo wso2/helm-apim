@@ -191,7 +191,7 @@ kubernetes:
   # -- Kubernetes Gateway API configurations (alternative to Ingress)
   # Requires Gateway API CRDs to be installed in the cluster
   # The Gateway resource must be created externally before deploying this chart
-  # See docs/assets/sample-gateway.yaml for an example Gateway manifest
+  # See resources/assets/sample-gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
     enabled: true
@@ -499,6 +499,14 @@ wso2:
         # -- Enable token hashing
         enableTokenHashing: false
         oauth2JWKSUrl: "https://apim-wso2am-all-in-one-am-service:9443/oauth2/jwks"
+        # -- Multiple client secrets configuration
+        multipleClientSecrets:
+          # -- Enable multiple client secrets for OAuth applications
+          enable: true
+          # -- Maximum number of secrets allowed per application (optional, leave empty for unlimited)
+          secretCount: ""
+        # -- Enable OAuth token persistence optimization. When enabled, JWT extension is used. When disabled, token persistence and revoked token headers configuration is used.
+        tokenPersistenceOptimization: true
 
       # APIM Devportal configurations
       devportal:
@@ -523,6 +531,7 @@ wso2:
         create_default_application: 
         loginUsernameCaseInsensitive:
         enableKeyProvisioning:
+        enableLegacyApiKeys: false
 
       publisher:
         # -- Supported document types in Publisher. 
@@ -683,7 +692,7 @@ wso2:
       # -- Docker image tag
       tag: "4.7.0"
       # -- Docker image digest
-      digest: "sha256:e2dc61ede174a49b6c99527bb7d1e188133dc72776850161e0118380ad0d1fe4"
+      digest: "sha256:4de3aabbb11d16a1c00d122312503070ea8617e0829133cbcc83f35d6868b889"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 

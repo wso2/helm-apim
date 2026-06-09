@@ -1,6 +1,6 @@
 # wso2am-tm
 
-![Version: 4.7.0](https://img.shields.io/badge/Version-4.7.0-informational?style=flat-square) ![AppVersion: 4.7.0](https://img.shields.io/badge/AppVersion-4.7.0-informational?style=flat-square)
+![Version: 4.7.0-1](https://img.shields.io/badge/Version-4.7.0-informational?style=flat-square) ![AppVersion: 4.7.0](https://img.shields.io/badge/AppVersion-4.7.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 
@@ -114,6 +114,8 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | wso2.apim.mountStartupScript | bool | `false` | Startup script mount status |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vault enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
+| wso2.apim.ulimits.nproc | string | `nil` | Maximum number of processes (nproc). Set to meet WSO2 recommended requirements. |
+| wso2.apim.ulimits.nofile | string | `nil` | Maximum number of open files (nofile). Set to meet WSO2 recommended requirements. |
 | wso2.apim.version | string | `"4.7.0"` | APIM version |
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
 | wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |

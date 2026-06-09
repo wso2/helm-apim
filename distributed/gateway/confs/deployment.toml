@@ -21,6 +21,8 @@ password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
 {{- end }}
 create_admin_account = true
 
+{{- if and .Values.wso2.apim.configurations.databases .Values.wso2.apim.configurations.databases.shared_db }}
+
 [database.shared_db]
 type = "{{ .Values.wso2.apim.configurations.databases.type }}"
 url = "{{ .Values.wso2.apim.configurations.databases.shared_db.url }}"
@@ -37,6 +39,7 @@ driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
 [database.shared_db.pool_options]
 {{- range $key, $value := .Values.wso2.apim.configurations.databases.shared_db.poolParameters }}
 {{ $key }} = "{{ $value }}"
+{{- end }}
 {{- end }}
 
 [keystore]
@@ -118,11 +121,11 @@ enable = false
 {{- end }}
 
 [transport.http]
-properties.port = 9763
+properties.port = {{ add 9763 .Values.wso2.apim.portOffset }}
 properties.proxyPort = 80
 
 [transport.https]
-properties.port = 9443
+properties.port = {{ add 9443 .Values.wso2.apim.portOffset }}
 properties.proxyPort = 443
 
 # key manager implementation
@@ -167,6 +170,9 @@ claims_extractor_impl = {{ .Values.wso2.apim.configurations.jwt.claimsExtractorI
 
 [apim.sync_runtime_artifacts.gateway]
 gateway_labels = {{ toJson .Values.wso2.apim.configurations.syncRuntimeArtifacts.gateway.labels }}
+{{- if .Values.wso2.apim.configurations.syncRuntimeArtifacts.gateway.onDemandLoading.enabled }}
+enable_on_demand_loading = true
+{{- end }}
 
 {{- if .Values.wso2.apim.configurations.syncRuntimeArtifacts.tenantLoading.enabled }}
 [apim.sync_runtime_artifacts.tenant_loading]
@@ -309,7 +315,9 @@ ssl_key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.ke
 internal_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
 internal_keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.keyPassword | quote }}
 truststore_password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
+{{- if and .Values.wso2.apim.configurations.databases .Values.wso2.apim.configurations.databases.shared_db }}
 shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote}}
+{{- end }}
 {{- end}}
 
 [apim.gateway_notification]

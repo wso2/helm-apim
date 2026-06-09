@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+# Copyright (c) 2023, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
 #
 # This software is the property of WSO2 LLC. and its suppliers, if any.
 # Dissemination of any information or reproduction of any material contained 
@@ -130,7 +130,7 @@ kubernetes:
   # -- Kubernetes Gateway API configurations (alternative to Ingress)
   # Requires Gateway API CRDs to be installed in the cluster
   # The Gateway resource must be created externally before deploying this chart
-  # See docs/assets/sample-gateway.yaml for an example Gateway manifest
+  # See resources/assets/sample-gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
     enabled: true
@@ -178,7 +178,7 @@ kubernetes:
   # -- Enable AppArmor profiles for the deployment
   enableAppArmor: false
 
-wso2:   
+wso2:  
   # -- ELK Analytics Parameters
   ELKAnalytics:
     enabled: false
@@ -230,29 +230,6 @@ wso2:
       adminUsername: "admin"
       # -- Super admin password
       adminPassword: "admin"
-      databases:
-        # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: "mysql"
-        jdbc:
-          # -- JDBC driver class name
-          driver: "com.mysql.cj.jdbc.Driver"
-        # -- APIM SharedDB configurations. This is required for gateway only in a multi-tenancy scenario
-        shared_db:
-          # -- APIM SharedDB URL
-          url: "jdbc:mysql://<DB_URL>:3306/shared_db?useSSL=false"
-          # -- APIM SharedDB username
-          username: "sharedadmin"
-          # -- APIM SharedDB password
-          password: "sharedadmin"
-          # -- APIM database JDBC pool parameters
-          poolParameters:
-            defaultAutoCommit: true
-            testOnBorrow: true
-            testWhileIdle: true
-            validationInterval: 30000
-            maxActive: 100
-            maxWait: 60000
-            minIdle: 5
 
       # -- APIM AI related configurations
       ai:
@@ -315,10 +292,18 @@ wso2:
         # Kubernetes service name exposing Identity Server
         serviceName: ""
 
-      sync_runtime_artifacts:
+      syncRuntimeArtifacts:
         gateway:
           # -- Gateway label used to filter out artifact retrieval
           labels: ["Default"]
+          # -- Enable on-demand artifact loading in the gateway
+          onDemandLoading:
+            enabled: false
+        tenantLoading:
+          # -- Enable tenant loading in the gateway for artifacts
+          enabled: false
+          # -- Tenants to be loaded in the gateway for artifacts.
+          tenants: "*"
       
       jwt:
         # Enable backend JWT generation in gateway
@@ -341,13 +326,14 @@ wso2:
       throttling:
         # -- Traffic manager loadbalancer service url for throttling.
         # If the traffic manager is separated from control-plane, all urls should be pointed to traffic-manager ones.
-        serviceUrl: "apim-wso2am-all-in-one-am-service"
+        serviceUrl: "apim-tm-wso2am-tm-service"
         portOffset: 0
         # -- Port of the service URL
         servicePort: 9443
         # -- Traffic manager service urls. You only need to define one if the TM is not in HA.
         urls:
-          - "apim-wso2am-all-in-one-am-service"
+          - "apim-tm-wso2am-tm-1-service"
+          - "apim-tm-wso2am-tm-2-service"
         # -- Enable unlimited throttling tier
         unlimitedTier: true
         # -- Enable header based throttling
@@ -362,12 +348,13 @@ wso2:
         # This should be enabled if the traffic manager is separated from the control-plane.
         enabled: true
         # -- Event hub (control plane) loadbalancer service url
-        serviceUrl: "apim-wso2am-all-in-one-am-service"
+        serviceUrl: "apim-acp-wso2am-acp-service"
         # -- Event hub (control plane) service port
         servicePort: 9443
         # -- Event hub service urls
         urls:
-          - "apim-wso2am-all-in-one-am-service"
+          - "apim-acp-wso2am-acp-1-service"
+          - "apim-acp-wso2am-acp-2-service"
         
       # APIM cache related configurations
       cache:
@@ -528,7 +515,7 @@ wso2:
     # -- Minimum replicas for HPA
     minReplicas: 1
     # -- Maximum replicas for HPA
-    maxReplicas: 1
+    maxReplicas: 2
     # -- Target CPU utilization percentage for HPA
     cpuUtilizationPercentage: 75
     # -- Target memory utilization percentage for HPA

@@ -1,6 +1,6 @@
 # wso2am-km
 
-![Version: 4.7.0](https://img.shields.io/badge/Version-4.7.0-informational?style=flat-square) ![AppVersion: 4.7.0](https://img.shields.io/badge/AppVersion-4.7.0-informational?style=flat-square)
+![Version: 4.7.0-1](https://img.shields.io/badge/Version-4.7.0-informational?style=flat-square) ![AppVersion: 4.7.0](https://img.shields.io/badge/AppVersion-4.7.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
@@ -47,7 +47,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
-| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"enabled":true,"gatewayName":"","km":{"annotations":{},"enabled":true,"filters":[],"hostname":"km.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See docs/assets/sample-gateway.yaml for an example Gateway manifest |
+| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"enabled":true,"gatewayName":"","km":{"annotations":{},"enabled":true,"filters":[],"hostname":"km.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See resources/assets/sample-gateway.yaml for an example Gateway manifest |
 | kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateConfigMap":"","enabled":false,"hostname":""}` | Backend TLS Policy for HTTPS backend connections |
 | kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap | string | `""` | CA certificate ConfigMap name for backend TLS verification |
 | kubernetes.gatewayAPI.backendTLSPolicy.enabled | bool | `false` | Enable BackendTLSPolicy |
@@ -139,6 +139,8 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vault enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
+| wso2.apim.ulimits.nproc | string | `nil` | Maximum number of processes (nproc). Set to meet WSO2 recommended requirements. |
+| wso2.apim.ulimits.nofile | string | `nil` | Maximum number of open files (nofile). Set to meet WSO2 recommended requirements. |
 | wso2.apim.version | string | `"4.7.0"` | APIM version |
 | wso2.deployment.cpuUtilizationPercentage | int | `75` | Target CPU utilization percentage for HPA |
 | wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |

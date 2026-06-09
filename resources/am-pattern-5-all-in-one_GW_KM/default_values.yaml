@@ -191,7 +191,7 @@ kubernetes:
   # -- Kubernetes Gateway API configurations (alternative to Ingress)
   # Requires Gateway API CRDs to be installed in the cluster
   # The Gateway resource must be created externally before deploying this chart
-  # See docs/assets/sample-gateway.yaml for an example Gateway manifest
+  # See resources/assets/sample-gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
     enabled: true
@@ -427,6 +427,13 @@ wso2:
         serviceName: ""
         # Revoke URL of Identity Server
         revokeURL: ""
+      km:
+        # -- If Key Manager profile is separated
+        enabled: true
+        # -- Kubernetes service name exposing Key Manager
+        serviceName: "apim-km-wso2am-km-service"
+        # -- Kubernetes service port exposing Key Manager
+        servicePort: 9443
       
       jwt:
         # Enable backend JWT generation in gateway
@@ -492,7 +499,15 @@ wso2:
         enableTokenEncryption: false
         # -- Enable token hashing
         enableTokenHashing: false
-        oauth2JWKSUrl: "https://apim-wso2am-all-in-one-am-service:9443/oauth2/jwks"
+        oauth2JWKSUrl: "https://apim-km-wso2am-km-service.apim.svc.cluster.local:9443/oauth2/jwks"
+        # -- Multiple client secrets configuration
+        multipleClientSecrets:
+          # -- Enable multiple client secrets for OAuth applications
+          enable: true
+          # -- Maximum number of secrets allowed per application (optional, leave empty for unlimited)
+          secretCount: ""
+        # -- Enable OAuth token persistence optimization. When enabled, JWT extension is used. When disabled, token persistence and revoked token headers configuration is used.
+        tokenPersistenceOptimization: true
 
       # APIM Devportal configurations
       devportal:
@@ -517,6 +532,7 @@ wso2:
         create_default_application: 
         loginUsernameCaseInsensitive:
         enableKeyProvisioning:
+        enableLegacyApiKeys: false
 
       publisher:
         # -- Supported document types in Publisher. 
@@ -572,7 +588,7 @@ wso2:
 
       transport:
         receiver:
-          type: ""
+          type: "binary"
           workerThreads: 10
           sessionTimeout: ""
           keystore:
@@ -653,14 +669,15 @@ wso2:
         enabled: true
         organization_name_local_claim: "http://wso2.org/claims/organization"
         organization_id_local_claim: "http://wso2.org/claims/organizationId" 
-        
+      
       # -- Add custom configurations to deployment.toml.
       extraConfigs: #|
         # [tenant_mgt]
         # enable_email_domain = true
 
   deployment:
-    highAvailability: false
+    # Configure High Availability
+    highAvailability: true
     # Container image configurations
     image:
       # -- Container registry credentials.

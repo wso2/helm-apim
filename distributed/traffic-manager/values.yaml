@@ -145,6 +145,13 @@ wso2:
         appenders: ""
     # -- Startup arguments for APIM
     startupArgs: ""
+    # -- ulimit settings for the APIM container. Required when running on platforms like AWS Fargate
+    # where the default nproc and nofile limits (1024) are insufficient.
+    ulimits:
+      # -- Maximum number of processes (nproc). Set to meet WSO2 recommended requirements.
+      nproc:
+      # -- Maximum number of open files (nofile). Set to meet WSO2 recommended requirements.
+      nofile:
     # -- Startup script mount status
     mountStartupScript: false
     # TOML configurations
@@ -160,8 +167,6 @@ wso2:
       existingSecret:
         secretName: "" # e.g apim-secret
         adminPasswordKey: ""  # e.g adminPassword
-        apimDBPasswordKey: "" # e.g apimDBPassword
-        sharedDBPasswordKey: "" # e.g sharedDBPassword
         encryptionKeyKey: "" # e.g encryptionKey
       userStore:
         # -- User store type. 
@@ -174,46 +179,6 @@ wso2:
       adminUsername: ""
       # -- Super admin password
       adminPassword: ""
-      databases:
-        # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: ""
-        jdbc:
-          # -- JDBC driver class name
-          driver: ""
-        # -- APIM AM_DB configurations.
-        apim_db:
-          # -- APIM AM_DB URL
-          url: ""
-          # -- APIM AM_DB username
-          username: ""
-          # -- APIM AM_DB password
-          password: ""
-          # -- APIM database JDBC pool parameters
-          poolParameters:
-            defaultAutoCommit: true
-            testOnBorrow: true
-            testWhileIdle: true
-            validationInterval: 30000
-            maxActive: 100
-            maxWait: 60000
-            minIdle: 5
-        # -- APIM SharedDB configurations.
-        shared_db:
-          # -- APIM SharedDB URL
-          url: ""
-          # -- APIM SharedDB username
-          username: ""
-          # -- APIM SharedDB password
-          password: ""
-          # -- APIM shared database JDBC pool parameters
-          poolParameters:
-            defaultAutoCommit: true
-            testOnBorrow: true
-            testWhileIdle: true
-            validationInterval: 30000
-            maxActive: 100
-            maxWait: 60000
-            minIdle: 5
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
@@ -329,6 +294,7 @@ wso2:
           port: 6379
           user: ""
           password: ""
+          ssl: false
           maxTotal: 20
           maxIdle: 20
           minIdle: 4

@@ -1,6 +1,6 @@
 # wso2am-all-in-one
 
-![Version: 4.7.0](https://img.shields.io/badge/Version-4.7.0-informational?style=flat-square) ![AppVersion: 4.7.0](https://img.shields.io/badge/AppVersion-4.7.0-informational?style=flat-square)
+![Version: 4.7.0-1](https://img.shields.io/badge/Version-4.7.0-informational?style=flat-square) ![AppVersion: 4.7.0](https://img.shields.io/badge/AppVersion-4.7.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
@@ -67,7 +67,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
-| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"backendTrafficPolicy":{"cookie":{"name":"WSO2_CP_STICKY_SESSION","ttl":"0s"},"enabled":false},"defaultConfigMapCreation":false,"enabled":true,"gateway":{"annotations":{},"enabled":true,"filters":[],"hostname":"gw.wso2.com"},"gatewayName":"","management":{"annotations":{},"enabled":true,"filters":[],"hostname":"am.wso2.com"},"websocket":{"annotations":{},"enabled":true,"filters":[],"hostname":"websocket.wso2.com"},"websub":{"annotations":{},"enabled":true,"filters":[],"hostname":"websub.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See docs/assets/sample-gateway.yaml for an example Gateway manifest |
+| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"backendTrafficPolicy":{"cookie":{"name":"WSO2_CP_STICKY_SESSION","ttl":"0s"},"enabled":false},"defaultConfigMapCreation":false,"enabled":true,"gateway":{"annotations":{},"enabled":true,"filters":[],"hostname":"gw.wso2.com"},"gatewayName":"","management":{"annotations":{},"enabled":true,"filters":[],"hostname":"am.wso2.com"},"websocket":{"annotations":{},"enabled":true,"filters":[],"hostname":"websocket.wso2.com"},"websub":{"annotations":{},"enabled":true,"filters":[],"hostname":"websub.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See resources/assets/sample-gateway.yaml for an example Gateway manifest |
 | kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateConfigMap":"","enabled":false,"hostname":""}` | Backend TLS Policy for HTTPS backend connections |
 | kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap | string | `""` | CA certificate ConfigMap name for backend TLS verification |
 | kubernetes.gatewayAPI.backendTLSPolicy.enabled | bool | `false` | Enable BackendTLSPolicy |
@@ -139,7 +139,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.ELKAnalytics | object | `{"enabled":false}` | ELK Analytics Parameters |
 | wso2.apim.configurations.adminPassword | string | `"admin"` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `"admin"` | Super admin username |
-| wso2.apim.configurations.ai | object | `{"embeddingProvider":{"properties":{"apikey":"","embeddingEndpoint":"","embeddingModel":""},"type":""},"enabled":false,"endpoint":"","key":"","token":"","tokenEndpoint":"","vectorDbProvider":{"properties":{"token":"","uri":""},"type":""}}` | APIM AI related configurations |
+| wso2.apim.configurations.ai | object | `{"embeddingProvider":{"properties":{"apikey":"","authType":"","embeddingEndpoint":"","embeddingModel":""},"type":""},"enabled":false,"endpoint":"","key":"","token":"","tokenEndpoint":"","vectorDbProvider":{"properties":{"token":"","uri":""},"type":""}}` | APIM AI related configurations |
 | wso2.apim.configurations.cache.gateway_token.enabled | bool | `true` | Gateway token cache enabled |
 | wso2.apim.configurations.cache.gateway_token.expiryTime | string | `"15m"` | Gateway token cache expiration time |
 | wso2.apim.configurations.cache.jwt_claim.enabled | bool | `true` | Gateway JWT claim cache enabled |
@@ -360,6 +360,8 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vault enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
+| wso2.apim.ulimits.nproc | string | `nil` | Maximum number of processes (nproc). Set to meet WSO2 recommended requirements. |
+| wso2.apim.ulimits.nofile | string | `nil` | Maximum number of open files (nofile). Set to meet WSO2 recommended requirements. |
 | wso2.apim.version | string | `"4.7.0"` | APIM version |
 | wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.highAvailability | bool | `false` |  |
