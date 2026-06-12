@@ -34,9 +34,15 @@ aws:
         # -- AWS Secrets Manager secret key
         secretKey: ""
   serviceAccountName: ""
+  # -- Whether to automatically mount the aws service account token to the pod
+  automountServiceAccountToken: true
 azure:
   # -- If Azure is used as the cloud provider
   enabled: true
+  # -- Name of the Azure Kubernetes service account
+  serviceAccountName: ""
+  # -- Whether to automatically mount the azure service account token to the pod
+  automountServiceAccountToken: true
   acr:
     # -- Azure container registry name
     registry: ""
@@ -93,6 +99,8 @@ gcp:
       secretVersion: ""
   # -- Service Account with access to read secrets
   serviceAccountName: ""
+  # -- Whether to automatically mount the gcp service account token to the pod
+  automountServiceAccountToken: true
 
 kubernetes:
   # -- Ingress class to be used for the ingress resource
