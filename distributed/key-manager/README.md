@@ -77,6 +77,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.route.tls.insecureEdgeTerminationPolicy | string | `"None"` | Insecure Edge Termination Policy |
 | kubernetes.route.tls.key | string | `""` | TLS private key for edge/reencrypt termination |
 | kubernetes.route.tls.termination | string | `"passthrough"` | TLS termination type (passthrough, edge, reencrypt) |
+| kubernetes.securityContext.runAsGroup | int | `10001` | Group ID of the container |
 | kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
 | kubernetes.securityContext.seLinux | object | `{"enabled":false,"level":""}` | SELinux context for the container |
 | kubernetes.securityContext.seccompProfile | object | `{"localhostProfile":"","type":"RuntimeDefault"}` | Seccomp profile for the container |
