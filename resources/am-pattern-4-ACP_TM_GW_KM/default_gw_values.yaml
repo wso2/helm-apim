@@ -453,6 +453,7 @@ wso2:
       # Specify image pull secrets for private registries
       imagePullSecrets:
         enabled: false
+        # -- Name of an existing image pull secret in the namespace. If set, this secret is used directly and no new secret is created from username/password credentials.
         name: ""
         username: ""
         password: ""
