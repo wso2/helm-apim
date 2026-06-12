@@ -99,6 +99,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | kubernetes.route.websub.annotations | string | `nil` | Route annotations for Websub |
 | kubernetes.route.websub.enabled | bool | `false` | Enable route for Websub |
 | kubernetes.route.websub.hostname | string | `"websub.wso2.com"` | Route hostname for Websub |
+| kubernetes.securityContext.runAsGroup | int | `10001` | Group ID of the container |
 | kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
 | kubernetes.securityContext.seLinux | object | `{"enabled":false,"level":""}` | SELinux context for the container |
 | kubernetes.securityContext.seccompProfile | object | `{"localhostProfile":"","type":"RuntimeDefault"}` | Seccomp profile for the container |
