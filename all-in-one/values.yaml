@@ -43,10 +43,16 @@ aws:
         secretKey: ""
   # Name of Kubernetes service account
   serviceAccountName: ""
+  # -- Whether to automatically mount the aws service account token to the pod
+  automountServiceAccountToken: true
 
 azure:
   # -- If Azure is used as the cloud provider
   enabled: false
+  # -- Name of the Azure Kubernetes service account
+  serviceAccountName: ""
+  # -- Whether to automatically mount the azure service account token to the pod
+  automountServiceAccountToken: true
   keyVault:
     # -- Azure Key vault used for credential management
     name: ""
@@ -141,6 +147,8 @@ gcp:
       secretVersion: ""
   # -- Service Account with access to read secrets
   serviceAccountName: ""
+  # -- Whether to automatically mount the gcp service account token to the pod
+  automountServiceAccountToken: true
 
 kubernetes:
   # -- When deploying on OpenShift.
