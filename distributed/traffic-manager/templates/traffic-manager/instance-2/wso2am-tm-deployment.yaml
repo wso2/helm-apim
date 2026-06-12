@@ -215,6 +215,7 @@ spec:
             cpu: {{ .Values.wso2.deployment.resources.limits.cpu }}
         securityContext:
           runAsUser: {{ .Values.kubernetes.securityContext.runAsUser }}
+          runAsGroup: {{ .Values.kubernetes.securityContext.runAsGroup }}
           allowPrivilegeEscalation: false
           runAsNonRoot: true
           {{- if .Values.kubernetes.securityContext.seLinux.enabled }}
