@@ -8,6 +8,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| aws.automountServiceAccountToken | bool | `true` | Whether to automatically mount the aws service account token to the pod |
 | aws.ecr.registry | string | `""` | AWS Elastic Container Registry name |
 | aws.enabled | bool | `false` | If AWS is used as the cloud provider |
 | aws.region | string | `""` | AWS region |
@@ -20,6 +21,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | aws.secretsManager.secretProviderClass | string | `"wso2am-km-secret-provider-class"` | AWS Secrets Manager secret provider class name |
 | aws.serviceAccountName | string | `""` |  |
 | azure.acr.registry | string | `""` | Azure container registry name |
+| azure.automountServiceAccountToken | bool | `true` | Whether to automatically mount the azure service account token to the pod |
 | azure.enabled | bool | `false` | If Azure is used as the cloud provider |
 | azure.keyVault.activeDirectory.servicePrincipal | object | `{"appId":"","clientSecretName":"","credentialsSecretName":""}` | Service Principal created for transacting with the target Azure Key Vault For advanced details refer to official documentation (https://github.com/Azure/secrets-store-csi-driver-provider-azure/blob/master/docs/service-principal-mode.md) |
 | azure.keyVault.activeDirectory.servicePrincipal.appId | string | `""` | Application ID of the service principal used in secret-store-csi |
@@ -33,6 +35,8 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | azure.keyVault.secretIdentifiers.internalKeystorePassword | string | `""` | Internal keystore password identifier in keyvault |
 | azure.keyVault.secretIdentifiers.secretEncryptionKey | string | `""` | Symmetric encryption key identifier in keyvault |
 | azure.keyVault.secretProviderClass | string | `"wso2am-km-secret-provider-class"` | Azure Key vault secret provider class name |
+| azure.serviceAccountName | string | `""` | Name of the Azure Kubernetes service account |
+| gcp.automountServiceAccountToken | bool | `true` | Whether to automatically mount the gcp service account token to the pod |
 | gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
 | gcp.secretsManager | object | `{"projectId":"","secret":{"secretName":"","secretVersion":""},"secretEncryptionKey":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
 | gcp.secretsManager.projectId | string | `""` | Project ID |
