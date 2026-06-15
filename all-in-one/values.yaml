@@ -43,10 +43,16 @@ aws:
         secretKey: ""
   # Name of Kubernetes service account
   serviceAccountName: ""
+  # -- Whether to automatically mount the aws service account token to the pod
+  automountServiceAccountToken: true
 
 azure:
   # -- If Azure is used as the cloud provider
   enabled: false
+  # -- Name of the Azure Kubernetes service account
+  serviceAccountName: ""
+  # -- Whether to automatically mount the azure service account token to the pod
+  automountServiceAccountToken: true
   keyVault:
     # -- Azure Key vault used for credential management
     name: ""
@@ -141,6 +147,8 @@ gcp:
       secretVersion: ""
   # -- Service Account with access to read secrets
   serviceAccountName: ""
+  # -- Whether to automatically mount the gcp service account token to the pod
+  automountServiceAccountToken: true
 
 kubernetes:
   # -- When deploying on OpenShift.
@@ -238,7 +246,7 @@ kubernetes:
   # -- Kubernetes Gateway API configurations (alternative to Ingress)
   # Requires Gateway API CRDs to be installed in the cluster
   # The Gateway resource must be created externally before deploying this chart
-  # See docs/assets/sample-gateway.yaml for an example Gateway manifest
+  # See resources/assets/sample-gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
     enabled: true
@@ -450,7 +458,9 @@ wso2:
         embeddingProvider:
           type: ""
           properties:
+            authType: ""
             apikey: ""
+            azureUmiScope: ""
             embeddingEndpoint: ""
             embeddingModel: ""
         vectorDbProvider:
@@ -860,6 +870,8 @@ wso2:
       # Specify image pull secrets for private registries
       imagePullSecrets:
         enabled: false
+        # -- Name of an existing image pull secret in the namespace. If set, this secret is used directly and no new secret is created.
+        name: ""
         username: ""
         password: ""
       # -- Registry containing the image

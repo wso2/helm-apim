@@ -54,10 +54,13 @@ spec:
             weight: 100
       {{- if .Values.aws.enabled }}
       serviceAccountName: {{ .Values.aws.serviceAccountName }}
+      automountServiceAccountToken: {{ .Values.aws.automountServiceAccountToken }}
       {{- else if .Values.gcp.enabled }}
       serviceAccountName: {{ .Values.gcp.serviceAccountName }}
+      automountServiceAccountToken: {{ .Values.gcp.automountServiceAccountToken }}
       {{- else if .Values.azure.enabled }}
       serviceAccountName: {{ .Values.azure.serviceAccountName }}
+      automountServiceAccountToken: {{ .Values.azure.automountServiceAccountToken }}
       {{- end }}
       securityContext:
         seccompProfile:
@@ -67,7 +70,11 @@ spec:
           {{- end }}
       {{- if and .Values.wso2.deployment.image.imagePullSecrets.enabled }}
       imagePullSecrets:
+      {{- if .Values.wso2.deployment.image.imagePullSecrets.name }}
+      - name: {{ .Values.wso2.deployment.image.imagePullSecrets.name }}
+      {{- else }}
       - name: {{ template "apim-helm-cp.fullname" . }}-docker-registry-auth
+      {{- end }}
       {{- end }}
       containers:
       - name: wso2am-control-plane
@@ -209,6 +216,7 @@ spec:
             cpu: {{ .Values.wso2.deployment.resources.limits.cpu }}
         securityContext:
           runAsUser: {{ .Values.kubernetes.securityContext.runAsUser }}
+          runAsGroup: {{ .Values.kubernetes.securityContext.runAsGroup }}
           allowPrivilegeEscalation: false
           runAsNonRoot: true
           {{- if .Values.kubernetes.securityContext.seLinux.enabled }}

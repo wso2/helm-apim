@@ -43,10 +43,16 @@ aws:
         secretKey: ""
   # Name of Kubernetes service account
   serviceAccountName: ""
+  # -- Whether to automatically mount the aws service account token to the pod
+  automountServiceAccountToken: true
 
 azure:
   # -- If Azure is used as the cloud provider
   enabled: false
+  # -- Name of the Azure Kubernetes service account
+  serviceAccountName: ""
+  # -- Whether to automatically mount the azure service account token to the pod
+  automountServiceAccountToken: true
   keyVault:
     # -- Azure Key vault used for credential management
     name: ""
@@ -141,6 +147,8 @@ gcp:
       secretVersion: ""
   # -- Service Account with access to read secrets
   serviceAccountName: ""
+  # -- Whether to automatically mount the gcp service account token to the pod
+  automountServiceAccountToken: true
 
 kubernetes:
   # -- Ingress class to be used for the ingress resource
@@ -191,7 +199,7 @@ kubernetes:
   # -- Kubernetes Gateway API configurations (alternative to Ingress)
   # Requires Gateway API CRDs to be installed in the cluster
   # The Gateway resource must be created externally before deploying this chart
-  # See docs/assets/sample-gateway.yaml for an example Gateway manifest
+  # See resources/assets/sample-gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
     enabled: true
@@ -244,6 +252,8 @@ kubernetes:
       caCertificateConfigMap: "wso2-ca-cert"
       # -- Backend hostname for TLS verification
       hostname: "localhost"
+    # -- Backend Traffic Policy for cookie-based session affinity
+    # Requires Envoy Gateway controller support for BackendTrafficPolicy
     backendTrafficPolicy:
       # -- Enable BackendTrafficPolicy
       enabled: true
@@ -256,6 +266,19 @@ kubernetes:
     # -- User ID of the container
     runAsUser: 10001
     runAsGroup: 10001
+    # -- SELinux context for the container
+    seLinux:
+      enabled: false
+      level: ""
+    # -- Seccomp profile for the container
+    seccompProfile:
+      # -- Seccomp profile type(RuntimeDefault, Unconfined or Localhost)
+      type: RuntimeDefault
+      localhostProfile: ""
+  # -- Set UNIX permissions over the executable scripts
+  configMaps:
+    scripts:
+      defaultMode: "0407"
 
 
 wso2:  
@@ -315,18 +338,18 @@ wso2:
       adminPassword: "admin"
       databases:
         # -- Database type. eg: mysql, oracle, mssql, postgres
-        type: "h2"
+        type: "mysql"
         jdbc:
           # -- JDBC driver class name
-          driver: "org.h2.Driver"
-        # -- APIM APIMDB configurations. This is required for gateway only in a multi-tenancy scenario
+          driver: "com.mysql.cj.jdbc.Driver"
+        # -- APIM AM_DB configurations.
         apim_db:
-          # -- APIM APIMDB URL
-          url: "jdbc:h2:./repository/database/WSO2AM_DB;DB_CLOSE_ON_EXIT=FALSE"
-          # -- APIM APIMDB username
-          username: "wso2carbon"
-          # -- APIM APIMDB password
-          password: "wso2carbon"
+          # -- APIM AM_DB URL
+          url: "jdbc:mysql://<DB_URL>:3306/apim_db?useSSL=false"
+          # -- APIM AM_DB username
+          username: "apimadmin"
+          # -- APIM AM_DB password
+          password: "apimadmin"
           # -- APIM database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
@@ -336,14 +359,15 @@ wso2:
             maxActive: 100
             maxWait: 60000
             minIdle: 5
+        # -- APIM SharedDB configurations.
         shared_db:
           # -- APIM SharedDB URL
-          url: "jdbc:h2:./repository/database/WSO2SHARED_DB;DB_CLOSE_ON_EXIT=FALSE"
+          url: "jdbc:mysql://<DB_URL>:3306/shared_db?useSSL=false"
           # -- APIM SharedDB username
-          username: "wso2carbon"
+          username: "sharedadmin"
           # -- APIM SharedDB password
-          password: "wso2carbon"
-          # -- APIM database JDBC pool parameters
+          password: "sharedadmin"
+          # -- APIM shared database JDBC pool parameters
           poolParameters:
             defaultAutoCommit: true
             testOnBorrow: true
@@ -363,7 +387,7 @@ wso2:
 
       security:
         # -- Kubernetes secret containing the keystores and truststore
-        jksSecretName: ""
+        jksSecretName: "apim-keystore-secret"
         keystores:
           primary:
             # -- Primary keystore enabled
@@ -415,7 +439,7 @@ wso2:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
-          serviceName: "localhost"
+          serviceName: "apim-wso2am-all-in-one-am-service"
           servicePort: 9443
           wsHostname: "websocket.wso2.com"
           httpHostname: "gw.wso2.com"
@@ -557,11 +581,14 @@ wso2:
         enableForWS: false
 
       throttling:
+        portOffset: 0
         enableDataPublishing: true
         enablePolicyDeploy: true
         enableBlacklistCondition: true
         enablePersistence: true
-        throttleDecisionEndpoints: []
+        throttleDecisionEndpoints: 
+          - "tcp://apim-wso2am-all-in-one-am-service:9611"
+          - "ssl://apim-wso2am-all-in-one-am-service:9711"
         enableUnlimitedTier: true
         enableHeaderBasedThrottling: false
         enableJwtClaimBasedThrottling: false
@@ -572,11 +599,11 @@ wso2:
         jms:
           startDelay: 
         eventSync:
-          hostname: 
-          port: 
+          hostname: "apim-wso2am-all-in-one-am-service"
+          port:  5672
         eventManagement:
-          hostname: 
-          port: 
+          hostname: "apim-wso2am-all-in-one-am-service"
+          port: 5672
 
       workflow:
         enable: false
@@ -587,7 +614,7 @@ wso2:
 
       transport:
         receiver:
-          type: ""
+          type: "binary"
           workerThreads: 10
           sessionTimeout: ""
           keystore:
@@ -668,7 +695,7 @@ wso2:
         enabled: true
         organization_name_local_claim: "http://wso2.org/claims/organization"
         organization_id_local_claim: "http://wso2.org/claims/organizationId" 
-
+      
       # -- Add custom configurations to deployment.toml.
       extraConfigs: #|
         # [tenant_mgt]
@@ -676,23 +703,25 @@ wso2:
 
   deployment:
     # Configure High Availability
-    highAvailability: false
+    highAvailability: true
     # Container image configurations
     image:
       # -- Container registry credentials.
       # Specify image pull secrets for private registries
       imagePullSecrets:
         enabled: false
+        # -- Name of an existing image pull secret in the namespace. If set, this secret is used directly and no new secret is created from username/password credentials.
+        name: ""
         username: ""
         password: ""
-      # -- Registry containing the image
-      registry: "docker.io"
-      # -- Repository name consisting the image
-      repository: "wso2/wso2am"
+      # -- Container registry hostname
+      registry: "<DOCKER_REGISTRY>"
+      # -- Azure ACR repository name consisting the image
+      repository: "<GW_DOCKER_IMAGE>"
       # -- Docker image tag
-      tag: "4.7.0"
+      tag: "<GW_IMAGE_TAG>"
       # -- Docker image digest
-      digest: "sha256:e2dc61ede174a49b6c99527bb7d1e188133dc72776850161e0118380ad0d1fe4"
+      digest: "<GW_IMAGE_DIGEST>"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 

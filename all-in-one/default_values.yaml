@@ -194,7 +194,7 @@ kubernetes:
   # -- Kubernetes Gateway API configurations (alternative to Ingress)
   # Requires Gateway API CRDs to be installed in the cluster
   # The Gateway resource must be created externally before deploying this chart
-  # See docs/assets/sample-gateway.yaml for an example Gateway manifest
+  # See resources/assets/sample-gateway.yaml for an example Gateway manifest
   gatewayAPI:
     # -- Enable Gateway API resources (HTTPRoutes and policies)
     enabled: true
@@ -383,7 +383,9 @@ wso2:
         embeddingProvider:
           type: ""
           properties:
+            authType: ""
             apikey: ""
+            azureUmiScope: ""
             embeddingEndpoint: ""
             embeddingModel: ""
         vectorDbProvider:
@@ -599,7 +601,7 @@ wso2:
       publisher:
         # -- Supported document types in Publisher. 
         # This should be used only if there are additional document types to be supported.
-        enableApiDocVisibility: false
+        enable_api_doc_visibility: false
         supportedDocumentTypes: ""
         enablePortalConfigurationOnlyMode: false
         internalKeyIssuer: ""
@@ -744,21 +746,32 @@ wso2:
           password: ""
           identityServerBaseUrl: ""
 
+      # -- Add custom configurations to deployment.toml.
+      extraConfigs: #|
+        # [tenant_mgt]
+        # enable_email_domain = true
+
   deployment:
+    # Configure High Availability
+    highAvailability: false
     # Container image configurations
     image:
       # -- Container registry credentials.
       # Specify image pull secrets for private registries
       imagePullSecrets:
         enabled: false
+        # -- Name of an existing image pull secret in the namespace. If set, this secret is used directly and no new secret is created from username/password credentials.
+        name: ""
         username: ""
         password: ""
       # -- Registry containing the image
       registry: "docker.io"
       # -- Repository name consisting the image
-      repository: "wso2/wso2am:4.7.0"
+      repository: "wso2/wso2am"
+      # -- Docker image tag
+      tag: "4.7.0"
       # -- Docker image digest
-      digest: "sha256:e2dc61ede174a49b6c99527bb7d1e188133dc72776850161e0118380ad0d1fe4"
+      digest: "sha256:4de3aabbb11d16a1c00d122312503070ea8617e0829133cbcc83f35d6868b889"
       # -- Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images)
       imagePullPolicy: Always
 

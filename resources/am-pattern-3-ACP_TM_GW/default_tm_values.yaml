@@ -34,9 +34,15 @@ aws:
         # -- AWS Secrets Manager secret key
         secretKey: ""
   serviceAccountName: ""
+  # -- Whether to automatically mount the aws service account token to the pod
+  automountServiceAccountToken: true
 azure:
   # -- If Azure is used as the cloud provider
   enabled: true
+  # -- Name of the Azure Kubernetes service account
+  serviceAccountName: ""
+  # -- Whether to automatically mount the azure service account token to the pod
+  automountServiceAccountToken: true
   acr:
     # -- Azure container registry name
     registry: ""
@@ -93,11 +99,15 @@ gcp:
       secretVersion: ""
   # -- Service Account with access to read secrets
   serviceAccountName: ""
+  # -- Whether to automatically mount the gcp service account token to the pod
+  automountServiceAccountToken: true
 
 kubernetes:
   securityContext:
     # -- User ID of the container
     runAsUser: 10001
+    # -- Group ID of the container
+    runAsGroup: 10001
   # -- Enable AppArmor profiles for the deployment
   enableAppArmor: false
 
@@ -183,7 +193,7 @@ wso2:
 
       km:
         # -- Key manager service name if default Resident KM is used
-        serviceUrl: "apim-km-wso2am-km-service"
+        serviceUrl: "apim-acp-wso2am-acp-service"
         # -- Key Manager service port
         servicePort: 9443        
 
@@ -232,7 +242,7 @@ wso2:
         port: ""
 
       # -- Add custom configurations to deployment.toml.
-      extraConfigs: 
+      extraConfigs:
 
   deployment:
     # Container image configurations
@@ -241,6 +251,8 @@ wso2:
       # Specify image pull secrets for private registries
       imagePullSecrets:
         enabled: false
+        # -- Name of an existing image pull secret in the namespace. If set, this secret is used directly and no new secret is created from username/password credentials.
+        name: ""
         username: ""
         password: ""
       # -- Container registry hostname

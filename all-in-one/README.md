@@ -1,6 +1,6 @@
 # wso2am-all-in-one
 
-![Version: 4.7.0-1](https://img.shields.io/badge/Version-4.7.0-informational?style=flat-square) ![AppVersion: 4.7.0](https://img.shields.io/badge/AppVersion-4.7.0-informational?style=flat-square)
+![Version: 4.7.0-1](https://img.shields.io/badge/Version-4.7.0--1-informational?style=flat-square) ![AppVersion: 4.7.0](https://img.shields.io/badge/AppVersion-4.7.0-informational?style=flat-square)
 
 A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
@@ -8,6 +8,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| aws.automountServiceAccountToken | bool | `true` | Whether to automatically mount the aws service account token to the pod |
 | aws.efs.accessPoints | object | `{"carbonDb":"","solr":""}` | EFS Access Points for static provisioning |
 | aws.efs.capacity | string | `""` | EFS capacity |
 | aws.efs.directoryPerms | string | `"0777"` | EFS directory permissions |
@@ -22,6 +23,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | aws.secretsManager.secretIdentifiers.secretEncryptionKey.secretName | string | `""` | AWS Secrets Manager secret name |
 | aws.secretsManager.secretProviderClass | string | `"wso2am-am-secret-provider-class"` | AWS Secrets Manager secret provider class name |
 | aws.serviceAccountName | string | `""` |  |
+| azure.automountServiceAccountToken | bool | `true` | Whether to automatically mount the azure service account token to the pod |
 | azure.enabled | bool | `false` | If Azure is used as the cloud provider |
 | azure.keyVault.activeDirectory.servicePrincipal | object | `{"appId":"","clientSecretName":"","credentialsSecretName":""}` | Service Principal created for transacting with the target Azure Key Vault For advanced details refer to official documentation (https://github.com/Azure/secrets-store-csi-driver-provider-azure/blob/master/docs/service-principal-mode.md) |
 | azure.keyVault.activeDirectory.servicePrincipal.appId | string | `""` | Application ID of the service principal used in secret-store-csi |
@@ -40,6 +42,8 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | azure.persistence.secretName | string | `""` | Azure file secret name |
 | azure.persistence.storageClass | string | `""` | Persistent volume storage class |
 | azure.serviceAccount | string | `"wso2am-all-in-one-svc-account"` |  |
+| azure.serviceAccountName | string | `""` | Name of the Azure Kubernetes service account |
+| gcp.automountServiceAccountToken | bool | `true` | Whether to automatically mount the gcp service account token to the pod |
 | gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
 | gcp.fs | object | `{"capacity":"","fileshares":{"carbonDB":{"fileShareName":"","fileStoreName":"","ip":""},"solr":{"fileShareName":"","fileStoreName":"","ip":""}},"location":"","network":"","tier":""}` | File Store configuration parameters |
 | gcp.fs.capacity | string | `""` | Storage capacity of the file system (in GB or other appropriate units) |
@@ -67,7 +71,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.configMaps | object | `{"scripts":{"defaultMode":"0407"}}` | Set UNIX permissions over the executable scripts |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
-| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"backendTrafficPolicy":{"cookie":{"name":"WSO2_CP_STICKY_SESSION","ttl":"0s"},"enabled":false},"defaultConfigMapCreation":false,"enabled":true,"gateway":{"annotations":{},"enabled":true,"filters":[],"hostname":"gw.wso2.com"},"gatewayName":"","management":{"annotations":{},"enabled":true,"filters":[],"hostname":"am.wso2.com"},"websocket":{"annotations":{},"enabled":true,"filters":[],"hostname":"websocket.wso2.com"},"websub":{"annotations":{},"enabled":true,"filters":[],"hostname":"websub.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See docs/assets/sample-gateway.yaml for an example Gateway manifest |
+| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"backendTrafficPolicy":{"cookie":{"name":"WSO2_CP_STICKY_SESSION","ttl":"0s"},"enabled":false},"defaultConfigMapCreation":false,"enabled":true,"gateway":{"annotations":{},"enabled":true,"filters":[],"hostname":"gw.wso2.com"},"gatewayName":"","management":{"annotations":{},"enabled":true,"filters":[],"hostname":"am.wso2.com"},"websocket":{"annotations":{},"enabled":true,"filters":[],"hostname":"websocket.wso2.com"},"websub":{"annotations":{},"enabled":true,"filters":[],"hostname":"websub.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See resources/assets/sample-gateway.yaml for an example Gateway manifest |
 | kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateConfigMap":"","enabled":false,"hostname":""}` | Backend TLS Policy for HTTPS backend connections |
 | kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap | string | `""` | CA certificate ConfigMap name for backend TLS verification |
 | kubernetes.gatewayAPI.backendTLSPolicy.enabled | bool | `false` | Enable BackendTLSPolicy |
@@ -139,7 +143,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.ELKAnalytics | object | `{"enabled":false}` | ELK Analytics Parameters |
 | wso2.apim.configurations.adminPassword | string | `"admin"` | Super admin password |
 | wso2.apim.configurations.adminUsername | string | `"admin"` | Super admin username |
-| wso2.apim.configurations.ai | object | `{"embeddingProvider":{"properties":{"apikey":"","embeddingEndpoint":"","embeddingModel":""},"type":""},"enabled":false,"endpoint":"","key":"","token":"","tokenEndpoint":"","vectorDbProvider":{"properties":{"token":"","uri":""},"type":""}}` | APIM AI related configurations |
+| wso2.apim.configurations.ai | object | `{"embeddingProvider":{"properties":{"apikey":"","authType":"","azureUmiScope":"","embeddingEndpoint":"","embeddingModel":""},"type":""},"enabled":false,"endpoint":"","key":"","token":"","tokenEndpoint":"","vectorDbProvider":{"properties":{"token":"","uri":""},"type":""}}` | APIM AI related configurations |
 | wso2.apim.configurations.cache.gateway_token.enabled | bool | `true` | Gateway token cache enabled |
 | wso2.apim.configurations.cache.gateway_token.expiryTime | string | `"15m"` | Gateway token cache expiration time |
 | wso2.apim.configurations.cache.jwt_claim.enabled | bool | `true` | Gateway JWT claim cache enabled |
@@ -182,6 +186,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.devportal.enableCrossTenantSubscriptions | string | `nil` |  |
 | wso2.apim.configurations.devportal.enableForum | string | `nil` | Whether to display forum for API |
 | wso2.apim.configurations.devportal.enableKeyProvisioning | string | `nil` |  |
+| wso2.apim.configurations.devportal.enableLegacyApiKeys | bool | `false` |  |
 | wso2.apim.configurations.devportal.enableRatings | string | `nil` | Whether to display ratings for API |
 | wso2.apim.configurations.devportal.loginUsernameCaseInsensitive | string | `nil` |  |
 | wso2.apim.configurations.devportal.mode | string | `"HYBRID"` |  |
@@ -244,8 +249,12 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.oauth_config.enableOutboundAuthHeader | bool | `false` | Preserves auth header in outgoing requests |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
+| wso2.apim.configurations.oauth_config.multipleClientSecrets | object | `{"enable":true,"secretCount":""}` | Multiple client secrets configuration |
+| wso2.apim.configurations.oauth_config.multipleClientSecrets.enable | bool | `true` | Enable multiple client secrets for OAuth applications |
+| wso2.apim.configurations.oauth_config.multipleClientSecrets.secretCount | string | `""` | Maximum number of secrets allowed per application (optional, leave empty for unlimited) |
 | wso2.apim.configurations.oauth_config.oauth2JWKSUrl | string | `""` |  |
 | wso2.apim.configurations.oauth_config.revokeEndpoint | string | `""` | OAuth revoke endpoint |
+| wso2.apim.configurations.oauth_config.tokenPersistenceOptimization | bool | `true` | Enable OAuth token persistence optimization. When enabled, JWT extension is used. When disabled, token persistence and revoked token headers configuration is used. |
 | wso2.apim.configurations.openTelemetry.enabled | bool | `false` | Open Telemetry enabled |
 | wso2.apim.configurations.openTelemetry.hostname | string | `""` | Remote tracer hostname |
 | wso2.apim.configurations.openTelemetry.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin, OTLP |
@@ -360,14 +369,16 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.portOffset | int | `0` | Port Offset for APIM deployment |
 | wso2.apim.secureVaultEnabled | bool | `false` | Secure vault enabled |
 | wso2.apim.startupArgs | string | `""` | Startup arguments for APIM |
-| wso2.apim.ulimits.nproc | string | `nil` | Maximum number of processes (nproc). Set to meet WSO2 recommended requirements. |
+| wso2.apim.ulimits | object | `{"nofile":null,"nproc":null}` | ulimit settings for the APIM container. Required when running on platforms like AWS Fargate where the default nproc and nofile limits (1024) are insufficient. |
 | wso2.apim.ulimits.nofile | string | `nil` | Maximum number of open files (nofile). Set to meet WSO2 recommended requirements. |
+| wso2.apim.ulimits.nproc | string | `nil` | Maximum number of processes (nproc). Set to meet WSO2 recommended requirements. |
 | wso2.apim.version | string | `"4.7.0"` | APIM version |
 | wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.highAvailability | bool | `false` |  |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |
-| wso2.deployment.image.imagePullSecrets | object | `{"enabled":false,"password":"","username":""}` | Container registry credentials. Specify image pull secrets for private registries |
+| wso2.deployment.image.imagePullSecrets | object | `{"enabled":false,"name":"","password":"","username":""}` | Container registry credentials. Specify image pull secrets for private registries |
+| wso2.deployment.image.imagePullSecrets.name | string | `""` | Name of an existing image pull secret in the namespace. If set, this secret is used directly and no new secret is created. |
 | wso2.deployment.image.registry | string | `""` | Registry containing the image |
 | wso2.deployment.image.repository | string | `""` | Repository name consisting the image |
 | wso2.deployment.image.tag | string | `""` | Docker image tag |
