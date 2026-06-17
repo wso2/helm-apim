@@ -1,7 +1,7 @@
 [server]
 hostname = "{{- if .Values.kubernetes.ingress.enabled -}}{{ .Values.kubernetes.ingress.gateway.hostname }}{{- else -}}{{ .Values.kubernetes.gatewayAPI.gateway.hostname }}{{- end -}}"
 node_ip = "$env{NODE_IP}"
-server_role = "gateway-worker"
+server_role = "default"
 offset = {{ .Values.wso2.apim.portOffset }}
 
 [user_store]

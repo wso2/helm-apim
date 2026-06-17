@@ -1,7 +1,7 @@
 [server]
 hostname = "tm.wso2.com"
 node_ip = "$env{NODE_IP}"
-server_role = "traffic-manager"
+server_role = "default"
 
 [user_store]
 type = {{ .Values.wso2.apim.configurations.userStore.type | quote }}
