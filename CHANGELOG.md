@@ -19,6 +19,8 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
 
 ### Changed
 - Updated default values for OpenShift ([#232]).
+- `server_role` set to `default` for gateway and traffic-manager distributed
+  configs, aligning with the product distribution ([#247]).
 
 ### Docs
 - Regenerated helm-docs for all-in-one and distributed charts.
@@ -52,6 +54,7 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
 [#194]: https://github.com/wso2/helm-apim/pull/194
 [#213]: https://github.com/wso2/helm-apim/pull/213
 [#232]: https://github.com/wso2/helm-apim/pull/232
+[#247]: https://github.com/wso2/helm-apim/pull/247
 [#240]: https://github.com/wso2/helm-apim/pull/240
 [#241]: https://github.com/wso2/helm-apim/pull/241
 [#243]: https://github.com/wso2/helm-apim/pull/243
