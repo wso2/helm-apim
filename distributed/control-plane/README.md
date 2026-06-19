@@ -8,6 +8,7 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| aws.automountServiceAccountToken | bool | `true` | Whether to automatically mount the service account token |
 | aws.efs.accessPoints | object | `{"carbonDb1":"","carbonDb2":"","solr1":"","solr2":""}` | EFS Access Points for static provisioning |
 | aws.efs.capacity | string | `""` | EFS capacity |
 | aws.efs.directoryPerms | string | `"0777"` | EFS directory permissions |
@@ -35,6 +36,7 @@ A Helm chart for the deployment of WSO2 API Management Control Plane profile
 | azure.persistence.fileShare | string | `""` | Azure fileshare name |
 | azure.persistence.secretName | string | `""` | Azure file secret name |
 | azure.persistence.storageClass | string | `""` | Persistent volume storage class |
+| gcp.automountServiceAccountToken | bool | `true` | Whether to automatically mount the service account token |
 | gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
 | gcp.fs | object | `{"capacity":"","fileshares":{"carbonDB1":{"fileShareName":"","fileStoreName":"","ip":""},"carbonDB2":{"fileShareName":"","fileStoreName":"","ip":""},"solr1":{"fileShareName":"","fileStoreName":"","ip":""},"solr2":{"fileShareName":"","fileStoreName":"","ip":""}},"location":"","network":"","tier":""}` | File Store configuration parameters |
 | gcp.fs.capacity | string | `""` | Storage capacity of the file system (in GB or other appropriate units) |

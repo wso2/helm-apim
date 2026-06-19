@@ -8,6 +8,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| aws.automountServiceAccountToken | bool | `true` | Whether to automatically mount the service account token |
 | aws.ecr.registry | string | `""` | AWS Elastic Container Registry name |
 | aws.enabled | bool | `false` | If AWS is used as the cloud provider |
 | aws.region | string | `""` | AWS region |
@@ -29,6 +30,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | azure.keyVault.secretIdentifiers.internalKeystoreKeyPassword | string | `""` | Internal keystore key password identifier in keyvault |
 | azure.keyVault.secretIdentifiers.internalKeystorePassword | string | `""` | Internal keystore password identifier in keyvault |
 | azure.keyVault.secretProviderClass | string | `"wso2am-km-secret-provider-class"` | Azure Key vault secret provider class name |
+| gcp.automountServiceAccountToken | bool | `true` | Whether to automatically mount the service account token |
 | gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
 | gcp.secretsManager | object | `{"projectId":"","secret":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
 | gcp.secretsManager.projectId | string | `""` | Project ID |
@@ -37,8 +39,20 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | gcp.secretsManager.secretProviderClass | string | `""` | Secret provider class |
 | gcp.serviceAccountName | string | `""` | Service Account with access to read secrets |
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
-| kubernetes.ingress.km.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
-| kubernetes.ingress.km.hostname | string | `"km.wso2.com"` | Ingress hostname for Gateway pass-through |
+| kubernetes.gatewayAPI | object | `{"backendTLSPolicy":{"caCertificateConfigMap":"","enabled":false,"hostname":""},"enabled":false,"gatewayName":"","km":{"annotations":{},"enabled":false,"filters":[],"hostname":"km.wso2.com"}}` | Kubernetes Gateway API configurations (alternative to Ingress) Requires Gateway API CRDs to be installed in the cluster The Gateway resource must be created externally before deploying this chart See docs/assets/sample-gateway.yaml for an example Gateway manifest |
+| kubernetes.gatewayAPI.backendTLSPolicy | object | `{"caCertificateConfigMap":"","enabled":false,"hostname":""}` | Backend TLS Policy for HTTPS backend connections |
+| kubernetes.gatewayAPI.backendTLSPolicy.caCertificateConfigMap | string | `""` | CA certificate ConfigMap name for backend TLS verification |
+| kubernetes.gatewayAPI.backendTLSPolicy.enabled | bool | `false` | Enable BackendTLSPolicy |
+| kubernetes.gatewayAPI.backendTLSPolicy.hostname | string | `""` | Backend hostname for TLS verification |
+| kubernetes.gatewayAPI.enabled | bool | `false` | Enable Gateway API resources (HTTPRoutes and policies) |
+| kubernetes.gatewayAPI.gatewayName | string | `""` | Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed) This Gateway must exist in the same namespace before installing the chart |
+| kubernetes.gatewayAPI.km.annotations | object | `{}` | HTTPRoute annotations |
+| kubernetes.gatewayAPI.km.enabled | bool | `false` | Enable HTTPRoute for Key Manager |
+| kubernetes.gatewayAPI.km.filters | list | `[]` | HTTPRoute filters (optional) |
+| kubernetes.gatewayAPI.km.hostname | string | `"km.wso2.com"` | Hostname for Key Manager |
+| kubernetes.ingress.km.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Key Manager pass-through |
+| kubernetes.ingress.km.enabled | bool | `true` | Enable Ingress for Key Manager |
+| kubernetes.ingress.km.hostname | string | `"km.wso2.com"` | Ingress hostname for Key Manager pass-through |
 | kubernetes.ingress.ratelimit.burstLimit | string | `""` | Ingress ratelimit burst limit |
 | kubernetes.ingress.ratelimit.enabled | bool | `false` | Ingress rate limit |
 | kubernetes.ingress.ratelimit.zoneName | string | `""` | Ingress ratelimit zone name |
