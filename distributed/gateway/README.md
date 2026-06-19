@@ -8,6 +8,7 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| aws.automountServiceAccountToken | bool | `true` | Whether to automatically mount the service account token |
 | aws.enabled | bool | `true` | If AWS is used as the cloud provider |
 | aws.region | string | `""` | AWS region |
 | aws.secretsManager.secretIdentifiers.internalKeystorePassword | object | `{"secretKey":"","secretName":""}` | Internal keystore password identifier in secrets manager |
@@ -27,6 +28,7 @@ A Helm chart for the deployment of WSO2 API Management Gateway profile
 | azure.keyVault.secretIdentifiers.internalKeystoreKeyPassword | string | `""` | Internal keystore key password identifier in keyvault |
 | azure.keyVault.secretIdentifiers.internalKeystorePassword | string | `""` | Internal keystore password identifier in keyvault |
 | azure.keyVault.secretProviderClass | string | `"wso2am-gw-secret-provider-class"` | Azure Key vault secret provider class name |
+| gcp.automountServiceAccountToken | bool | `true` | Whether to automatically mount the service account token |
 | gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
 | gcp.secretsManager | object | `{"projectId":"","secret":{"secretName":"","secretVersion":""},"secretProviderClass":""}` | Secrets Manager configuration parameters |
 | gcp.secretsManager.projectId | string | `""` | Project ID |

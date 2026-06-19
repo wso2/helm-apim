@@ -38,6 +38,8 @@ aws:
         # -- AWS Secrets Manager secret key
         secretKey: ""
   serviceAccountName: ""
+  # -- Whether to automatically mount the service account token
+  automountServiceAccountToken: true
 azure:
   # -- If Azure is used as the cloud provider
   enabled: false
@@ -141,6 +143,8 @@ gcp:
       secretVersion: ""
   # -- Service Account with access to read secrets
   serviceAccountName: ""
+  # -- Whether to automatically mount the service account token
+  automountServiceAccountToken: true
 
 kubernetes:
   # -- Ingress class to be used for the ingress resource
