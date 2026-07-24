@@ -9,6 +9,14 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
 
 ## [Unreleased]
 
+## [4.7.0-3]
+
+### Added
+- MCP (Model Context Protocol) configuration to default values across all deployment patterns.
+
+### Fixed
+- MCP disable behaviour in `deployment.toml` for all-in-one and control-plane profiles.
+
 ## [4.7.0-2]
 
 ### Added
@@ -46,7 +54,8 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
 - OAuth header config.
 - Consistency issue with `sync_runtime_artifacts`.
 
-[Unreleased]: https://github.com/wso2/helm-apim/compare/all-in-one-4.7.0-2...HEAD
+[Unreleased]: https://github.com/wso2/helm-apim/compare/all-in-one-4.7.0-3...HEAD
+[4.7.0-3]: https://github.com/wso2/helm-apim/compare/all-in-one-4.7.0-2...all-in-one-4.7.0-3
 [4.7.0-2]: https://github.com/wso2/helm-apim/compare/all-in-one-4.7.0-1...all-in-one-4.7.0-2
 [4.7.0-1]: https://github.com/wso2/helm-apim/compare/all-in-one-4.6.0-4...all-in-one-4.7.0-1
 
