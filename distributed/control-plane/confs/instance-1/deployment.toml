@@ -350,10 +350,8 @@ uri = "{{ .Values.wso2.apim.configurations.ai.vectorDbProvider.properties.uri }}
 token = "{{ .Values.wso2.apim.configurations.ai.vectorDbProvider.properties.token }}"
 {{- end }}
 
-{{- if .Values.wso2.apim.configurations.mcp.enabled }}
 [apim.mcp]
-enable = true
-{{- end }}
+enable = {{ .Values.wso2.apim.configurations.mcp.enabled }}
 
 [transport.https.properties]
 proxyPort = 443
