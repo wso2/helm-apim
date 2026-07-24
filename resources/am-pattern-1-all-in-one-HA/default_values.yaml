@@ -385,6 +385,10 @@ wso2:
         endpoint: ""
         token_endpoint: ""
 
+      # -- APIM MCP related configurations
+      mcp:
+        enabled: true
+
       security:
         # -- Kubernetes secret containing the keystores and truststore
         jksSecretName: "apim-keystore-secret"
