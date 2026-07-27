@@ -332,6 +332,10 @@ wso2:
         endpoint: "https://dev-tools.wso2.com/apim-ai-service/v2"
         token_endpoint: "https://api.asgardeo.io/t/wso2devtools/oauth2/token"
 
+      # -- APIM MCP related configurations
+      mcp:
+        enabled: true
+
       security:
         # -- Kubernetes secret containing the keystores and truststore
         jksSecretName: ""
