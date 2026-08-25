@@ -421,6 +421,10 @@ wso2:
     pod:
       # -- Annotations for pods
       annotations: {}
+      # -- Labels for pods, e.g to enable the Istio sidecar injection
+      # labels:
+      #   sidecar.istio.io/inject: "true"
+      labels: {}
       # -- Generic sidecars to inject into the gateway pod
       # sidecars:
       #   - name: jmx-metrics
