@@ -368,6 +368,13 @@ wso2:
         serviceName: ""
         # Revoke URL of Identity Server
         revokeURL: ""
+      km:
+        # -- If Key Manager profile is separated
+        enabled: false
+        # -- Kubernetes service name exposing Key Manager
+        serviceName: "wso2am-km-service"
+        # -- Kubernetes service port exposing Key Manager
+        servicePort: 9443
       
       jwt:
         # Enable backend JWT generation in gateway
