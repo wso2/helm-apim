@@ -666,6 +666,9 @@ wso2:
     pod:
       # -- Annotations for pods
       annotations: {}
+      # -- Labels for pods.
+      # `deployment` is reserved for the Deployment selector and must not be overridden.
+      labels: {}
 
     # -- Environment variables for the deployment
     # Example:
