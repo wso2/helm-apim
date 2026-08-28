@@ -299,6 +299,9 @@ spec:
             - name: wso2am-security-dir
               mountPath: /home/wso2carbon/tmp-security
             {{- end }}
+        {{- with .Values.wso2.deployment.sidecar }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- if .Values.wso2.deployment.nodeSelector }}
       nodeSelector:
         {{- toYaml .Values.wso2.deployment.nodeSelector | nindent 8 }}
