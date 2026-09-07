@@ -373,6 +373,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.ulimits.nofile | string | `nil` | Maximum number of open files (nofile). Set to meet WSO2 recommended requirements. |
 | wso2.apim.ulimits.nproc | string | `nil` | Maximum number of processes (nproc). Set to meet WSO2 recommended requirements. |
 | wso2.apim.version | string | `"4.7.0"` | APIM version |
+| wso2.deployment.annotations | object | `{}` | Annotations for deployments |
 | wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
 | wso2.deployment.highAvailability | bool | `false` |  |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |

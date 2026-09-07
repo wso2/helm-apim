@@ -21,6 +21,10 @@ kind: Deployment
 metadata:
   name: {{ template "am-all-in-one.fullname" . }}-am-deployment-1
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.wso2.deployment.annotations }}
+    {{- toYaml .Values.wso2.deployment.annotations | nindent 4 }}
+    {{- end }}
 spec:
   replicas: 1
   strategy:

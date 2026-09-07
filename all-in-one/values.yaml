@@ -876,6 +876,8 @@ wso2:
         # enable_email_domain = true
 
   deployment:
+    # -- Annotations for deployments
+    annotations: {}
     # Configure High Availability
     highAvailability: false
     # Container image configurations

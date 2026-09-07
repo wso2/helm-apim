@@ -416,6 +416,8 @@ wso2:
       extraConfigs: 
 
   deployment:
+    # -- Annotations for deployments
+    annotations: {}
     # Container image configurations
     image:
       # -- Container registry credentials.

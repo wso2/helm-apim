@@ -648,6 +648,8 @@ wso2:
         # enable_email_domain = true
 
   deployment:
+    # -- Annotations for deployments
+    annotations: {}
     # Container image configurations
     image:
       # -- Container registry credentials.

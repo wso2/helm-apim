@@ -21,6 +21,10 @@ kind: Deployment
 metadata:
   name: {{ template "apim-helm-gw.fullname" . }}-deployment
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- if .Values.wso2.deployment.annotations }}
+    {{- toYaml .Values.wso2.deployment.annotations | nindent 4 }}
+    {{- end }}
 spec:
   replicas: {{ .Values.wso2.deployment.replicas }}
   strategy:
