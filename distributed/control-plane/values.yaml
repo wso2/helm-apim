@@ -193,6 +193,8 @@ kubernetes:
       enabled: false
       # -- Ingress hostname
       hostname: "am.wso2.com"
+      # -- Internal hostname for Control Plane
+      internalHostname: localhost
       # -- Ingress annotations
       annotations:
         nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
@@ -239,6 +241,8 @@ kubernetes:
       enabled: true
       # -- Hostname for Control Plane
       hostname: "am.wso2.com"
+      # -- Internal hostname for Control Plane
+      internalHostname: localhost
       # -- HTTPRoute annotations
       annotations: {}
       # -- HTTPRoute filters (optional)

@@ -1,5 +1,6 @@
 [server]
 hostname = "{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.controlPlane.hostname }}{{- else -}}{{ .Values.kubernetes.ingress.controlPlane.hostname }}{{- end -}}"
+internal_hostname = "{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.controlPlane.internalHostname }}{{- else -}}{{ .Values.kubernetes.ingress.controlPlane.internalHostname }}{{- end -}}"
 node_ip = "$env{NODE_IP}"
 offset = {{ .Values.wso2.apim.portOffset }}
 base_path = "${carbon.protocol}://${carbon.host}:${carbon.management.port}"
@@ -153,6 +154,14 @@ http_endpoint = "http://{{ $env.httpHostname }}"
 https_endpoint = "https://{{ $env.httpHostname }}"
 websub_event_receiver_http_endpoint = "http://{{ $env.websubHostname }}"
 websub_event_receiver_https_endpoint = "https://{{ $env.websubHostname }}"
+{{- end }}
+
+{{- if or (ne .Values.kubernetes.gatewayAPI.controlPlane.internalHostname "localhost") (ne .Values.kubernetes.ingress.controlPlane.internalHostname "localhost") }}
+[apim.idp]
+server_url = "https://{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.controlPlane.hostname }}{{- else -}}{{ .Values.kubernetes.ingress.controlPlane.hostname }}{{- end -}}"
+authorize_endpoint = "https://{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.controlPlane.hostname }}{{- else -}}{{ .Values.kubernetes.ingress.controlPlane.hostname }}{{- end -}}/oauth2/authorize"
+oidc_logout_endpoint = "https://{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.controlPlane.hostname }}{{- else -}}{{ .Values.kubernetes.ingress.controlPlane.hostname }}{{- end -}}/oidc/logout"
+oidc_check_session_endpoint = "https://{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.controlPlane.hostname }}{{- else -}}{{ .Values.kubernetes.ingress.controlPlane.hostname }}{{- end -}}/oidc/checksession"
 {{- end }}
 
 [apim.key_manager]
@@ -391,7 +400,13 @@ name = "org.wso2.is.notification.ApimOauthEventInterceptor"
 order = 1
 
 [event_listener.properties]
+{{- if and (.Values.kubernetes.gatewayAPI.controlPlane.enabled) (ne .Values.kubernetes.gatewayAPI.controlPlane.internalHostname "localhost") }}
+notification_endpoint = "https://{{ .Values.kubernetes.gatewayAPI.controlPlane.internalHostname }}:{{ add 9443 .Values.wso2.apim.portOffset }}/internal/data/v1/notify"
+{{- else if and (.Values.kubernetes.ingress.controlPlane.enabled) (ne .Values.kubernetes.ingress.controlPlane.internalHostname "localhost") }}
+notification_endpoint = "https://{{ .Values.kubernetes.ingress.controlPlane.internalHostname }}:{{ add 9443 .Values.wso2.apim.portOffset }}/internal/data/v1/notify"
+{{- else }}
 notification_endpoint = "https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"
+{{- end }}
 username = "${admin.username}"
 password = "${admin.password}"
 'header.X-WSO2-KEY-MANAGER' = "default"
@@ -493,4 +508,9 @@ identity_server_base_url = {{ .Values.wso2.apim.configurations.tenantSharing.pro
 
 {{- if .Values.wso2.apim.configurations.extraConfigs }}
 {{ .Values.wso2.apim.configurations.extraConfigs }}
+{{- end }}
+
+{{- if or (ne .Values.kubernetes.gatewayAPI.controlPlane.internalHostname "localhost") (ne .Values.kubernetes.ingress.controlPlane.internalHostname "localhost") }}
+[identity.auth_framework.endpoint]
+identity_server_service_url = "https://{{ template "apim-helm-cp.fullname" . }}-service:{{ add 9443 .Values.wso2.apim.portOffset }}/services/"
 {{- end }}

@@ -131,6 +131,8 @@ kubernetes:
       enabled: false
       # -- Ingress hostname for Key Manager pass-through
       hostname: "km.wso2.com"
+      # -- Internal hostname for Key Manager
+      internalHostname: localhost
       # -- Ingress annotations for Key Manager pass-through
       annotations:
         nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
@@ -174,6 +176,8 @@ kubernetes:
       enabled: true
       # -- Hostname for Key Manager
       hostname: "km.wso2.com"
+      # -- Internal hostname for Key Manager
+      internalHostname: localhost
       # -- HTTPRoute annotations
       annotations: {}
       # -- HTTPRoute filters (optional)
