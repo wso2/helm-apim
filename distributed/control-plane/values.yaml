@@ -282,6 +282,26 @@ kubernetes:
     scripts:
       defaultMode: "0407"
 
+  # Set pods priority
+  priorityClass:
+    # Create a PriorityClass for the Control Plane
+    # Set to false if using an existing PriorityClass
+    create: false
+
+    # Name of the PriorityClass
+    # If empty and create=true, uses the release fullname
+    # If create=false, this should be the name of an existing PriorityClass
+    # If empty and create=false, no PriorityClass will be set in the deployment
+    name: ""
+
+    # Priority value (higher = less likely to be evicted)
+    # Reference values:
+    #   - system-cluster-critical: 2000000000
+    #   - system-node-critical: 2000001000
+    #   - Default pods: 0
+    # Recommended: 1000000 (high priority but below system-critical)
+    value: 1000000
+
   # -- Mount extra volumes to the deployment pods, e.g to mount secrets
   # extraVolumeMounts:
   #   - name: my-secret
@@ -294,6 +314,22 @@ kubernetes:
   #     secret:
   #       secretName: my-k8s-secret
   extraVolumes: []
+
+  # Add your own init container or uncomment and modify the given example.
+  initContainers: {}
+    # wait-for-db:
+    #   image: busybox:1.36.1
+    #   imagePullPolicy: IfNotPresent
+    #   command:
+    #     - sh
+    #     - -c
+    #     - |
+    #       echo "Waiting for DB on service postgresql-rw:5432..."
+    #       until nc -z -w 2 postgresql-rw 5432; do
+    #         echo "DB is not available yet, waiting 5 secondes..."
+    #         sleep 5
+    #       done
+    #       echo "DB is available."
 
 wso2:  
   apim:

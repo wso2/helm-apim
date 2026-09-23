@@ -1,0 +1,9 @@
+{{- if .Values.kubernetes.priorityClass.create }}
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: {{ .Values.kubernetes.priorityClass.name | default (template "apim-helm-tm.fullname" .) }}
+value: {{ .Values.kubernetes.priorityClass.value | int }}
+globalDefault: false
+description: "Priority class for WSO2 Traffic Manager"
+{{- end }}
