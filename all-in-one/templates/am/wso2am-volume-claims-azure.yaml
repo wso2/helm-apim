@@ -9,7 +9,7 @@
 #
 # --------------------------------------------------------------------------------------
 
-{{ if and .Values.wso2.deployment.persistence.solrIndexing.enabled .Values.azure.enabled }}
+{{ if and .Values.wso2.deployment.persistence.solrIndexing.enabled .Values.azure.enabled (not .Values.wso2.deployment.statefulSet.enabled) }}
 
 ---
 

@@ -136,6 +136,10 @@ kubernetes:
   # -- Ingress class to be used for the ingress resource
   ingressClass: "nginx"
   ingress:
+    # -- Create the Kubernetes Ingress resources (each one can also be disabled individually). Enable either Ingress or
+    # Gateway API (kubernetes.gatewayAPI.enabled). If both are enabled, Gateway API takes precedence and no Ingress
+    # resources are created.
+    enabled: true
     # -- Kubernetes secret created for Ingress TLS
     tlsSecret: ""
     ratelimit:
@@ -718,6 +722,20 @@ wso2:
           identityServerBaseUrl: ""
 
   deployment:
+    # Run API Manager as a StatefulSet instead of one Deployment per node
+    statefulSet:
+      # -- Deploy API Manager as a StatefulSet (pods <fullname>-am-0 and <fullname>-am-1 in HA mode) instead of the
+      # per-node Deployments. Enables zero-downtime rolling updates in HA mode: pods are replaced one at a time and the
+      # next pod is replaced only after the updated one is Ready. Both nodes share one deployment.toml; each pod resolves
+      # its peer node at startup. With Solr indexing persistence enabled, each pod gets its own volumes.
+      # Switching an existing release between Deployments and a StatefulSet recreates the API Manager pods.
+      enabled: false
+      # -- StatefulSet pod management policy. Only affects scaling (e.g. initial creation); rolling updates always
+      # replace one pod at a time. OrderedReady starts pod 1 only after pod 0 is Ready, so a single node initializes
+      # an empty database.
+      podManagementPolicy: OrderedReady
+      # -- Seconds an updated pod must stay Ready before the StatefulSet moves on to the next pod during a rolling update
+      minReadySeconds: 30
     # Container image configurations
     image:
       # -- Container registry credentials.
@@ -780,6 +798,12 @@ wso2:
       periodSeconds: 10
       # -- Minimum consecutive successes for the probe to be considered successful after having failed
       failureThreshold: 5
+      # -- Mark the pod Ready only after the server has fully started ("WSO2 Carbon started" in repository/logs/wso2carbon.log),
+      # in addition to the gateway startup health check. Prevents a new pod from serving traffic before components such as the
+      # throttle data publisher are initialized. Requires the CARBON_LOGFILE log4j2 appender; set to false to use only the health check.
+      waitForServerStartup: true
+      # -- Number of seconds after which the readiness probe times out
+      timeoutSeconds: 5
     lifecycle:
       preStopHook:
         # -- Time to wait until the apim is terminated gracefully
@@ -803,3 +827,9 @@ wso2:
           carbonDatabase: 50M
           # -- For persisting the indexed solr data
           solrIndexedData: 50M
+        # -- StatefulSet mode only: storage class of the per-pod volumes created from volumeClaimTemplates. Leave empty to use the
+        # cluster default storage class. Each pod gets its own volumes, so a shared (RWX) file system is not required.
+        # The cloud specific static volumes (aws.efs, gcp.fs, azure.persistence) are used only in Deployment mode.
+        storageClass: ""
+        # -- StatefulSet mode only: access mode of the per-pod volumes
+        accessMode: ReadWriteOnce

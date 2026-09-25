@@ -1,5 +1,5 @@
 [server]
-hostname = "{{- if .Values.kubernetes.ingress.enabled -}}{{ .Values.kubernetes.ingress.management.hostname }}{{- else -}}{{ .Values.kubernetes.gatewayAPI.management.hostname }}{{- end -}}"
+hostname = "{{ include "am-all-in-one.managementHostname" . }}"
 node_ip = "$env{NODE_IP}"
 offset = {{ .Values.wso2.apim.portOffset }}
 mode = "single" #single or ha
@@ -258,7 +258,9 @@ properties.proxyPort = 443
 type = "WSO2-IS"
 server_url = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:9443/services/"
 {{- else }}
-service_url = "https://{{ template "am-all-in-one.fullname" . }}-am-service:${mgt.transport.https.port}/services/"
+# Every all-in-one node runs its own resident Key Manager, so call it locally. Going through the shared service
+# fails while no pod is Ready yet (e.g. the first node of a fresh install) and delays startup by several minutes.
+service_url = "https://localhost:${mgt.transport.https.port}/services/"
 {{- end }}
 username= "$ref{super_admin.username}"
 password= "$ref{super_admin.password}"
@@ -344,7 +346,7 @@ remote_tracer.port = {{ .Values.wso2.apim.configurations.openTelemetry.port | qu
 {{- end }}
 
 [apim.devportal]
-url = "https://{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.management.hostname }}{{- else -}}{{ .Values.kubernetes.ingress.management.hostname }}{{- end -}}/devportal"
+url = "https://{{ include "am-all-in-one.managementHostname" . }}/devportal"
 mode = {{ .Values.wso2.apim.configurations.devportal.mode | quote }}
 {{- if .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}
 enable_application_sharing = {{ .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}
@@ -358,8 +360,8 @@ application_sharing_impl = {{ .Values.wso2.apim.configurations.devportal.applica
 {{- if .Values.wso2.apim.configurations.devportal.displayMultipleVersions }}
 display_multiple_versions = {{ .Values.wso2.apim.configurations.devportal.displayMultipleVersions }}
 {{- end }}
-{{- if .Values.wso2.apim.configurations.devportal.displayDeprecatedAPIs }}
-display_deprecated_apis = {{ .Values.wso2.apim.configurations.devportal.displayDeprecatedAPIs }}
+{{- if .Values.wso2.apim.configurations.devportal.displayDeprecatedApis }}
+display_deprecated_apis = {{ .Values.wso2.apim.configurations.devportal.displayDeprecatedApis }}
 {{- end }}
 {{- if .Values.wso2.apim.configurations.devportal.enableComments }}
 enable_comments = {{ .Values.wso2.apim.configurations.devportal.enableComments }}
@@ -409,8 +411,13 @@ enable_validation_for_ws = {{ .Values.wso2.apim.configurations.cors.enableForWS 
 {{- if .Values.wso2.deployment.highAvailability }}
 # Traffic Manager configurations
 [apim.throttling]
-event_duplicate_url = ["tcp://{{ template "am-all-in-one.fullname" .}}-am-service-1:5672"]
-throttle_decision_endpoints = ["tcp://localhost:5672"]
+{{- if .Values.wso2.deployment.statefulSet.enabled }}
+# APIM_PEER_HOST is resolved per pod by the entrypoint (the per-node service of the other StatefulSet pod)
+event_duplicate_url = ["tcp://$env{APIM_PEER_HOST}:{{ add 5672 (.Values.wso2.apim.portOffset | default 0) }}"]
+{{- else }}
+event_duplicate_url = ["tcp://{{ template "am-all-in-one.fullname" .}}-am-service-1:{{ add 5672 (.Values.wso2.apim.portOffset | default 0) }}"]
+{{- end }}
+throttle_decision_endpoints = ["tcp://localhost:{{ add 5672 (.Values.wso2.apim.portOffset | default 0) }}"]
 {{- end }}
 
 [apim.throttling.blacklist_condition]
@@ -426,15 +433,15 @@ period = {{ .Values.wso2.apim.configurations.throttling.blacklistCondition.perio
 start_delay = {{ .Values.wso2.apim.configurations.throttling.jms.startDelay}}
 {{- end }}
 
-{{- if .Values.wso2.apim.configurations.throttling.eventSync.hostName }}
+{{- if .Values.wso2.apim.configurations.throttling.eventSync.hostname }}
 [apim.throttling.event_sync]
-hostName = {{ .Values.wso2.apim.configurations.throttling.eventSync.hostName}}
+hostName = {{ .Values.wso2.apim.configurations.throttling.eventSync.hostname | quote }}
 port = {{ .Values.wso2.apim.configurations.throttling.eventSync.port}}
 {{- end }}
 
-{{- if .Values.wso2.apim.configurations.throttling.eventManagement.hostName }}
+{{- if .Values.wso2.apim.configurations.throttling.eventManagement.hostname }}
 [apim.throttling.event_management]
-hostName = {{ .Values.wso2.apim.configurations.throttling.eventManagement.hostName}}
+hostName = {{ .Values.wso2.apim.configurations.throttling.eventManagement.hostname | quote }}
 port = {{ .Values.wso2.apim.configurations.throttling.eventManagement.port}}
 {{- end }}
 

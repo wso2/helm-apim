@@ -9,6 +9,7 @@
 #
 # --------------------------------------------------------------------------------------
 
+{{- if not .Values.wso2.deployment.statefulSet.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,6 +27,7 @@ spec:
     metadata:
       annotations:
         checksum.am.conf: {{ include (print $.Template.BasePath "/am/instance-1/wso2am-conf.yaml") . | sha256sum }}
+        checksum.am.conf.entrypoint: {{ include (print $.Template.BasePath "/am/wso2am-conf-entrypoint.yaml") . | sha256sum }}
         checksum.am.conf.log4j2: {{ include (print $.Template.BasePath "/am/wso2am-conf-log4j2.yaml") . | sha256sum }}
         checksum.am.conf.secret-conf: {{ include (print $.Template.BasePath "/am/wso2am-conf-secret-conf.yaml") . | sha256sum }}
         {{- if .Values.wso2.deployment.pod.annotations }}
@@ -48,7 +50,7 @@ spec:
                 - key: deployment
                   operator: In
                   values:
-                  - {{ template "am-all-in-one.fullname" . }}
+                  - {{ template "am-all-in-one.fullname" . }}-am
               topologyKey: "topology.kubernetes.io/zone"
             weight: 100
       {{- if .Values.aws.enabled }}
@@ -106,36 +108,42 @@ spec:
                   name: {{ .Values.wso2.apim.configurations.existingSecret.secretName }}
                   key:  {{ .Values.wso2.apim.configurations.existingSecret.sharedDBPasswordKey }}
             {{- end }}
-            {{- if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.primaryKeystorePasswordKey .Values.wso2.apim.configurations.security.jksExistingSecret.primaryKeystoreKeyPasswordKey }}
+            {{- if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.primaryKeystorePasswordKey }}
             - name: WSO2_PRIMARY_KEYSTORE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
                   key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.primaryKeystorePasswordKey }}
+            {{- end }}
+            {{- if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.primaryKeystoreKeyPasswordKey }}
             - name: WSO2_PRIMARY_KEYSTORE_KEY_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
                   key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.primaryKeystoreKeyPasswordKey }}
             {{- end }}
-            {{- if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.tlsKeystorePasswordKey .Values.wso2.apim.configurations.security.jksExistingSecret.tlsKeystoreKeyPasswordKey }}
+            {{- if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.tlsKeystorePasswordKey }}
             - name: WSO2_TLS_KEYSTORE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
                   key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.tlsKeystorePasswordKey }}
+            {{- end }}
+            {{- if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.tlsKeystoreKeyPasswordKey }}
             - name: WSO2_TLS_KEYSTORE_KEY_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
                   key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.tlsKeystoreKeyPasswordKey }}
             {{- end }}
-            {{- if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.internalKeystorePasswordKey .Values.wso2.apim.configurations.security.jksExistingSecret.internalKeystoreKeyPasswordKey }}
+            {{- if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.internalKeystorePasswordKey }}
             - name: WSO2_INTERNAL_KEYSTORE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.wso2.apim.configurations.security.jksExistingSecret.secretName }}
                   key:  {{ .Values.wso2.apim.configurations.security.jksExistingSecret.internalKeystorePasswordKey }}
+            {{- end }}
+            {{- if and .Values.wso2.apim.configurations.security.jksExistingSecret.secretName .Values.wso2.apim.configurations.security.jksExistingSecret.internalKeystoreKeyPasswordKey }}
             - name: WSO2_INTERNAL_KEYSTORE_KEY_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -154,22 +162,40 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - timeout 1 bash -c "</dev/tcp/localhost/9443"
+                - timeout 1 bash -c "</dev/tcp/localhost/{{ add 9443 (.Values.wso2.apim.portOffset | default 0) }}"
             initialDelaySeconds: {{ .Values.wso2.deployment.startupProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.wso2.deployment.startupProbe.periodSeconds }}
             failureThreshold: {{ .Values.wso2.deployment.startupProbe.failureThreshold }}
           livenessProbe:
             httpGet:
               path: /services/Version
-              port: 9763
+              port: {{ add 9763 (.Values.wso2.apim.portOffset | default 0) }}
             initialDelaySeconds: {{ .Values.wso2.deployment.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.wso2.deployment.livenessProbe.periodSeconds }}
             failureThreshold: {{ .Values.wso2.deployment.livenessProbe.failureThreshold }}
           readinessProbe:
+            {{- if .Values.wso2.deployment.readinessProbe.waitForServerStartup }}
+            # Ready only after the server has fully started ("WSO2 Carbon started", logged once all components,
+            # including the throttle data publisher, are initialized) and the gateway startup health check passes.
+            # The marker file keeps the result across log rollovers; the entrypoint removes it on container start.
+            # The health check uses bash /dev/tcp over the HTTP port, so the image does not need curl.
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - >
+                  { test -f /tmp/.apim-server-started ||
+                  { grep -qs "WSO2 Carbon started" "${WSO2_SERVER_HOME}/repository/logs/wso2carbon.log" && touch /tmp/.apim-server-started; }; } &&
+                  timeout {{ .Values.wso2.deployment.readinessProbe.timeoutSeconds | default 5 }} bash -c 'exec 3<>/dev/tcp/localhost/{{ add 9763 (.Values.wso2.apim.portOffset | default 0) }} &&
+                  printf "GET /api/am/gateway/v2/server-startup-healthcheck HTTP/1.0\r\nHost: localhost\r\n\r\n" >&3 &&
+                  read -r status <&3 && case "$status" in "HTTP/1."?" 200"*) exit 0 ;; *) exit 1 ;; esac'
+            timeoutSeconds: {{ .Values.wso2.deployment.readinessProbe.timeoutSeconds | default 5 }}
+            {{- else }}
             httpGet:
               path: /api/am/gateway/v2/server-startup-healthcheck
-              port: 9443
+              port: {{ add 9443 (.Values.wso2.apim.portOffset | default 0) }}
               scheme: HTTPS
+            {{- end }}
             initialDelaySeconds: {{ .Values.wso2.deployment.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.wso2.deployment.readinessProbe.periodSeconds }}
             failureThreshold: {{ .Values.wso2.deployment.readinessProbe.failureThreshold }}
@@ -332,7 +358,7 @@ spec:
             volumeAttributes:
               secretProviderClass: {{ .Values.azure.keyVault.secretProviderClass }}
             nodePublishSecretRef:
-              name: {{ .Values.azure.keyVault.activeDirectory.servicePrincipal.credentialsSecretName }}
+              name: {{ include "am-all-in-one.secretStoreCsiSecretName" . }}
             {{- else if .Values.aws.enabled }}
             volumeAttributes:
               secretProviderClass: {{ .Values.aws.secretsManager.secretProviderClass }}
@@ -359,3 +385,4 @@ spec:
         - name: wso2am-security-dir
           emptyDir: {}
         {{- end }}
+{{- end }}

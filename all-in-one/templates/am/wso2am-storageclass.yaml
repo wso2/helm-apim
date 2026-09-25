@@ -9,7 +9,7 @@
 #
 # --------------------------------------------------------------------------------------
 
-{{ if and .Values.wso2.deployment.persistence.solrIndexing.enabled .Values.aws.enabled }}
+{{ if and .Values.wso2.deployment.persistence.solrIndexing.enabled .Values.aws.enabled (not .Values.wso2.deployment.statefulSet.enabled) }}
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:

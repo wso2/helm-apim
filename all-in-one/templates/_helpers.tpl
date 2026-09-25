@@ -96,5 +96,27 @@ Check if all the governance.scheduler configuration values are empty.
 
 {{- define "dockerconfigjson" -}}
 {{- $auth := printf "%s:%s" .Values.wso2.deployment.image.imagePullSecrets.username .Values.wso2.deployment.image.imagePullSecrets.password | b64enc -}}
-{{- printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"auth\":\"%s\"}}}" .Values.wso2.deployment.image.registry .Values.wso2.deployment.image.imagePullSecrets.username .Values.wso2.deployment.image.imagePullSecrets.password $auth | b64enc -}}
+{{- $entry := dict "username" .Values.wso2.deployment.image.imagePullSecrets.username "password" .Values.wso2.deployment.image.imagePullSecrets.password "auth" $auth -}}
+{{- dict "auths" (dict .Values.wso2.deployment.image.registry $entry) | toJson | b64enc -}}
+{{- end -}}
+
+{{/*
+Name of the Secret holding the Azure service principal credentials for the Secrets Store CSI driver.
+Used both for the Secret this chart creates and for the CSI volume nodePublishSecretRef.
+*/}}
+{{- define "am-all-in-one.secretStoreCsiSecretName" -}}
+{{- .Values.azure.keyVault.activeDirectory.servicePrincipal.credentialsSecretName | default (printf "%s-secret-store-csi" (include "am-all-in-one.fullname" .)) -}}
+{{- end -}}
+
+{{/*
+Management hostname (server hostname, Developer Portal URL, NOTES). Gateway API takes precedence over Ingress.
+*/}}
+{{- define "am-all-in-one.managementHostname" -}}
+{{- if .Values.kubernetes.gatewayAPI.enabled -}}
+{{- .Values.kubernetes.gatewayAPI.management.hostname -}}
+{{- else if .Values.kubernetes.ingress.enabled -}}
+{{- .Values.kubernetes.ingress.management.hostname -}}
+{{- else -}}
+{{- .Values.kubernetes.ingress.management.hostname -}}
+{{- end -}}
 {{- end -}}
