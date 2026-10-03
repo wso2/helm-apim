@@ -496,11 +496,16 @@ wso2:
       # -- Annotations for pods
       annotations: {}
 
-    # -- Environment variables for the deployment
+    # -- Environment variables for the deployment. A plain value is rendered as `value`;
+    # a map is rendered as the env var body, e.g. `valueFrom` to read from a Secret.
     # Example:
     #   envs:
     #     MY_CUSTOM_VAR: "my-value"
-    #     ANOTHER_VAR: "another-value"
+    #     DB_PASSWORD:
+    #       valueFrom:
+    #         secretKeyRef:
+    #           name: my-secret
+    #           key: password
     envs: {}
 
     # Kubernetes RollingUpdate strategy configurations

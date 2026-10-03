@@ -185,7 +185,11 @@ spec:
         {{- if .Values.wso2.deployment.envs }}
         {{- range $key, $val := .Values.wso2.deployment.envs }}
         - name: {{ $key }}
+          {{- if kindIs "map" $val }}
+          {{- toYaml $val | nindent 10 }}
+          {{- else }}
           value: {{ $val | quote }}
+          {{- end }}
         {{- end }}
         {{- end }}
         livenessProbe:

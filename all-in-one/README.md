@@ -374,7 +374,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.ulimits.nproc | string | `nil` | Maximum number of processes (nproc). Set to meet WSO2 recommended requirements. |
 | wso2.apim.version | string | `"4.7.0"` | APIM version |
 | wso2.deployment.annotations | object | `{}` | Annotations for deployments |
-| wso2.deployment.envs | object | `{}` | Environment variables for the deployment Example:   envs:     MY_CUSTOM_VAR: "my-value"     ANOTHER_VAR: "another-value" |
+| wso2.deployment.envs | object | `{}` | Environment variables for the deployment. A plain value is rendered as `value`; a map is rendered as the env var body, e.g. `valueFrom` to read from a Secret. Example:   envs:     MY_CUSTOM_VAR: "my-value"     DB_PASSWORD:       valueFrom:         secretKeyRef:           name: my-secret           key: password |
 | wso2.deployment.highAvailability | bool | `false` |  |
 | wso2.deployment.image.digest | string | `""` | Docker image digest |
 | wso2.deployment.image.imagePullPolicy | string | `"Always"` | Refer to the Kubernetes documentation on updating images (https://kubernetes.io/docs/concepts/containers/images/#updating-images) |

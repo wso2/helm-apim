@@ -9,6 +9,10 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
 
 ## [Unreleased]
 
+### Added
+- `wso2.deployment.envs` accepts a map as a value, rendered as the env var body, so
+  variables can be sourced with `valueFrom` (e.g. `secretKeyRef`). Plain values render as before.
+
 ## [4.7.0-2]
 
 ### Added
