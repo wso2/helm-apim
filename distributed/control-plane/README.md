@@ -208,6 +208,8 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.configurations.sdk.supportedLanguages[7] | string | `"perl"` |  |
 | wso2.apim.configurations.sdk.supportedLanguages[8] | string | `"php"` |  |
 | wso2.apim.configurations.sdk.supportedLanguages[9] | string | `"python"` |  |
+| wso2.apim.configurations.security.appPassword | string | `""` | Application password used by the identity auth framework |
+| wso2.apim.configurations.security.appPasswordHash | string | `""` | Hash of the application password used by account recovery auth |
 | wso2.apim.configurations.security.jksExistingSecret | object | `{"internalKeystoreKeyPasswordKey":"","internalKeystorePasswordKey":"","primaryKeystoreKeyPasswordKey":"","primaryKeystorePasswordKey":"","secretName":"","tlsKeystoreKeyPasswordKey":"","tlsKeystorePasswordKey":"","truststorePasswordKey":""}` | Existing secret containing the passwords for the keystores |
 | wso2.apim.configurations.security.jksSecretName | string | `"apim-keystore-secret"` | Kubernetes secret containing the keystores and truststore |
 | wso2.apim.configurations.security.keystores.internal.alias | string | `"wso2carbon"` | Internal keystore alias |

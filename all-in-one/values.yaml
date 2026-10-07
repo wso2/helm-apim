@@ -481,6 +481,10 @@ wso2:
         enabled: true
 
       security:
+        # -- Application password used by the identity auth framework
+        appPassword: ""
+        # -- Hash of the application password used by account recovery auth
+        appPasswordHash: ""
         # -- Kubernetes secret containing the keystores and truststore
         jksSecretName: ""
         # -- Existing secret containing the passwords for the keystores

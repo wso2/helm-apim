@@ -336,6 +336,10 @@ wso2:
         endpoint: ""
 
       security:
+        # -- Application password used by the identity auth framework
+        appPassword: ""
+        # -- Hash of the application password used by account recovery auth
+        appPasswordHash: ""
         # -- Kubernetes secret containing the keystores and truststore
         jksSecretName: "apim-keystore-secret"
         # -- Existing secret containing the passwords for the keystores

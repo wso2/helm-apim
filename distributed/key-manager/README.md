@@ -121,6 +121,8 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.openTracer.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin |
 | wso2.apim.configurations.openTracer.properties.hostname | string | `""` | Remote tracer hostname |
 | wso2.apim.configurations.openTracer.properties.port | string | `""` | Remote tracer port |
+| wso2.apim.configurations.security.appPassword | string | `""` | Application password used by the identity auth framework |
+| wso2.apim.configurations.security.appPasswordHash | string | `""` | Hash of the application password used by account recovery auth |
 | wso2.apim.configurations.security.jksExistingSecret | object | `{"internalKeystoreKeyPasswordKey":"","internalKeystorePasswordKey":"","primaryKeystoreKeyPasswordKey":"","primaryKeystorePasswordKey":"","secretName":"","tlsKeystoreKeyPasswordKey":"","tlsKeystorePasswordKey":"","truststorePasswordKey":""}` | Existing secret containing the passwords for the keystores |
 | wso2.apim.configurations.security.jksSecretName | string | `"apim-keystore-secret"` | Kubernetes secret containing the keystores and truststore |
 | wso2.apim.configurations.security.keystores.internal.alias | string | `"wso2carbon"` | Internal keystore alias |

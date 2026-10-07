@@ -198,6 +198,14 @@ url = "jdbc:h2:./repository/database/WSO2CARBON_DB;DB_CLOSE_ON_EXIT=FALSE"
 [system.parameter]
 "org.wso2.CipherTransformation" = {{ .Values.wso2.apim.configurations.encryption.cipherTransformation | quote }}
 
+{{- if and .Values.wso2.apim.configurations.security.appPassword .Values.wso2.apim.configurations.security.appPasswordHash }}
+[identity.auth_framework.endpoint]
+app_password="$secret{app_password}"
+
+[account_recovery.endpoint.auth]
+hash="$secret{app_password_hash}"
+{{- end }}
+
 [encryption]
 internal_crypto_provider = {{ .Values.wso2.apim.configurations.encryption.internalCryptoProvider | quote }}
 {{- if eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider" }}
@@ -218,6 +226,10 @@ key = {{ .Values.wso2.apim.configurations.encryption.key | quote }}
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 [secrets]
 admin_password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
+{{- if and .Values.wso2.apim.configurations.security.appPassword .Values.wso2.apim.configurations.security.appPasswordHash }}
+app_password = {{ .Values.wso2.apim.configurations.security.appPassword | quote }}
+app_password_hash = {{ .Values.wso2.apim.configurations.security.appPasswordHash | quote }}
+{{- end }}
 {{- if eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider" }}
 encryption_key = {{ .Values.wso2.apim.configurations.encryption.key | quote }}
 {{- end }}
