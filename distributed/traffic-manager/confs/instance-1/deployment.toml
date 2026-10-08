@@ -198,12 +198,26 @@ url = "jdbc:h2:./repository/database/WSO2CARBON_DB;DB_CLOSE_ON_EXIT=FALSE"
 [system.parameter]
 "org.wso2.CipherTransformation" = {{ .Values.wso2.apim.configurations.encryption.cipherTransformation | quote }}
 
-{{- if and .Values.wso2.apim.configurations.security.appPassword .Values.wso2.apim.configurations.security.appPasswordHash }}
+{{- if and .Values.wso2.apim.secureVaultEnabled .Values.wso2.apim.configurations.security.appPassword }}
 [identity.auth_framework.endpoint]
 app_password="$secret{app_password}"
+{{- else if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.appPasswordKey }}
+[identity.auth_framework.endpoint]
+app_password="$env{WSO2_APP_PASSWORD}"
+{{- else if .Values.wso2.apim.configurations.security.appPassword }}
+[identity.auth_framework.endpoint]
+app_password={{ .Values.wso2.apim.configurations.security.appPassword | quote }}
+{{- end }}
 
+{{- if and .Values.wso2.apim.secureVaultEnabled .Values.wso2.apim.configurations.security.appPasswordHash }}
 [account_recovery.endpoint.auth]
 hash="$secret{app_password_hash}"
+{{- else if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.appPasswordHashKey }}
+[account_recovery.endpoint.auth]
+hash="$env{WSO2_APP_PASSWORD_HASH}"
+{{- else if .Values.wso2.apim.configurations.security.appPasswordHash }}
+[account_recovery.endpoint.auth]
+hash={{ .Values.wso2.apim.configurations.security.appPasswordHash | quote }}
 {{- end }}
 
 [encryption]
@@ -226,8 +240,10 @@ key = {{ .Values.wso2.apim.configurations.encryption.key | quote }}
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 [secrets]
 admin_password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
-{{- if and .Values.wso2.apim.configurations.security.appPassword .Values.wso2.apim.configurations.security.appPasswordHash }}
+{{- if .Values.wso2.apim.configurations.security.appPassword }}
 app_password = {{ .Values.wso2.apim.configurations.security.appPassword | quote }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.security.appPasswordHash }}
 app_password_hash = {{ .Values.wso2.apim.configurations.security.appPasswordHash | quote }}
 {{- end }}
 {{- if eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider" }}

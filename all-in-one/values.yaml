@@ -403,6 +403,8 @@ wso2:
         apimDBPasswordKey: "" # e.g apimDBPassword
         sharedDBPasswordKey: "" # e.g sharedDBPassword
         encryptionKeyKey: "" # e.g encryptionKey
+        appPasswordKey: "" # e.g appPassword
+        appPasswordHashKey: "" # e.g appPasswordHash
       gatewayType: "Regular,APK,AWS,Azure,Kong"
       userStore:
         # -- User store type.

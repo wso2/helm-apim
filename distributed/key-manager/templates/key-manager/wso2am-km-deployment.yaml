@@ -118,6 +118,20 @@ spec:
               name: {{ .Values.wso2.apim.configurations.existingSecret.secretName }}
               key:  {{ .Values.wso2.apim.configurations.existingSecret.adminPasswordKey }}
         {{- end }}
+        {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.appPasswordKey }}
+        - name: WSO2_APP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.existingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.existingSecret.appPasswordKey }}
+        {{- end }}
+        {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.appPasswordHashKey }}
+        - name: WSO2_APP_PASSWORD_HASH
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.wso2.apim.configurations.existingSecret.secretName }}
+              key:  {{ .Values.wso2.apim.configurations.existingSecret.appPasswordHashKey }}
+        {{- end }}
         {{- if and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.apimDBPasswordKey }}
         - name: WSO2_APIM_DB_PASSWORD
           valueFrom:
