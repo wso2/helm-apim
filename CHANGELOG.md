@@ -9,6 +9,14 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
 
 ## [Unreleased]
 
+### Added
+- `oauth_config.authHeader`, `oauth_config.enableOutboundAuthHeader`, and `cors` configurations
+  to the distributed control-plane chart, aligning it with the all-in-one and gateway charts
+  and the 4.7.0 control-plane pack defaults.
+
+### Docs
+- Regenerated helm-docs for the distributed control-plane chart.
+
 ## [4.7.0-2]
 
 ### Added
