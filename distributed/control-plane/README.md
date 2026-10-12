@@ -123,6 +123,12 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.configurations.adminPasswordExistingSecret | object | `{"secretKey":"","secretName":""}` | Read password from secret |
 | wso2.apim.configurations.adminUsername | string | `""` | Super admin username |
 | wso2.apim.configurations.ai | object | `{"embeddingProvider":{"properties":{"apikey":"","authType":"","azureUmiScope":"","embeddingEndpoint":"","embeddingModel":""},"type":""},"enabled":false,"endpoint":"","key":"","token":"","tokenEndpoint":"","vectorDbProvider":{"properties":{"token":"","uri":""},"type":""}}` | APIM AI related configurations |
+| wso2.apim.configurations.cors.allowCredentials | bool | `false` | CORS Access-Control-Allow-Credentials |
+| wso2.apim.configurations.cors.allowHeaders | list | `["authorization","Access-Control-Allow-Origin","Content-Type","SOAPAction","apikey","Internal-Key"]` | CORS Access-Control-Allow-Headers |
+| wso2.apim.configurations.cors.allowMethods | list | `["GET","PUT","POST","DELETE","PATCH","OPTIONS"]` | CORS Access-Control-Allow-Methods |
+| wso2.apim.configurations.cors.allowOrigins | list | `["*"]` | CORS Access-Control-Allow-Origin |
+| wso2.apim.configurations.cors.enableForWS | bool | `false` | Enable CORS for Websockets |
+| wso2.apim.configurations.cors.enabled | bool | `true` | CORS configuration enabled |
 | wso2.apim.configurations.databases.apim_db | object | `{"password":"","passwordExistingSecret":{"secretKey":"","secretName":""},"poolParameters":{"defaultAutoCommit":true,"maxActive":100,"maxWait":60000,"minIdle":5,"testOnBorrow":true,"testWhileIdle":true,"validationInterval":30000},"url":"","username":""}` | APIM AM_DB configurations. |
 | wso2.apim.configurations.databases.apim_db.password | string | `""` | APIM AM_DB password |
 | wso2.apim.configurations.databases.apim_db.passwordExistingSecret | object | `{"secretKey":"","secretName":""}` | Read password from secret |
@@ -173,6 +179,8 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.configurations.km.servicePort | int | `9443` | Kubernetes service port exposing Key Manager |
 | wso2.apim.configurations.mcp | object | `{"enabled":true}` | APIM MCP related configurations |
 | wso2.apim.configurations.oauth_config.allowedScopes | list | `["^device_.*,openid"]` | List of allow-listed scopes |
+| wso2.apim.configurations.oauth_config.authHeader | string | `"Authorization"` | OAuth authorization header name |
+| wso2.apim.configurations.oauth_config.enableOutboundAuthHeader | bool | `false` | Preserves auth header in outgoing requests |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
 | wso2.apim.configurations.oauth_config.multipleClientSecrets | object | `{"enable":true,"secretCount":""}` | Multiple client secrets configuration |

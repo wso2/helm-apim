@@ -268,6 +268,8 @@ auth_urls = ["ssl://{{ template "apim-helm-cp.fullname" . }}-2-service:{{ add 97
 {{- end }}
 
 [apim.oauth_config]
+enable_outbound_auth_header = {{ .Values.wso2.apim.configurations.oauth_config.enableOutboundAuthHeader }}
+auth_header = {{ .Values.wso2.apim.configurations.oauth_config.authHeader | quote }}
 {{- if .Values.wso2.apim.configurations.iskm.enabled }}
 revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:{{ .Values.wso2.apim.configurations.iskm.servicePort }}/oauth2/revoke"
 {{- else }}
@@ -297,6 +299,14 @@ enable = true
 [oauth.revoked_token_headers_in_response]
 enable = true
 {{- end }}
+
+[apim.cors]
+enable = {{ .Values.wso2.apim.configurations.cors.enabled }}
+allow_origins = {{ toJson .Values.wso2.apim.configurations.cors.allowOrigins }}
+allow_methods = {{ toJson .Values.wso2.apim.configurations.cors.allowMethods }}
+allow_headers = {{ toJson .Values.wso2.apim.configurations.cors.allowHeaders }}
+allow_credentials = {{ .Values.wso2.apim.configurations.cors.allowCredentials }}
+enable_validation_for_ws = {{ .Values.wso2.apim.configurations.cors.enableForWS }}
 
 {{- if .Values.wso2.apim.configurations.openTracer.enabled }}
 [apim.open_tracer]
