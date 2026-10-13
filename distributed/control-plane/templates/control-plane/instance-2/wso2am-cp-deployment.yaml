@@ -39,6 +39,9 @@ spec:
         deployment: {{ template "apim-helm-cp.fullname" . }}
         node: {{ template "apim-helm-cp.fullname" . }}-2
         product: apim
+        {{- if .Values.wso2.deployment.pod.labels }}
+        {{- toYaml .Values.wso2.deployment.pod.labels | nindent 8 }}
+        {{- end }}
     spec:
       affinity:
         podAntiAffinity:
