@@ -9,6 +9,14 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
 
 ## [Unreleased]
 
+### Added
+- `oauth_config.authHeader`, `oauth_config.enableOutboundAuthHeader`, and `cors` configurations
+  to the distributed control-plane chart, aligning it with the all-in-one and gateway charts
+  and the 4.7.0 control-plane pack defaults ([#270]).
+
+### Docs
+- Regenerated helm-docs for the distributed control-plane chart.
+
 ## [4.7.0-2]
 
 ### Added
@@ -62,3 +70,4 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
 [#171]: https://github.com/wso2/helm-apim/pull/171
 [#172]: https://github.com/wso2/helm-apim/pull/172
 [#175]: https://github.com/wso2/helm-apim/pull/175
+[#270]: https://github.com/wso2/helm-apim/pull/270
