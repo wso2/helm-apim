@@ -18,8 +18,9 @@ Set `wso2.deployment.statefulSet.enabled: true` to run the nodes as a single Sta
   pod, so an update still restarts it.
 - Both nodes share one `deployment.toml`. The only node-specific value, the peer node used for throttling event
   duplication (`event_duplicate_url`), is resolved at startup by the entrypoint from the pod ordinal.
-- `<fullname>-am-service-1` and `<fullname>-am-service-2` select pod 0 and pod 1. A headless governing service
-  (`<fullname>-am-headless`) is added.
+- The per-node services `<fullname>-am-service-1` and `<fullname>-am-service-2` are not created. A headless governing
+  service (`<fullname>-am-headless`) gives each pod a DNS name (`<fullname>-am-<n>.<fullname>-am-headless`), which the
+  nodes use to reach each other.
 - With `wso2.deployment.persistence.solrIndexing.enabled`, each pod gets its own volumes from `volumeClaimTemplates`,
   so the H2 local database and the Solr index are never shared between API Manager processes. See
   [Storage in StatefulSet mode](#storage-in-statefulset-mode).

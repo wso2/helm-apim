@@ -446,14 +446,21 @@ port = {{ .Values.wso2.apim.configurations.throttling.eventManagement.port}}
 {{- end }}
 
 {{- if .Values.wso2.deployment.highAvailability }}
+{{- $node1 := printf "%s-am-service-1" (include "am-all-in-one.fullname" .) }}
+{{- $node2 := printf "%s-am-service-2" (include "am-all-in-one.fullname" .) }}
+{{- if .Values.wso2.deployment.statefulSet.enabled }}
+{{- /* StatefulSet pods are addressed through the headless service, which also resolves not-ready pods */}}
+{{- $node1 = printf "%s-am-0.%s-am-headless" (include "am-all-in-one.fullname" .) (include "am-all-in-one.fullname" .) }}
+{{- $node2 = printf "%s-am-1.%s-am-headless" (include "am-all-in-one.fullname" .) (include "am-all-in-one.fullname" .) }}
+{{- end }}
 [[apim.throttling.url_group]]
-traffic_manager_urls = ["tcp://{{ template "am-all-in-one.fullname" .}}-am-service-1:{{ add 9611 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
-traffic_manager_auth_urls = ["ssl://{{ template "am-all-in-one.fullname" .}}-am-service-1:{{ add 9711 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+traffic_manager_urls = ["tcp://{{ $node1 }}:{{ add 9611 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+traffic_manager_auth_urls = ["ssl://{{ $node1 }}:{{ add 9711 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
 type = "loadbalance"
 
 [[apim.throttling.url_group]]
-traffic_manager_urls = ["tcp://{{ template "am-all-in-one.fullname" .}}-am-service-2:{{ add 9611 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
-traffic_manager_auth_urls = ["ssl://{{ template "am-all-in-one.fullname" .}}-am-service-2:{{ add 9711 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+traffic_manager_urls = ["tcp://{{ $node2 }}:{{ add 9611 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+traffic_manager_auth_urls = ["ssl://{{ $node2 }}:{{ add 9711 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
 type = "loadbalance"
 {{ end }}
 

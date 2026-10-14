@@ -10,25 +10,20 @@
 # --------------------------------------------------------------------------------------
 
 {{- if .Values.wso2.deployment.highAvailability }}
+{{- if not .Values.wso2.deployment.statefulSet.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ template "am-all-in-one.fullname" . }}-am-service-2
   namespace : {{ .Release.Namespace }}
 spec:
-  # Per-node service, used only between the API Manager nodes (Traffic Manager URL groups, throttling event
-  # duplication). Include the pod before it is Ready: a starting node connects to its own and its peer's
-  # Traffic Manager through these services, and waiting for readiness delays its startup by minutes.
-  # Client traffic uses <fullname>-am-service, which only routes to Ready pods.
+  # Per-node service for the Traffic Manager URL groups and throttling event duplication. Not-ready pods are
+  # published so that a starting node can reach its own Traffic Manager.
   publishNotReadyAddresses: true
   # label keys and values that must match in order to receive traffic for this service
   selector:
     deployment: {{ template "am-all-in-one.fullname" . }}-am
-    {{- if .Values.wso2.deployment.statefulSet.enabled }}
-    statefulset.kubernetes.io/pod-name: {{ template "am-all-in-one.fullname" . }}-am-1
-    {{- else }}
     node: {{ template "am-all-in-one.fullname" . }}-am-2
-    {{- end }}
   ports:
     # ports that this service should serve on
     - name: pass-through-http
@@ -61,4 +56,5 @@ spec:
     - name: websocket-http
       protocol: TCP
       port: {{ add 9099 (.Values.wso2.apim.portOffset | default 0) }}
+{{- end }}
 {{- end }}

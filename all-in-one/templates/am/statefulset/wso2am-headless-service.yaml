@@ -10,9 +10,9 @@
 # --------------------------------------------------------------------------------------
 
 {{- if .Values.wso2.deployment.statefulSet.enabled }}
-# Governing service of the API Manager StatefulSet (spec.serviceName). It only gives each pod a stable DNS name
-# (<fullname>-am-<n>.<fullname>-am-headless); no traffic goes through it, so it defines no ports. The nodes reach
-# each other through <fullname>-am-service-1/-2, and clients through <fullname>-am-service.
+# Governing service of the StatefulSet: gives each pod a stable DNS name (<fullname>-am-<n>.<fullname>-am-headless),
+# which the nodes use to reach each other. Not-ready pods are published so that a starting node can resolve its own
+# and its peer's address. It exposes no ports.
 apiVersion: v1
 kind: Service
 metadata:
