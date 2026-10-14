@@ -125,6 +125,8 @@ kubernetes:
       enabled: false
       # -- Ingress hostname for Gateway pass-through
       hostname: "gw.wso2.com"
+      # -- Internal hostname for Gateway
+      internalHostname: localhost
       # -- Ingress annotations for Gateway pass-through
       annotations:
         nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
@@ -199,6 +201,8 @@ kubernetes:
       enabled: true
       # -- Hostname for Gateway pass-through
       hostname: "gw.wso2.com"
+      # -- Internal hostname for Gateway
+      internalHostname: localhost
       # -- HTTPRoute annotations
       annotations: {}
       # -- HTTPRoute filters (optional)

@@ -6,7 +6,13 @@
       "forwardedHeader": "X-Forwarded-For"
     },
     "origin": {
+      {{- if .Values.kubernetes.gatewayAPI.controlPlane.enabled -}}
+      "host": "{{ .Values.kubernetes.gatewayAPI.controlPlane.internalHostname }}"
+      {{- else if .Values.kubernetes.ingress.controlPlane.enabled -}}
+      "host": "{{ .Values.kubernetes.ingress.controlPlane.internalHostname }}"
+      {{- else -}}
       "host": "localhost"
+      {{- end -}}
     },
     "workflows": {
       "limit": 30

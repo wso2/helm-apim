@@ -1,5 +1,6 @@
 [server]
 hostname = "{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.gateway.hostname }}{{- else -}}{{ .Values.kubernetes.ingress.gateway.hostname }}{{- end -}}"
+internal_hostname = "{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.gateway.internalHostname }}{{- else -}}{{ .Values.kubernetes.ingress.gateway.internalHostname }}{{- end -}}"
 node_ip = "$env{NODE_IP}"
 server_role = "default"
 offset = {{ .Values.wso2.apim.portOffset }}

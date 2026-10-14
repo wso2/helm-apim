@@ -1,5 +1,6 @@
 [server]
 hostname = "{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.km.hostname }}{{- else -}}{{ .Values.kubernetes.ingress.km.hostname }}{{- end -}}"
+internal_hostname = "{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.km.internalHostname }}{{- else -}}{{ .Values.kubernetes.ingress.km.internalHostname }}{{- end -}}"
 node_ip = "$env{NODE_IP}"
 offset = {{ .Values.wso2.apim.portOffset }}
 base_path = "${carbon.protocol}://${carbon.host}:${carbon.management.port}"
