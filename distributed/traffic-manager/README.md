@@ -65,7 +65,7 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | wso2.apim.configurations.encryption.key | string | `""` | Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup. |
 | wso2.apim.configurations.eventhub.serviceUrl | string | `"wso2am-cp-service"` | Event hub (control plane) loadbalancer service url |
 | wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
-| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","encryptionKeyKey":"","secretName":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","appPasswordHashKey":"","appPasswordKey":"","encryptionKeyKey":"","secretName":""}` | Read passwords from a common secret |
 | wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.iskm.enabled | bool | `false` |  |
 | wso2.apim.configurations.iskm.serviceName | string | `""` |  |
@@ -81,6 +81,8 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | wso2.apim.configurations.openTracer.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin |
 | wso2.apim.configurations.openTracer.properties.hostname | string | `""` | Remote tracer hostname |
 | wso2.apim.configurations.openTracer.properties.port | string | `""` | Remote tracer port |
+| wso2.apim.configurations.security.appPassword | string | `""` | Application password used by the identity auth framework; alternatively, use `existingSecret.appPasswordKey` |
+| wso2.apim.configurations.security.appPasswordHash | string | `""` | Hash of the application password used by account recovery auth; alternatively, use `existingSecret.appPasswordHashKey` |
 | wso2.apim.configurations.security.jksExistingSecret | object | `{"internalKeystoreKeyPasswordKey":"","internalKeystorePasswordKey":"","primaryKeystoreKeyPasswordKey":"","primaryKeystorePasswordKey":"","secretName":"","tlsKeystoreKeyPasswordKey":"","tlsKeystorePasswordKey":"","truststorePasswordKey":""}` | Existing secret containing the passwords for the keystores |
 | wso2.apim.configurations.security.jksSecretName | string | `"apim-keystore-secret"` | Kubernetes secret containing the keystores and truststore |
 | wso2.apim.configurations.security.keystores.internal.alias | string | `"wso2carbon"` | Internal keystore alias |

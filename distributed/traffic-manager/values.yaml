@@ -185,6 +185,8 @@ wso2:
         secretName: "" # e.g apim-secret
         adminPasswordKey: ""  # e.g adminPassword
         encryptionKeyKey: "" # e.g encryptionKey
+        appPasswordKey: "" # e.g appPassword
+        appPasswordHashKey: "" # e.g appPasswordHash
       userStore:
         # -- User store type. 
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
@@ -198,6 +200,10 @@ wso2:
       adminPassword: ""
 
       security:
+        # -- Application password used by the identity auth framework
+        appPassword: ""
+        # -- Hash of the application password used by account recovery auth
+        appPasswordHash: ""
         # -- Kubernetes secret containing the keystores and truststore
         jksSecretName: "apim-keystore-secret"
         # -- Existing secret containing the passwords for the keystores

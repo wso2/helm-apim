@@ -200,7 +200,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.eventListeners[0].order | int | `1` |  |
 | wso2.apim.configurations.eventListeners[0].properties.notificationEndpoint | string | `"https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"` |  |
 | wso2.apim.configurations.eventListeners[0].type | string | `"org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"` |  |
-| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","encryptionKeyKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","appPasswordHashKey":"","appPasswordKey":"","encryptionKeyKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
 | wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","visibility":null,"websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
 | wso2.apim.configurations.gatewayNotification.cleanUp.dataRetentionPeriod | string | `"30d"` |  |
@@ -283,6 +283,8 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.sdk.supportedLanguages[7] | string | `"perl"` |  |
 | wso2.apim.configurations.sdk.supportedLanguages[8] | string | `"php"` |  |
 | wso2.apim.configurations.sdk.supportedLanguages[9] | string | `"python"` |  |
+| wso2.apim.configurations.security.appPassword | string | `""` | Application password used by the identity auth framework; alternatively, use `existingSecret.appPasswordKey` |
+| wso2.apim.configurations.security.appPasswordHash | string | `""` | Hash of the application password used by account recovery auth; alternatively, use `existingSecret.appPasswordHashKey` |
 | wso2.apim.configurations.security.jksExistingSecret | object | `{"internalKeystoreKeyPasswordKey":"","internalKeystorePasswordKey":"","primaryKeystoreKeyPasswordKey":"","primaryKeystorePasswordKey":"","secretName":"","tlsKeystoreKeyPasswordKey":"","tlsKeystorePasswordKey":"","truststorePasswordKey":""}` | Existing secret containing the passwords for the keystores |
 | wso2.apim.configurations.security.jksSecretName | string | `""` | Kubernetes secret containing the keystores and truststore |
 | wso2.apim.configurations.security.keystores.internal.alias | string | `"wso2carbon"` | Internal keystore alias |
