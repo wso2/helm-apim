@@ -1,6 +1,11 @@
 Thank you for installing WSO2 API Manager.
 
 Please follow these steps to access API Manager Publisher, DevPortal consoles.
+{{- if and .Values.kubernetes.gatewayAPI.enabled .Values.kubernetes.ingress.enabled }}
+
+NOTE: Both kubernetes.gatewayAPI.enabled and kubernetes.ingress.enabled are true. Gateway API takes precedence, so no Ingress
+resources are created. Set kubernetes.ingress.enabled to false to remove this message.
+{{- end }}
 
 {{- if .Values.kubernetes.gatewayAPI.enabled }}
 1. Obtain the external IP (`ADDRESS`) of the Gateway resource.
@@ -15,7 +20,7 @@ Please follow these steps to access API Manager Publisher, DevPortal consoles.
    - ADDRESS: External IP exposing the API Manager services to outside of the Kubernetes environment
    - PROGRAMMED: Indicates whether the Gateway has been programmed by the Gateway controller
 
-{{- else }}
+{{- else if .Values.kubernetes.ingress.enabled }}
 1. Obtain the external IP (`EXTERNAL-IP`) of the API Manager Ingress resources, by listing down the Kubernetes Ingresses.
 
    kubectl get ing -n {{ .Release.Namespace }}
@@ -35,6 +40,9 @@ Please follow these steps to access API Manager Publisher, DevPortal consoles.
     - HOSTS: Hostname of the WSO2 API Manager's Gateway service ({{ .Values.kubernetes.ingress.gateway.hostname }})
     - ADDRESS: External IP (`EXTERNAL-IP`) exposing the API Manager's Gateway service to outside of the Kubernetes environment
     - PORTS: Externally exposed service ports of the API Manager' Gateway service
+{{- else }}
+1. No Ingress or Gateway API resources are created (kubernetes.ingress.enabled and kubernetes.gatewayAPI.enabled are false).
+   Expose the {{ template "am-all-in-one.fullname" . }}-am-service service yourself, e.g. with a LoadBalancer service or kubectl port-forward.
 {{- end }}
 
 
@@ -54,12 +62,12 @@ Please follow these steps to access API Manager Publisher, DevPortal consoles.
 
 3. Navigate to the consoles in your browser of choice.
 
-{{- if .Values.kubernetes.gatewayAPI.enabled }}
-   API Manager Publisher: https://{{ .Values.kubernetes.gatewayAPI.management.hostname }}/publisher
-   API Manager DevPortal: https://{{ .Values.kubernetes.gatewayAPI.management.hostname }}/devportal
-{{- else }}
-   API Manager Publisher: https://{{ .Values.kubernetes.ingress.management.hostname }}/publisher
-   API Manager DevPortal: https://{{ .Values.kubernetes.ingress.management.hostname }}/devportal
-{{- end }}
+   API Manager Publisher: https://{{ include "am-all-in-one.managementHostname" . }}/publisher
+   API Manager DevPortal: https://{{ include "am-all-in-one.managementHostname" . }}/devportal
 
 Please refer the official documentation at https://apim.docs.wso2.com/en/latest/ for additional information on WSO2 API Manager.
+{{- if and (eq .Values.wso2.apim.configurations.adminPassword "admin") (not .Values.wso2.apim.secureVaultEnabled) (not (and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.adminPasswordKey)) }}
+
+WARNING: The super admin account uses the default password ("admin"). Set wso2.apim.configurations.adminPassword,
+or provide it through wso2.apim.configurations.existingSecret or secure vault, before exposing this deployment.
+{{- end }}

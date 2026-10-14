@@ -9,7 +9,7 @@
 #
 # --------------------------------------------------------------------------------------
 
-{{ if and .Values.wso2.deployment.persistence.solrIndexing.enabled .Values.gcp.enabled }}
+{{ if and .Values.wso2.deployment.persistence.solrIndexing.enabled .Values.gcp.enabled (not .Values.wso2.deployment.statefulSet.enabled) }}
 
 ---
 
