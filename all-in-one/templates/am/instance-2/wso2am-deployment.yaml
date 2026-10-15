@@ -311,10 +311,10 @@ spec:
         {{ if .Values.wso2.deployment.persistence.solrIndexing.enabled }}
         - name: wso2am-local-carbondb
           persistentVolumeClaim:
-            claimName: {{ template "am-all-in-one.fullname" . }}-am-local-carbon-database-volume-claim
+            claimName: {{ template "am-all-in-one.fullname" . }}-am-local-carbon-database-volume-claim-2
         - name: wso2am-solr
           persistentVolumeClaim:
-            claimName: {{ template "am-all-in-one.fullname" . }}-am-solr-indexed-data-volume-claim
+            claimName: {{ template "am-all-in-one.fullname" . }}-am-solr-indexed-data-volume-claim-2
         {{ end }}
         {{- if .Values.kubernetes.openshift.enabled }}
         - name: wso2am-security-dir

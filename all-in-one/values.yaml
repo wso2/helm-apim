@@ -23,6 +23,10 @@ aws:
     accessPoints:
       carbonDb: ""
       solr: ""
+      # -- EFS Access Point for the local Carbon database of instance 2 (used only when highAvailability is enabled)
+      carbonDb2: ""
+      # -- EFS Access Point for the Solr indexed data of instance 2 (used only when highAvailability is enabled)
+      solr2: ""
   # -- AWS region
   region: ""
   secretsManager:
@@ -105,6 +109,22 @@ gcp:
         # -- FileShare of the Solr persistent storage
         fileShareName: ""
         # -- IP of the Solr persistent storage
+        ip: ""
+      # -- FileShare configs for CarbonDB2 persistent storage for instance 2 (used only when highAvailability is enabled)
+      carbonDB2:
+        # -- FileStore of the CarbonDB persistent storage for instance 2
+        fileStoreName: ""
+        # -- FileShare of the CarbonDB persistent storage for instance 2
+        fileShareName: ""
+        # -- IP of the CarbonDB persistent storage for instance 2
+        ip: ""
+      # -- FileShare configs for Solr persistent storage for instance 2 (used only when highAvailability is enabled)
+      solr2:
+        # -- FileStore of the Solr persistent storage for instance 2
+        fileStoreName: ""
+        # -- FileShare of the Solr persistent storage for instance 2
+        fileShareName: ""
+        # -- IP of the Solr persistent storage for instance 2
         ip: ""
     # -- Tier of the FileStore
     tier: ""
