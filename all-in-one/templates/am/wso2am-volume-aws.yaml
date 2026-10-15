@@ -49,6 +49,13 @@ spec:
     volumeHandle: {{ .Values.aws.efs.fileSystemId }}::{{ .Values.aws.efs.accessPoints.solr }}
 
 {{- if .Values.wso2.deployment.highAvailability }}
+{{- $ap := .Values.aws.efs.accessPoints }}
+{{- if not (and $ap.carbonDb2 $ap.solr2) }}
+{{- fail "aws.efs.accessPoints.carbonDb2 and aws.efs.accessPoints.solr2 are required when wso2.deployment.highAvailability is enabled" }}
+{{- end }}
+{{- if ne (len (uniq (list $ap.carbonDb $ap.solr $ap.carbonDb2 $ap.solr2))) 4 }}
+{{- fail "aws.efs.accessPoints carbonDb, solr, carbonDb2 and solr2 must be four different EFS access points, each with its own root directory, because each API Manager instance needs its own storage" }}
+{{- end }}
 
 ---
 
