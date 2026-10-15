@@ -23,7 +23,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ template "am-all-in-one.fullname" . }}-am-local-carbon-database-volume-claim
+  name: {{ template "am-all-in-one.fullname" . }}-am-local-carbon-database-volume-claim-1
   namespace : {{ .Release.Namespace }}
 spec:
   accessModes:
@@ -33,7 +33,7 @@ spec:
       storage: {{ .Values.wso2.deployment.persistence.solrIndexing.capacity.carbonDatabase }}
   selector:
     matchLabels:
-      purpose: am-carbondb
+      purpose: am-carbondb-1
   storageClassName: {{ template "am-all-in-one.fullname" . }}-sc
 
 ---
@@ -41,7 +41,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ template "am-all-in-one.fullname" . }}-am-solr-indexed-data-volume-claim
+  name: {{ template "am-all-in-one.fullname" . }}-am-solr-indexed-data-volume-claim-1
   namespace : {{ .Release.Namespace }}
 spec:
   accessModes:
@@ -51,7 +51,47 @@ spec:
       storage: {{ .Values.wso2.deployment.persistence.solrIndexing.capacity.solrIndexedData }}
   selector:
     matchLabels:
-      purpose: am-solr
+      purpose: am-solr-1
   storageClassName: {{ template "am-all-in-one.fullname" . }}-sc
+
+
+{{- if .Values.wso2.deployment.highAvailability }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-am-local-carbon-database-volume-claim-2
+  namespace : {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.wso2.deployment.persistence.solrIndexing.capacity.carbonDatabase }}
+  selector:
+    matchLabels:
+      purpose: am-carbondb-2
+  storageClassName: {{ template "am-all-in-one.fullname" . }}-sc
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-am-solr-indexed-data-volume-claim-2
+  namespace : {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.wso2.deployment.persistence.solrIndexing.capacity.solrIndexedData }}
+  selector:
+    matchLabels:
+      purpose: am-solr-2
+  storageClassName: {{ template "am-all-in-one.fullname" . }}-sc
+{{- end }}
 
 {{- end }}

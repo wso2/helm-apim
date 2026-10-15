@@ -14,6 +14,23 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
   to the distributed control-plane chart, aligning it with the all-in-one and gateway charts
   and the 4.7.0 control-plane pack defaults ([#270]).
 
+### Changed
+- **Breaking:** all-in-one Solr indexing persistence now uses the same `-1`/`-2` naming as the
+  distributed control-plane chart. Instance 1 claims are renamed to
+  `<fullname>-am-local-carbon-database-volume-claim-1` and
+  `<fullname>-am-solr-indexed-data-volume-claim-1`, the AWS and GCP persistent volumes to
+  `<fullname>-local-carbon-database-1` and `<fullname>-solr-indexed-data-1`, and the values
+  `aws.efs.accessPoints.carbonDb`/`solr` and `gcp.fs.fileshares.carbonDB`/`solr` to
+  `carbonDb1`/`solr1` and `carbonDB1`/`solr1`. See the all-in-one README for upgrade steps.
+
+### Fixed
+- All-in-one HA with `persistence.solrIndexing.enabled`: instance 2 now mounts its own volume
+  claims (`<fullname>-am-local-carbon-database-volume-claim-2` and
+  `<fullname>-am-solr-indexed-data-volume-claim-2`) instead of instance 1's, so the two nodes no
+  longer open the same H2 local Carbon database ("The file is locked"). New values
+  `aws.efs.accessPoints.carbonDb2`/`solr2` and `gcp.fs.fileshares.carbonDB2`/`solr2` configure
+  instance 2's storage, and the chart fails to render if they are missing or reuse instance 1's.
+
 ### Docs
 - Regenerated helm-docs for the distributed control-plane chart.
 

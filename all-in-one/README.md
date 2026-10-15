@@ -4,12 +4,50 @@
 
 A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 
+## Persistence for Solr-based indexing
+
+When `wso2.deployment.persistence.solrIndexing.enabled` is `true`, each API Manager instance needs its own persistent volume claims, because the local Carbon database (H2) can be opened by only one instance at a time.
+
+| Instance | Local Carbon database claim | Solr indexed data claim |
+|----------|-----------------------------|-------------------------|
+| 1 | `<fullname>-am-local-carbon-database-volume-claim-1` | `<fullname>-am-solr-indexed-data-volume-claim-1` |
+| 2 (when `wso2.deployment.highAvailability` is `true`) | `<fullname>-am-local-carbon-database-volume-claim-2` | `<fullname>-am-solr-indexed-data-volume-claim-2` |
+
+When AWS, GCP or Azure is enabled, the chart creates these claims. Otherwise, the chart does not create any of them:
+create them in the release namespace before installing the chart.
+
+Each instance must use separate backing storage. On AWS, `aws.efs.accessPoints.carbonDb1`, `solr1`, `carbonDb2` and
+`solr2` must be four different EFS access points with their own root directories. On GCP, `gcp.fs.fileshares.carbonDB1`,
+`solr1`, `carbonDB2` and `solr2` must be four different file shares. The chart fails to render if these values are missing or
+reuse instance 1's access points or file shares. On other clusters, back the instance 2 claims with separate volumes.
+If both instances open the same local Carbon database, the instance that starts second fails with
+`Database may be already in use`.
+
+### Upgrading from an earlier chart version
+
+The instance 1 claims, the AWS and GCP persistent volumes and their values were renamed so that both instances follow the
+same `-1`/`-2` pattern. Before upgrading a release with `wso2.deployment.persistence.solrIndexing.enabled` set to `true`:
+
+- On AWS, rename `aws.efs.accessPoints.carbonDb` and `solr` to `carbonDb1` and `solr1`. On GCP, rename
+  `gcp.fs.fileshares.carbonDB` and `solr` to `carbonDB1` and `solr1`. In HA mode, also set the instance 2 values described
+  above.
+- On other clusters, create the `-1` claims (and the `-2` claims in HA mode) listed above, each backed by its own storage.
+  A pod stays `Pending` until its claims exist.
+
+Earlier chart versions mounted the instance 1 claims on both instances, so instance 2 had no volumes of its own. After the
+upgrade, both instances use the renamed claims. Unless the new claims are bound to the existing storage, each instance
+starts with empty volumes and rebuilds its Solr index.
+
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | aws.automountServiceAccountToken | bool | `true` | Whether to automatically mount the aws service account token to the pod |
-| aws.efs.accessPoints | object | `{"carbonDb":"","solr":""}` | EFS Access Points for static provisioning |
+| aws.efs.accessPoints | object | `{"carbonDb1":"","carbonDb2":"","solr1":"","solr2":""}` | EFS Access Points for static provisioning |
+| aws.efs.accessPoints.carbonDb1 | string | `""` | EFS Access Point for the local Carbon database of instance 1 |
+| aws.efs.accessPoints.carbonDb2 | string | `""` | EFS Access Point for the local Carbon database of instance 2 (required when highAvailability is enabled). Must be a different access point, with a different root directory, from carbonDb1, solr1 and solr2 |
+| aws.efs.accessPoints.solr1 | string | `""` | EFS Access Point for the Solr indexed data of instance 1 |
+| aws.efs.accessPoints.solr2 | string | `""` | EFS Access Point for the Solr indexed data of instance 2 (required when highAvailability is enabled). Must be a different access point, with a different root directory, from carbonDb1, solr1 and carbonDb2 |
 | aws.efs.capacity | string | `""` | EFS capacity |
 | aws.efs.directoryPerms | string | `"0777"` | EFS directory permissions |
 | aws.efs.fileSystemId | string | `""` | EFS file system ID for mounting the persistent volume |
@@ -45,17 +83,25 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | azure.serviceAccountName | string | `""` | Name of the Azure Kubernetes service account |
 | gcp.automountServiceAccountToken | bool | `true` | Whether to automatically mount the gcp service account token to the pod |
 | gcp.enabled | bool | `false` | If GCP is used as the cloud provider |
-| gcp.fs | object | `{"capacity":"","fileshares":{"carbonDB":{"fileShareName":"","fileStoreName":"","ip":""},"solr":{"fileShareName":"","fileStoreName":"","ip":""}},"location":"","network":"","tier":""}` | File Store configuration parameters |
+| gcp.fs | object | `{"capacity":"","fileshares":{"carbonDB1":{"fileShareName":"","fileStoreName":"","ip":""},"carbonDB2":{"fileShareName":"","fileStoreName":"","ip":""},"solr1":{"fileShareName":"","fileStoreName":"","ip":""},"solr2":{"fileShareName":"","fileStoreName":"","ip":""}},"location":"","network":"","tier":""}` | File Store configuration parameters |
 | gcp.fs.capacity | string | `""` | Storage capacity of the file system (in GB or other appropriate units) |
-| gcp.fs.fileshares | object | `{"carbonDB":{"fileShareName":"","fileStoreName":"","ip":""},"solr":{"fileShareName":"","fileStoreName":"","ip":""}}` | FileStore configuration for specific services |
-| gcp.fs.fileshares.carbonDB | object | `{"fileShareName":"","fileStoreName":"","ip":""}` | FileShare configs for CarbonDB persistent storage |
-| gcp.fs.fileshares.carbonDB.fileShareName | string | `""` | FileShare of the CarbonDB persistent storage |
-| gcp.fs.fileshares.carbonDB.fileStoreName | string | `""` | FileStore of the CarbonDB persistent storage |
-| gcp.fs.fileshares.carbonDB.ip | string | `""` | IP of the CarbonDB persistent storage |
-| gcp.fs.fileshares.solr | object | `{"fileShareName":"","fileStoreName":"","ip":""}` | FileShare configs for Solr persistent storage |
-| gcp.fs.fileshares.solr.fileShareName | string | `""` | FileShare of the Solr persistent storage |
-| gcp.fs.fileshares.solr.fileStoreName | string | `""` | FileStore of the Solr persistent storage |
-| gcp.fs.fileshares.solr.ip | string | `""` | IP of the Solr persistent storage |
+| gcp.fs.fileshares | object | `{"carbonDB1":{"fileShareName":"","fileStoreName":"","ip":""},"carbonDB2":{"fileShareName":"","fileStoreName":"","ip":""},"solr1":{"fileShareName":"","fileStoreName":"","ip":""},"solr2":{"fileShareName":"","fileStoreName":"","ip":""}}` | FileStore configuration for specific services |
+| gcp.fs.fileshares.carbonDB1 | object | `{"fileShareName":"","fileStoreName":"","ip":""}` | FileShare configs for CarbonDB persistent storage for instance 1 |
+| gcp.fs.fileshares.carbonDB1.fileShareName | string | `""` | FileShare of the CarbonDB persistent storage |
+| gcp.fs.fileshares.carbonDB1.fileStoreName | string | `""` | FileStore of the CarbonDB persistent storage |
+| gcp.fs.fileshares.carbonDB1.ip | string | `""` | IP of the CarbonDB persistent storage |
+| gcp.fs.fileshares.carbonDB2 | object | `{"fileShareName":"","fileStoreName":"","ip":""}` | FileShare configs for CarbonDB2 persistent storage for instance 2 (required when highAvailability is enabled). Must be a different file share from carbonDB1, solr1 and solr2 |
+| gcp.fs.fileshares.carbonDB2.fileShareName | string | `""` | FileShare of the CarbonDB persistent storage for instance 2 |
+| gcp.fs.fileshares.carbonDB2.fileStoreName | string | `""` | FileStore of the CarbonDB persistent storage for instance 2 |
+| gcp.fs.fileshares.carbonDB2.ip | string | `""` | IP of the CarbonDB persistent storage for instance 2 |
+| gcp.fs.fileshares.solr1 | object | `{"fileShareName":"","fileStoreName":"","ip":""}` | FileShare configs for Solr persistent storage for instance 1 |
+| gcp.fs.fileshares.solr1.fileShareName | string | `""` | FileShare of the Solr persistent storage |
+| gcp.fs.fileshares.solr1.fileStoreName | string | `""` | FileStore of the Solr persistent storage |
+| gcp.fs.fileshares.solr1.ip | string | `""` | IP of the Solr persistent storage |
+| gcp.fs.fileshares.solr2 | object | `{"fileShareName":"","fileStoreName":"","ip":""}` | FileShare configs for Solr persistent storage for instance 2 (required when highAvailability is enabled). Must be a different file share from carbonDB1, solr1 and carbonDB2 |
+| gcp.fs.fileshares.solr2.fileShareName | string | `""` | FileShare of the Solr persistent storage for instance 2 |
+| gcp.fs.fileshares.solr2.fileStoreName | string | `""` | FileStore of the Solr persistent storage for instance 2 |
+| gcp.fs.fileshares.solr2.ip | string | `""` | IP of the Solr persistent storage for instance 2 |
 | gcp.fs.location | string | `""` | Region of the FileStore |
 | gcp.fs.network | string | `""` | Network of the FileStore |
 | gcp.fs.tier | string | `""` | Tier of the FileStore |
