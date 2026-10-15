@@ -54,4 +54,61 @@ spec:
       ip: {{ .Values.gcp.fs.fileshares.solr.ip }}
       volume: {{ .Values.gcp.fs.fileshares.solr.fileShareName }}
 
+{{- if .Values.wso2.deployment.highAvailability }}
+{{- $fs := .Values.gcp.fs.fileshares }}
+{{- if not (and $fs.carbonDB2.fileStoreName $fs.carbonDB2.fileShareName $fs.carbonDB2.ip $fs.solr2.fileStoreName $fs.solr2.fileShareName $fs.solr2.ip) }}
+{{- fail "gcp.fs.fileshares.carbonDB2 and gcp.fs.fileshares.solr2 (fileStoreName, fileShareName and ip) are required when wso2.deployment.highAvailability is enabled" }}
+{{- end }}
+{{- $shares := list (printf "%s/%s" $fs.carbonDB.fileStoreName $fs.carbonDB.fileShareName) (printf "%s/%s" $fs.solr.fileStoreName $fs.solr.fileShareName) (printf "%s/%s" $fs.carbonDB2.fileStoreName $fs.carbonDB2.fileShareName) (printf "%s/%s" $fs.solr2.fileStoreName $fs.solr2.fileShareName) }}
+{{- if ne (len (uniq $shares)) 4 }}
+{{- fail "gcp.fs.fileshares carbonDB, solr, carbonDB2 and solr2 must be four different Filestore file shares, because each API Manager instance needs its own storage" }}
+{{- end }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-local-carbon-database-2
+  labels:
+    purpose: am-carbondb-2
+spec:
+  capacity:
+    storage: {{ .Values.gcp.fs.capacity }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ template "am-all-in-one.fullname" . }}-sc
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: filestore.csi.storage.gke.io
+    volumeHandle: "modeInstance/{{ .Values.gcp.fs.location }}/{{ .Values.gcp.fs.fileshares.carbonDB2.fileStoreName }}/{{ .Values.gcp.fs.fileshares.carbonDB2.fileShareName }}"
+    volumeAttributes:
+      ip: {{ .Values.gcp.fs.fileshares.carbonDB2.ip }}
+      volume: {{ .Values.gcp.fs.fileshares.carbonDB2.fileShareName }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-solr-indexed-data-2
+  labels:
+    purpose: am-solr-2
+spec:
+  capacity:
+    storage: {{ .Values.gcp.fs.capacity }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ template "am-all-in-one.fullname" . }}-sc
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: filestore.csi.storage.gke.io
+    volumeHandle: "modeInstance/{{ .Values.gcp.fs.location }}/{{ .Values.gcp.fs.fileshares.solr2.fileStoreName }}/{{ .Values.gcp.fs.fileshares.solr2.fileShareName }}"
+    volumeAttributes:
+      ip: {{ .Values.gcp.fs.fileshares.solr2.ip }}
+      volume: {{ .Values.gcp.fs.fileshares.solr2.fileShareName }}
+{{- end }}
+
 {{ end }}

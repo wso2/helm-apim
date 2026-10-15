@@ -48,4 +48,54 @@ spec:
     driver: efs.csi.aws.com
     volumeHandle: {{ .Values.aws.efs.fileSystemId }}::{{ .Values.aws.efs.accessPoints.solr }}
 
+{{- if .Values.wso2.deployment.highAvailability }}
+{{- $ap := .Values.aws.efs.accessPoints }}
+{{- if not (and $ap.carbonDb2 $ap.solr2) }}
+{{- fail "aws.efs.accessPoints.carbonDb2 and aws.efs.accessPoints.solr2 are required when wso2.deployment.highAvailability is enabled" }}
+{{- end }}
+{{- if ne (len (uniq (list $ap.carbonDb $ap.solr $ap.carbonDb2 $ap.solr2))) 4 }}
+{{- fail "aws.efs.accessPoints carbonDb, solr, carbonDb2 and solr2 must be four different EFS access points, each with its own root directory, because each API Manager instance needs its own storage" }}
+{{- end }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-local-carbon-database-2
+  labels:
+    purpose: am-carbondb-2
+spec:
+  capacity:
+    storage: {{ .Values.aws.efs.capacity }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ template "am-all-in-one.fullname" . }}-sc
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: {{ .Values.aws.efs.fileSystemId }}::{{ .Values.aws.efs.accessPoints.carbonDb2 }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-solr-indexed-data-2
+  labels:
+    purpose: am-solr-2
+spec:
+  capacity:
+    storage: {{ .Values.aws.efs.capacity }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ template "am-all-in-one.fullname" . }}-sc
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: {{ .Values.aws.efs.fileSystemId }}::{{ .Values.aws.efs.accessPoints.solr2 }}
+{{- end }}
+
 {{ end }}
