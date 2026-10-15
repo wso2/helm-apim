@@ -51,4 +51,37 @@ spec:
       purpose: am-volume
   storageClassName: {{ .Values.azure.persistence.storageClass | default "" }}
 
+{{- if .Values.wso2.deployment.highAvailability }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-am-local-carbon-database-volume-claim-2
+  namespace : {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.wso2.deployment.persistence.solrIndexing.capacity.carbonDatabase }}
+  storageClassName: {{ .Values.azure.persistence.storageClass | default "" }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-am-solr-indexed-data-volume-claim-2
+  namespace : {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.wso2.deployment.persistence.solrIndexing.capacity.solrIndexedData }}
+  storageClassName: {{ .Values.azure.persistence.storageClass | default "" }}
+{{- end }}
+
 {{ end }}
