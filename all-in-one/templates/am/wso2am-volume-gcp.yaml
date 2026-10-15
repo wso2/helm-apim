@@ -63,8 +63,8 @@ spec:
 
 {{- if .Values.wso2.deployment.highAvailability }}
 {{- $fs := .Values.gcp.fs.fileshares }}
-{{- if not (and $fs.carbonDB2.fileStoreName $fs.carbonDB2.fileShareName $fs.solr2.fileStoreName $fs.solr2.fileShareName) }}
-{{- fail "gcp.fs.fileshares.carbonDB2 and gcp.fs.fileshares.solr2 (fileStoreName and fileShareName) are required when wso2.deployment.highAvailability is enabled" }}
+{{- if not (and $fs.carbonDB2.fileStoreName $fs.carbonDB2.fileShareName $fs.carbonDB2.ip $fs.solr2.fileStoreName $fs.solr2.fileShareName $fs.solr2.ip) }}
+{{- fail "gcp.fs.fileshares.carbonDB2 and gcp.fs.fileshares.solr2 (fileStoreName, fileShareName and ip) are required when wso2.deployment.highAvailability is enabled" }}
 {{- end }}
 {{- $shares := list (printf "%s/%s" $fs.carbonDB1.fileStoreName $fs.carbonDB1.fileShareName) (printf "%s/%s" $fs.solr1.fileStoreName $fs.solr1.fileShareName) (printf "%s/%s" $fs.carbonDB2.fileStoreName $fs.carbonDB2.fileShareName) (printf "%s/%s" $fs.solr2.fileStoreName $fs.solr2.fileShareName) }}
 {{- if ne (len (uniq $shares)) 4 }}
