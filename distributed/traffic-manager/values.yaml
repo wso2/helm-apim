@@ -135,6 +135,26 @@ kubernetes:
     scripts:
       defaultMode: "0407"
 
+  # Set pods priority
+  priorityClass:
+    # Create a PriorityClass for the traffic manager
+    # Set to false if using an existing PriorityClass
+    create: false
+
+    # Name of the PriorityClass
+    # If empty and create=true, uses the release fullname
+    # If create=false, this should be the name of an existing PriorityClass
+    # If empty and create=false, no PriorityClass will be set in the deployment
+    name: ""
+
+    # Priority value (higher = less likely to be evicted)
+    # Reference values:
+    #   - system-cluster-critical: 2000000000
+    #   - system-node-critical: 2000001000
+    #   - Default pods: 0
+    # Recommended: 900000 (high priority but below system-critical)
+    value: 900000
+
   # -- Mount extra volumes to the deployment pods, e.g to mount secrets
   # extraVolumeMounts:
   #   - name: my-secret
@@ -147,6 +167,21 @@ kubernetes:
   #     secret:
   #       secretName: my-k8s-secret
   extraVolumes: []
+
+  initContainers: {}
+    # wait-for-cp:
+    #   image: busybox:1.36.1
+    #   imagePullPolicy: IfNotPresent
+    #   command:
+    #     - sh
+    #     - -c
+    #     - |
+    #       echo "Waiting for Control Plane on service wso2am-acp-service:9443..."
+    #       until nc -z -w 2 wso2am-acp-service 9443; do
+    #         echo "Control Plane is not available yet, waiting 5 secondes..."
+    #         sleep 5
+    #       done
+    #       echo "Control Plane is available."
 
 wso2:  
   apim:

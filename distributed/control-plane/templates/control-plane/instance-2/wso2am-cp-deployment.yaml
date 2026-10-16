@@ -51,6 +51,11 @@ spec:
         node: {{ template "apim-helm-cp.fullname" . }}-2
         product: apim
     spec:
+      {{- if .Values.kubernetes.priorityClass.create }}
+      priorityClassName: {{ .Values.kubernetes.priorityClass.name | default (template "apim-helm-cp.fullname" .) }}
+      {{- else if .Values.kubernetes.priorityClass.name }}
+      priorityClassName: {{ .Values.kubernetes.priorityClass.name }}
+      {{- end }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -85,6 +90,13 @@ spec:
       - name: {{ .Values.wso2.deployment.image.imagePullSecrets.name }}
       {{- else }}
       - name: {{ template "apim-helm-cp.fullname" . }}-docker-registry-auth
+      {{- end }}
+      {{- end }}
+      {{- if .Values.kubernetes.initContainers }}
+      initContainers:
+      {{- range $key, $value := .Values.kubernetes.initContainers }}
+      - name: {{ $key | quote }}
+        {{- toYaml $value | nindent 8 }}
       {{- end }}
       {{- end }}
       containers:
