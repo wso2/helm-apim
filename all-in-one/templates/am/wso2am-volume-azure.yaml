@@ -34,4 +34,39 @@ spec:
     - gid=10001
     - cache=strict
 
+{{- if .Values.wso2.deployment.highAvailability }}
+{{- if not .Values.azure.persistence.fileShare2 }}
+{{- fail "azure.persistence.fileShare2 is required when wso2.deployment.highAvailability is enabled" }}
+{{- end }}
+{{- if eq .Values.azure.persistence.fileShare2 .Values.azure.persistence.fileShare }}
+{{- fail "azure.persistence.fileShare and fileShare2 must be different Azure file shares, because each API Manager instance needs its own storage" }}
+{{- end }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-2
+  labels:
+    purpose: am-volume-2
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: {{ .Values.azure.persistence.capacity }}
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  azureFile:
+    secretName: {{ .Values.azure.persistence.secretName }}
+    secretNamespace: {{ .Release.Namespace }}
+    shareName: {{ .Values.azure.persistence.fileShare2 }}
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=10001
+    - gid=10001
+    - cache=strict
+{{- end }}
+
 {{ end }}

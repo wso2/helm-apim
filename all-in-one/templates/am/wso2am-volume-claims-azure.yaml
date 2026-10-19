@@ -55,7 +55,7 @@ metadata:
   namespace : {{ .Release.Namespace }}
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: {{ .Values.wso2.deployment.persistence.solrIndexing.capacity.carbonDatabase }}
@@ -74,6 +74,9 @@ spec:
   resources:
     requests:
       storage: {{ .Values.wso2.deployment.persistence.solrIndexing.capacity.solrIndexedData }}
+  selector:
+    matchLabels:
+      purpose: am-volume-2
   storageClassName: {{ .Values.azure.persistence.storageClass | default "" }}
 {{- end }}
 

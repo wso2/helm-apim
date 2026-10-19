@@ -85,6 +85,9 @@ azure:
     secretName: ""
     # -- Azure fileshare name
     fileShare: ""
+    # -- Azure fileshare name for instance 2 (required when highAvailability is enabled).
+    # Must be a different share from fileShare, in the same storage account
+    fileShare2: ""
 
 # Google Cloud Platform (GCP) integration status
 gcp:

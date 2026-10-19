@@ -18,7 +18,8 @@ create them in the release namespace before installing the chart.
 
 Each instance must use separate backing storage. On AWS, `aws.efs.accessPoints.carbonDb2` and `solr2` must be EFS access
 points with their own root directories, different from `carbonDb` and `solr`. On GCP, `gcp.fs.fileshares.carbonDB2` and
-`solr2` must be file shares different from `carbonDB` and `solr`. The chart fails to render if these values are missing or
+`solr2` must be file shares different from `carbonDB` and `solr`. On Azure, `azure.persistence.fileShare2` must be a
+share different from `fileShare`, in the same storage account. The chart fails to render if these values are missing or
 reuse instance 1's access points or file shares. On other clusters, back the instance 2 claims with separate volumes.
 If both instances open the same local Carbon database, the instance that starts second fails with
 `Database may be already in use`.
@@ -28,7 +29,8 @@ If both instances open the same local Carbon database, the instance that starts 
 Earlier chart versions mounted the instance 1 claims on both instances. Before upgrading a release that has
 `wso2.deployment.highAvailability` and `wso2.deployment.persistence.solrIndexing.enabled` set to `true`:
 
-- On AWS or GCP, set the instance 2 access points or file shares described above. On Azure, no new values are needed.
+- On AWS or GCP, set the instance 2 access points or file shares described above. On Azure, set
+  `azure.persistence.fileShare2`.
 - On other clusters, create `<fullname>-am-local-carbon-database-volume-claim-2` and
   `<fullname>-am-solr-indexed-data-volume-claim-2`, each backed by its own storage. Until both exist, the instance 2 pod
   stays `Pending`.
@@ -66,6 +68,7 @@ Instance 2 starts with empty volumes and rebuilds its Solr index. Instance 1 kee
 | azure.keyVault.secretProviderClass | string | `"wso2am-secret-provider-class"` | Azure Key vault secret provider class name |
 | azure.persistence.capacity | string | `""` | Persistent volume capacity |
 | azure.persistence.fileShare | string | `""` | Azure fileshare name |
+| azure.persistence.fileShare2 | string | `""` | Azure fileshare name for instance 2 (required when highAvailability is enabled). Must be a different share from fileShare, in the same storage account |
 | azure.persistence.secretName | string | `""` | Azure file secret name |
 | azure.persistence.storageClass | string | `""` | Persistent volume storage class |
 | azure.serviceAccount | string | `"wso2am-all-in-one-svc-account"` |  |
