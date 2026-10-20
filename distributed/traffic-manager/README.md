@@ -51,6 +51,7 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
+| kubernetes.hostAliases | list | `[]` | Entries added to the pod /etc/hosts (Pod spec hostAliases). Use with wso2.apim.configurations.internalHostname to resolve the internal hostname to the pod itself, e.g. hostAliases:   - ip: "127.0.0.1"     hostnames:       - "am.example.com" |
 | kubernetes.openshift | object | `{"enabled":false}` | When deploying on OpenShift. |
 | kubernetes.securityContext.runAsGroup | int | `10001` | Group ID of the container |
 | kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |

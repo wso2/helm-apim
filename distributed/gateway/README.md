@@ -68,6 +68,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | kubernetes.gatewayAPI.websub.enabled | bool | `true` | Enable HTTPRoute for Websub |
 | kubernetes.gatewayAPI.websub.filters | list | `[]` | HTTPRoute filters (optional) |
 | kubernetes.gatewayAPI.websub.hostname | string | `"websub.wso2.com"` | Hostname for Websub |
+| kubernetes.hostAliases | list | `[]` | Entries added to the pod /etc/hosts (Pod spec hostAliases). Use with wso2.apim.configurations.internalHostname to resolve the internal hostname to the pod itself, e.g. hostAliases:   - ip: "127.0.0.1"     hostnames:       - "am.example.com" |
 | kubernetes.ingress.gateway.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
 | kubernetes.ingress.gateway.enabled | bool | `false` | Enable ingress for Gateway |
 | kubernetes.ingress.gateway.hostname | string | `"gw.wso2.com"` | Ingress hostname for Gateway pass-through |

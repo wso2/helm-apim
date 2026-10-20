@@ -344,6 +344,13 @@ kubernetes:
   #     secret:
   #       secretName: my-k8s-secret
   extraVolumes: []
+  # -- Entries added to the pod /etc/hosts (Pod spec hostAliases). Use with wso2.apim.configurations.internalHostname
+  # to resolve the internal hostname to the pod itself, e.g.
+  # hostAliases:
+  #   - ip: "127.0.0.1"
+  #     hostnames:
+  #       - "am.example.com"
+  hostAliases: []
 
 wso2:
   # -- ELK Analytics Parameters
@@ -413,6 +420,11 @@ wso2:
           # key: value
       # -- Super admin username
       adminUsername: "admin"
+      # -- Hostname used by the server for internal (loopback) calls. Sets [server] internal_hostname and, when
+      # wso2.apim.mountFrontendConfig is true, app.origin.host of the portal settings.json files.
+      # The TLS certificate must be valid for this hostname. Leave empty to use the product default (localhost).
+      # See kubernetes.hostAliases to resolve this hostname to the pod itself.
+      internalHostname: ""
       # -- Super admin password
       adminPassword: "admin"
       databases:
