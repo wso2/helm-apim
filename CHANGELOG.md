@@ -14,9 +14,10 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
   to the distributed control-plane chart, aligning it with the all-in-one and gateway charts
   and the 4.7.0 control-plane pack defaults ([#270]).
 - `wso2.apim.configurations.internalHostname` to the all-in-one, control-plane and key-manager
-  charts. It sets `[server] internal_hostname` and, when `wso2.apim.mountFrontendConfig` is enabled,
-  `app.origin.host` of the Publisher, Developer Portal and Admin Portal `settings.json` files, so
-  internal (loopback) calls work when the TLS certificate is not valid for `localhost`.
+  charts. It sets `[server] internal_hostname` so internal (loopback) calls work when the TLS
+  certificate is not valid for `localhost`. In the all-in-one and control-plane charts, when
+  `wso2.apim.mountFrontendConfig` is enabled, it also sets `app.origin.host` of the Publisher,
+  Developer Portal and Admin Portal `settings.json` files.
 - `kubernetes.hostAliases` to all charts to add Pod `hostAliases` entries, e.g. to resolve the
   internal hostname to the pod itself.
 
