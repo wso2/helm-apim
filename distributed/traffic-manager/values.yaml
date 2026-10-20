@@ -192,6 +192,8 @@ wso2:
         secretName: "" # e.g apim-secret
         adminPasswordKey: ""  # e.g adminPassword
         encryptionKeyKey: "" # e.g encryptionKey
+        appPasswordKey: "" # e.g appPassword
+        appPasswordHashKey: "" # e.g appPasswordHash
       userStore:
         # -- User store type. 
         # https://apim.docs.wso2.com/en/latest/administer/managing-users-and-roles/managing-user-stores/configure-primary-user-store/configuring-the-primary-user-store/
@@ -205,6 +207,15 @@ wso2:
       adminPassword: ""
 
       security:
+        # -- Credentials used by internal client authentication with identity REST APIs (client app "dashboard").
+        # Set these to replace the default credentials and remove the default credentials warning at startup (WSO2-2023-2617).
+        clientAuth:
+          # -- Application password. Alternatively, use existingSecret.appPasswordKey
+          appPassword: ""
+          # -- Lowercase hex SHA-256 hash of the application password. Derived from appPassword when not set.
+          # Required when the password is read from existingSecret.appPasswordKey (or use existingSecret.appPasswordHashKey).
+          # Generate with: printf "%s" "<password>" | sha256sum
+          appPasswordHash: ""
         # -- Kubernetes secret containing the keystores and truststore
         jksSecretName: "apim-keystore-secret"
         # -- Existing secret containing the passwords for the keystores

@@ -163,7 +163,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.configurations.encryption.cipherTransformation | string | `"AES/GCM/NoPadding"` | Symmetric cipher transformation. AES/GCM/NoPadding is used as the symmetric cipher transformation. |
 | wso2.apim.configurations.encryption.internalCryptoProvider | string | `"org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider"` | Internal crypto provider implementation used for symmetric encryption. |
 | wso2.apim.configurations.encryption.key | string | `""` | Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup. |
-| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","encryptionKeyKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","appPasswordHashKey":"","appPasswordKey":"","encryptionKeyKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
 | wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","visibility":null,"websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
 | wso2.apim.configurations.gatewayNotification.cleanUp.dataRetentionPeriod | string | `"30d"` |  |
@@ -218,6 +218,9 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.configurations.sdk.supportedLanguages[7] | string | `"perl"` |  |
 | wso2.apim.configurations.sdk.supportedLanguages[8] | string | `"php"` |  |
 | wso2.apim.configurations.sdk.supportedLanguages[9] | string | `"python"` |  |
+| wso2.apim.configurations.security.clientAuth | object | `{"appPassword":"","appPasswordHash":""}` | Credentials used by the authenticationendpoint and accountrecoveryendpoint web apps to authenticate with internal identity REST APIs (client app "dashboard"). Set these to replace the default credentials and remove the default credentials warning at startup (WSO2-2023-2617). |
+| wso2.apim.configurations.security.clientAuth.appPassword | string | `""` | Application password. Alternatively, use existingSecret.appPasswordKey |
+| wso2.apim.configurations.security.clientAuth.appPasswordHash | string | `""` | Lowercase hex SHA-256 hash of the application password. Derived from appPassword when not set. Required when the password is read from existingSecret.appPasswordKey (or use existingSecret.appPasswordHashKey). Generate with: printf "%s" "<password>" | sha256sum |
 | wso2.apim.configurations.security.jksExistingSecret | object | `{"internalKeystoreKeyPasswordKey":"","internalKeystorePasswordKey":"","primaryKeystoreKeyPasswordKey":"","primaryKeystorePasswordKey":"","secretName":"","tlsKeystoreKeyPasswordKey":"","tlsKeystorePasswordKey":"","truststorePasswordKey":""}` | Existing secret containing the passwords for the keystores |
 | wso2.apim.configurations.security.jksSecretName | string | `"apim-keystore-secret"` | Kubernetes secret containing the keystores and truststore |
 | wso2.apim.configurations.security.keystores.internal.alias | string | `"wso2carbon"` | Internal keystore alias |

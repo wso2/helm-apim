@@ -180,6 +180,10 @@ enable = true
 
 [system.parameter]
 "org.wso2.CipherTransformation" = {{ .Values.wso2.apim.configurations.encryption.cipherTransformation | quote }}
+{{- with (include "apim.clientAuth.config" .) }}
+
+{{ . | trim }}
+{{- end }}
 
 [encryption]
 internal_crypto_provider = {{ .Values.wso2.apim.configurations.encryption.internalCryptoProvider | quote }}
@@ -201,6 +205,9 @@ key = {{ .Values.wso2.apim.configurations.encryption.key | quote }}
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 [secrets]
 admin_password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
+{{- with (.Values.wso2.apim.configurations.security.clientAuth | default dict).appPassword }}
+app_password = {{ . | quote }}
+{{- end }}
 {{- if eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider" }}
 encryption_key = {{ .Values.wso2.apim.configurations.encryption.key | quote }}
 {{- end }}

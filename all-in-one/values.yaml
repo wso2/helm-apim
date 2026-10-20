@@ -410,6 +410,8 @@ wso2:
         apimDBPasswordKey: "" # e.g apimDBPassword
         sharedDBPasswordKey: "" # e.g sharedDBPassword
         encryptionKeyKey: "" # e.g encryptionKey
+        appPasswordKey: "" # e.g appPassword
+        appPasswordHashKey: "" # e.g appPasswordHash
       gatewayType: "Regular,APK,AWS,Azure,Kong"
       userStore:
         # -- User store type.
@@ -418,13 +420,13 @@ wso2:
         # -- User store properties
         properties:
           # key: value
-      # -- Super admin username
-      adminUsername: "admin"
       # -- Hostname used by the server for internal (loopback) calls. Sets [server] internal_hostname and, when
       # wso2.apim.mountFrontendConfig is true, app.origin.host of the portal settings.json files.
       # The TLS certificate must be valid for this hostname. Leave empty to use the product default (localhost).
       # See kubernetes.hostAliases to resolve this hostname to the pod itself.
       internalHostname: ""
+      # -- Super admin username
+      adminUsername: "admin"
       # -- Super admin password
       adminPassword: "admin"
       databases:
@@ -493,6 +495,16 @@ wso2:
         enabled: true
 
       security:
+        # -- Credentials used by the authenticationendpoint and accountrecoveryendpoint web apps to authenticate
+        # with internal identity REST APIs (client app "dashboard"). Set these to replace the default credentials
+        # and remove the default credentials warning at startup (WSO2-2023-2617).
+        clientAuth:
+          # -- Application password. Alternatively, use existingSecret.appPasswordKey
+          appPassword: ""
+          # -- Lowercase hex SHA-256 hash of the application password. Derived from appPassword when not set.
+          # Required when the password is read from existingSecret.appPasswordKey (or use existingSecret.appPasswordHashKey).
+          # Generate with: printf "%s" "<password>" | sha256sum
+          appPasswordHash: ""
         # -- Kubernetes secret containing the keystores and truststore
         jksSecretName: ""
         # -- Existing secret containing the passwords for the keystores
