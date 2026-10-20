@@ -97,6 +97,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.gatewayAPI.websub.enabled | bool | `true` | Enable HTTPRoute for Websub |
 | kubernetes.gatewayAPI.websub.filters | list | `[]` | HTTPRoute filters (optional) |
 | kubernetes.gatewayAPI.websub.hostname | string | `"websub.wso2.com"` | Hostname for Websub |
+| kubernetes.hostAliases | list | `[]` | Entries added to the pod /etc/hosts (Pod spec hostAliases). Use with wso2.apim.configurations.internalHostname to resolve the internal hostname to the pod itself, e.g. hostAliases:   - ip: "127.0.0.1"     hostnames:       - "am.example.com" |
 | kubernetes.ingress.gateway.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
 | kubernetes.ingress.gateway.enabled | bool | `false` |  |
 | kubernetes.ingress.gateway.hostname | string | `"gw.wso2.com"` | Ingress hostname for Gateway pass-through |
@@ -200,7 +201,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.eventListeners[0].order | int | `1` |  |
 | wso2.apim.configurations.eventListeners[0].properties.notificationEndpoint | string | `"https://localhost:${mgt.transport.https.port}/internal/data/v1/notify"` |  |
 | wso2.apim.configurations.eventListeners[0].type | string | `"org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"` |  |
-| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","encryptionKeyKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","appPasswordHashKey":"","appPasswordKey":"","encryptionKeyKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
 | wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.gateway.environments | list | `[{"description":"This is a hybrid gateway that handles both production and sandbox token traffic.","displayInApiConsole":true,"gatewayType":"Regular","httpHostname":"gw.wso2.com","name":"Default","provider":"wso2","serviceName":"wso2am-gateway-service","servicePort":9443,"showAsTokenEndpointUrl":true,"type":"hybrid","visibility":null,"websubHostname":"websub.wso2.com","wsHostname":"websocket.wso2.com"}]` | APIM Gateway environments |
 | wso2.apim.configurations.gatewayNotification.cleanUp.dataRetentionPeriod | string | `"30d"` |  |
@@ -222,6 +223,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.gatewayNotification.registration.retryProgressionFactor | int | `2` |  |
 | wso2.apim.configurations.gatewayType | string | `"Regular,APK,AWS,Azure,Kong"` |  |
 | wso2.apim.configurations.governance.scheduler | object | `{"queue_size":"","task_check_interval_minutes":"","task_cleanup_interval_minutes":"","thread_pool_size":""}` | Override the default values of governance.scheduler if any value exists |
+| wso2.apim.configurations.internalHostname | string | `""` | Hostname used by the server for internal (loopback) calls. Sets [server] internal_hostname and, when wso2.apim.mountFrontendConfig is true, app.origin.host of the portal settings.json files. The TLS certificate must be valid for this hostname. Leave empty to use the product default (localhost). See kubernetes.hostAliases to resolve this hostname to the pod itself. |
 | wso2.apim.configurations.iskm.enabled | bool | `false` |  |
 | wso2.apim.configurations.iskm.revokeURL | string | `""` |  |
 | wso2.apim.configurations.iskm.serviceName | string | `""` |  |
@@ -283,6 +285,9 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.sdk.supportedLanguages[7] | string | `"perl"` |  |
 | wso2.apim.configurations.sdk.supportedLanguages[8] | string | `"php"` |  |
 | wso2.apim.configurations.sdk.supportedLanguages[9] | string | `"python"` |  |
+| wso2.apim.configurations.security.clientAuth | object | `{"appPassword":"","appPasswordHash":""}` | Credentials used by the authenticationendpoint and accountrecoveryendpoint web apps to authenticate with internal identity REST APIs (client app "dashboard"). Set these to replace the default credentials and remove the default credentials warning at startup (WSO2-2023-2617). |
+| wso2.apim.configurations.security.clientAuth.appPassword | string | `""` | Application password. Alternatively, use existingSecret.appPasswordKey |
+| wso2.apim.configurations.security.clientAuth.appPasswordHash | string | `""` | Lowercase hex SHA-256 hash of the application password. Derived from appPassword when not set. Required when the password is read from existingSecret.appPasswordKey (or use existingSecret.appPasswordHashKey). Generate with: printf "%s" "<password>" \| sha256sum |
 | wso2.apim.configurations.security.jksExistingSecret | object | `{"internalKeystoreKeyPasswordKey":"","internalKeystorePasswordKey":"","primaryKeystoreKeyPasswordKey":"","primaryKeystorePasswordKey":"","secretName":"","tlsKeystoreKeyPasswordKey":"","tlsKeystorePasswordKey":"","truststorePasswordKey":""}` | Existing secret containing the passwords for the keystores |
 | wso2.apim.configurations.security.jksSecretName | string | `""` | Kubernetes secret containing the keystores and truststore |
 | wso2.apim.configurations.security.keystores.internal.alias | string | `"wso2carbon"` | Internal keystore alias |

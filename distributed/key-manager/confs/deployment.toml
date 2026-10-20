@@ -1,5 +1,8 @@
 [server]
 hostname = "{{- if .Values.kubernetes.gatewayAPI.enabled -}}{{ .Values.kubernetes.gatewayAPI.km.hostname }}{{- else -}}{{ .Values.kubernetes.ingress.km.hostname }}{{- end -}}"
+{{- with .Values.wso2.apim.configurations.internalHostname }}
+internal_hostname = {{ . | quote }}
+{{- end }}
 node_ip = "$env{NODE_IP}"
 offset = {{ .Values.wso2.apim.portOffset }}
 base_path = "${carbon.protocol}://${carbon.host}:${carbon.management.port}"
@@ -177,6 +180,10 @@ enable = true
 
 [system.parameter]
 "org.wso2.CipherTransformation" = {{ .Values.wso2.apim.configurations.encryption.cipherTransformation | quote }}
+{{- with (include "apim.clientAuth.config" .) }}
+
+{{ . | trim }}
+{{- end }}
 
 [encryption]
 internal_crypto_provider = {{ .Values.wso2.apim.configurations.encryption.internalCryptoProvider | quote }}
@@ -198,6 +205,9 @@ key = {{ .Values.wso2.apim.configurations.encryption.key | quote }}
 {{- if .Values.wso2.apim.secureVaultEnabled }}
 [secrets]
 admin_password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
+{{- with (.Values.wso2.apim.configurations.security.clientAuth | default dict).appPassword }}
+app_password = {{ . | quote }}
+{{- end }}
 {{- if eq .Values.wso2.apim.configurations.encryption.internalCryptoProvider "org.wso2.carbon.crypto.provider.SymmetricKeyInternalCryptoProvider" }}
 encryption_key = {{ .Values.wso2.apim.configurations.encryption.key | quote }}
 {{- end }}

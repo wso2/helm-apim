@@ -6,7 +6,7 @@
       "forwardedHeader": "X-Forwarded-For"
     },
     "origin": {
-      "host": "localhost"
+      "host": {{ .Values.wso2.apim.configurations.internalHostname | default "localhost" | quote }}
     },
     "workflows": {
       "limit": 30

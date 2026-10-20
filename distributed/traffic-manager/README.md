@@ -51,6 +51,7 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | kubernetes.enableAppArmor | bool | `false` | Enable AppArmor profiles for the deployment |
 | kubernetes.extraVolumeMounts | list | `[]` | Mount extra volumes to the deployment pods, e.g to mount secrets extraVolumeMounts:   - name: my-secret     mountPath: /opt/wso2/secrets     readOnly: true |
 | kubernetes.extraVolumes | list | `[]` | Define the extra volumes to be mounted extraVolumes:   - name: my-secret     secret:       secretName: my-k8s-secret |
+| kubernetes.hostAliases | list | `[]` | Entries added to the pod /etc/hosts (Pod spec hostAliases). Use with wso2.apim.configurations.internalHostname to resolve the internal hostname to the pod itself, e.g. hostAliases:   - ip: "127.0.0.1"     hostnames:       - "am.example.com" |
 | kubernetes.openshift | object | `{"enabled":false}` | When deploying on OpenShift. |
 | kubernetes.securityContext.runAsGroup | int | `10001` | Group ID of the container |
 | kubernetes.securityContext.runAsUser | int | `10001` | User ID of the container |
@@ -65,7 +66,7 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | wso2.apim.configurations.encryption.key | string | `""` | Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup. |
 | wso2.apim.configurations.eventhub.serviceUrl | string | `"wso2am-cp-service"` | Event hub (control plane) loadbalancer service url |
 | wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
-| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","encryptionKeyKey":"","secretName":""}` | Read passwords from a common secret |
+| wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","appPasswordHashKey":"","appPasswordKey":"","encryptionKeyKey":"","secretName":""}` | Read passwords from a common secret |
 | wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
 | wso2.apim.configurations.iskm.enabled | bool | `false` |  |
 | wso2.apim.configurations.iskm.serviceName | string | `""` |  |
@@ -81,6 +82,9 @@ A Helm chart for the deployment of WSO2 API Management Traffic Manager profile
 | wso2.apim.configurations.openTracer.name | string | `""` | Remote tracer name. e.g. jaeger, zipkin |
 | wso2.apim.configurations.openTracer.properties.hostname | string | `""` | Remote tracer hostname |
 | wso2.apim.configurations.openTracer.properties.port | string | `""` | Remote tracer port |
+| wso2.apim.configurations.security.clientAuth | object | `{"appPassword":"","appPasswordHash":""}` | Credentials used by internal client authentication with identity REST APIs (client app "dashboard"). Set these to replace the default credentials and remove the default credentials warning at startup (WSO2-2023-2617). |
+| wso2.apim.configurations.security.clientAuth.appPassword | string | `""` | Application password. Alternatively, use existingSecret.appPasswordKey |
+| wso2.apim.configurations.security.clientAuth.appPasswordHash | string | `""` | Lowercase hex SHA-256 hash of the application password. Derived from appPassword when not set. Required when the password is read from existingSecret.appPasswordKey (or use existingSecret.appPasswordHashKey). Generate with: printf "%s" "<password>" \| sha256sum |
 | wso2.apim.configurations.security.jksExistingSecret | object | `{"internalKeystoreKeyPasswordKey":"","internalKeystorePasswordKey":"","primaryKeystoreKeyPasswordKey":"","primaryKeystorePasswordKey":"","secretName":"","tlsKeystoreKeyPasswordKey":"","tlsKeystorePasswordKey":"","truststorePasswordKey":""}` | Existing secret containing the passwords for the keystores |
 | wso2.apim.configurations.security.jksSecretName | string | `"apim-keystore-secret"` | Kubernetes secret containing the keystores and truststore |
 | wso2.apim.configurations.security.keystores.internal.alias | string | `"wso2carbon"` | Internal keystore alias |
