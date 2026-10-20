@@ -503,7 +503,7 @@ wso2:
           appPassword: ""
           # -- Lowercase hex SHA-256 hash of the application password. Derived from appPassword when not set.
           # Required when the password is read from existingSecret.appPasswordKey (or use existingSecret.appPasswordHashKey).
-          # Generate with: printf "%s" "<password>" | sha256sum
+          # Generate with: printf "%s" "<password>" \| sha256sum
           appPasswordHash: ""
         # -- Kubernetes secret containing the keystores and truststore
         jksSecretName: ""
