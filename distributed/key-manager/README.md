@@ -62,6 +62,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | kubernetes.gatewayAPI.km.enabled | bool | `true` | Enable HTTPRoute for Key Manager |
 | kubernetes.gatewayAPI.km.filters | list | `[]` | HTTPRoute filters (optional) |
 | kubernetes.gatewayAPI.km.hostname | string | `"km.wso2.com"` | Hostname for Key Manager |
+| kubernetes.hostAliases | list | `[]` | Entries added to the pod /etc/hosts (Pod spec hostAliases). Use with wso2.apim.configurations.internalHostname to resolve the internal hostname to the pod itself, e.g. hostAliases:   - ip: "127.0.0.1"     hostnames:       - "am.example.com" |
 | kubernetes.ingress.km.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Key Manager pass-through |
 | kubernetes.ingress.km.enabled | bool | `false` | Enable ingress for Key Manager |
 | kubernetes.ingress.km.hostname | string | `"km.wso2.com"` | Ingress hostname for Key Manager pass-through |
@@ -107,6 +108,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
 | wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","encryptionKeyKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
 | wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
+| wso2.apim.configurations.internalHostname | string | `""` | Hostname used by the server for internal (loopback) calls. Sets [server] internal_hostname and, when wso2.apim.mountFrontendConfig is true, app.origin.host of the portal settings.json files. The TLS certificate must be valid for this hostname. Leave empty to use the product default (localhost). See kubernetes.hostAliases to resolve this hostname to the pod itself. |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
 | wso2.apim.configurations.oauth_config.multipleClientSecrets | object | `{"enable":true,"secretCount":""}` | Multiple client secrets configuration |
