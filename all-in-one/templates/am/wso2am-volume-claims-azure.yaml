@@ -42,7 +42,8 @@ spec:
   selector:
     matchLabels:
       purpose: am-volume
-  storageClassName: {{ .Values.azure.persistence.storageClass | default "" }}
+  # Binds to the static Azure Files PV above, which has no storage class
+  storageClassName: ""
 
 {{- if .Values.wso2.deployment.highAvailability }}
 
@@ -77,7 +78,8 @@ spec:
   selector:
     matchLabels:
       purpose: am-volume-2
-  storageClassName: {{ .Values.azure.persistence.storageClass | default "" }}
+  # Binds to the static Azure Files PV above, which has no storage class
+  storageClassName: ""
 {{- end }}
 
 {{ end }}

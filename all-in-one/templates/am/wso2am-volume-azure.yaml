@@ -22,6 +22,7 @@ spec:
   capacity:
     storage: {{ .Values.azure.persistence.capacity }}
   persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
   volumeMode: Filesystem
   azureFile:
     secretName: {{ .Values.azure.persistence.secretName }}
@@ -56,6 +57,7 @@ spec:
   capacity:
     storage: {{ .Values.azure.persistence.capacity }}
   persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
   volumeMode: Filesystem
   azureFile:
     secretName: {{ .Values.azure.persistence.secretName }}

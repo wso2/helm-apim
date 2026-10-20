@@ -37,6 +37,11 @@ Earlier chart versions mounted the instance 1 claims on both instances. Before u
 
 Instance 2 starts with empty volumes and rebuilds its Solr index. Instance 1 keeps its existing claims and data.
 
+On Azure, earlier chart versions left `storageClassName` unset on the Solr indexed data claim, so clusters with a
+default storage class assigned it to that claim and it stayed `Pending`. The claim now requests no storage class. A
+claim's storage class cannot be changed, so delete a `Pending` `<fullname>-am-solr-indexed-data-volume-claim` before
+upgrading.
+
 ## Values
 
 | Key | Type | Default | Description |
@@ -70,7 +75,7 @@ Instance 2 starts with empty volumes and rebuilds its Solr index. Instance 1 kee
 | azure.persistence.fileShare | string | `""` | Azure fileshare name |
 | azure.persistence.fileShare2 | string | `""` | Azure fileshare name for instance 2 (required when highAvailability is enabled). Must be a different share from fileShare, in the same storage account |
 | azure.persistence.secretName | string | `""` | Azure file secret name |
-| azure.persistence.storageClass | string | `""` | Persistent volume storage class |
+| azure.persistence.storageClass | string | `""` | Storage class of the local Carbon database claims (the cluster default when empty). The Solr indexed data claims bind to the static Azure Files PVs and do not use a storage class |
 | azure.serviceAccount | string | `"wso2am-all-in-one-svc-account"` |  |
 | gcp.enabled | bool | `true` | If GCP is used as the cloud provider |
 | gcp.fs | object | `{"capacity":"","fileshares":{"carbonDB":{"fileShareName":"","fileStoreName":"","ip":""},"carbonDB2":{"fileShareName":"","fileStoreName":"","ip":""},"solr":{"fileShareName":"","fileStoreName":"","ip":""},"solr2":{"fileShareName":"","fileStoreName":"","ip":""}},"location":"","network":"","tier":""}` | File Store configuration parameters |
