@@ -56,6 +56,11 @@ spec:
       serviceAccountName: {{ .Values.azure.serviceAccountName }}
       {{- end }}
       securityContext:
+        {{- if .Values.kubernetes.securityContext.runAsGroup }}
+        # Makes mounted volumes, such as Azure Disk volumes, writable by the API Manager user's group
+        fsGroup: {{ .Values.kubernetes.securityContext.runAsGroup }}
+        fsGroupChangePolicy: OnRootMismatch
+        {{- end }}
         seccompProfile:
           type: {{ .Values.kubernetes.securityContext.seccompProfile.type }}
           {{- if eq .Values.kubernetes.securityContext.seccompProfile.type "Localhost" }}

@@ -42,6 +42,44 @@ spec:
   selector:
     matchLabels:
       purpose: am-volume
+  # Binds to the static Azure Files PV above, which has no storage class
+  storageClassName: ""
+
+{{- if .Values.wso2.deployment.highAvailability }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-am-local-carbon-database-volume-claim-2
+  namespace : {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.wso2.deployment.persistence.solrIndexing.capacity.carbonDatabase }}
   storageClassName: {{ .Values.azure.persistence.storageClass | default "" }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-am-solr-indexed-data-volume-claim-2
+  namespace : {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.wso2.deployment.persistence.solrIndexing.capacity.solrIndexedData }}
+  selector:
+    matchLabels:
+      purpose: am-volume-2
+  # Binds to the static Azure Files PV above, which has no storage class
+  storageClassName: ""
+{{- end }}
 
 {{ end }}
