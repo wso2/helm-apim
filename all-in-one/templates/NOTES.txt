@@ -63,3 +63,8 @@ Please follow these steps to access API Manager Publisher, DevPortal consoles.
 {{- end }}
 
 Please refer the official documentation at https://apim.docs.wso2.com/en/latest/ for additional information on WSO2 API Manager.
+{{- if and (eq .Values.wso2.apim.configurations.adminPassword "admin") (not .Values.wso2.apim.secureVaultEnabled) (not (and .Values.wso2.apim.configurations.existingSecret.secretName .Values.wso2.apim.configurations.existingSecret.adminPasswordKey)) }}
+
+WARNING: The super admin account uses the default password ("admin"). Set wso2.apim.configurations.adminPassword,
+or provide it through wso2.apim.configurations.existingSecret or secure vault, before exposing this deployment.
+{{- end }}

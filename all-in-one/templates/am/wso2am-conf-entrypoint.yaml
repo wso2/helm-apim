@@ -29,6 +29,21 @@ data:
     # check if the WSO2 product home exists
     test ! -d ${WSO2_SERVER_HOME} && echo "WSO2 Docker product home does not exist" && exit 1
 
+    {{- if and .Values.wso2.deployment.statefulSet.enabled .Values.wso2.deployment.highAvailability }}
+    # Resolve the peer node of this StatefulSet pod; each node duplicates its throttling events to the other one.
+    # POD_ORDINAL (pod-index label) and POD_NAME (<fullname>-am-<ordinal>) come from the Downward API.
+    pod_ordinal=${POD_ORDINAL:-${POD_NAME##*-}}
+    case "${pod_ordinal}" in
+      0) export APIM_PEER_HOST={{ template "am-all-in-one.fullname" . }}-am-1.{{ template "am-all-in-one.fullname" . }}-am-headless ;;
+      1) export APIM_PEER_HOST={{ template "am-all-in-one.fullname" . }}-am-0.{{ template "am-all-in-one.fullname" . }}-am-headless ;;
+      *) echo "Unsupported pod ordinal '${pod_ordinal}' for pod '${POD_NAME}'" >&2 && exit 1 ;;
+    esac
+    echo "Using ${APIM_PEER_HOST} as the peer node (pod ordinal ${pod_ordinal})" >&2
+    {{- end }}
+
+    # reset the server startup marker used by the readiness probe
+    rm -f /tmp/.apim-server-started
+
     # Copying carbon_db
     if ! test -f /home/wso2carbon/solr/database/WSO2CARBON_DB.mv.db
     then

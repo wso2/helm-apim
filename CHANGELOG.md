@@ -9,6 +9,15 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
 
 ## [Unreleased]
 
+### Added
+- `wso2.deployment.statefulSet.enabled` (default `false`) to the all-in-one chart, running API Manager as a
+  StatefulSet with a headless service for zero-downtime rolling updates in HA mode.
+
+### Fixed
+- All-in-one readiness probe waits for server startup (`readinessProbe.waitForServerStartup`), and the
+  resident Key Manager is called on `localhost`.
+- All-in-one per-node services publish not-ready addresses so a starting node can reach its Traffic Manager.
+
 ## [4.7.0-4]
 
 ### Added
