@@ -100,9 +100,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
-            # Kubernetes identity of the pod, used by the entrypoint to resolve the peer node. Not derived from
-            # $HOSTNAME, which spec.hostname can override. The pod-index label is set by the StatefulSet controller
-            # on Kubernetes 1.28+ (empty on older versions, where the ordinal is taken from the pod name).
+            # Used by the entrypoint to resolve the peer node (pod-index is empty before Kubernetes 1.28)
             - name: POD_NAME
               valueFrom:
                 fieldRef:
@@ -201,10 +199,7 @@ spec:
             failureThreshold: {{ .Values.wso2.deployment.livenessProbe.failureThreshold }}
           readinessProbe:
             {{- if .Values.wso2.deployment.readinessProbe.waitForServerStartup }}
-            # Ready only after the server has fully started ("WSO2 Carbon started", logged once all components,
-            # including the throttle data publisher, are initialized) and the gateway startup health check passes.
-            # The marker file keeps the result across log rollovers; the entrypoint removes it on container start.
-            # The health check uses bash /dev/tcp over the HTTP port, so the image does not need curl.
+            # Ready once "WSO2 Carbon started" is logged (marker file survives log rollover) and the health check passes
             exec:
               command:
                 - /bin/sh

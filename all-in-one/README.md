@@ -203,7 +203,6 @@ to use only the gateway startup health check, as in earlier chart versions.
 | kubernetes.gatewayAPI.websub.enabled | bool | `false` | Enable HTTPRoute for Websub |
 | kubernetes.gatewayAPI.websub.filters | list | `[]` | HTTPRoute filters (optional) |
 | kubernetes.gatewayAPI.websub.hostname | string | `"websub.wso2.com"` | Hostname for Websub |
-| kubernetes.ingress.enabled | bool | `true` | Create the Kubernetes Ingress resources (each one can also be disabled individually). Enable either Ingress or Gateway API (kubernetes.gatewayAPI.enabled). If both are enabled, Gateway API takes precedence and no Ingress resources are created. |
 | kubernetes.ingress.gateway.annotations | object | `{"nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/proxy-buffer-size":"8k","nginx.ingress.kubernetes.io/proxy-buffering":"on"}` | Ingress annotations for Gateway pass-through |
 | kubernetes.ingress.gateway.enabled | bool | `true` |  |
 | kubernetes.ingress.gateway.hostname | string | `"gw.wso2.com"` | Ingress hostname for Gateway pass-through |
@@ -473,14 +472,14 @@ to use only the gateway startup health check, as in earlier chart versions.
 | wso2.deployment.persistence.solrIndexing.capacity.solrIndexedData | string | `"50M"` | For persisting the indexed solr data |
 | wso2.deployment.persistence.solrIndexing.accessMode | string | `"ReadWriteOnce"` | StatefulSet mode only: access mode of the per-pod volumes |
 | wso2.deployment.persistence.solrIndexing.enabled | bool | `false` | Indicates if persistence of the runtime artifacts for Apache Solr-based indexing is enabled By default, this is disabled |
-| wso2.deployment.persistence.solrIndexing.storageClass | string | `""` | StatefulSet mode only: storage class of the per-pod volumes created from volumeClaimTemplates. Leave empty to use the cluster default storage class. The cloud specific static volumes (aws.efs, gcp.fs, azure.persistence) are used only in Deployment mode. |
+| wso2.deployment.persistence.solrIndexing.storageClass | string | `""` | StatefulSet mode only: storage class of the per-pod volumes (empty uses the cluster default) |
 | wso2.deployment.pod.annotations | object | `{}` | Annotations for pods |
 | wso2.deployment.pod.labels | object | `{}` | Labels for pods |
 | wso2.deployment.readinessProbe.failureThreshold | int | `5` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.readinessProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before readiness probes are initiated |
 | wso2.deployment.readinessProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
 | wso2.deployment.readinessProbe.timeoutSeconds | int | `5` | Number of seconds after which the readiness probe times out |
-| wso2.deployment.readinessProbe.waitForServerStartup | bool | `true` | Mark the pod Ready only after the server has fully started ("WSO2 Carbon started" in repository/logs/wso2carbon.log), in addition to the gateway startup health check. Requires the CARBON_LOGFILE log4j2 appender; set to false to use only the health check. |
+| wso2.deployment.readinessProbe.waitForServerStartup | bool | `true` | Mark the pod Ready only after "WSO2 Carbon started" is logged (requires the CARBON_LOGFILE appender) |
 | wso2.deployment.resources.jvm.memory.xms | string | `"2048m"` | JVM heap memory Xms |
 | wso2.deployment.resources.jvm.memory.xmx | string | `"2048m"` | JVM heap memory Xmx |
 | wso2.deployment.resources.limits.cpu | string | `"3000m"` | CPU limit for API Manager |
@@ -490,9 +489,9 @@ to use only the gateway startup health check, as in earlier chart versions.
 | wso2.deployment.startupProbe.failureThreshold | int | `5` | Minimum consecutive successes for the probe to be considered successful after having failed |
 | wso2.deployment.startupProbe.initialDelaySeconds | int | `60` | Number of seconds after the container has started before startup probes are initiated |
 | wso2.deployment.startupProbe.periodSeconds | int | `10` | How often (in seconds) to perform the probe |
-| wso2.deployment.statefulSet.enabled | bool | `false` | Deploy API Manager as a StatefulSet (pods <fullname>-am-0 and <fullname>-am-1 in HA mode) instead of the per-node Deployments. Enables zero-downtime rolling updates in HA mode. See [StatefulSet mode](#statefulset-mode). |
+| wso2.deployment.statefulSet.enabled | bool | `false` | Deploy API Manager as a StatefulSet instead of per-node Deployments (zero-downtime rolling updates in HA mode) |
 | wso2.deployment.statefulSet.minReadySeconds | int | `30` | Seconds an updated pod must stay Ready before the StatefulSet moves on to the next pod during a rolling update |
-| wso2.deployment.statefulSet.podManagementPolicy | string | `"OrderedReady"` | StatefulSet pod management policy. Only affects scaling (e.g. initial creation); rolling updates always replace one pod at a time. OrderedReady starts pod 1 only after pod 0 is Ready, so a single node initializes an empty database. |
+| wso2.deployment.statefulSet.podManagementPolicy | string | `"OrderedReady"` | StatefulSet pod management policy (OrderedReady starts pod 1 only after pod 0 is Ready) |
 | wso2.moesifAnalytics | object | `{"enabled":false,"key":"YOUR_MOESIF_API_KEY_HERE","moesif_base_url":"https://api.moesif.net","send_headers":false}` | Moesif Analytics Parameters |
 | wso2.moesifAnalytics.key | string | `"YOUR_MOESIF_API_KEY_HERE"` | Moesif API key |
 | wso2.moesifAnalytics.moesif_base_url | string | `"https://api.moesif.net"` | Moesif base URL |

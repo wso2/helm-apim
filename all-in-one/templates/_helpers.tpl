@@ -107,16 +107,3 @@ Used both for the Secret this chart creates and for the CSI volume nodePublishSe
 {{- define "am-all-in-one.secretStoreCsiSecretName" -}}
 {{- .Values.azure.keyVault.activeDirectory.servicePrincipal.credentialsSecretName | default (printf "%s-secret-store-csi" (include "am-all-in-one.fullname" .)) -}}
 {{- end -}}
-
-{{/*
-Management hostname (server hostname, Developer Portal URL, NOTES). Gateway API takes precedence over Ingress.
-*/}}
-{{- define "am-all-in-one.managementHostname" -}}
-{{- if .Values.kubernetes.gatewayAPI.enabled -}}
-{{- .Values.kubernetes.gatewayAPI.management.hostname -}}
-{{- else if .Values.kubernetes.ingress.enabled -}}
-{{- .Values.kubernetes.ingress.management.hostname -}}
-{{- else -}}
-{{- .Values.kubernetes.ingress.management.hostname -}}
-{{- end -}}
-{{- end -}}

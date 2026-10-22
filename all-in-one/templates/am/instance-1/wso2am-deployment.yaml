@@ -175,10 +175,7 @@ spec:
             failureThreshold: {{ .Values.wso2.deployment.livenessProbe.failureThreshold }}
           readinessProbe:
             {{- if .Values.wso2.deployment.readinessProbe.waitForServerStartup }}
-            # Ready only after the server has fully started ("WSO2 Carbon started", logged once all components,
-            # including the throttle data publisher, are initialized) and the gateway startup health check passes.
-            # The marker file keeps the result across log rollovers; the entrypoint removes it on container start.
-            # The health check uses bash /dev/tcp over the HTTP port, so the image does not need curl.
+            # Ready once "WSO2 Carbon started" is logged (marker file survives log rollover) and the health check passes
             exec:
               command:
                 - /bin/sh
