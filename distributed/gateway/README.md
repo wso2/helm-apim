@@ -131,7 +131,7 @@ A Helm chart for the deployment of WSO2 API Management Universal Gateway profile
 | wso2.apim.configurations.eventhub.serviceUrl | string | `"wso2am-cp-service"` | Event hub (control plane) loadbalancer service url |
 | wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
 | wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","encryptionKeyKey":"","secretName":""}` | Read passwords from a common secret |
-| wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
+| wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. A table that the chart already renders (e.g. [server], or [secrets] when secure vault is enabled) is merged into the existing table instead of being added a second time; rendering fails if one of its keys is already set by the chart. Other tables are appended. For example, to add a secure vault entry and reference it:   [secrets]   my_alias = "<cipher-tool encrypted value>"   [identity.auth_framework.endpoint]   app_password = "$secret{my_alias}" |
 | wso2.apim.configurations.gatewayNotification.deploymentAck.batchInterval | string | `"2s"` |  |
 | wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorKeepAlive | string | `"1m"` |  |
 | wso2.apim.configurations.gatewayNotification.deploymentAck.batchProcessorMaxThread | int | `8` |  |

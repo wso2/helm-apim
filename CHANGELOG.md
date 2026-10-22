@@ -17,6 +17,11 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
   Developer Portal and Admin Portal `settings.json` files.
 - `kubernetes.hostAliases` to all charts to add Pod `hostAliases` entries, e.g. to resolve the
   internal hostname to the pod itself.
+- Merging of `wso2.apim.configurations.extraConfigs` into tables that the chart already renders. A table in
+  `extraConfigs` such as `[server]`, or `[secrets]` when secure vault is enabled, now adds its keys to the existing
+  table instead of creating a duplicate table that stops the server from starting. For example, custom secure
+  vault entries can be added to `[secrets]` and referenced as `$secret{<alias>}`. Rendering fails if a merged key
+  is already set by the chart. Other tables are appended as before.
 
 ### Docs
 - Regenerated helm-docs for all charts.

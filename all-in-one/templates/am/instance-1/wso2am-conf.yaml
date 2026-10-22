@@ -15,4 +15,4 @@ metadata:
   name: {{ template "am-all-in-one.fullname" . }}-am-conf-1
   namespace : {{ .Release.Namespace }}
 data:
-  deployment.toml: {{ tpl (.Files.Get "confs/instance-1/deployment.toml") . | quote }}
+  deployment.toml: {{ include "apim.toml.withExtraConfigs" (dict "toml" (tpl (.Files.Get "confs/instance-1/deployment.toml") .) "extra" .Values.wso2.apim.configurations.extraConfigs) | quote }}
