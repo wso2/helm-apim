@@ -544,7 +544,8 @@ wso2:
           displayInApiConsole: true
           description: "This is a hybrid gateway that handles both production and sandbox token traffic."
           showAsTokenEndpointUrl: true
-          serviceName: "wso2am-gateway-service"
+          # -- Host of the gateway admin services. In the all-in-one pattern each node's gateway runs in the same JVM, so use localhost.
+          serviceName: "localhost"
           servicePort: 9443
           wsHostname: "websocket.wso2.com"
           httpHostname: "gw.wso2.com"
@@ -880,6 +881,14 @@ wso2:
     annotations: {}
     # Configure High Availability
     highAvailability: false
+    # Run API Manager as a StatefulSet instead of one Deployment per node
+    statefulSet:
+      # -- Deploy API Manager as a StatefulSet instead of per-node Deployments (zero-downtime rolling updates in HA mode)
+      enabled: false
+      # -- StatefulSet pod management policy (OrderedReady starts pod 1 only after pod 0 is Ready)
+      podManagementPolicy: OrderedReady
+      # -- Seconds an updated pod must stay Ready before the StatefulSet moves on to the next pod during a rolling update
+      minReadySeconds: 30
     # Container image configurations
     image:
       # -- Container registry credentials.
@@ -946,6 +955,10 @@ wso2:
       periodSeconds: 10
       # -- Minimum consecutive successes for the probe to be considered successful after having failed
       failureThreshold: 5
+      # -- Mark the pod Ready only after "WSO2 Carbon started" is logged (requires the CARBON_LOGFILE appender)
+      waitForServerStartup: true
+      # -- Number of seconds after which the readiness probe times out
+      timeoutSeconds: 5
     lifecycle:
       preStopHook:
         # -- Time to wait until the apim is terminated gracefully
@@ -981,4 +994,8 @@ wso2:
           carbonDatabase: 50M
           # -- For persisting the indexed solr data
           solrIndexedData: 50M
+        # -- StatefulSet mode only: storage class of the per-pod volumes (empty uses the cluster default)
+        storageClass: ""
+        # -- StatefulSet mode only: access mode of the per-pod volumes
+        accessMode: ReadWriteOnce
 

@@ -10,9 +10,16 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
 ## [Unreleased]
 
 ### Added
+- `wso2.deployment.statefulSet.enabled` (default `false`) to the all-in-one chart, running API Manager as a
+  StatefulSet with a headless service for zero-downtime rolling updates in HA mode.
 - `oauth_config.authHeader`, `oauth_config.enableOutboundAuthHeader`, and `cors` configurations
   to the distributed control-plane chart, aligning it with the all-in-one and gateway charts
   and the 4.7.0 control-plane pack defaults ([#270]).
+
+### Fixed
+- All-in-one readiness probe waits for server startup (`readinessProbe.waitForServerStartup`), and the
+  resident Key Manager is called on `localhost`.
+- All-in-one per-node services publish not-ready addresses so a starting node can reach its Traffic Manager.
 
 ### Docs
 - Regenerated helm-docs for the distributed control-plane chart.
