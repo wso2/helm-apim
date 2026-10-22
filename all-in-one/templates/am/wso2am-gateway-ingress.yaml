@@ -35,5 +35,5 @@ spec:
           service:
             name: {{ template "am-all-in-one.fullname" . }}-am-service
             port:
-              number: 8243
+              number: {{ add 8243 (.Values.wso2.apim.portOffset | default 0) }}
 {{- end -}}
