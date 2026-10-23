@@ -108,7 +108,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.eventhub.urls | list | `["wso2am-cp-1-service","wso2am-cp-2-service"]` | Event hub service urls |
 | wso2.apim.configurations.existingSecret | object | `{"adminPasswordKey":"","apimDBPasswordKey":"","encryptionKeyKey":"","secretName":"","sharedDBPasswordKey":""}` | Read passwords from a common secret |
 | wso2.apim.configurations.extraConfigs | string | `nil` | Add custom configurations to deployment.toml. |
-| wso2.apim.configurations.internalHostname | string | `""` | Hostname used by the server for internal (loopback) calls. Sets [server] internal_hostname. The TLS certificate must be valid for this hostname. Leave empty to use the product default (localhost). See kubernetes.hostAliases to resolve this hostname to the pod itself. |
+| wso2.apim.configurations.internalHostname | string | `""` | Hostname used for internal (loopback) server calls |
 | wso2.apim.configurations.oauth_config.enableTokenEncryption | bool | `false` | Enable token encryption |
 | wso2.apim.configurations.oauth_config.enableTokenHashing | bool | `false` | Enable token hashing |
 | wso2.apim.configurations.oauth_config.multipleClientSecrets | object | `{"enable":true,"secretCount":""}` | Multiple client secrets configuration |

@@ -223,7 +223,7 @@ A Helm chart for the deployment of WSO2 API Manager all-in-one distribution.
 | wso2.apim.configurations.gatewayNotification.registration.retryProgressionFactor | int | `2` |  |
 | wso2.apim.configurations.gatewayType | string | `"Regular,APK,AWS,Azure,Kong"` |  |
 | wso2.apim.configurations.governance.scheduler | object | `{"queue_size":"","task_check_interval_minutes":"","task_cleanup_interval_minutes":"","thread_pool_size":""}` | Override the default values of governance.scheduler if any value exists |
-| wso2.apim.configurations.internalHostname | string | `""` | Hostname used by the server for internal (loopback) calls. Sets [server] internal_hostname and, when wso2.apim.mountFrontendConfig is true, app.origin.host of the portal settings.json files. The TLS certificate must be valid for this hostname. Leave empty to use the product default (localhost). See kubernetes.hostAliases to resolve this hostname to the pod itself. |
+| wso2.apim.configurations.internalHostname | string | `""` | Hostname used for internal (loopback) server calls |
 | wso2.apim.configurations.iskm.enabled | bool | `false` |  |
 | wso2.apim.configurations.iskm.revokeURL | string | `""` |  |
 | wso2.apim.configurations.iskm.serviceName | string | `""` |  |
