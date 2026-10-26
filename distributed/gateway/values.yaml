@@ -153,6 +153,8 @@ wso2:
   # -- ELK Analytics Parameters
   ELKAnalytics:
     enabled: false
+    # -- Also output ELK/metrics logs to stdout (in addition to the file) so they can be seen via kubectl logs
+    toConsole: false
 
   # -- Moesif Analytics Parameters
   moesifAnalytics:

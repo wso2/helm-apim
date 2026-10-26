@@ -223,7 +223,7 @@ wso2:
         #   logger.auth-framework.level: DEBUG
         #   logger.auth-framework.appenderRef.CARBON_LOGFILE.ref: CARBON_LOGFILE
         extraProperties: {}
-        # -- Console log layout type. Allowed values are PatternLayout and JsonLayout
+        # -- Console log layout type for all stdout appenders. Allowed values are PatternLayout and JsonLayout
         consoleLogType: "PatternLayout"
     # -- Startup arguments for APIM
     startupArgs: ""
