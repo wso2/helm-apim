@@ -574,7 +574,7 @@ wso2:
       # rendering fails if one of its keys is already set by the chart. Other tables are appended. For example, to add
       # a secure vault entry and reference it:
       #   [secrets]
-      #   my_alias = "<cipher-tool encrypted value>"
+      #   my_alias = "ENCRYPTED_VALUE"  # cipher-tool encrypted value
       #   [identity.auth_framework.endpoint]
       #   app_password = "$secret{my_alias}"
       extraConfigs: 
