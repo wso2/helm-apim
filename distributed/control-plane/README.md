@@ -95,6 +95,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | kubernetes.gatewayAPI.defaultConfigMapCreation | bool | `false` | Create CA certificate ConfigMap for BackendTLSPolicy |
 | kubernetes.gatewayAPI.enabled | bool | `true` | Enable Gateway API resources (HTTPRoutes and policies) |
 | kubernetes.gatewayAPI.gatewayName | string | `""` | Name of the externally-created Gateway resource that HTTPRoutes will reference (e.g., istio, nginx, contour, envoy-gateway, gke-l7-global-external-managed) This Gateway must exist in the same namespace before installing the chart |
+| kubernetes.hostAliases | list | `[]` | Entries added to the pod /etc/hosts (Pod spec hostAliases). Use with wso2.apim.configurations.internalHostname to resolve the internal hostname to the pod itself, e.g. hostAliases:   - ip: "127.0.0.1"     hostnames:       - "am.example.com" |
 | kubernetes.ingress.controlPlane.annotations | object | `{"nginx.ingress.kubernetes.io/affinity":"cookie","nginx.ingress.kubernetes.io/backend-protocol":"HTTPS","nginx.ingress.kubernetes.io/session-cookie-hash":"sha1","nginx.ingress.kubernetes.io/session-cookie-name":"route"}` | Ingress annotations |
 | kubernetes.ingress.controlPlane.enabled | bool | `false` | Enable ingress for Control Plane |
 | kubernetes.ingress.controlPlane.hostname | string | `"am.wso2.com"` | Ingress hostname |
@@ -169,6 +170,7 @@ A Helm chart for the deployment of WSO2 API Management API Control Plane profile
 | wso2.apim.configurations.gatewayNotification.cleanUp.expiryTime | string | `"2m"` |  |
 | wso2.apim.configurations.gatewayType | string | `"Regular,APK,AWS,Azure,Kong"` |  |
 | wso2.apim.configurations.governance.scheduler | object | `{"queue_size":"","task_check_interval_minutes":"","task_cleanup_interval_minutes":"","thread_pool_size":""}` | Override the default values of governance.scheduler if any value exists |
+| wso2.apim.configurations.internalHostname | string | `""` | Hostname used for internal (loopback) server calls |
 | wso2.apim.configurations.iskm.enabled | bool | `false` | If Identity Server is used as the Resident KM |
 | wso2.apim.configurations.iskm.serviceName | string | `""` | Kubernetes service name exposing Identity Server |
 | wso2.apim.configurations.iskm.servicePort | int | `9443` | Kubernetes service port exposing Identity Server |
