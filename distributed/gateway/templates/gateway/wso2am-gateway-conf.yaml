@@ -15,4 +15,4 @@ metadata:
   name: {{ template "apim-helm-gw.fullname" . }}-conf
   namespace : {{ .Release.Namespace }}
 data:
-  deployment.toml: {{ tpl (.Files.Get "confs/deployment.toml") . | quote }}
+  deployment.toml: {{ include "apim.toml.withExtraConfigs" (dict "toml" (tpl (.Files.Get "confs/deployment.toml") .) "extra" .Values.wso2.apim.configurations.extraConfigs) | quote }}
