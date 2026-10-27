@@ -139,6 +139,30 @@ wso2:
         extraProperties: {}
         # -- Console log layout type. Allowed values are PatternLayout and JsonLayout
         consoleLogType: "PatternLayout"
+        # -- Also send the HTTP access log to stdout (HTTP_ACCESS_CONSOLE)
+        accessLogToConsole: false
+        # -- Value of the identification.application field added to each console appender. Only applied with JsonLayout; empty disables the field.
+        identification:
+          carbon: "wso2-carbon-log"
+          access: "wso2-access-log"
+          audit: ""
+          transaction: ""
+          correlation: ""
+        # -- Threshold level of each console appender (TRACE, DEBUG, INFO, WARN, ERROR). Events below the level are not printed to stdout.
+        consoleThreshold:
+          carbon: "DEBUG"
+          access: "INFO"
+          audit: "DEBUG"
+          transaction: "DEBUG"
+          correlation: "DEBUG"
+    # -- PassThrough access log format, written to access-log.properties. Empty keeps the product default.
+    accessLog:
+      # -- Emit each access log line as a JSON object (ECS field names); takes precedence over pattern
+      json: false
+      # -- access_log_pattern, e.g. "%h - %u %t %r 0 0 %f %{X-Forwarded-For}i 0 %{SOAPAction}i"
+      pattern: ""
+      # -- access_log_prefix of the access log file; empty keeps the default (http_access_)
+      prefix: ""
     # -- Startup arguments for APIM
     startupArgs: ""
     # -- Startup script mount status

@@ -30,6 +30,7 @@ spec:
         {{- end }}
         checksum.am.cp.conf: {{ include (print $.Template.BasePath "/control-plane/instance-1/wso2am-cp-conf.yaml") . | sha256sum }}
         checksum.am.cp.conf.log4j2: {{ include (print $.Template.BasePath "/control-plane/wso2am-cp-conf-log4j2.yaml") . | sha256sum }}
+        checksum.am.cp.conf.access-log: {{ include (print $.Template.BasePath "/control-plane/wso2am-cp-conf-access-log.yaml") . | sha256sum }}
         checksum.am.cp.conf.secret: {{ include (print $.Template.BasePath "/control-plane/wso2am-cp-conf-secret-conf.yaml") . | sha256sum }}
         {{- if .Values.wso2.deployment.pod.annotations }}
         {{- toYaml .Values.wso2.deployment.pod.annotations | nindent 8 }}
@@ -240,6 +241,11 @@ spec:
         - name: wso2am-control-plane-log4j2
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/log4j2.properties
           subPath: log4j2.properties
+        {{- if or .Values.wso2.apim.accessLog.json .Values.wso2.apim.accessLog.pattern }}
+        - name: wso2am-control-plane-access-log
+          mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/access-log.properties
+          subPath: access-log.properties
+        {{- end }}
         {{- if .Values.wso2.apim.mountStartupScript }}
         - name: wso2am-sh-conf
           mountPath: /home/wso2carbon/wso2-config-volume/bin/api-cp.sh
@@ -315,6 +321,12 @@ spec:
         configMap:
           name: {{ template "apim-helm-cp.fullname" . }}-conf-log4j2
           defaultMode: 0407
+      {{- if or .Values.wso2.apim.accessLog.json .Values.wso2.apim.accessLog.pattern }}
+      - name: wso2am-control-plane-access-log
+        configMap:
+          name: {{ template "apim-helm-cp.fullname" . }}-conf-access-log
+          defaultMode: 0407
+      {{- end }}
       {{- if .Values.wso2.apim.mountStartupScript }}
       - name: wso2am-sh-conf
         configMap:

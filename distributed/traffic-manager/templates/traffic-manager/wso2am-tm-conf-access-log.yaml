@@ -1,0 +1,19 @@
+{{- with .Values.wso2.apim.accessLog }}
+{{- if or .json .pattern }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "apim-helm-tm.fullname" $ }}-conf-access-log
+  namespace : {{ $.Release.Namespace }}
+data:
+  access-log.properties: |
+    {{- if .json }}
+    access_log_pattern={"timestamp":"%t","source.ip":"%h","user.name":"%u","user_agent.name":"%{User-Agent}i","http.request.method":"%m","url.original":"%U","http.response.status_code":"%s","http.response.body.bytes":"%b","http.request.referrer":"%f","network.forwarded_ip":"%{X-Forwarded-For}i","event.action":"%{SOAPAction}i"{{ with $.Values.wso2.apim.log4j2.identification.access }},"identification":{"application":"{{ . }}"}{{ end }}}
+    {{- else }}
+    access_log_pattern={{ .pattern }}
+    {{- end }}
+    {{- with .prefix }}
+    access_log_prefix={{ . }}
+    {{- end }}
+{{- end }}
+{{- end }}

@@ -34,6 +34,7 @@ spec:
         {{- end }}
         checksum.am.tm.conf: {{ include (print $.Template.BasePath "/traffic-manager/instance-2/wso2am-tm-conf.yaml") . | sha256sum }}
         checksum.am.tm.conf.log4j2: {{ include (print $.Template.BasePath "/traffic-manager/wso2am-tm-conf-log4j2.yaml") . | sha256sum }}
+        checksum.am.tm.conf.access-log: {{ include (print $.Template.BasePath "/traffic-manager/wso2am-tm-conf-access-log.yaml") . | sha256sum }}
         checksum.am.cp.conf.secret: {{ include (print $.Template.BasePath "/traffic-manager/wso2am-tm-conf-secret-conf.yaml") . | sha256sum }}
         {{- if .Values.wso2.deployment.pod.annotations }}
         {{- toYaml .Values.wso2.deployment.pod.annotations | nindent 8 }}
@@ -246,6 +247,11 @@ spec:
         - name: wso2am-traffic-manager-log4j2
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/log4j2.properties
           subPath: log4j2.properties
+        {{- if or .Values.wso2.apim.accessLog.json .Values.wso2.apim.accessLog.pattern }}
+        - name: wso2am-traffic-manager-access-log
+          mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/access-log.properties
+          subPath: access-log.properties
+        {{- end }}
         {{- if .Values.wso2.apim.mountStartupScript }}
         - name: wso2am-sh-conf
           mountPath: /home/wso2carbon/wso2-config-volume/bin/traffic-manager.sh
@@ -302,6 +308,12 @@ spec:
         configMap:
           name: {{ template "apim-helm-tm.fullname" . }}-conf-log4j2
           defaultMode: 0407
+      {{- if or .Values.wso2.apim.accessLog.json .Values.wso2.apim.accessLog.pattern }}
+      - name: wso2am-traffic-manager-access-log
+        configMap:
+          name: {{ template "apim-helm-tm.fullname" . }}-conf-access-log
+          defaultMode: 0407
+      {{- end }}
       {{- if .Values.wso2.apim.mountStartupScript }}
       - name: wso2am-sh-conf
         configMap:
