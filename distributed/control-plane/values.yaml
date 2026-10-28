@@ -294,6 +294,13 @@ kubernetes:
   #     secret:
   #       secretName: my-k8s-secret
   extraVolumes: []
+  # -- Entries added to the pod /etc/hosts (Pod spec hostAliases). Use with wso2.apim.configurations.internalHostname
+  # to resolve the internal hostname to the pod itself, e.g.
+  # hostAliases:
+  #   - ip: "127.0.0.1"
+  #     hostnames:
+  #       - "am.example.com"
+  hostAliases: []
 
 wso2:  
   apim:
@@ -324,6 +331,8 @@ wso2:
     mountFrontendConfig: false
     # TOML configurations
     configurations:
+      # -- Hostname used for internal (loopback) server calls
+      internalHostname: ""
       encryption:
         # -- Symmetric encryption key shared by all nodes. This must be set explicitly and must be the same across all nodes before first startup.
         key: ""
