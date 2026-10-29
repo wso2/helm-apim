@@ -9,19 +9,21 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
 
 ## [Unreleased]
 
+## [4.7.0-5]
+
 ### Added
 - `wso2.apim.configurations.internalHostname` to the all-in-one, control-plane and key-manager
   charts. It sets `[server] internal_hostname` so internal (loopback) calls work when the TLS
   certificate is not valid for `localhost`. In the all-in-one and control-plane charts, when
   `wso2.apim.mountFrontendConfig` is enabled, it also sets `app.origin.host` of the Publisher,
-  Developer Portal and Admin Portal `settings.json` files.
+  Developer Portal and Admin Portal `settings.json` files ([#277]).
 - `kubernetes.hostAliases` to all charts to add Pod `hostAliases` entries, e.g. to resolve the
-  internal hostname to the pod itself.
+  internal hostname to the pod itself ([#277]).
 - Merging of `wso2.apim.configurations.extraConfigs` into tables that the chart already renders. A table in
   `extraConfigs` such as `[server]`, or `[secrets]` when secure vault is enabled, now adds its keys to the existing
   table instead of creating a duplicate table that stops the server from starting. For example, custom secure
   vault entries can be added to `[secrets]` and referenced as `$secret{<alias>}`. Rendering fails if a merged key
-  is already set by the chart. Other tables are appended as before.
+  is already set by the chart. Other tables are appended as before ([#280]).
 
 ### Docs
 - Regenerated helm-docs for all charts.
@@ -81,7 +83,8 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
 - OAuth header config.
 - Consistency issue with `sync_runtime_artifacts`.
 
-[Unreleased]: https://github.com/wso2/helm-apim/compare/control-plane-4.7.0-4...HEAD
+[Unreleased]: https://github.com/wso2/helm-apim/compare/all-in-one-4.7.0-5...HEAD
+[4.7.0-5]: https://github.com/wso2/helm-apim/compare/control-plane-4.7.0-4...all-in-one-4.7.0-5
 [4.7.0-4]: https://github.com/wso2/helm-apim/compare/control-plane-4.7.0-3...control-plane-4.7.0-4
 [4.7.0-3]: https://github.com/wso2/helm-apim/compare/all-in-one-4.7.0-2...all-in-one-4.7.0-3
 [4.7.0-2]: https://github.com/wso2/helm-apim/compare/all-in-one-4.7.0-1...all-in-one-4.7.0-2
@@ -100,3 +103,5 @@ gateway, key-manager, traffic-manager) share a single version. Versions follow t
 [#172]: https://github.com/wso2/helm-apim/pull/172
 [#175]: https://github.com/wso2/helm-apim/pull/175
 [#271]: https://github.com/wso2/helm-apim/pull/271
+[#277]: https://github.com/wso2/helm-apim/pull/277
+[#280]: https://github.com/wso2/helm-apim/pull/280
