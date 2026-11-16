@@ -91,6 +91,10 @@ spec:
       - name: {{ template "apim-helm-km.fullname" . }}-docker-registry-auth
       {{- end }}
       {{- end }}
+      {{- with .Values.kubernetes.hostAliases }}
+      hostAliases:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - name: wso2am-km
         {{- if .Values.wso2.deployment.image.digest }}

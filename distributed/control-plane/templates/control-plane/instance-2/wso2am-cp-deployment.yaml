@@ -87,6 +87,10 @@ spec:
       - name: {{ template "apim-helm-cp.fullname" . }}-docker-registry-auth
       {{- end }}
       {{- end }}
+      {{- with .Values.kubernetes.hostAliases }}
+      hostAliases:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - name: wso2am-control-plane
         {{- if .Values.wso2.deployment.image.digest }}

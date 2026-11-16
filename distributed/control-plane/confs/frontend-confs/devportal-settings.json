@@ -6,7 +6,7 @@
             "forwardedHeader": "X-Forwarded-For"
         },
         "origin": {
-            "host": "localhost"
+            "host": {{ .Values.wso2.apim.configurations.internalHostname | default "localhost" | quote }}
         },
         "subscriptionLimit": 1000,
         "subscribeApplicationLimit": 5000,

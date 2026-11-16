@@ -147,6 +147,13 @@ kubernetes:
   #     secret:
   #       secretName: my-k8s-secret
   extraVolumes: []
+  # -- Entries added to the pod /etc/hosts (Pod spec hostAliases), e.g. to resolve a hostname to a specific IP
+  # inside the pod.
+  # hostAliases:
+  #   - ip: "127.0.0.1"
+  #     hostnames:
+  #       - "am.example.com"
+  hostAliases: []
 
 wso2:  
   apim:
