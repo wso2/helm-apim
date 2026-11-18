@@ -16,6 +16,7 @@
 #
 # --------------------------------------------------------------------------------------
 
+{{- if .Values.wso2.deployment.highAvailability }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
@@ -25,3 +26,4 @@ spec:
   selector:
     matchLabels:
       deployment: {{ template "am-all-in-one.fullname" . }}-am
+{{- end }}

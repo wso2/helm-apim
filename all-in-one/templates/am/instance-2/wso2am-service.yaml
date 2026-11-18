@@ -17,12 +17,16 @@
 # --------------------------------------------------------------------------------------
 
 {{- if .Values.wso2.deployment.highAvailability }}
+{{- if not .Values.wso2.deployment.statefulSet.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ template "am-all-in-one.fullname" . }}-am-service-2
   namespace : {{ .Release.Namespace }}
 spec:
+  # Per-node service for the Traffic Manager URL groups and throttling event duplication. Not-ready pods are
+  # published so that a starting node can reach its own Traffic Manager.
+  publishNotReadyAddresses: true
   # label keys and values that must match in order to receive traffic for this service
   selector:
     deployment: {{ template "am-all-in-one.fullname" . }}-am
@@ -59,4 +63,5 @@ spec:
     - name: websocket-http
       protocol: TCP
       port: {{ add 9099 (.Values.wso2.apim.portOffset | default 0) }}
+{{- end }}
 {{- end }}
